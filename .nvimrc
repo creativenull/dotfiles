@@ -18,16 +18,18 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Tab for auto-completion
 Plug 'ervandew/supertab'
-" Language client for a Language Server Protocol support
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': './install.sh' }
+ "Language client for a Language Server Protocol support
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+" Fuzzy file finder
+Plug 'junegunn/fzf'
 
 " ======== Syntax Highlighting ========
 " Javascript
-Plug 'pangloss/vim-javascript'
+"Plug 'pangloss/vim-javascript'
 " Typescript
-Plug 'leafgarland/typescript-vim'
+"Plug 'leafgarland/typescript-vim'
 " Vue
-Plug 'posva/vim-vue'
+"Plug 'posva/vim-vue'
 
 " ======== Themes ========
 Plug 'vim-airline/vim-airline'
@@ -59,20 +61,18 @@ let g:deoplete#enable_at_startup=1
 let g:SuperTabDefaultCompletionType='<C-n>'
 
 " --- LanguageClient Options --- 
-let g:LanguageClient_autoStart=1
-let g:LanguageClient_loggingLevel='INFO'
-let g:LanguageClient_loggingFile= expand('~/.local/share/nvim/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand('~/.local/share/nvim/LanguageServer.log')
+let g:LanguageClient_diagnosticsList='Location'
 let g:LanguageClient_rootMarkers={
 	\ 'rust': ['cargo.toml'],
 	\ 'go': ['main.go'],
 	\ }
 let g:LanguageClient_serverCommands={
+	\ 'c': ['clangd'],
+	\ 'cpp': ['clangd'],
 	\ 'rust': ['rustup', 'run', 'stable', 'rls'],
-	\ 'go': ['bingo', '--format-style', 'goimports'],
-	\ 'javascript': ['javascript-typescript-stdio'],
-	\ 'typescript': ['javascript-typescript-stdio'],
+	\ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
 	\ }
+
 
 " =============================================================
 " = General =
@@ -189,8 +189,9 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 nnoremap <leader>ve :e ~/.config/nvim/init.vim<CR>
 nnoremap <leader>vr :so ~/.config/nvim/init.vim<CR>
 
-" Langauge client menu call
+" LanguageClient bindings
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 
 " =============================================================
 " = Theming and Looks =
@@ -226,3 +227,4 @@ set textwidth=500
 set shiftwidth=8
 set softtabstop=8
 set wrap
+set signcolumn=yes
