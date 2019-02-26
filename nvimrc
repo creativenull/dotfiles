@@ -18,18 +18,18 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Tab for auto-completion
 Plug 'ervandew/supertab'
- "Language client for a Language Server Protocol support
+" Language client for a Language Server Protocol support
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 " Fuzzy file finder
 Plug 'junegunn/fzf'
 
 " ======== Syntax Highlighting ========
 " Javascript
-"Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 " Typescript
-"Plug 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim'
 " Vue
-"Plug 'posva/vim-vue'
+Plug 'posva/vim-vue'
 
 " ======== Themes ========
 Plug 'vim-airline/vim-airline'
@@ -61,22 +61,38 @@ let g:deoplete#enable_at_startup=1
 let g:SuperTabDefaultCompletionType='<C-n>'
 
 " --- LanguageClient Options --- 
-let g:LanguageClient_diagnosticsList='Location'
 let g:LanguageClient_rootMarkers={
-	\ 'rust': ['cargo.toml'],
-	\ 'go': ['main.go'],
+	\ 'c':	  ['.c-lsp'],
+	\ 'cpp':  ['.cpp-lsp'],
+	\ 'go':	  ['.go-lsp'],
+	\ 'rust': ['.rust-lsp'],
 	\ }
 let g:LanguageClient_serverCommands={
-	\ 'c': ['clangd'],
-	\ 'cpp': ['clangd'],
+	\ 'c':    ['clangd'],
+	\ 'cpp':  ['clangd'],
+	\ 'go':   ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
+	\ 'javascript': ['javascript-typescript-langserver'],
 	\ 'rust': ['rustup', 'run', 'stable', 'rls'],
-	\ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
+	\ 'typescript': ['javascript-typescript-langserver'],
+	\ 'vue': ['javascript-typescript-langserver'],
 	\ }
+let g:LanguageClient_selectionUI='fzf'
+let g:LanguageClient_loggingLevel='INFO'
+let g:LanguageClient_loggingFile=expand('~/.local/share/nvim/LanguageClient.log')
+let g:LanguageClient_serverStderr=expand('~/.local/share/nvim/LanguageServer.log')
+let g:LanguageClient_loadSettings=1
 
+" Custom settings for each filetype
+"autocmd FileType c let g:LanguageClient_settingsPath=expand('~/.config/nvim/c_settings.json')
+"autocmd FileType go let g:LanguageClient_settingsPath=expand('~/.local/share/nvim/go_settings.json')
+"autocmd FileType rust let g:LanguageClient_settingsPath=expand('~/.local/share/nvim/rust_settings.json')
 
 " =============================================================
 " = General =
 " =============================================================
+
+" Set the .h file to be a C filetype
+autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 
 " Set directory specific config for nvim
 set exrc " Will look for .exrc/.nvimrc file in the current directory
@@ -224,7 +240,9 @@ set autoindent
 set linebreak
 set textwidth=500
 
-set shiftwidth=8
+set tabstop=8
 set softtabstop=8
+set shiftwidth=8
+set noexpandtab
 set wrap
 set signcolumn=yes
