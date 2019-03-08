@@ -22,11 +22,13 @@ Plug 'ervandew/supertab'
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 " Fuzzy file finder
 Plug 'junegunn/fzf'
+" Emmet
+Plug 'mattn/emmet-vim'
 
 " ======== Syntax Highlighting ========
-" Javascript
+" JavaScript
 Plug 'pangloss/vim-javascript'
-" Typescript
+" TypeScript
 Plug 'leafgarland/typescript-vim'
 " Vue
 Plug 'posva/vim-vue'
@@ -34,7 +36,8 @@ Plug 'posva/vim-vue'
 " ======== Themes ========
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'kaicataldo/material.vim'
+Plug 'morhetz/gruvbox'
+Plug 'rakr/vim-one'
 
 call plug#end()
 
@@ -62,30 +65,30 @@ let g:SuperTabDefaultCompletionType='<C-n>'
 
 " --- LanguageClient Options --- 
 let g:LanguageClient_rootMarkers={
-	\ 'c':	  ['.c-lsp'],
-	\ 'cpp':  ['.cpp-lsp'],
-	\ 'go':	  ['.go-lsp'],
+	\ 'c': ['.c-lsp'],
+	\ 'cpp': ['.cpp-lsp'],
+	\ 'go': ['.go-lsp'],
 	\ 'rust': ['.rust-lsp'],
+	\ 'javascript': ['jsconfig.json'],
+	\ 'typescript': ['tsconfig.json'],
 	\ }
 let g:LanguageClient_serverCommands={
-	\ 'c':    ['clangd'],
-	\ 'cpp':  ['clangd'],
-	\ 'go':   ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
-	\ 'javascript': ['javascript-typescript-langserver'],
+	\ 'c': ['cquery', '--log-file=/tmp/cq.log'],
+	\ 'cpp': ['clangd'],
+	\ 'go': ['go-langserver',
+		\ '-gocodecompletion',
+		\ '-lint-tool', 'golint',
+		\ '-diagnostics'],
 	\ 'rust': ['rustup', 'run', 'stable', 'rls'],
-	\ 'typescript': ['javascript-typescript-langserver'],
-	\ 'vue': ['javascript-typescript-langserver'],
+	\ 'javascript': ['javascript-typescript-stdio'],
+	\ 'typescript': ['javascript-typescript-stdio'],
 	\ }
 let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingLevel='INFO'
-let g:LanguageClient_loggingFile=expand('~/.local/share/nvim/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand('~/.local/share/nvim/LanguageServer.log')
+let g:LanguageClient_loggingFile=expand('$HOME/.local/share/nvim/LanguageClient.log')
+let g:LanguageClient_serverStderr=expand('$HOME/.local/share/nvim/LanguageServer.log')
 let g:LanguageClient_loadSettings=1
-
-" Custom settings for each filetype
-"autocmd FileType c let g:LanguageClient_settingsPath=expand('~/.config/nvim/c_settings.json')
-"autocmd FileType go let g:LanguageClient_settingsPath=expand('~/.local/share/nvim/go_settings.json')
-"autocmd FileType rust let g:LanguageClient_settingsPath=expand('~/.local/share/nvim/rust_settings.json')
+let g:LanguageClient_useVirtualText=0
 
 " =============================================================
 " = General =
@@ -147,6 +150,7 @@ nnoremap <C-x> :q<CR>
 " Copy/Paste key bindings in Visual mode
 vnoremap <C-c> "+y<CR>
 
+
 " Switch windows
 nnoremap <TAB> <C-w><C-w>
 nnoremap <S-TAB> <C-w><S-w>
@@ -202,12 +206,21 @@ vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
 vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Vim settings .vimrc
-nnoremap <leader>ve :e ~/.config/nvim/init.vim<CR>
-nnoremap <leader>vr :so ~/.config/nvim/init.vim<CR>
+nnoremap <leader>ve :e $MYVIMRC<CR>
+nnoremap <leader>vr :so $MYVIMRC<CR>
+
+nnoremap <leader>ge :e $HOME/.config/nvim/ginit.vim<CR>
+nnoremap <leader>gr :so $HOME/.config/nvim/ginit.vim<CR>
 
 " LanguageClient bindings
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+
+" FZF key binding
+nnoremap <C-p> :FZF<CR>
 
 " =============================================================
 " = Theming and Looks =
@@ -220,10 +233,7 @@ set cursorline
 set noshowmode
 
 " Theme
-set background=dark
-let g:material_theme_style='dark'
-let g:material_terminal_italics=1
-colorscheme material
+colorscheme gruvbox
 
 " Airline options
 let g:airline#extensions#tabline#enabled=1
