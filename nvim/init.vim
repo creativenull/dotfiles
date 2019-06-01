@@ -40,7 +40,6 @@ Plug 'posva/vim-vue'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
-Plug 'jacoborus/tender.vim'
 Plug 'sonph/onehalf', { 'rtp': 'vim/' }
 
 call plug#end()
@@ -57,9 +56,6 @@ filetype plugin indent on
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
-
-" Toggle File explorer
-nnoremap <F2> :NERDTreeToggle<CR>
 
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
@@ -276,7 +272,7 @@ nnoremap <leader>fv :e $MYVIMRC<CR>
 nnoremap <leader>fgv :e $HOME/.config/nvim/ginit.vim<CR>
 
 " Source the current file
-nnoremap <leader>fs :so %<CR>
+nnoremap <leader>fsv :so $MYVIMRC<CR>
 
 " LanguageClient bindings
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
@@ -287,3 +283,6 @@ nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
 
 " FZF key binding
 nnoremap <C-p> :FZF<CR>
+
+" Toggle File explorer
+nnoremap <F2> :NERDTreeToggle<CR>
