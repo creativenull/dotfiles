@@ -1,0 +1,59 @@
+{
+    "window.menuBarVisibility": "toggle",
+    "editor.minimap.enabled": false,
+    "workbench.sideBar.location": "right",
+    "workbench.list.automaticKeyboardNavigation": false,
+    "workbench.list.keyboardNavigation": "simple",
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.leader": " ",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "k"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<leader>", "b", "d"],
+            "commands": [":q"]
+        },
+        {
+            "before": ["<leader>", "<cr>"],
+            "commands": [":noh"]
+        },
+        {
+            "before": ["<leader>", "c", " "],
+            "commands": ["editor.action.commentLine"]
+        },
+        {
+            "before": ["<leader>", "l", "d"],
+            "commands": ["editor.action.revealDefinition"]
+        },
+        {
+            "before": ["<leader>", "f", "n"],
+            "commands": ["explorer.newFile"]
+        },
+        {
+            "before": ["<leader>", "f", "f"],
+            "commands": ["explorer.newFolder"]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [">"],
+            "commands": ["editor.action.indentLines"]
+        },
+        {
+            "before": ["<"],
+            "commands": ["editor.action.outdentLines"]
+        },
+    ],
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false,
+        "<C-b>": false,
+        "<C-w>": false
+    }
+}
