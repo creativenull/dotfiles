@@ -298,4 +298,4 @@ nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <C-p> :FZF<CR>
 
 " Toggle File explorer
-nnoremap <F2> :NERDTreeToggle<CR>
+nnoremap <F3> :NERDTreeToggle<CR>
