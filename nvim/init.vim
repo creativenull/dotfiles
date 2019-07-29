@@ -1,7 +1,32 @@
 " =============================================================
+" My Vim config file
+" Cross-platform, runs on Linux, OS X (maybe?) and Windows
+" =============================================================
+"
+" Plugin and Indent enable
+filetype plugin indent on
+
+" Python host
+let g:python3_host_prog='$PYTHON3_HOST_PROG'
+let g:python_host_prog='$PYTHON_HOST_PROG'
+
+" Sort install dir for plugins
+if has('win32')
+	let nvim_config_dir='~/AppData/Local/nvim'
+	let nvim_local_dir=nvim_config_dir
+	let plugins_dir='~/AppData/Local/nvim/plugged'
+	let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
+else
+	let nvim_config_dir='~/.config/nvim'
+	let nvim_local_dir='~/.local/share/nvim'
+	let plugins_dir='~/.local/share/nvim/plugged'
+	let lang_client_exe='bash install.sh'
+endif
+
+" =============================================================
 " = Vim.plug =
 " =============================================================
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin(plugins_dir)
 
 " ======== Essentials ========
 " File explorer
@@ -19,8 +44,12 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Tab for auto-completion
 Plug 'ervandew/supertab'
+
 " Language client for a Language Server Protocol support
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+Plug 'autozimu/LanguageClient-neovim', {
+			\ 'branch': 'next',
+			\ 'do': lang_client_exe,
+			\ }
 " Fuzzy file finder
 Plug 'junegunn/fzf'
 " Emmet
@@ -44,8 +73,6 @@ Plug 'sonph/onehalf', { 'rtp': 'vim/' }
 
 call plug#end()
 
-" Plugin and Indent enable
-filetype plugin indent on
 
 " =============================================================
 " = Plugin Options =
@@ -75,10 +102,7 @@ let g:LanguageClient_rootMarkers={
 let g:LanguageClient_serverCommands={
 			\ 'c': ['cquery', '--log-file=/tmp/cq.log'],
 			\ 'cpp': ['clangd'],
-			\ 'go': ['go-langserver',
-			\ '-gocodecompletion',
-			\ '-lint-tool', 'golint',
-			\ '-diagnostics'],
+			\ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
 			\ 'rust': ['rustup', 'run', 'stable', 'rls'],
 			\ 'javascript': ['javascript-typescript-stdio'],
 			\ 'javascript.jsx': ['javascript-typescript-stdio'],
@@ -87,9 +111,8 @@ let g:LanguageClient_serverCommands={
 			\ }
 let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingLevel='INFO'
-let g:LanguageClient_loggingFile=expand('$HOME/.local/share/nvim/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand('$HOME/.local/share/nvim/LanguageServer.log')
-let g:LanguageClient_useVirtualText=0
+let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/LanguageClient/LanguageClient.log')
+let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageClient/LanguageServer.log')
 
 " =============================================================
 " = General =
@@ -200,9 +223,9 @@ inoremap <C-s> <ESC>:w<CR>
 " Safely exit vim
 nnoremap <C-x> :q<CR>
 
-" Copy/Paste key bindings in Visual mode
-vnoremap <C-c> "+y<CR>
-inoremap <C-v> <Esc>"+p<CR>
+" Copy/Paste from clipboard
+vnoremap <leader>y "+y<CR>
+nnoremap <leader>p <Esc>"+p<CR>
 
 " Leader Map
 let mapleader=' '
@@ -233,23 +256,14 @@ nnoremap <leader>th :split<CR><C-w>j:term<CR>
 " Window maps
 " ---
 " move to the split in the direction shown, or create a new split
-nnoremap <silent> <C-h> :call WinMove('h')<cr>
-nnoremap <silent> <C-j> :call WinMove('j')<cr>
-nnoremap <silent> <C-k> :call WinMove('k')<cr>
-nnoremap <silent> <C-l> :call WinMove('l')<cr>
+nnoremap <leader>ws :split<CR>
+nnoremap <leader>wv :vsplit<CR>
 
-function! WinMove(key)
-	let t:curwin = winnr()
-	exec "wincmd ".a:key
-	if (t:curwin == winnr())
-		if (match(a:key,'[jk]'))
-			wincmd v
-		else
-			wincmd s
-		endif
-		exec "wincmd ".a:key
-	endif
-endfunction
+" Switch between windows
+nnoremap <C-k> <C-w>k
+nnoremap <C-j> <C-w>j
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
 
 " Resize window panes
 nnoremap <up> :resize +2<CR>
@@ -268,11 +282,10 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 " Misc maps
 " ---
 " File options
-nnoremap <leader>fv :e $MYVIMRC<CR>
-nnoremap <leader>fgv :e $HOME/.config/nvim/ginit.vim<CR>
+nnoremap <leader>fve :e $MYVIMRC<CR>
 
 " Source the current file
-nnoremap <leader>fsv :so $MYVIMRC<CR>
+nnoremap <leader>fvs :so $MYVIMRC<CR>
 
 " LanguageClient bindings
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
