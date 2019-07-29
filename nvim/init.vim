@@ -7,8 +7,8 @@
 filetype plugin indent on
 
 " Python host
-let g:python3_host_prog='$PYTHON3_HOST_PROG'
-let g:python_host_prog='$PYTHON_HOST_PROG'
+let g:python3_host_prog=expand('$PYTHON3_HOST_PROG')
+let g:python_host_prog=expand('$PYTHON_HOST_PROG')
 
 " Sort install dir for plugins
 if has('win32')
