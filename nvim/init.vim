@@ -1,14 +1,14 @@
 " =============================================================
-" My Vim config file
+" CreativeNobu - (neo)vim config file
 " Cross-platform, runs on Linux, OS X (maybe?) and Windows
 " =============================================================
-"
+
 " Plugin and Indent enable
 filetype plugin indent on
 
 " Python host
-let g:python3_host_prog=expand('$PYTHON3_HOST_PROG')
-let g:python_host_prog=expand('$PYTHON_HOST_PROG')
+let g:python3_host_prog=$PYTHON3_HOST_PROG
+let g:python_host_prog=$PYTHON_HOST_PROG
 
 " Sort install dir for plugins
 if has('win32')
@@ -51,7 +51,8 @@ Plug 'autozimu/LanguageClient-neovim', {
 			\ 'do': lang_client_exe,
 			\ }
 " Fuzzy file finder
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " Emmet
 Plug 'mattn/emmet-vim'
 
@@ -70,9 +71,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
 Plug 'sonph/onehalf', { 'rtp': 'vim/' }
+Plug 'lilydjwg/colorizer'
 
 call plug#end()
-
 
 " =============================================================
 " = Plugin Options =
@@ -84,6 +85,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
+" --- Emmet Options ---
+let g:user_emmet_install_global=0
+autocmd FileType html,css,jsx,tsx,vue EmmetInstall
+
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
 
@@ -91,13 +96,14 @@ let g:deoplete#enable_at_startup=1
 let g:SuperTabDefaultCompletionType='<C-n>'
 
 " --- LanguageClient Options ---
+let g:LanguageClient_loadSettings=1
+let g:LanguageClient_settingsPath=nvim_config_dir .'/settings.json'
 let g:LanguageClient_rootMarkers={
 			\ 'c': ['Makefile'],
 			\ 'cpp': ['CMakeLists.txt'],
-			\ 'go': ['.go-lsp'],
 			\ 'rust': ['cargo.toml'],
-			\ 'javascript': ['jsconfig.json'],
-			\ 'typescript': ['tsconfig.json'],
+            \ 'javascript': ['jsconfig.json'],
+            \ 'javascript.jsx': ['jsconfig.json'],
 			\ }
 let g:LanguageClient_serverCommands={
 			\ 'c': ['cquery', '--log-file=/tmp/cq.log'],
@@ -106,13 +112,13 @@ let g:LanguageClient_serverCommands={
 			\ 'rust': ['rustup', 'run', 'stable', 'rls'],
 			\ 'javascript': ['javascript-typescript-stdio'],
 			\ 'javascript.jsx': ['javascript-typescript-stdio'],
-			\ 'typescript': ['javascript-typescript-stdio'],
-			\ 'typescript.tsx': ['javascript-typescript-stdio'],
+			\ 'typescript': ['typescript-language-server', '--stdio'],
+			\ 'typescript.tsx': ['typescript-language-server', '--stdio'],
+			\ 'vue': ['vls'],
 			\ }
 let g:LanguageClient_selectionUI='fzf'
-let g:LanguageClient_loggingLevel='INFO'
-let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/LanguageClient/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageClient/LanguageServer.log')
+let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/logs/LanguageClient.log')
+let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/logs/LanguageServer.log')
 
 " =============================================================
 " = General =
@@ -120,10 +126,6 @@ let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageClient/Langu
 
 " Set the .h file to be a C filetype
 autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-
-" Set directory specific config for nvim
-set exrc " Will look for .exrc/.nvimrc file in the current directory
-set secure " Avoid any write or commands on non-default config file
 
 " Set 5 line space between cursor and navigation up/down
 set so=5
@@ -148,9 +150,6 @@ set lazyredraw
 set nobackup
 set nowb
 set noswapfile
-
-" Disable preview window
-set completeopt-=preview
 
 " Set vim update time to 100ms
 set updatetime=100
@@ -185,10 +184,10 @@ set autoindent
 set linebreak
 set textwidth=500
 
-set tabstop=8
-set softtabstop=8
-set shiftwidth=8
-set noexpandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
 set wrap
 set signcolumn=yes
 
@@ -218,14 +217,14 @@ tnoremap <C-[> <C-\><C-n>
 
 " Quick save
 nnoremap <C-s> :w<CR>
-inoremap <C-s> <ESC>:w<CR>
+inoremap <C-s> <C-[>:w<CR>
 
 " Safely exit vim
 nnoremap <C-x> :q<CR>
 
 " Copy/Paste from clipboard
-vnoremap <leader>y "+y<CR>
-nnoremap <leader>p <Esc>"+p<CR>
+vnoremap <C-c> "+y<CR>
+nnoremap <C-p> "+p<CR>
 
 " Leader Map
 let mapleader=' '
@@ -240,12 +239,11 @@ nnoremap <leader>bl :buffers<CR>
 " Create a new buffer
 nnoremap <leader>bn :enew<CR>
 " Go to next buffer
-nnoremap <TAB> :bnext<CR>
+nnoremap <C-l> :bnext<CR>
 " Go to previous buffer
-nnoremap <S-TAB> :bprevious<CR>
+nnoremap <C-h> :bprevious<CR>
 " Close the current buffer
 nnoremap <leader>bd :bp <BAR> bd! #<CR>
-
 " Open a terminal in new buffer
 nnoremap <leader>tn :enew<CR>:term<CR>
 " Open termnal in Vertical split
@@ -260,10 +258,8 @@ nnoremap <leader>ws :split<CR>
 nnoremap <leader>wv :vsplit<CR>
 
 " Switch between windows
-nnoremap <C-k> <C-w>k
-nnoremap <C-j> <C-w>j
-nnoremap <C-l> <C-w>l
-nnoremap <C-h> <C-w>h
+nnoremap <TAB> <C-w>w
+nnoremap <S-TAB> <C-w><S-w>
 
 " Resize window panes
 nnoremap <up> :resize +2<CR>
@@ -295,7 +291,7 @@ nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
 nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
 
 " FZF key binding
-nnoremap <C-p> :FZF<CR>
+nnoremap <leader>ff :FZF<CR>
 
 " Toggle File explorer
 nnoremap <F3> :NERDTreeToggle<CR>
