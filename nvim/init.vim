@@ -12,15 +12,15 @@ let g:python_host_prog=$PYTHON_HOST_PROG
 
 " Sort install dir for plugins
 if has('win32')
-	let nvim_config_dir='~/AppData/Local/nvim'
-	let nvim_local_dir=nvim_config_dir
-	let plugins_dir='~/AppData/Local/nvim/plugged'
-	let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
+    let nvim_config_dir='~/AppData/Local/nvim'
+    let nvim_local_dir=nvim_config_dir
+    let plugins_dir='~/AppData/Local/nvim/plugged'
+    let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
 else
-	let nvim_config_dir='~/.config/nvim'
-	let nvim_local_dir='~/.local/share/nvim'
-	let plugins_dir='~/.local/share/nvim/plugged'
-	let lang_client_exe='bash install.sh'
+    let nvim_config_dir='~/.config/nvim'
+    let nvim_local_dir='~/.local/share/nvim'
+    let plugins_dir='~/.local/share/nvim/plugged'
+    let lang_client_exe='bash install.sh'
 endif
 
 " =============================================================
@@ -47,9 +47,9 @@ Plug 'ervandew/supertab'
 
 " Language client for a Language Server Protocol support
 Plug 'autozimu/LanguageClient-neovim', {
-			\ 'branch': 'next',
-			\ 'do': lang_client_exe,
-			\ }
+    \ 'branch': 'next',
+    \ 'do': lang_client_exe,
+    \ }
 " Fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -60,7 +60,6 @@ Plug 'mattn/emmet-vim'
 " JavaScript (js/ts/jsx/tsx)
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-" TypeScript
 Plug 'leafgarland/typescript-vim'
 Plug 'ianks/vim-tsx'
 " Vue
@@ -85,10 +84,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
-" --- Emmet Options ---
-let g:user_emmet_install_global=0
-autocmd FileType html,css,jsx,tsx,vue EmmetInstall
-
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
 
@@ -99,23 +94,21 @@ let g:SuperTabDefaultCompletionType='<C-n>'
 let g:LanguageClient_loadSettings=1
 let g:LanguageClient_settingsPath=nvim_config_dir .'/settings.json'
 let g:LanguageClient_rootMarkers={
-			\ 'c': ['Makefile'],
-			\ 'cpp': ['CMakeLists.txt'],
-			\ 'rust': ['cargo.toml'],
-            \ 'javascript': ['jsconfig.json'],
-            \ 'javascript.jsx': ['jsconfig.json'],
-			\ }
+    \ 'c': ['Makefile'],
+    \ 'cpp': ['CMakeLists.txt'],
+    \ 'rust': ['cargo.toml'],
+    \ }
 let g:LanguageClient_serverCommands={
-			\ 'c': ['cquery', '--log-file=/tmp/cq.log'],
-			\ 'cpp': ['clangd'],
-			\ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
-			\ 'rust': ['rustup', 'run', 'stable', 'rls'],
-			\ 'javascript': ['javascript-typescript-stdio'],
-			\ 'javascript.jsx': ['javascript-typescript-stdio'],
-			\ 'typescript': ['typescript-language-server', '--stdio'],
-			\ 'typescript.tsx': ['typescript-language-server', '--stdio'],
-			\ 'vue': ['vls'],
-			\ }
+    \ 'c': ['cquery', '--log-file=/tmp/cq.log'],
+    \ 'cpp': ['clangd'],
+    \ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ 'typescript': ['typescript-language-server', '--stdio'],
+    \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
+    \ 'vue': ['vls'],
+    \ }
 let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/logs/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/logs/LanguageServer.log')
@@ -243,7 +236,7 @@ nnoremap <C-l> :bnext<CR>
 " Go to previous buffer
 nnoremap <C-h> :bprevious<CR>
 " Close the current buffer
-nnoremap <leader>bd :bp <BAR> bd! #<CR>
+nnoremap <leader>bd :bd<CR>
 " Open a terminal in new buffer
 nnoremap <leader>tn :enew<CR>:term<CR>
 " Open termnal in Vertical split
@@ -283,15 +276,27 @@ nnoremap <leader>fve :e $MYVIMRC<CR>
 " Source the current file
 nnoremap <leader>fvs :so $MYVIMRC<CR>
 
-" LanguageClient bindings
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-
 " FZF key binding
 nnoremap <leader>ff :FZF<CR>
 
 " Toggle File explorer
 nnoremap <F3> :NERDTreeToggle<CR>
+
+" Language Client shortcuts
+function! SetLSPShortcuts()
+    nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+    nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+    nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+    nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+    nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LSP
+    autocmd!
+    autocmd FileType javascript,javascript.jsx call SetLSPShortcuts()
+    autocmd FileType typescript,typescript.tsx call SetLSPShortcuts()
+    autocmd FileType vue call SetLSPShortcuts()
+augroup END
