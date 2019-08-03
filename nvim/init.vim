@@ -236,7 +236,7 @@ nnoremap <C-l> :bnext<CR>
 " Go to previous buffer
 nnoremap <C-h> :bprevious<CR>
 " Close the current buffer
-nnoremap <leader>bd :bd<CR>
+nnoremap <leader>bd :bp<BAR>sp<BAR>bn<BAR>bd<CR>
 " Open a terminal in new buffer
 nnoremap <leader>tn :enew<CR>:term<CR>
 " Open termnal in Vertical split
@@ -283,7 +283,8 @@ nnoremap <leader>ff :FZF<CR>
 nnoremap <F3> :NERDTreeToggle<CR>
 
 " Language Client shortcuts
-function! SetLSPShortcuts()
+" Run only on select filetypes
+function! Set_LSPKeys()
     nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
     nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
     nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
@@ -294,9 +295,9 @@ function! SetLSPShortcuts()
     nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
 endfunction()
 
-augroup LSP
+augroup lsp
     autocmd!
-    autocmd FileType javascript,javascript.jsx call SetLSPShortcuts()
-    autocmd FileType typescript,typescript.tsx call SetLSPShortcuts()
-    autocmd FileType vue call SetLSPShortcuts()
+    autocmd FileType javascript,javascript.jsx call Set_LSPKeys()
+    autocmd FileType typescript,typescript.tsx call Set_LSPKeys()
+    autocmd FileType vue call Set_LSPKeys()
 augroup END
