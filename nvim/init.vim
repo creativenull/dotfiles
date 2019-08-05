@@ -44,15 +44,13 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Tab for auto-completion
 Plug 'ervandew/supertab'
-
 " Language client for a Language Server Protocol support
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': lang_client_exe,
     \ }
 " Fuzzy file finder
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'kien/ctrlp.vim'
 " Emmet
 Plug 'mattn/emmet-vim'
 
@@ -83,6 +81,13 @@ call plug#end()
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
+
+" --- Ctrlp Options ---
+let g:ctrlp_map='<leader>ff'
+let g:ctrlp_cmd='CtrlP'
+let g:ctrlp_custom_ignore={
+    \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
+    \ }
 
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
@@ -163,7 +168,7 @@ set background=dark
 
 " Airline options
 let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#formatter='unique_tail'
+let g:airline#extensions#tabline#formatter='jsformatter'
 let g:airline_powerline_fonts=1
 
 set fileformats=unix,dos,mac
@@ -275,9 +280,6 @@ nnoremap <leader>fve :e $MYVIMRC<CR>
 
 " Source the current file
 nnoremap <leader>fvs :so $MYVIMRC<CR>
-
-" FZF key binding
-nnoremap <leader>ff :FZF<CR>
 
 " Toggle File explorer
 nnoremap <F3> :NERDTreeToggle<CR>
