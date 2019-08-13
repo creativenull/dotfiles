@@ -67,7 +67,6 @@ Plug 'posva/vim-vue'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
-Plug 'sonph/onehalf', { 'rtp': 'vim/' }
 Plug 'lilydjwg/colorizer'
 
 call plug#end()
@@ -97,6 +96,7 @@ let g:SuperTabDefaultCompletionType='<C-n>'
 
 " --- LanguageClient Options ---
 let g:LanguageClient_loadSettings=1
+let g:LanguageClient_selectionUI='location-list'
 let g:LanguageClient_settingsPath=nvim_config_dir .'/settings.json'
 let g:LanguageClient_rootMarkers={
     \ 'c': ['Makefile'],
@@ -163,8 +163,7 @@ set cursorline
 set noshowmode
 
 " Theme
-colorscheme onehalfdark
-set background=dark
+colorscheme gruvbox
 
 " Airline options
 let g:airline#extensions#tabline#enabled=1
@@ -188,6 +187,7 @@ set shiftwidth=4
 set expandtab
 set wrap
 set signcolumn=yes
+set completeopt+=noselect
 
 " For tmux
 set mouse=a
