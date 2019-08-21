@@ -51,6 +51,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 " Fuzzy file finder
 Plug 'kien/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " Emmet
 Plug 'mattn/emmet-vim'
 
