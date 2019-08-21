@@ -15,9 +15,27 @@ fi
 
 # Editor paths and aliases
 alias v="nvim"
-alias vim="nvim"
-alias gv="nvim-qt"
 alias p="sudo pacman"
+alias a="sudo pacman"
+
+# Git aliases
+alias gs="git status"
+
+alias ga="git add"
+alias gA="git add -A"
+
+alias gdu="git diff"
+alias gds="git diff --staged"
+
+alias gbr="git branch"
+alias gco="git checkout"
+
+alias gcm="git commit"
+
+alias gps="git push"
+alias gpu="git pull"
+
+alias gf="git fetch"
 
 # Games path
 export GAMES=$HOME/Games
@@ -50,6 +68,8 @@ export PATH=$PATH:$HOME/.npm-global/bin
 # Gradle
 export PATH=$PATH:/usr/local/android-studio/gradle/gradle-5.1.1/bin
 
+# Add fzf settings for nvim
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
+# By default run tmux
 [[ $TERM != "screen" ]] && exec tmux
