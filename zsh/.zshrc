@@ -51,3 +51,5 @@ export PATH=$PATH:$HOME/.npm-global/bin
 export PATH=$PATH:/usr/local/android-studio/gradle/gradle-5.1.1/bin
 
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+
+[[ $TERM != "screen" ]] && exec tmux
