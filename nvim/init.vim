@@ -1,6 +1,6 @@
 " =============================================================
 " CreativeNobu - (neo)vim config file
-" Cross-platform, runs on Linux, OS X (maybe?) and Windows
+" Cross-platform, runs on Linux, Windows and OS X (maybe?)
 " =============================================================
 
 " Plugin and Indent enable
@@ -16,11 +16,13 @@ if has('win32')
     let nvim_local_dir=nvim_config_dir
     let plugins_dir='~/AppData/Local/nvim/plugged'
     let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
+    let fzf_exe=expand(nvim_local_dir . '/fzf')
 else
     let nvim_config_dir='~/.config/nvim'
     let nvim_local_dir='~/.local/share/nvim'
     let plugins_dir='~/.local/share/nvim/plugged'
     let lang_client_exe='bash install.sh'
+    let fzf_exe='~/.fzf'
 endif
 
 " =============================================================
@@ -51,17 +53,15 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 " Fuzzy file finder
 Plug 'kien/ctrlp.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug fzf_exe
 Plug 'junegunn/fzf.vim'
 " Emmet
 Plug 'mattn/emmet-vim'
 
 " ======== Syntax Highlighting ========
 " JavaScript (js/ts/jsx/tsx)
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
-Plug 'ianks/vim-tsx'
+Plug 'othree/yajs.vim'
+Plug 'HerringtonDarkholme/yats.vim'
 " Vue
 Plug 'posva/vim-vue'
 
@@ -120,6 +120,9 @@ let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/logs/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/logs/LanguageServer.log')
 
+" --- yats.vim Options ---
+let g:yats_host_keyword=0
+
 " =============================================================
 " = General =
 " =============================================================
@@ -153,6 +156,9 @@ set noswapfile
 
 " Set vim update time to 100ms
 set updatetime=100
+
+" Set spelling
+set nospell
 
 " =============================================================
 " = Theming and Looks =
@@ -188,8 +194,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set wrap
-set signcolumn=yes
-set completeopt+=noselect
+set signcolumn=auto
+set completeopt=longest,menuone
 
 " For tmux
 set mouse=a
@@ -307,4 +313,9 @@ augroup lsp
     autocmd FileType javascript,javascript.jsx call Set_LSPKeys()
     autocmd FileType typescript,typescript.tsx call Set_LSPKeys()
     autocmd FileType vue call Set_LSPKeys()
+augroup END
+
+augroup spell
+    autocmd!
+    autocmd FileType markdown set spell spelllang=en_us
 augroup END
