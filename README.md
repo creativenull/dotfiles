@@ -4,3 +4,4 @@ My dotfiles for:
 + tmux
 + vscode
 + SpaceVim
++ zsh
