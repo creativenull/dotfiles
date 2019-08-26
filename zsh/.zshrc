@@ -1,3 +1,4 @@
+# Oh my zsh configs
 export ZSH=$HOME/.oh-my-zsh
 
 ZSH_THEME="robbyrussell"
@@ -14,9 +15,10 @@ else
 fi
 
 # Editor paths and aliases
+alias g="git"
 alias v="nvim"
 alias p="sudo pacman"
-alias a="sudo pacman"
+alias a="sudo apt"
 
 # Git aliases
 alias gs="git status"
@@ -32,13 +34,12 @@ alias gco="git checkout"
 
 alias gcm="git commit"
 
-alias gps="git push"
-alias gpu="git pull"
+alias gp="git push"
+alias gl="git pull"
 
 alias gf="git fetch"
 
-# Games path
-export GAMES=$HOME/Games
+alias gh="git log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short"
 
 # Android Environment Variables
 export ANDROID_HOME=$HOME/.android-sdk
