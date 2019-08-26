@@ -1,0 +1,7 @@
+[user]
+	email = <johndoe@email.com>
+	name = Arnold Chand
+[core]
+	editor = nvim -u NORC
+[color]
+	ui = auto
