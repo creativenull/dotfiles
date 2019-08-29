@@ -178,7 +178,7 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='jsformatter'
 let g:airline_powerline_fonts=1
 
-set fileformats=unix,dos,mac
+set fileformats=unix,dos
 
 set title
 set hidden
