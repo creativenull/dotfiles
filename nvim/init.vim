@@ -320,12 +320,6 @@ augroup spell
     autocmd FileType markdown set spell spelllang=en_us
 augroup END
 
-" File change checker (FILECHANGE)
-augroup filechange
-    autocmd!
-    autocmd BufWinEnter * checktime
-augroup END
-
 " Background theme changer
 function! Set_BackgroundTheme()
     if strftime("%H") < 18
@@ -336,8 +330,4 @@ function! Set_BackgroundTheme()
         AirlineRefresh
     endif
 endfunction()
-
-augroup themechanger
-    autocmd!
-    autocmd BufEnter * call Set_BackgroundTheme()
-augroup END
+autocmd VimEnter * call Set_BackgroundTheme()
