@@ -98,7 +98,6 @@ let g:SuperTabDefaultCompletionType='<C-n>'
 
 " --- LanguageClient Options ---
 let g:LanguageClient_loadSettings=1
-let g:LanguageClient_selectionUI='location-list'
 let g:LanguageClient_settingsPath=nvim_config_dir .'/settings.json'
 let g:LanguageClient_rootMarkers={
     \ 'c': ['Makefile'],
@@ -295,7 +294,7 @@ nnoremap <leader>fvs :so $MYVIMRC<CR>
 " Toggle File explorer
 nnoremap <F3> :NERDTreeToggle<CR>
 
-" Language Client shortcuts
+" Language Client shortcuts (LSP)
 " Run only on select filetypes
 function! Set_LSPKeys()
     nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
@@ -315,7 +314,30 @@ augroup lsp
     autocmd FileType vue call Set_LSPKeys()
 augroup END
 
+" Spell checker (SPELL)
 augroup spell
     autocmd!
     autocmd FileType markdown set spell spelllang=en_us
+augroup END
+
+" File change checker (FILECHANGE)
+augroup filechange
+    autocmd!
+    autocmd BufWinEnter * checktime
+augroup END
+
+" Background theme changer
+function! Set_BackgroundTheme()
+    if strftime("%H") < 18
+        set background=light
+        AirlineRefresh
+    else
+        set background=dark
+        AirlineRefresh
+    endif
+endfunction()
+
+augroup themechanger
+    autocmd!
+    autocmd BufEnter * call Set_BackgroundTheme()
 augroup END
