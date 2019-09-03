@@ -59,6 +59,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 
 " ======== Syntax Highlighting ========
+Plug 'thaerkh/vim-indentguides'
 " JavaScript (js/ts/jsx/tsx)
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
