@@ -44,8 +44,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
 " Auto-completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Tab for auto-completion
-Plug 'ervandew/supertab'
 " Language client for a Language Server Protocol support
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -127,8 +125,6 @@ let g:yats_host_keyword=0
 " = General =
 " =============================================================
 
-" Set the .h file to be a C filetype
-autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 
 " Set 5 line space between cursor and navigation up/down
 set so=5
@@ -172,6 +168,7 @@ set noshowmode
 
 " Theme
 colorscheme gruvbox
+set background=dark
 
 " Airline options
 let g:airline#extensions#tabline#enabled=1
@@ -187,7 +184,7 @@ set smartindent
 set autoindent
 
 set linebreak
-set textwidth=500
+set textwidth=100
 
 set tabstop=4
 set softtabstop=4
@@ -295,6 +292,12 @@ nnoremap <leader>fvs :so $MYVIMRC<CR>
 " Toggle File explorer
 nnoremap <F3> :NERDTreeToggle<CR>
 
+" Set the .h file to be a C filetype
+augroup ctype
+    autocmd!
+    autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
+
 " Language Client shortcuts (LSP)
 " Run only on select filetypes
 function! Set_LSPKeys()
@@ -318,17 +321,5 @@ augroup END
 " Spell checker (SPELL)
 augroup spell
     autocmd!
-    autocmd FileType markdown set spell spelllang=en_us
+    autocmd FileType markdown setlocal spell spelllang=en_us
 augroup END
-
-" Background theme changer
-function! Set_BackgroundTheme()
-    if strftime("%H") < 18
-        set background=light
-        AirlineRefresh
-    else
-        set background=dark
-        AirlineRefresh
-    endif
-endfunction()
-autocmd VimEnter * call Set_BackgroundTheme()
