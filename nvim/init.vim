@@ -92,9 +92,6 @@ let g:ctrlp_custom_ignore={
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
 
-" --- SuperTab Options ---
-let g:SuperTabDefaultCompletionType='<C-n>'
-
 " --- LanguageClient Options ---
 let g:LanguageClient_loadSettings=1
 let g:LanguageClient_settingsPath=nvim_config_dir .'/settings.json'
@@ -124,8 +121,6 @@ let g:yats_host_keyword=0
 " =============================================================
 " = General =
 " =============================================================
-
-
 " Set 5 line space between cursor and navigation up/down
 set so=5
 
@@ -194,7 +189,7 @@ set wrap
 set signcolumn=auto
 set completeopt=longest,menuone
 
-" For tmux
+" For tmux mouse support
 set mouse=a
 
 " =============================================================
@@ -292,6 +287,8 @@ nnoremap <leader>fvs :so $MYVIMRC<CR>
 " Toggle File explorer
 nnoremap <F3> :NERDTreeToggle<CR>
 
+" Auto groups and commands
+" ---
 " Set the .h file to be a C filetype
 augroup ctype
     autocmd!
@@ -299,7 +296,6 @@ augroup ctype
 augroup END
 
 " Language Client shortcuts (LSP)
-" Run only on select filetypes
 function! Set_LSPKeys()
     nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
     nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
