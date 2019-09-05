@@ -58,11 +58,7 @@ Plug 'mattn/emmet-vim'
 
 " ======== Syntax Highlighting ========
 Plug 'thaerkh/vim-indentguides'
-" JavaScript (js/ts/jsx/tsx)
-Plug 'othree/yajs.vim'
-Plug 'HerringtonDarkholme/yats.vim'
-" Vue
-Plug 'posva/vim-vue'
+Plug 'sheerun/vim-polyglot'
 
 " ======== Themes ========
 Plug 'vim-airline/vim-airline'
@@ -115,8 +111,8 @@ let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/logs/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/logs/LanguageServer.log')
 
-" --- yats.vim Options ---
-let g:yats_host_keyword=0
+" --- vim-jsx-pretty Options ---
+let g:vim_jsx_pretty_highlight_close_tag=1
 
 " =============================================================
 " = General =
