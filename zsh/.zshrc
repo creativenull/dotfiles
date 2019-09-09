@@ -14,6 +14,10 @@ else
 	export EDITOR='nvim'
 fi
 
+# Python host prog for vim
+export PYTHON3_HOST_PROG='/usr/bin/python3'
+export PYTHON_HOST_PROG='/usr/bin/python2'
+
 # Editor paths and aliases
 alias g="git"
 alias v="nvim"
