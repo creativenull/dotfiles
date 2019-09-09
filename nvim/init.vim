@@ -63,7 +63,8 @@ Plug 'sheerun/vim-polyglot'
 " ======== Themes ========
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'lilydjwg/colorizer'
 
 call plug#end()
@@ -162,10 +163,12 @@ set cursorline
 set noshowmode
 
 " Theme
-colorscheme gruvbox
+colorscheme gruvbox-material
+let g:gruvbox_material_background='hard'
 set background=dark
 
 " Airline options
+let g:airline_theme='gruvbox_material'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='jsformatter'
 let g:airline_powerline_fonts=1
