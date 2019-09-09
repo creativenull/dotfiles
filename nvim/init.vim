@@ -79,7 +79,6 @@ let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
 " --- Ctrlp Options ---
-let g:ctrlp_map='<leader>ff'
 let g:ctrlp_cmd='CtrlP'
 let g:ctrlp_custom_ignore={
     \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
@@ -95,6 +94,8 @@ let g:LanguageClient_rootMarkers={
     \ 'c': ['Makefile'],
     \ 'cpp': ['CMakeLists.txt'],
     \ 'rust': ['cargo.toml'],
+    \ 'javascript': ['jsconfig.json'],
+    \ 'typescript': ['tsconfig.json'],
     \ }
 let g:LanguageClient_serverCommands={
     \ 'c': ['cquery', '--log-file=/tmp/cq.log'],
@@ -221,7 +222,7 @@ nnoremap <C-x> :q<CR>
 
 " Copy/Paste from clipboard
 vnoremap <C-c> "+y<CR>
-nnoremap <C-p> "+p<CR>
+nnoremap <C-o> "+p<CR>
 
 " Leader Map
 let mapleader=' '
