@@ -50,7 +50,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': lang_client_exe,
     \ }
 " Fuzzy file finder
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug fzf_exe
 Plug 'junegunn/fzf.vim'
 " Emmet
@@ -80,6 +80,7 @@ let g:NERDTreeShowHidden=1
 
 " --- Ctrlp Options ---
 let g:ctrlp_cmd='CtrlP'
+let g:ctrlp_show_hidden=1
 let g:ctrlp_custom_ignore={
     \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
     \ }
@@ -102,12 +103,14 @@ let g:LanguageClient_serverCommands={
     \ 'cpp': ['clangd'],
     \ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ 'javascript': ['typescript-language-server', '--stdio'],
+    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
     \ 'typescript': ['typescript-language-server', '--stdio'],
     \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
     \ 'vue': ['vls'],
     \ }
+    "\ 'javascript': ['javascript-typescript-stdio'],
+    "\ 'javascript.jsx': ['javascript-typescript-stdio'],
 let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/logs/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/logs/LanguageServer.log')
