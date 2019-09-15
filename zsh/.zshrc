@@ -14,6 +14,9 @@ else
 	export EDITOR='nvim'
 fi
 
+# List alias
+alias l="ls -lah"
+
 # Python host prog for vim
 export PYTHON3_HOST_PROG='/usr/bin/python3'
 export PYTHON_HOST_PROG='/usr/bin/python2'
