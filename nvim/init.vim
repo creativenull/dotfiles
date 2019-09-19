@@ -11,62 +11,61 @@ let g:python3_host_prog=$PYTHON3_HOST_PROG
 let g:python_host_prog=$PYTHON_HOST_PROG
 
 " Sort install dir for plugins
+let nvim_config_dir='~/.config/nvim'
+let nvim_local_dir='~/.local/share/nvim'
+let plugins_dir='~/.local/share/nvim/plugged'
+let lang_client_exe='bash install.sh'
+let fzf_exe='~/.fzf'
+
 if has('win32')
     let nvim_config_dir='~/AppData/Local/nvim'
     let nvim_local_dir=nvim_config_dir
     let plugins_dir='~/AppData/Local/nvim/plugged'
     let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
-    let fzf_exe=expand(nvim_local_dir . '/fzf')
-else
-    let nvim_config_dir='~/.config/nvim'
-    let nvim_local_dir='~/.local/share/nvim'
-    let plugins_dir='~/.local/share/nvim/plugged'
-    let lang_client_exe='bash install.sh'
-    let fzf_exe='~/.fzf'
 endif
 
 " =============================================================
 " = Vim.plug =
 " =============================================================
 call plug#begin(plugins_dir)
+    " ======== Essentials ========
+    " File explorer
+    Plug 'scrooloose/nerdtree'
+    " Make commenting easy
+    Plug 'scrooloose/nerdcommenter'
+    " Git
+    Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
+    " Editor Config
+    Plug 'editorconfig/editorconfig-vim'
+    " Auto close parenthesis
+    Plug 'jiangmiao/auto-pairs'
+    " Auto-completion
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    " Language client for a Language Server Protocol support
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': lang_client_exe,
+        \ }
+    " Fuzzy file finder
+    Plug 'ctrlpvim/ctrlp.vim'
+    if !has('win32')
+        Plug fzf_exe
+    endif
+    Plug 'junegunn/fzf.vim'
+    " Emmet
+    Plug 'mattn/emmet-vim'
 
-" ======== Essentials ========
-" File explorer
-Plug 'scrooloose/nerdtree'
-" Make commenting easy
-Plug 'scrooloose/nerdcommenter'
-" Git
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-" Editor Config
-Plug 'editorconfig/editorconfig-vim'
-" Auto close parenthesis
-Plug 'jiangmiao/auto-pairs'
-" Auto-completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Language client for a Language Server Protocol support
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': lang_client_exe,
-    \ }
-" Fuzzy file finder
-Plug 'ctrlpvim/ctrlp.vim'
-Plug fzf_exe
-Plug 'junegunn/fzf.vim'
-" Emmet
-Plug 'mattn/emmet-vim'
+    " ======== Syntax Highlighting ========
+    Plug 'thaerkh/vim-indentguides'
+    Plug 'sheerun/vim-polyglot'
 
-" ======== Syntax Highlighting ========
-Plug 'thaerkh/vim-indentguides'
-Plug 'sheerun/vim-polyglot'
-
-" ======== Themes ========
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'gruvbox-community/gruvbox'
-Plug 'sainnhe/gruvbox-material'
-Plug 'lilydjwg/colorizer'
-
+    " ======== Themes ========
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'gruvbox-community/gruvbox'
+    Plug 'sainnhe/gruvbox-material'
+    Plug 'lilydjwg/colorizer'
 call plug#end()
 
 " =============================================================
@@ -75,6 +74,7 @@ call plug#end()
 
 " --- NERDTree Options ---
 " Auto close NERD Tree
+nnoremap <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
@@ -113,8 +113,8 @@ let g:LanguageClient_serverCommands={
     "\ 'javascript': ['javascript-typescript-stdio'],
     "\ 'javascript.jsx': ['javascript-typescript-stdio'],
 let g:LanguageClient_selectionUI='fzf'
-let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/logs/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/logs/LanguageServer.log')
+let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/LanguageClient.log')
+let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageServer.log')
 
 " --- vim-jsx-pretty Options ---
 let g:vim_jsx_pretty_highlight_close_tag=1
@@ -163,12 +163,10 @@ set cursorline
 set noshowmode
 
 " Theme
-colorscheme gruvbox-material
-let g:gruvbox_material_background='hard'
+colorscheme gruvbox
 set background=dark
 
 " Airline options
-let g:airline_theme='gruvbox_material'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='jsformatter'
 let g:airline_powerline_fonts=1
@@ -286,9 +284,6 @@ nnoremap <leader>fve :e $MYVIMRC<CR>
 
 " Source the current file
 nnoremap <leader>fvs :so $MYVIMRC<CR>
-
-" Toggle File explorer
-nnoremap <F3> :NERDTreeToggle<CR>
 
 " Auto groups and commands
 " ---
