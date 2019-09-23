@@ -33,6 +33,8 @@ call plug#begin(plugins_dir)
     Plug 'scrooloose/nerdtree'
     " Make commenting easy
     Plug 'scrooloose/nerdcommenter'
+    " Make surrounding easy
+    Plug 'tpope/vim-surround'
     " Git
     Plug 'airblade/vim-gitgutter'
     Plug 'tpope/vim-fugitive'
@@ -64,7 +66,7 @@ call plug#begin(plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'sainnhe/gruvbox-material'
+    Plug 'chriskempson/base16-vim'
     Plug 'lilydjwg/colorizer'
 call plug#end()
 
@@ -163,7 +165,7 @@ set cursorline
 set noshowmode
 
 " Theme
-colorscheme gruvbox
+colorscheme base16-gruvbox-dark-medium
 set background=dark
 
 " Airline options
