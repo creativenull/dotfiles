@@ -50,11 +50,11 @@ call plug#begin(plugins_dir)
         \ 'do': lang_client_exe,
         \ }
     " Fuzzy file finder
-    Plug 'ctrlpvim/ctrlp.vim'
     if !has('win32')
-        Plug fzf_exe
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
     endif
     Plug 'junegunn/fzf.vim'
+    Plug 'ctrlpvim/ctrlp.vim'
     " Emmet
     Plug 'mattn/emmet-vim'
 
@@ -81,15 +81,15 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
+" --- Deoplete Options ---
+let g:deoplete#enable_at_startup=1
+
 " --- Ctrlp Options ---
 let g:ctrlp_cmd='CtrlP'
 let g:ctrlp_show_hidden=1
 let g:ctrlp_custom_ignore={
     \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
     \ }
-
-" --- Deoplete Options ---
-let g:deoplete#enable_at_startup=1
 
 " --- LanguageClient Options ---
 let g:LanguageClient_loadSettings=1
@@ -165,7 +165,7 @@ set cursorline
 set noshowmode
 
 " Theme
-colorscheme base16-gruvbox-dark-medium
+colorscheme gruvbox
 set background=dark
 
 " Airline options
