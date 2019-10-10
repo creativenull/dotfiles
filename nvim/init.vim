@@ -311,3 +311,9 @@ augroup spell
     autocmd!
     autocmd FileType markdown setlocal spell spelllang=en_us
 augroup END
+
+" Support transparent background if possible
+augroup transparent_support
+    autocmd!
+    autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE
+augroup END
