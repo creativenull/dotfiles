@@ -54,7 +54,6 @@ call plug#begin(plugins_dir)
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
     endif
     Plug 'junegunn/fzf.vim'
-    Plug 'ctrlpvim/ctrlp.vim'
     " Emmet
     Plug 'mattn/emmet-vim'
 
@@ -81,15 +80,11 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
+" --- Fzf Options ---
+nnoremap <C-p> :FZF<CR>
+
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
-
-" --- Ctrlp Options ---
-let g:ctrlp_cmd='CtrlP'
-let g:ctrlp_show_hidden=1
-let g:ctrlp_custom_ignore={
-    \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
-    \ }
 
 " --- LanguageClient Options ---
 let g:LanguageClient_loadSettings=1
@@ -112,9 +107,6 @@ let g:LanguageClient_serverCommands={
     \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
     \ 'vue': ['vls'],
     \ }
-    "\ 'javascript': ['javascript-typescript-stdio'],
-    "\ 'javascript.jsx': ['javascript-typescript-stdio'],
-let g:LanguageClient_selectionUI='fzf'
 let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageServer.log')
 
