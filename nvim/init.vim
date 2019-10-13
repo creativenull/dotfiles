@@ -16,12 +16,14 @@ let nvim_local_dir='~/.local/share/nvim'
 let plugins_dir='~/.local/share/nvim/plugged'
 let lang_client_exe='bash install.sh'
 let fzf_exe='~/.fzf'
+let npm_cmd=''
 
 if has('win32')
     let nvim_config_dir='~/AppData/Local/nvim'
     let nvim_local_dir=nvim_config_dir
     let plugins_dir='~/AppData/Local/nvim/plugged'
     let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
+    let npm_cmd='.cmd'
 endif
 
 " =============================================================
@@ -101,11 +103,11 @@ let g:LanguageClient_serverCommands={
     \ 'cpp': ['clangd'],
     \ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['typescript-language-server', '--stdio'],
-    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
-    \ 'typescript': ['typescript-language-server', '--stdio'],
-    \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
-    \ 'vue': ['vls'],
+    \ 'javascript': ['typescript-language-server'.npm_cmd, '--stdio'],
+    \ 'javascript.jsx': ['typescript-language-server'.npm_cmd, '--stdio'],
+    \ 'typescript': ['typescript-language-server'.npm_cmd, '--stdio'],
+    \ 'typescript.tsx': ['typescript-language-server'.npm_cmd, '--stdio'],
+    \ 'vue': ['vls'.npm_cmd],
     \ }
 let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageServer.log')
