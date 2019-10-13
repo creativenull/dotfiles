@@ -22,8 +22,8 @@ export PYTHON3_HOST_PROG='/usr/bin/python3'
 export PYTHON_HOST_PROG='/usr/bin/python2'
 
 # Editor paths and aliases
-alias g="/usr/bin/git"
-alias v="/usr/bin/nvim"
+alias g="git"
+alias v="nvim"
 alias p="sudo pacman"
 alias a="sudo apt"
 
