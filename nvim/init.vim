@@ -315,5 +315,5 @@ augroup END
 " Support transparent background if possible
 augroup transparent_support
     autocmd!
-    autocmd VimEnter * hi Normal ctermbg=NONE
+    autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE
 augroup END
