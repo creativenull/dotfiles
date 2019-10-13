@@ -1,8 +1,8 @@
-# dotfiles
-My dotfiles for:
+# dotfiles and config
++ alacritty
++ gitconfig
 + neovim
-+ git
++ SpaceVim
 + tmux
 + vscode
-+ SpaceVim
 + zsh
