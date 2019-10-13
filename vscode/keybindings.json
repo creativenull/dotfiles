@@ -1,5 +1,4 @@
 [
-    // Move lines using alt+j/k
     {
         "key": "alt+j",
         "command": "editor.action.moveLinesDownAction",
