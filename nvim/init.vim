@@ -15,7 +15,6 @@ let nvim_config_dir='~/.config/nvim'
 let nvim_local_dir='~/.local/share/nvim'
 let plugins_dir='~/.local/share/nvim/plugged'
 let lang_client_exe='bash install.sh'
-let fzf_exe='~/.fzf'
 let npm_cmd=''
 
 if has('win32')
@@ -52,10 +51,12 @@ call plug#begin(plugins_dir)
         \ 'do': lang_client_exe,
         \ }
     " Fuzzy file finder
-    if !has('win32')
+    if has('win32')
+        Plug 'ctrlpvim/ctrlp.vim'
+    else
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+        Plug 'junegunn/fzf.vim'
     endif
-    Plug 'junegunn/fzf.vim'
     " Emmet
     Plug 'mattn/emmet-vim'
 
@@ -82,8 +83,16 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
-" --- Fzf Options ---
-nnoremap <C-p> :FZF<CR>
+" --- Fuzzy Finder Options ---
+if has('win32')
+    let g:ctrlp_cmd='CtrlP'
+    let g:ctrlp_show_hidden=1
+    let g:ctrlp_custom_ignore={
+        \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
+        \ }
+else
+    nnoremap <C-p> :FZF<CR>
+endif
 
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
