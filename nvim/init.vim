@@ -61,14 +61,13 @@ call plug#begin(plugins_dir)
     Plug 'mattn/emmet-vim'
 
     " ======== Syntax Highlighting ========
-    Plug 'thaerkh/vim-indentguides'
     Plug 'sheerun/vim-polyglot'
+    Plug 'thaerkh/vim-indentguides'
 
     " ======== Themes ========
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'chriskempson/base16-vim'
     Plug 'lilydjwg/colorizer'
 call plug#end()
 
@@ -143,8 +142,8 @@ set incsearch
 set magic
 set smartcase
 
-" For better performance?
-set lazyredraw
+" For better performance
+"set lazyredraw
 
 " File backups off
 set nobackup
@@ -162,9 +161,9 @@ set nospell
 " =============================================================
 syntax on
 set number
-set relativenumber
 set termguicolors
-set cursorline
+set relativenumber
+"set cursorline
 set noshowmode
 
 " Theme
@@ -184,18 +183,22 @@ set smarttab
 set smartindent
 set autoindent
 
+" Break line and move to new line, when too long
+set wrap
 set linebreak
 set textwidth=100
 
+" Tabs are spaces, to each their own - don't hate me :)
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set wrap
+
+" Vertical ruler and show popup options
 set signcolumn=auto
 set completeopt=longest,menuone
 
-" For tmux mouse support
+" Mouse support
 set mouse=a
 
 " =============================================================
