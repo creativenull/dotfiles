@@ -148,6 +148,12 @@ set expandtab
 set autoindent
 set smartindent
 
+" Line options
+set linebreak
+set showbreak=+++
+set textwidth=120
+set showmatch
+
 " Performance options
 set lazyredraw
 set scrolloff=3
@@ -158,8 +164,7 @@ set nowb
 set noswapfile
 
 " Undo history
-set undofile
-set undodir="$HOME/.local/share/nvim/.vim-undo"
+set undolevels=1000
 
 " Buffers/Tabs/Windows
 set hidden
@@ -181,6 +186,9 @@ set fileformats=unix,dos
 
 " no sounds
 set visualbell
+
+" backspace behaviour
+set backspace=indent,eol,start
 
 " =============================================================
 " = Theming and Looks =
