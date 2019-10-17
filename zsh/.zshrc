@@ -24,6 +24,7 @@ export PYTHON_HOST_PROG='/usr/bin/python2'
 # Editor paths and aliases
 alias g="git"
 alias v="nvim"
+alias vq="nvim-qt"
 alias p="sudo pacman"
 alias a="sudo apt"
 
@@ -42,6 +43,16 @@ alias gf="git fetch"
 alias gro="git remote"
 alias gre="git reset --hard HEAD"
 alias gh="git log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short"
+
+# In case silver searcher not available
+#export FZF_DEFAULT_COMMAND="find . -type f \
+#	-not -path './.git/*' \
+#	-not -path './vendor/*' \
+#	-not -path './node_modules/*' \
+#	-not -path './dist/*' \
+#	-name '*.*'"
+
+export FZF_DEFAULT_COMMAND="ag -i -l --hidden --ignore '.git/' . "
 
 # Add fzf settings for nvim
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
