@@ -1,4 +1,4 @@
-Guifont! DejaVuSansMono Nerd Font:h11
+Guifont! DejaVuSansMono Nerd Font:h10
 GuiTabline 0
 GuiPopupmenu 0
 
