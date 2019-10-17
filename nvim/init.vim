@@ -11,45 +11,55 @@ let g:python3_host_prog=$PYTHON3_HOST_PROG
 let g:python_host_prog=$PYTHON_HOST_PROG
 
 " Sort install dir for plugins
-let nvim_config_dir='~/.config/nvim'
-let nvim_local_dir='~/.local/share/nvim'
-let plugins_dir='~/.local/share/nvim/plugged'
-let lang_client_exe='bash install.sh'
-let npm_cmd=''
+let g:nobu_config_dir='~/.config/nvim'
+let g:nobu_local_dir='~/.local/share/nvim'
+let g:nobu_plugins_dir='~/.local/share/nvim/plugged'
+let g:nobu_lsp_opts='bash install.sh'
+
+" For npm bin installed in windows
+let g:nobu_npm_wincmd=''
 
 if has('win32')
-    let nvim_config_dir='~/AppData/Local/nvim'
-    let nvim_local_dir=nvim_config_dir
-    let plugins_dir='~/AppData/Local/nvim/plugged'
-    let lang_client_exe='powershell -executionpolicy bypass -File install.ps1'
-    let npm_cmd='.cmd'
+    let g:nobu_config_dir='~/AppData/Local/nvim'
+    let g:nobu_local_dir=g:nobu_config_dir
+    let g:nobu_plugins_dir='~/AppData/Local/nvim/plugged'
+    let g:nobu_lsp_opts='powershell -executionpolicy bypass -File install.ps1'
+    let g:nobu_npm_wincmd='.cmd'
 endif
 
 " =============================================================
 " = Vim.plug =
 " =============================================================
-call plug#begin(plugins_dir)
+call plug#begin(g:nobu_plugins_dir)
     " ======== Essentials ========
+
     " File explorer
     Plug 'scrooloose/nerdtree'
+
     " Make commenting easy
     Plug 'scrooloose/nerdcommenter'
+
     " Make surrounding easy
     Plug 'tpope/vim-surround'
+
     " Git
     Plug 'airblade/vim-gitgutter'
-    Plug 'tpope/vim-fugitive'
+
     " Editor Config
     Plug 'editorconfig/editorconfig-vim'
+
     " Auto close parenthesis
     Plug 'jiangmiao/auto-pairs'
+
     " Auto-completion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
     " Language client for a Language Server Protocol support
     Plug 'autozimu/LanguageClient-neovim', {
         \ 'branch': 'next',
-        \ 'do': lang_client_exe,
+        \ 'do': g:nobu_lsp_opts,
         \ }
+
     " Fuzzy file finder
     if has('win32')
         Plug 'ctrlpvim/ctrlp.vim'
@@ -57,6 +67,7 @@ call plug#begin(plugins_dir)
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
         Plug 'junegunn/fzf.vim'
     endif
+
     " Emmet
     Plug 'mattn/emmet-vim'
 
@@ -68,7 +79,6 @@ call plug#begin(plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'lilydjwg/colorizer'
 call plug#end()
 
 " =============================================================
@@ -76,7 +86,6 @@ call plug#end()
 " =============================================================
 
 " --- NERDTree Options ---
-" Auto close NERD Tree
 nnoremap <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinPos='right'
@@ -87,7 +96,7 @@ if has('win32')
     let g:ctrlp_cmd='CtrlP'
     let g:ctrlp_show_hidden=1
     let g:ctrlp_custom_ignore={
-        \ 'dir' : '\.git$\|build$\|node_modules\|dist\|target',
+        \ 'dir' : '\.git$\|build$\|node_modules$\|dist$\|vendor$\|target',
         \ }
 else
     nnoremap <C-p> :FZF<CR>
@@ -98,7 +107,7 @@ let g:deoplete#enable_at_startup=1
 
 " --- LanguageClient Options ---
 let g:LanguageClient_loadSettings=1
-let g:LanguageClient_settingsPath=nvim_config_dir .'/settings.json'
+let g:LanguageClient_settingsPath=g:nobu_config_dir .'/settings.json'
 let g:LanguageClient_rootMarkers={
     \ 'c': ['Makefile'],
     \ 'cpp': ['CMakeLists.txt'],
@@ -107,54 +116,67 @@ let g:LanguageClient_rootMarkers={
     \ 'typescript': ['tsconfig.json'],
     \ }
 let g:LanguageClient_serverCommands={
-    \ 'c': ['cquery', '--log-file=/tmp/cq.log'],
-    \ 'cpp': ['clangd'],
-    \ 'go': ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
-    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['typescript-language-server'.npm_cmd, '--stdio'],
-    \ 'javascript.jsx': ['typescript-language-server'.npm_cmd, '--stdio'],
-    \ 'typescript': ['typescript-language-server'.npm_cmd, '--stdio'],
-    \ 'typescript.tsx': ['typescript-language-server'.npm_cmd, '--stdio'],
-    \ 'vue': ['vls'.npm_cmd],
+    \ 'c':              ['cquery', '--log-file=/tmp/cq.log'],
+    \ 'cpp':            ['clangd'],
+    \ 'go':             ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
+    \ 'rust':           ['rustup', 'run', 'stable', 'rls'],
+    \ 'javascript':     ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
+    \ 'javascript.jsx': ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
+    \ 'typescript':     ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
+    \ 'typescript.tsx': ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
+    \ 'vue':            ['vls' . g:nobu_npm_wincmd],
     \ }
-let g:LanguageClient_loggingFile=expand(nvim_local_dir . '/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand(nvim_local_dir . '/LanguageServer.log')
-
-" --- vim-jsx-pretty Options ---
-let g:vim_jsx_pretty_highlight_close_tag=1
+let g:LanguageClient_loggingFile=expand(g:nobu_local_dir . '/LanguageClient.log')
+let g:LanguageClient_serverStderr=expand(g:nobu_local_dir . '/LanguageServer.log')
 
 " =============================================================
 " = General =
 " =============================================================
-" Set 5 line space between cursor and navigation up/down
-set so=5
-
-" Wild menu
-set wildmenu
-
-" Show current position
-set ruler
-
-" Search properties
+" Search options
 set ignorecase
-set hlsearch
-set incsearch
-set magic
 set smartcase
 
-" For better performance
-"set lazyredraw
+" Indent options
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+set autoindent
+set smartindent
 
-" File backups off
+" Performance options
+set lazyredraw
+set scrolloff=3
+
+" No backups or swapfiles needed
 set nobackup
 set nowb
 set noswapfile
 
+" Undo history
+set undofile
+set undodir="$HOME/.local/share/nvim/.vim-undo"
+
+" Buffers/Tabs/Windows
+set hidden
+
 " Set vim update time to 100ms
-set updatetime=100
+set updatetime=750
 
 " Set spelling
 set nospell
+
+" For git
+set signcolumn=auto
+
+" Mouse support
+set mouse=a
+
+" File format type
+set fileformats=unix,dos
+
+" no sounds
+set visualbell
 
 " =============================================================
 " = Theming and Looks =
@@ -163,8 +185,6 @@ syntax on
 set number
 set termguicolors
 set relativenumber
-"set cursorline
-set noshowmode
 
 " Theme
 colorscheme gruvbox
@@ -175,31 +195,6 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='jsformatter'
 let g:airline_powerline_fonts=1
 
-set fileformats=unix,dos
-
-set title
-set hidden
-set smarttab
-set smartindent
-set autoindent
-
-" Break line and move to new line, when too long
-set wrap
-set linebreak
-set textwidth=100
-
-" Tabs are spaces, to each their own - don't hate me :)
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-
-" Vertical ruler and show popup options
-set signcolumn=auto
-set completeopt=longest,menuone
-
-" Mouse support
-set mouse=a
 
 " =============================================================
 " = Key Bindings =
@@ -287,10 +282,8 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Misc maps
 " ---
-" File options
+" Config file
 nnoremap <leader>fve :e $MYVIMRC<CR>
-
-" Source the current file
 nnoremap <leader>fvs :so $MYVIMRC<CR>
 
 " Auto groups and commands
