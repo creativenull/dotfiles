@@ -44,6 +44,7 @@ call plug#begin(g:nobu_plugins_dir)
 
     " Git
     Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
 
     " Editor Config
     Plug 'editorconfig/editorconfig-vim'
@@ -128,6 +129,9 @@ let g:LanguageClient_serverCommands={
     \ }
 let g:LanguageClient_loggingFile=expand(g:nobu_local_dir . '/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(g:nobu_local_dir . '/LanguageServer.log')
+
+" --- vim-polyglot Options ---
+let g:vue_pre_processors=['typescript', 'scss']
 
 " =============================================================
 " = General =
