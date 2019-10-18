@@ -97,7 +97,7 @@ if has('win32')
     let g:ctrlp_cmd='CtrlP'
     let g:ctrlp_show_hidden=1
     let g:ctrlp_custom_ignore={
-        \ 'dir' : '\.git$\|build$\|node_modules$\|dist$\|vendor$\|target',
+        \ 'dir' : '\.git$\|build$\|node_modules$\|dist$\|vendor$\|public$\|target',
         \ }
 else
     nnoremap <C-p> :FZF<CR>
@@ -110,9 +110,9 @@ let g:deoplete#enable_at_startup=1
 let g:LanguageClient_loadSettings=1
 let g:LanguageClient_settingsPath=g:nobu_config_dir .'/settings.json'
 let g:LanguageClient_rootMarkers={
-    \ 'c': ['Makefile'],
-    \ 'cpp': ['CMakeLists.txt'],
-    \ 'rust': ['cargo.toml'],
+    \ 'c':          ['Makefile'],
+    \ 'cpp':        ['CMakeLists.txt'],
+    \ 'rust':       ['cargo.toml'],
     \ 'javascript': ['jsconfig.json'],
     \ 'typescript': ['tsconfig.json'],
     \ }
@@ -206,7 +206,6 @@ set background=dark
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='jsformatter'
 let g:airline_powerline_fonts=1
-
 
 " =============================================================
 " = Key Bindings =
