@@ -55,7 +55,7 @@ call plug#begin(g:nobu_plugins_dir)
     " Auto-completion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    " Language client for a Language Server Protocol support
+    " LSP client
     Plug 'autozimu/LanguageClient-neovim', {
         \ 'branch': 'next',
         \ 'do': g:nobu_lsp_opts,
@@ -121,6 +121,7 @@ let g:LanguageClient_serverCommands={
     \ 'cpp':            ['clangd'],
     \ 'go':             ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
     \ 'rust':           ['rustup', 'run', 'stable', 'rls'],
+    \ 'php':            ['intelephense' . g:nobu_npm_wincmd, '--stdio'],
     \ 'javascript':     ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
     \ 'javascript.jsx': ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
     \ 'typescript':     ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
@@ -322,6 +323,7 @@ augroup lsp
     autocmd FileType javascript,javascript.jsx call Set_LSPKeys()
     autocmd FileType typescript,typescript.tsx call Set_LSPKeys()
     autocmd FileType vue call Set_LSPKeys()
+    autocmd FileType php call Set_LSPKeys()
 augroup END
 
 " Spell checker (SPELL)
