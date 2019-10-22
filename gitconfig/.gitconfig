@@ -2,6 +2,6 @@
 	email = <>
 	name = Arnold Chand
 [core]
-	editor = nano
+	editor = nano --fill=72
 [color]
 	ui = auto
