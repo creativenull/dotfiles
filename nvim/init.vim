@@ -80,6 +80,7 @@ call plug#begin(g:nobu_plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
+    Plug 'TaDaa/vimade'
 call plug#end()
 
 " =============================================================
@@ -190,6 +191,9 @@ set visualbell
 
 " backspace behaviour
 set backspace=indent,eol,start
+
+" Do not show insert twice
+set noshowmode
 
 " =============================================================
 " = Theming and Looks =
