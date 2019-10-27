@@ -3,8 +3,8 @@
 " Cross-platform, runs on Linux, Windows and OS X (maybe?)
 " =============================================================
 
-" Plugin and Indent enable
 filetype plugin indent on
+set encoding=utf-8
 
 " Python host
 let g:python3_host_prog=$PYTHON3_HOST_PROG
@@ -30,57 +30,37 @@ endif
 " =============================================================
 " = Vim.plug =
 " =============================================================
+
 call plug#begin(g:nobu_plugins_dir)
-    " ======== Essentials ========
-
-    " File explorer
+    " ======== Core ========
     Plug 'scrooloose/nerdtree'
-
-    " Make commenting easy
     Plug 'scrooloose/nerdcommenter'
-
-    " Make surrounding easy
     Plug 'tpope/vim-surround'
-
-    " Git
     Plug 'airblade/vim-gitgutter'
-    Plug 'tpope/vim-fugitive'
-
-    " Editor Config
     Plug 'editorconfig/editorconfig-vim'
-
-    " Auto close parenthesis
     Plug 'jiangmiao/auto-pairs'
-
-    " Auto-completion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-    " LSP client
     Plug 'autozimu/LanguageClient-neovim', {
         \ 'branch': 'next',
         \ 'do': g:nobu_lsp_opts,
         \ }
-
-    " Fuzzy file finder
     if has('win32')
         Plug 'ctrlpvim/ctrlp.vim'
     else
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
         Plug 'junegunn/fzf.vim'
     endif
-
-    " Emmet
     Plug 'mattn/emmet-vim'
+    Plug 'godlygeek/tabular'
 
     " ======== Syntax Highlighting ========
     Plug 'sheerun/vim-polyglot'
-    Plug 'thaerkh/vim-indentguides'
+    Plug 'yggdroot/indentline'
 
-    " ======== Themes ========
+    " ======== Theme and Look ========
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'TaDaa/vimade'
 call plug#end()
 
 " =============================================================
@@ -96,10 +76,7 @@ let g:NERDTreeShowHidden=1
 " --- Fuzzy Finder Options ---
 if has('win32')
     let g:ctrlp_cmd='CtrlP'
-    let g:ctrlp_show_hidden=1
-    let g:ctrlp_custom_ignore={
-        \ 'dir' : '\.git$\|build$\|node_modules$\|dist$\|vendor$\|public$\|target',
-        \ }
+    let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard']
 else
     nnoremap <C-p> :FZF<CR>
 endif
@@ -135,9 +112,15 @@ let g:LanguageClient_serverStderr=expand(g:nobu_local_dir . '/LanguageServer.log
 " --- vim-polyglot Options ---
 let g:vue_pre_processors=['typescript', 'scss']
 
+" --- Airline Options ---
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#formatter='jsformatter'
+let g:airline_powerline_fonts=1
+
 " =============================================================
 " = General =
 " =============================================================
+
 " Search options
 set ignorecase
 set smartcase
@@ -198,6 +181,7 @@ set noshowmode
 " =============================================================
 " = Theming and Looks =
 " =============================================================
+
 syntax on
 set number
 set termguicolors
@@ -206,11 +190,6 @@ set relativenumber
 " Theme
 colorscheme gruvbox
 set background=dark
-
-" Airline options
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#formatter='jsformatter'
-let g:airline_powerline_fonts=1
 
 " =============================================================
 " = Key Bindings =
