@@ -73,6 +73,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
+" --- NERD Commenter Options ---
+let g:NERDSpaceDelims=1
+let g:NERDTrimTrailingWhitespace=1
+
 " --- Fuzzy Finder Options ---
 if has('win32')
     let g:ctrlp_cmd='CtrlP'
@@ -161,7 +165,7 @@ set updatetime=750
 set nospell
 
 " For git
-set signcolumn=auto
+set signcolumn=yes
 
 " Mouse support
 set mouse=a
