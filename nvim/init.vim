@@ -16,15 +16,11 @@ let g:nobu_local_dir='~/.local/share/nvim'
 let g:nobu_plugins_dir='~/.local/share/nvim/plugged'
 let g:nobu_lsp_opts='bash install.sh'
 
-" For npm bin installed in windows
-let g:nobu_npm_wincmd=''
-
 if has('win32')
     let g:nobu_config_dir='~/AppData/Local/nvim'
     let g:nobu_local_dir=g:nobu_config_dir
     let g:nobu_plugins_dir='~/AppData/Local/nvim/plugged'
     let g:nobu_lsp_opts='powershell -executionpolicy bypass -File install.ps1'
-    let g:nobu_npm_wincmd='.cmd'
 endif
 
 " =============================================================
@@ -44,12 +40,7 @@ call plug#begin(g:nobu_plugins_dir)
         \ 'branch': 'next',
         \ 'do': g:nobu_lsp_opts,
         \ }
-    if has('win32')
-        Plug 'ctrlpvim/ctrlp.vim'
-    else
-        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-        Plug 'junegunn/fzf.vim'
-    endif
+    Plug 'ctrlpvim/ctrlp.vim'
     Plug 'mattn/emmet-vim'
     Plug 'godlygeek/tabular'
 
@@ -78,12 +69,8 @@ let g:NERDSpaceDelims=1
 let g:NERDTrimTrailingWhitespace=1
 
 " --- Fuzzy Finder Options ---
-if has('win32')
-    let g:ctrlp_cmd='CtrlP'
-    let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard']
-else
-    nnoremap <C-p> :FZF<CR>
-endif
+let g:ctrlp_cmd='CtrlP'
+let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " --- Deoplete Options ---
 let g:deoplete#enable_at_startup=1
@@ -97,18 +84,19 @@ let g:LanguageClient_rootMarkers={
     \ 'rust':       ['cargo.toml'],
     \ 'javascript': ['jsconfig.json'],
     \ 'typescript': ['tsconfig.json'],
+    \ 'php':        ['composer.json'],
     \ }
 let g:LanguageClient_serverCommands={
     \ 'c':              ['cquery', '--log-file=/tmp/cq.log'],
     \ 'cpp':            ['clangd'],
     \ 'go':             ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
     \ 'rust':           ['rustup', 'run', 'stable', 'rls'],
-    \ 'php':            ['intelephense' . g:nobu_npm_wincmd, '--stdio'],
-    \ 'javascript':     ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
-    \ 'javascript.jsx': ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
-    \ 'typescript':     ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
-    \ 'typescript.tsx': ['typescript-language-server' . g:nobu_npm_wincmd, '--stdio'],
-    \ 'vue':            ['vls' . g:nobu_npm_wincmd],
+    \ 'php':            ['intelephense', '--stdio'],
+    \ 'javascript':     ['typescript-language-server', '--stdio'],
+    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
+    \ 'typescript':     ['typescript-language-server', '--stdio'],
+    \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
+    \ 'vue':            ['vls'],
     \ }
 let g:LanguageClient_loggingFile=expand(g:nobu_local_dir . '/LanguageClient.log')
 let g:LanguageClient_serverStderr=expand(g:nobu_local_dir . '/LanguageServer.log')
@@ -298,10 +286,7 @@ function! Set_LSPKeys()
     nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
     nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
     nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-    nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-    nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
     nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
     nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
 endfunction()
 
