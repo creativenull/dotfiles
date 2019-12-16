@@ -90,16 +90,10 @@ let g:LanguageClient_serverCommands={
     \ 'c':              ['cquery', '--log-file=/tmp/cq.log'],
     \ 'cpp':            ['clangd'],
     \ 'go':             ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
-    \ 'javascript':     ['typescript-language-server', '--stdio'],
-    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
-    \ 'php':            ['intelephense', '--stdio'],
     \ 'rust':           ['rustup', 'run', 'stable', 'rls'],
-<<<<<<< HEAD
     \ 'php':            ['intelephense', '--stdio'],
     \ 'javascript':     ['typescript-language-server', '--stdio'],
     \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
-=======
->>>>>>> 6e42b288994b43b155d3245d8dee39021aca88a2
     \ 'typescript':     ['typescript-language-server', '--stdio'],
     \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
     \ 'vue':            ['vls'],
