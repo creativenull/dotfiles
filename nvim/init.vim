@@ -14,13 +14,11 @@ let g:python_host_prog=$PYTHON_HOST_PROG
 let g:nobu_config_dir='~/.config/nvim'
 let g:nobu_local_dir='~/.local/share/nvim'
 let g:nobu_plugins_dir='~/.local/share/nvim/plugged'
-let g:nobu_lsp_opts='bash install.sh'
 
 if has('win32')
     let g:nobu_config_dir='~/AppData/Local/nvim'
     let g:nobu_local_dir=g:nobu_config_dir
     let g:nobu_plugins_dir='~/AppData/Local/nvim/plugged'
-    let g:nobu_lsp_opts='powershell -executionpolicy bypass -File install.ps1'
 endif
 
 " =============================================================
@@ -35,11 +33,7 @@ call plug#begin(g:nobu_plugins_dir)
     Plug 'airblade/vim-gitgutter'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'jiangmiao/auto-pairs'
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': g:nobu_lsp_opts,
-        \ }
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'mattn/emmet-vim'
     Plug 'godlygeek/tabular'
@@ -71,35 +65,6 @@ let g:NERDTrimTrailingWhitespace=1
 " --- Fuzzy Finder Options ---
 let g:ctrlp_cmd='CtrlP'
 let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard']
-
-" --- Deoplete Options ---
-let g:deoplete#enable_at_startup=1
-
-" --- LanguageClient Options ---
-let g:LanguageClient_loadSettings=1
-let g:LanguageClient_settingsPath=g:nobu_config_dir .'/settings.json'
-let g:LanguageClient_rootMarkers={
-    \ 'c':          ['Makefile'],
-    \ 'cpp':        ['CMakeLists.txt'],
-    \ 'rust':       ['cargo.toml'],
-    \ 'javascript': ['jsconfig.json'],
-    \ 'typescript': ['tsconfig.json'],
-    \ 'php':        ['composer.json'],
-    \ }
-let g:LanguageClient_serverCommands={
-    \ 'c':              ['cquery', '--log-file=/tmp/cq.log'],
-    \ 'cpp':            ['clangd'],
-    \ 'go':             ['go-langserver', '-gocodecompletion', '-lint-tool', 'golint', '-diagnostics'],
-    \ 'rust':           ['rustup', 'run', 'stable', 'rls'],
-    \ 'php':            ['intelephense', '--stdio'],
-    \ 'javascript':     ['typescript-language-server', '--stdio'],
-    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
-    \ 'typescript':     ['typescript-language-server', '--stdio'],
-    \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
-    \ 'vue':            ['vls'],
-    \ }
-let g:LanguageClient_loggingFile=expand(g:nobu_local_dir . '/LanguageClient.log')
-let g:LanguageClient_serverStderr=expand(g:nobu_local_dir . '/LanguageServer.log')
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors=['typescript', 'scss']
@@ -137,6 +102,7 @@ set scrolloff=3
 
 " No backups or swapfiles needed
 set nobackup
+set nowritebackup
 set nowb
 set noswapfile
 
@@ -169,6 +135,12 @@ set backspace=indent,eol,start
 
 " Do not show insert twice
 set noshowmode
+
+" Better display
+set cmdheight=2
+
+" no ins-completion-menu
+set shortmess+=c
 
 " =============================================================
 " = Theming and Looks =
@@ -283,11 +255,12 @@ augroup END
 
 " Language Client shortcuts (LSP)
 function! Set_LSPKeys()
-    nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-    nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-    nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+    nmap <silent> <leader>ld <Plug>(coc-definition)
+    nmap <silent> <leader>lr <Plug>(coc-rename)
+    nmap <silent> <leader>lf :call CocAction('format')<cr>
+    nmap <silent> <leader>lh :call CocAction('doHover')<cr>
+    nmap <silent> <leader>l] <Plug>(coc-diagnostic-next)
+    nmap <silent> <leader>l[ <Plug>(coc-diagnostic-prev)
 endfunction()
 
 augroup lsp
