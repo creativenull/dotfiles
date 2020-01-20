@@ -221,10 +221,6 @@ nnoremap <leader>th :split<CR><C-w>j:term<CR>
 nnoremap <leader>ws :split<CR>
 nnoremap <leader>wv :vsplit<CR>
 
-" Switch between windows
-nnoremap <TAB> <C-w>w
-nnoremap <S-TAB> <C-w><S-w>
-
 " Resize window panes
 nnoremap <up> :resize +2<CR>
 nnoremap <down> :resize -2<CR>
