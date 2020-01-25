@@ -1,59 +1,139 @@
 {
-    "window.menuBarVisibility": "toggle",
-    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "window.menuBarVisibility": "hidden",
     "workbench.sideBar.location": "right",
+    "editor.minimap.enabled": false,
     "workbench.list.automaticKeyboardNavigation": false,
     "workbench.list.keyboardNavigation": "simple",
+    "breadcrumbs.enabled": false,
+    "editor.rulers": [120],
+    "explorer.confirmDelete": false,
+    
+    // Vim
     "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": true,
     "vim.hlsearch": true,
-    "vim.leader": " ",
+    "vim.incsearch": true,
+    "vim.useCtrlKeys": true,
+    "vim.leader": "<space>",
+    "vim.handleKeys": {
+        "<C-d>": true,
+        "<C-u>": true,
+        "<C-f>": true,
+        "<C-w>": true,
+        "<C-l>": true,
+        "<C-h>": true,
+
+        "<C-b>": false,
+        "<C-p>": false,
+        "<C-S-e>": false,
+        "<C-S-p>": false,
+        "<C-S-m>": false,
+        "<C-S-]>": false,
+        "<C-S-[>": false
+    },
     "vim.insertModeKeyBindings": [
         {
-            "before": ["j", "k"],
-            "after": ["<Esc>"]
+            "before": [
+                "j",
+                "k"
+            ],
+            "after": [
+                "<esc>"
+            ]
         }
     ],
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-            "before": ["<leader>", "b", "d"],
-            "commands": [":q"]
+            "before": [
+                "<leader>",
+                "b",
+                "d"
+            ],
+            "commands": [
+                "workbench.action.files.save",
+                "workbench.action.closeActiveEditor"
+            ]
         },
         {
-            "before": ["<leader>", "<cr>"],
-            "commands": [":noh"]
+            "before": [
+                "<leader>",
+                "l",
+                "d"
+            ],
+            "commands": [
+                "editor.action.revealDefinition"
+            ]
         },
         {
-            "before": ["<leader>", "c", " "],
-            "commands": ["editor.action.commentLine"]
+            "before": [
+                "<leader>",
+                "l",
+                "h"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
         },
         {
-            "before": ["<leader>", "l", "d"],
-            "commands": ["editor.action.revealDefinition"]
+            "before": [
+                "<leader>",
+                "c",
+                "<leader>"
+            ],
+            "commands": [
+                "editor.action.commentLine"
+            ]
         },
         {
-            "before": ["<leader>", "f", "n"],
-            "commands": ["explorer.newFile"]
-        },
-        {
-            "before": ["<leader>", "f", "f"],
-            "commands": ["explorer.newFolder"]
+            "before": [
+                "<leader>",
+                "<cr>"
+            ],
+            "commands": [
+                ":nohl"
+            ]
         }
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {
-            "before": [">"],
-            "commands": ["editor.action.indentLines"]
+            "before": [
+                ">"
+            ],
+            "commands": [
+                "editor.action.indentLines"
+            ]
         },
         {
-            "before": ["<"],
-            "commands": ["editor.action.outdentLines"]
+            "before": [
+                "<"
+            ],
+            "commands": [
+                "editor.action.outdentLines"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "c",
+                "<leader>"
+            ],
+            "commands": [
+                "editor.action.commentLine"
+            ]
         }
     ],
-    "vim.handleKeys": {
-        "<C-a>": false,
-        "<C-f>": false,
-        "<C-b>": false,
-        "<C-w>": false
+    "vim.statusBarColorControl": true,
+    "vim.statusBarColors.normal": "#00000000",
+    "vim.statusBarColors.insert": "#024270",
+    "vim.statusBarColors.visual": "#b57301",
+    "vim.statusBarColors.visualline": "#b57301",
+    "vim.statusBarColors.visualblock": "#b57301",
+    "vim.statusBarColors.commandlineinprogress": "#007ACC",
+    "vim.statusBarColors.searchinprogressmode": "#007ACC",
+    "vim.statusBarColors.surroundinputmode": "#007ACC",
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#00000000",
+        "statusBar.noFolderBackground": "#00000000",
+        "statusBar.debuggingBackground": "#00000000"
     }
 }
