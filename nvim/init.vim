@@ -31,6 +31,7 @@ call plug#begin(g:nobu_plugins_dir)
     Plug 'scrooloose/nerdcommenter'
     Plug 'tpope/vim-surround'
     Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'jiangmiao/auto-pairs'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
