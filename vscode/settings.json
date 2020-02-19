@@ -1,5 +1,12 @@
+/**
+ * Arnold Chand
+ * vscode settings for theme, fonts, modifiers, git, vim
+ * https://github.com/creativenobu
+ */
+
 {
-    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "workbench.colorTheme": "Gruvbox Dark Hard",
+    "editor.fontFamily": "'JetBrains Mono', 'monospace', monospace",
     "window.menuBarVisibility": "hidden",
     "workbench.sideBar.location": "right",
     "editor.minimap.enabled": false,
@@ -8,7 +15,8 @@
     "breadcrumbs.enabled": false,
     "editor.rulers": [120],
     "explorer.confirmDelete": false,
-    
+    "git.autofetch": true,
+
     // Vim
     "vim.useSystemClipboard": true,
     "vim.hlsearch": true,
@@ -22,8 +30,8 @@
         "<C-w>": true,
         "<C-l>": true,
         "<C-h>": true,
+        "<C-b>": true,
 
-        "<C-b>": false,
         "<C-p>": false,
         "<C-S-e>": false,
         "<C-S-p>": false,
@@ -77,6 +85,16 @@
         {
             "before": [
                 "<leader>",
+                "l",
+                "r"
+            ],
+            "commands": [
+                "editor.action.changeAll"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
                 "c",
                 "<leader>"
             ],
@@ -121,19 +139,5 @@
                 "editor.action.commentLine"
             ]
         }
-    ],
-    "vim.statusBarColorControl": true,
-    "vim.statusBarColors.normal": "#00000000",
-    "vim.statusBarColors.insert": "#024270",
-    "vim.statusBarColors.visual": "#b57301",
-    "vim.statusBarColors.visualline": "#b57301",
-    "vim.statusBarColors.visualblock": "#b57301",
-    "vim.statusBarColors.commandlineinprogress": "#007ACC",
-    "vim.statusBarColors.searchinprogressmode": "#007ACC",
-    "vim.statusBarColors.surroundinputmode": "#007ACC",
-    "workbench.colorCustomizations": {
-        "statusBar.background": "#00000000",
-        "statusBar.noFolderBackground": "#00000000",
-        "statusBar.debuggingBackground": "#00000000"
-    }
+    ]
 }
