@@ -1,6 +1,8 @@
 " =============================================================
-" CreativeNobu - (neo)vim config file
+" Arnold Chand
+" (neo)vim config file
 " Cross-platform, runs on Linux, Windows and OS X (maybe?)
+" https://github.com/creativenobu
 " =============================================================
 
 filetype plugin indent on
@@ -24,7 +26,6 @@ endif
 " =============================================================
 " = Vim.plug =
 " =============================================================
-
 call plug#begin(g:nobu_plugins_dir)
     " ======== Core ========
     Plug 'scrooloose/nerdtree'
@@ -52,7 +53,6 @@ call plug#end()
 " =============================================================
 " = Plugin Options =
 " =============================================================
-
 " --- NERDTree Options ---
 nnoremap <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -69,6 +69,8 @@ let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard'
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors=['typescript', 'scss']
+let g:vim_markdown_conceal=0
+let g:vim_markdown_conceal_code_blocks=0
 
 " --- Airline Options ---
 let g:airline#extensions#tabline#enabled=1
@@ -78,7 +80,6 @@ let g:airline_powerline_fonts=1
 " =============================================================
 " = General =
 " =============================================================
-
 " Search options
 set ignorecase
 set smartcase
@@ -99,7 +100,6 @@ set showmatch
 
 " Performance options
 set lazyredraw
-set scrolloff=3
 
 " No backups or swapfiles needed
 set nobackup
@@ -114,7 +114,7 @@ set undolevels=1000
 set hidden
 
 " Set vim update time to 100ms
-set updatetime=750
+set updatetime=500
 
 " Set spelling
 set nospell
@@ -143,10 +143,12 @@ set cmdheight=2
 " no ins-completion-menu
 set shortmess+=c
 
+" Auto reload file if changed outside vim
+set autoread
+
 " =============================================================
 " = Theming and Looks =
 " =============================================================
-
 syntax on
 set number
 set termguicolors
@@ -159,7 +161,6 @@ set background=dark
 " =============================================================
 " = Key Bindings =
 " =============================================================
-
 " Unbind default bindings for arrow keys
 vnoremap <up> <nop>
 vnoremap <down> <nop>
