@@ -28,17 +28,17 @@ endif
 " =============================================================
 call plug#begin(g:nobu_plugins_dir)
     " ======== Core ========
-    Plug 'scrooloose/nerdtree'
-    Plug 'scrooloose/nerdcommenter'
-    Plug 'tpope/vim-surround'
+    Plug 'Shougo/context_filetype.vim'
     Plug 'airblade/vim-gitgutter'
-    Plug 'tpope/vim-fugitive'
-    Plug 'editorconfig/editorconfig-vim'
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'ctrlpvim/ctrlp.vim'
-    Plug 'mattn/emmet-vim'
+    Plug 'editorconfig/editorconfig-vim'
     Plug 'godlygeek/tabular'
+    Plug 'mattn/emmet-vim'
+    Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+    Plug 'preservim/nerdtree'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-surround'
+    Plug 'tyru/caw.vim'
 
     " ======== Syntax Highlighting ========
     Plug 'sheerun/vim-polyglot'
@@ -59,10 +59,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
 
-" --- NERD Commenter Options ---
-let g:NERDSpaceDelims=1
-let g:NERDTrimTrailingWhitespace=1
-
 " --- Fuzzy Finder Options ---
 let g:ctrlp_cmd='CtrlP'
 let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard']
@@ -74,8 +70,24 @@ let g:vim_markdown_conceal_code_blocks=0
 
 " --- Airline Options ---
 let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#formatter='jsformatter'
+let g:airline#extensions#tabline#formatter='unique_tail_improved'
+let g:airline#extensions#nerdtree_status=0
 let g:airline_powerline_fonts=1
+let g:airline_section_c='%t'
+let g:airline_section_x=''
+let g:airline_section_y=''
+let g:airline_section_z='%l/%L'
+
+" --- Coc Extensions ---
+let g:coc_global_extensions=[
+    \ 'coc-eslint',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-marketplace',
+    \ 'coc-phpls',
+    \ 'coc-tsserver',
+    \ 'coc-vetur',
+    \ ]
 
 " =============================================================
 " = General =
@@ -93,10 +105,12 @@ set autoindent
 set smartindent
 
 " Line options
+set showmatch
 set linebreak
 set showbreak=+++
 set textwidth=120
-set showmatch
+set colorcolumn=120
+set scrolloff=5
 
 " Performance options
 set lazyredraw
@@ -104,7 +118,6 @@ set lazyredraw
 " No backups or swapfiles needed
 set nobackup
 set nowritebackup
-set nowb
 set noswapfile
 
 " Undo history
@@ -113,8 +126,8 @@ set undolevels=1000
 " Buffers/Tabs/Windows
 set hidden
 
-" Set vim update time to 100ms
-set updatetime=500
+" update time to 300ms
+set updatetime=300
 
 " Set spelling
 set nospell
@@ -154,9 +167,28 @@ set number
 set termguicolors
 set relativenumber
 
-" Theme
-colorscheme gruvbox
-set background=dark
+" Theme (switch based on time of day, light = 7am - 7pm, dark = 7pm - 7am)
+augroup theme_switcher
+    autocmd!
+    if strftime("%H") >= 7 && strftime("%H") < 19
+        let g:gruvbox_contrast_light='soft'
+        let g:gruvbox_sign_column='light0_soft'
+        let g:gruvbox_invert_selection=0
+        let g:gruvbox_number_column='light0_soft'
+        set background=light
+        colorscheme gruvbox
+
+        " Indent line color
+        let g:indentLine_color_term=242
+    else
+        let g:gruvbox_contrast_dark='hard'
+        let g:gruvbox_sign_column='dark0_hard'
+        let g:gruvbox_invert_selection=0
+        let g:gruvbox_number_column='dark0_hard'
+        set background=dark
+        colorscheme gruvbox
+    endif
+augroup END
 
 " =============================================================
 " = Key Bindings =
@@ -210,6 +242,8 @@ nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
 " Close the current buffer
 nnoremap <leader>bd :bp<BAR>sp<BAR>bn<BAR>bd<CR>
+" Close all buffers except the current open buffer
+nnoremap <leader>bad :%bd<BAR>e#<BAR>bd#<CR>
 " Open a terminal in new buffer
 nnoremap <leader>tn :enew<CR>:term<CR>
 " Open termnal in Vertical split
@@ -276,7 +310,7 @@ augroup spell
 augroup END
 
 " Support transparent background if possible
-augroup transparent_support
-    autocmd!
-    autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE
-augroup END
+" augroup transparent_support
+"     autocmd!
+"     autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE
+" augroup END
