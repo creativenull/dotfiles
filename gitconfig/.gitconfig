@@ -2,6 +2,6 @@
 	email = <>
 	name = Arnold Chand
 [core]
-	editor = nano --fill=72
+	editor = nano -r 72 -Y git -M
 [color]
 	ui = auto
