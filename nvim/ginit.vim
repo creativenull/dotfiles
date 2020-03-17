@@ -6,10 +6,7 @@
 " =============================================================
 
 if exists('g:GuiLoaded')
-    Guifont! JetBrainsMono Nerd Font:h10.5
+    Guifont! JetBrainsMono NF:h10.5
     GuiTabline 0
     GuiPopupmenu 0
-
-    " Indent line color
-    let g:indentLine_color_gui='#777777'
 endif
