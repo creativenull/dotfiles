@@ -4,9 +4,9 @@
  * https://github.com/creativenobu
  */
 
-{
+ {
     "workbench.colorTheme": "Gruvbox Dark Hard",
-    "editor.fontFamily": "'JetBrains Mono', 'monospace', monospace",
+    "editor.fontFamily": "'JetBrainsMono NF', 'monospace', monospace",
     "window.menuBarVisibility": "hidden",
     "workbench.sideBar.location": "right",
     "editor.minimap.enabled": false,
@@ -15,129 +15,5 @@
     "breadcrumbs.enabled": false,
     "editor.rulers": [120],
     "explorer.confirmDelete": false,
-    "git.autofetch": true,
-
-    // Vim
-    "vim.useSystemClipboard": true,
-    "vim.hlsearch": true,
-    "vim.incsearch": true,
-    "vim.useCtrlKeys": true,
-    "vim.leader": "<space>",
-    "vim.handleKeys": {
-        "<C-d>": true,
-        "<C-u>": true,
-        "<C-f>": true,
-        "<C-w>": true,
-        "<C-l>": true,
-        "<C-h>": true,
-        "<C-b>": true,
-
-        "<C-p>": false,
-        "<C-S-e>": false,
-        "<C-S-p>": false,
-        "<C-S-m>": false,
-        "<C-S-]>": false,
-        "<C-S-[>": false
-    },
-    "vim.insertModeKeyBindings": [
-        {
-            "before": [
-                "j",
-                "k"
-            ],
-            "after": [
-                "<esc>"
-            ]
-        }
-    ],
-    "vim.normalModeKeyBindingsNonRecursive": [
-        {
-            "before": [
-                "<leader>",
-                "b",
-                "d"
-            ],
-            "commands": [
-                "workbench.action.files.save",
-                "workbench.action.closeActiveEditor"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "l",
-                "d"
-            ],
-            "commands": [
-                "editor.action.revealDefinition"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "l",
-                "h"
-            ],
-            "commands": [
-                "editor.action.showHover"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "l",
-                "r"
-            ],
-            "commands": [
-                "editor.action.changeAll"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "c",
-                "<leader>"
-            ],
-            "commands": [
-                "editor.action.commentLine"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "<cr>"
-            ],
-            "commands": [
-                ":nohl"
-            ]
-        }
-    ],
-    "vim.visualModeKeyBindingsNonRecursive": [
-        {
-            "before": [
-                ">"
-            ],
-            "commands": [
-                "editor.action.indentLines"
-            ]
-        },
-        {
-            "before": [
-                "<"
-            ],
-            "commands": [
-                "editor.action.outdentLines"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "c",
-                "<leader>"
-            ],
-            "commands": [
-                "editor.action.commentLine"
-            ]
-        }
-    ]
+    "git.autofetch": true
 }
