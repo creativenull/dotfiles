@@ -84,3 +84,6 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 " Config file
 nnoremap <leader>fve :e $MYVIMRC<CR>
 nnoremap <leader>fvs :so $MYVIMRC<CR>
+
+" NERDTreeToggle
+nnoremap <F3> :NERDTreeToggle<CR>

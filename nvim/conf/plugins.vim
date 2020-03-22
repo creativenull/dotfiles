@@ -29,7 +29,6 @@ call plug#end()
 " = Plugin Options =
 " =============================================================
 " --- NERDTree Options ---
-nnoremap <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinPos='right'
 let g:NERDTreeShowHidden=1
@@ -63,3 +62,6 @@ let g:coc_global_extensions=[
     \ 'coc-tsserver',
     \ 'coc-vetur',
     \ ]
+
+" --- Emmet ---
+let g:user_emmet_leader_key='<C-z>'
