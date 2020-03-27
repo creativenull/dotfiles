@@ -14,6 +14,7 @@ call plug#begin(g:plugins_dir)
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'tyru/caw.vim'
+    Plug 'psliwka/vim-smoothie'
 
     " ======== Syntax Highlighting ========
     Plug 'sheerun/vim-polyglot'
@@ -30,30 +31,30 @@ call plug#end()
 " =============================================================
 " --- NERDTree Options ---
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeWinPos='right'
-let g:NERDTreeShowHidden=1
+let g:NERDTreeWinPos = 'right'
+let g:NERDTreeShowHidden = 1
 
 " --- Fuzzy Finder Options ---
-let g:ctrlp_cmd='CtrlP'
-let g:ctrlp_user_command=['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " --- vim-polyglot Options ---
-let g:vue_pre_processors=['typescript', 'scss']
-let g:vim_markdown_conceal=0
-let g:vim_markdown_conceal_code_blocks=0
+let g:vue_pre_processors = ['typescript', 'scss']
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
 
 " --- Airline Options ---
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#formatter='unique_tail_improved'
-let g:airline#extensions#nerdtree_status=0
-let g:airline_powerline_fonts=1
-let g:airline_section_c='%t'
-let g:airline_section_x=''
-let g:airline_section_y=''
-let g:airline_section_z='%l/%L'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#nerdtree_status = 0
+let g:airline_powerline_fonts = 1
+let g:airline_section_c = '%t'
+let g:airline_section_x = ''
+let g:airline_section_y = ''
+let g:airline_section_z = "\uE0A1 %l/%L"
 
 " --- Coc Extensions ---
-let g:coc_global_extensions=[
+let g:coc_global_extensions = [
     \ 'coc-eslint',
     \ 'coc-html',
     \ 'coc-json',
@@ -64,4 +65,4 @@ let g:coc_global_extensions=[
     \ ]
 
 " --- Emmet ---
-let g:user_emmet_leader_key='<C-z>'
+let g:user_emmet_leader_key = '<C-z>'

@@ -12,19 +12,19 @@ endfunction
 function! SetupThemeBackground()
     if strftime("%H") >= 6 && strftime("%H") < 18
         " Light theme
-        let g:gruvbox_contrast_light='soft'
-        let g:gruvbox_sign_column='light0_soft'
-        let g:gruvbox_invert_selection=0
-        let g:gruvbox_number_column='light0_soft'
-        let g:indentLine_color_term=242
+        let g:gruvbox_contrast_light = 'soft'
+        let g:gruvbox_sign_column = 'light0_soft'
+        let g:gruvbox_invert_selection = 0
+        let g:gruvbox_number_column = 'light0_soft'
+        let g:indentLine_color_term = 242
 
         set background=light
     else
         " Dark theme
-        let g:gruvbox_contrast_dark='hard'
-        let g:gruvbox_sign_column='dark0_hard'
-        let g:gruvbox_invert_selection=0
-        let g:gruvbox_number_column='dark0_hard'
+        let g:gruvbox_contrast_dark = 'hard'
+        let g:gruvbox_sign_column = 'dark0_hard'
+        let g:gruvbox_invert_selection = 0
+        let g:gruvbox_number_column = 'dark0_hard'
 
         set background=dark
     endif
@@ -32,17 +32,21 @@ endfunction
 
 " Config commands to quickly open config files for theme, base and plugins
 function! OpenThemeConfig()
-    execute 'edit ' . expand(g:local_conf_dir . '/theme.vim')
+    execute 'edit ' . expand(g:modules_dir . '/theme.vim')
 endfunction
 
 function! OpenBasicConfig()
-    execute 'edit ' . expand(g:local_conf_dir . '/basic.vim')
+    execute 'edit ' . expand(g:modules_dir . '/basic.vim')
 endfunction
 
 function! OpenPluginsConfig()
-    execute 'edit ' . expand(g:local_conf_dir . '/plugins.vim')
+    execute 'edit ' . expand(g:modules_dir . '/plugins.vim')
 endfunction
 
 function! OpenKeysConfig()
-    execute 'edit ' . expand(g:local_conf_dir . '/keybindings.vim')
+    execute 'edit ' . expand(g:modules_dir . '/keybindings.vim')
+endfunction
+
+function! OpenGUIConfig()
+    execute 'edit ' . expand(g:config_dir . '/ginit.vim')
 endfunction
