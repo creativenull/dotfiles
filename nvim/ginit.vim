@@ -7,8 +7,9 @@
 
 " neovim-qt config
 if exists('g:GuiLoaded')
-    GuiFont! JetBrainsMono Nerd Font:h11
-    GuiLinespace 2
+    set linespace=2
+
+    GuiFont! JetBrainsMono Nerd Font:h10.5
     GuiTabline 0
     GuiPopupmenu 0
 endif
@@ -16,6 +17,7 @@ endif
 " FVIM config
 if exists('g:fvim_loaded')
     set guifont=JetBrainsMono\ Nerd\ Font:h15
+    set linespace=2
 
     FVimCursorSmoothMove v:true
     FVimCursorSmoothBlink v:false

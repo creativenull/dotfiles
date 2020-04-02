@@ -8,25 +8,40 @@ function! LSPKeys()
     nmap <silent> <leader>l[ <Plug>(coc-diagnostic-prev)
 endfunction
 
-" Theme (Light theme during the day - 6am to 6pm, Dark theme at night - 6pm to 6am)
+" Theme
+function! SetLightTheme()
+    " Light Theme
+    let g:gruvbox_contrast_light = 'soft'
+    let g:gruvbox_sign_column = 'light0_soft'
+    let g:gruvbox_invert_selection = 0
+    let g:gruvbox_number_column = 'light0_soft'
+    let g:indentLine_color_term = 242
+    set background=light
+endfunction
+
+function! SetDarkTheme()
+    " Dark Theme
+    let g:gruvbox_contrast_dark = 'hard'
+    let g:gruvbox_sign_column = 'dark0_hard'
+    let g:gruvbox_invert_selection = 0
+    let g:gruvbox_number_column = 'dark0_hard'
+    set background=dark
+endfunction
+
+" Configure the theme depending on the time of the day, only if day_night_toggle variable is set
 function! SetupThemeBackground()
-    if strftime("%H") >= 6 && strftime("%H") < 18
-        " Light theme
-        let g:gruvbox_contrast_light = 'soft'
-        let g:gruvbox_sign_column = 'light0_soft'
-        let g:gruvbox_invert_selection = 0
-        let g:gruvbox_number_column = 'light0_soft'
-        let g:indentLine_color_term = 242
-
-        set background=light
+    if exists('g:day_night_toggle')
+        if g:day_night_toggle == 1
+            if strftime("%H") >= 6 && strftime("%H") < 18
+                call SetLightTheme()
+            else
+                call SetDarkTheme()
+            endif
+        else
+            call SetDarkTheme()
+        endif
     else
-        " Dark theme
-        let g:gruvbox_contrast_dark = 'hard'
-        let g:gruvbox_sign_column = 'dark0_hard'
-        let g:gruvbox_invert_selection = 0
-        let g:gruvbox_number_column = 'dark0_hard'
-
-        set background=dark
+        call SetDarkTheme()
     endif
 endfunction
 

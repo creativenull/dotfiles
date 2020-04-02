@@ -14,7 +14,6 @@ call plug#begin(g:plugins_dir)
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'tyru/caw.vim'
-    Plug 'psliwka/vim-smoothie'
 
     " ======== Syntax Highlighting ========
     Plug 'sheerun/vim-polyglot'
@@ -24,6 +23,7 @@ call plug#begin(g:plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
+    Plug 'psliwka/vim-smoothie'
 call plug#end()
 
 " =============================================================
@@ -43,16 +43,6 @@ let g:vue_pre_processors = ['typescript', 'scss']
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 
-" --- Airline Options ---
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#nerdtree_status = 0
-let g:airline_powerline_fonts = 1
-let g:airline_section_c = '%t'
-let g:airline_section_x = ''
-let g:airline_section_y = ''
-let g:airline_section_z = "\uE0A1 %l/%L"
-
 " --- Coc Extensions ---
 let g:coc_global_extensions = [
     \ 'coc-eslint',
@@ -62,7 +52,16 @@ let g:coc_global_extensions = [
     \ 'coc-phpls',
     \ 'coc-tsserver',
     \ 'coc-vetur',
-    \ ]
+\ ]
 
 " --- Emmet ---
 let g:user_emmet_leader_key = '<C-z>'
+
+" --- Airline Options ---
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#nerdtree_status = 0
+let g:airline_section_c = '%t'
+let g:airline_section_x = ''
+let g:airline_section_y = ''
+let g:airline_section_z = "\uE0A1 %l/%L"
