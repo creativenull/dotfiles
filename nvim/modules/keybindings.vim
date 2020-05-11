@@ -50,8 +50,6 @@ nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
 " Close the current buffer
 nnoremap <leader>bd :bp<BAR>sp<BAR>bn<BAR>bd<CR>
-" Close all buffers except the current open buffer
-nnoremap <leader>bad :%bd<BAR>e#<BAR>bd#<CR>
 " Open a terminal in new buffer
 nnoremap <leader>tn :enew<CR>:term<CR>
 " Open termnal in Vertical split

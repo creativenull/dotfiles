@@ -23,7 +23,6 @@ call plug#begin(g:plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'psliwka/vim-smoothie'
 call plug#end()
 
 " =============================================================
@@ -52,6 +51,7 @@ let g:coc_global_extensions = [
     \ 'coc-phpls',
     \ 'coc-tsserver',
     \ 'coc-vetur',
+    \ 'coc-pairs',
 \ ]
 
 " --- Emmet ---
