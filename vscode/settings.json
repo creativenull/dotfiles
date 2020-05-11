@@ -4,8 +4,10 @@
  * https://github.com/creativenobu
  */
 
- {
+{
     "workbench.colorTheme": "Gruvbox Dark Hard",
+    "dayNightThemeSwitcher.dayTheme": "Gruvbox Light Hard",
+    "dayNightThemeSwitcher.nightTheme": "Gruvbox Dark Hard",
     "editor.fontFamily": "'JetBrainsMono NF', 'monospace', monospace",
     "window.menuBarVisibility": "hidden",
     "workbench.sideBar.location": "right",
@@ -15,5 +17,106 @@
     "breadcrumbs.enabled": false,
     "editor.rulers": [120],
     "explorer.confirmDelete": false,
-    "git.autofetch": true
+    "git.autofetch": true,
+    "editor.smoothScrolling": true,
+    "explorer.openEditors.visible": 0,
+    "php.validate.executablePath": "C:\\Users\\creativenobu\\scripts\\php.bat",
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\wsl.exe",
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.incsearch": true,
+    "vim.useCtrlKeys": true,
+    "vim.leader": "<space>",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "j",
+                "k"
+            ],
+            "after": [
+                "<esc>"
+            ]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "<leader>",
+                "b",
+                "d"
+            ],
+            "commands": [
+                "workbench.action.files.save",
+                "workbench.action.closeActiveEditor"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "l",
+                "d"
+            ],
+            "commands": [
+                "editor.action.revealDefinition"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "l",
+                "h"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "l",
+                "r"
+            ],
+            "commands": [
+                "editor.action.changeAll"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "<cr>"
+            ],
+            "commands": [
+                ":nohl"
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                ">"
+            ],
+            "commands": [
+                "editor.action.indentLines"
+            ]
+        },
+        {
+            "before": [
+                "<"
+            ],
+            "commands": [
+                "editor.action.outdentLines"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "c",
+                "<leader>"
+            ],
+            "commands": [
+                "editor.action.commentLine"
+            ]
+        }
+    ]
 }
