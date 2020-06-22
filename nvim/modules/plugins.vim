@@ -8,6 +8,7 @@ call plug#begin(g:plugins_dir)
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'godlygeek/tabular'
+    Plug 'jiangmiao/auto-pairs'
     Plug 'mattn/emmet-vim'
     Plug 'neoclide/coc.nvim', { 'branch': 'release' }
     Plug 'preservim/nerdtree'
@@ -23,6 +24,7 @@ call plug#begin(g:plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
+    Plug 'mhinz/vim-startify'
 call plug#end()
 
 " =============================================================
@@ -44,14 +46,12 @@ let g:vim_markdown_conceal_code_blocks = 0
 
 " --- Coc Extensions ---
 let g:coc_global_extensions = [
-    \ 'coc-eslint',
     \ 'coc-html',
     \ 'coc-json',
     \ 'coc-marketplace',
     \ 'coc-phpls',
     \ 'coc-tsserver',
     \ 'coc-vetur',
-    \ 'coc-pairs',
 \ ]
 
 " --- Emmet ---
