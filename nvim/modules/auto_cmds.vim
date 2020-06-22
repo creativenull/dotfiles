@@ -4,6 +4,13 @@ augroup ctype
     autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 augroup END
 
+" JS/JSX filetypes
+augroup jstype
+    autocmd!
+    autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+augroup END
+
 " LSP auto commands
 augroup lsp
     autocmd!
@@ -18,9 +25,3 @@ augroup spell
     autocmd!
     autocmd FileType markdown setlocal spell spelllang=en_us
 augroup END
-
-" Support transparent background if possible
-" augroup transparent_support
-"     autocmd!
-"     autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE
-" augroup END
