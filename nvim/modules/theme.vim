@@ -6,5 +6,5 @@ set number
 set termguicolors
 set relativenumber
 
-call SetupThemeBackground()
+call RegisterTheme()
 colorscheme gruvbox
