@@ -48,7 +48,7 @@ set signcolumn=yes
 set mouse=a
 
 " File format type
-set fileformats=unix,dos
+set fileformats=unix
 
 " no sounds
 set visualbell
