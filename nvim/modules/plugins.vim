@@ -24,7 +24,6 @@ call plug#begin(g:plugins_dir)
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'mhinz/vim-startify'
 call plug#end()
 
 " =============================================================
