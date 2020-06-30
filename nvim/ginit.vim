@@ -2,7 +2,7 @@
 " Arnold Chand
 " (neo)vim GUI config file
 " Cross-platform, runs on Linux, Windows and OS X (maybe?)
-" https://github.com/creativenobu
+" https://github.com/creativenull
 " =============================================================
 
 " neovim-qt config
