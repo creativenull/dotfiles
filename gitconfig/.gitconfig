@@ -3,6 +3,5 @@
 	email = <>
 [core]
 	editor = nano -r 72 -J 73 -M
-	autocrlf = true
 [color]
 	ui = auto
