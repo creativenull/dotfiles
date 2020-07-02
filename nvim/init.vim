@@ -4,7 +4,6 @@
 " Cross-platform, runs on Linux, Windows and OS X (maybe?)
 " https://github.com/creativenull
 " =============================================================
-
 filetype plugin indent on
 set encoding=utf-8
 
