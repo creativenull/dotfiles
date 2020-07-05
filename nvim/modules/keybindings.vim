@@ -12,21 +12,12 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-nnoremap <C-x> <nop>
-inoremap <C-x> <nop>
-
 " Map Esc, to perform quick switching between Normal and Insert mode
 inoremap jk <C-[>
 
 " Map escape from terminal input to Normal mode
 tnoremap <C-[> <C-\><C-n>
-
-" Quick save
-nnoremap <C-s> :w<CR>
-inoremap <C-s> <C-[>:w<CR>
-
-" Safely exit vim
-nnoremap <C-x> :q<CR>
+tnoremap <ESc> <C-\><C-n>
 
 " Copy/Paste from clipboard
 vnoremap <C-c> "+y<CR>
@@ -50,12 +41,6 @@ nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprevious<CR>
 " Close the current buffer
 nnoremap <leader>bd :bp<BAR>sp<BAR>bn<BAR>bd<CR>
-" Open a terminal in new buffer
-nnoremap <leader>tn :enew<CR>:term<CR>
-" Open termnal in Vertical split
-nnoremap <leader>tv :vsplit<CR><C-w>l:term<CR>
-" Open terminal in Horizontal split
-nnoremap <leader>th :split<CR><C-w>j:term<CR>
 
 " Window maps
 " ---
@@ -80,8 +65,4 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 " Misc maps
 " ---
 " Config file
-nnoremap <leader>fve :e $MYVIMRC<CR>
-nnoremap <leader>fvs :so $MYVIMRC<CR>
-
-" NERDTreeToggle
-nnoremap <F3> :NERDTreeToggle<CR>
+nnoremap <leader>vs :so $MYVIMRC<CR>:noh<CR>:EditorConfigReload<CR>

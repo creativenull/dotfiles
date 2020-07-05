@@ -2,10 +2,10 @@
 " Arnold Chand
 " (neo)vim config file
 " Cross-platform, runs on Linux, Windows and OS X (maybe?)
-" https://github.com/creativenull
+" https://github.com/creativenobu
 " =============================================================
+
 filetype plugin indent on
-set encoding=utf-8
 
 " Global variable to use for config
 " ---
@@ -29,7 +29,7 @@ endif
 
 " Load core settings
 execute 'source ' . expand(g:modules_dir . '/functions.vim')
-execute 'source ' . expand(g:modules_dir . '/auto_cmds.vim')
+execute 'source ' . expand(g:modules_dir . '/autocmd.vim')
 execute 'source ' . expand(g:modules_dir . '/commands.vim')
 execute 'source ' . expand(g:modules_dir . '/basic.vim')
 execute 'source ' . expand(g:modules_dir . '/keybindings.vim')

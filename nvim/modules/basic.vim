@@ -1,7 +1,12 @@
 " =============================================================
 " = General =
 " =============================================================
+set nocompatible
+set encoding=utf8
+
 " Search options
+set hlsearch
+set incsearch
 set ignorecase
 set smartcase
 
@@ -19,7 +24,7 @@ set linebreak
 set showbreak=+++
 set textwidth=120
 set colorcolumn=120
-set scrolloff=5
+set scrolloff=3
 
 " Performance options
 set lazyredraw
@@ -30,7 +35,7 @@ set nowritebackup
 set noswapfile
 
 " Undo history
-set undolevels=1000
+set undolevels=100
 
 " Buffers/Tabs/Windows
 set hidden
@@ -51,7 +56,7 @@ set mouse=a
 set fileformats=unix
 
 " no sounds
-set visualbell
+set vb t_vb=
 
 " backspace behaviour
 set backspace=indent,eol,start

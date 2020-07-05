@@ -33,6 +33,7 @@ call plug#end()
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinPos = 'right'
 let g:NERDTreeShowHidden = 1
+nnoremap <F3> :NERDTreeToggle<CR>
 
 " --- Fuzzy Finder Options ---
 let g:ctrlp_cmd = 'CtrlP'
@@ -54,7 +55,7 @@ let g:coc_global_extensions = [
 \ ]
 
 " --- Emmet ---
-let g:user_emmet_leader_key = '<C-z>'
+let g:user_emmet_leader_key = '<C-,>'
 
 " --- Airline Options ---
 let g:airline#extensions#tabline#enabled = 1
