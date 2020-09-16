@@ -49,7 +49,7 @@ call ale#linter#Define('php', {
 \   'executable': 'intelephense',
 \   'command': '%e --stdio',
 \   'project_root': function('ale_linters#php#langserver#GetProjectRoot')
-\})
+\ })
 
 " ALE general config
 let g:ale_fix_on_save = 1
@@ -69,17 +69,15 @@ let g:ale_linters = {
 \   'javascript': ['tsserver', 'eslint'],
 \   'javascriptreact': ['tsserver', 'eslint'],
 \   'php': ['intelephense'],
-\   'rust': ['analyzer'],
-\   'sass': ['stylelint'],
 \   'scss': ['stylelint'],
 \   'typescript': ['tsserver', 'eslint'],
 \   'typescriptreact': ['tsserver', 'eslint'],
-\   'vue': ['vls', 'eslint'],
+\   'vue': ['vls', 'eslint']
 \ }
 
 " ALE fixers config
 let g:ale_fixers = {
-\   '*': ['trim_whitespace', 'remove_trailing_lines'],
+\   '*': ['trim_whitespace', 'remove_trailing_lines']
 \ }
 
 " --- Fuzzy Finder Options ---
@@ -98,12 +96,12 @@ let g:lightline = {
 \   'component': { 'line': 'LN %l/%L' },
 \   'component_function': {
 \       'gitbranch': 'gitbranch#name',
-\       'lsp': 'LSPStatusLine',
+\       'lsp': 'LSP_StatueLine'
 \   },
 \   'active': {
 \       'left': [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
-\       'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ],
-\   },
+\       'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ]
+\   }
 \ }
 
 " --- vim-buftabline Options ---
@@ -209,9 +207,9 @@ function! MDSetNoConceal() abort
     let g:vim_markdown_conceal_code_blocks = 0
 endfunction
 
-" Language Server Protocol setup
+" LSP Setup
 " ---
-function! LSPStatusLine() abort
+function! LSP_StatueLine() abort
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
@@ -222,7 +220,7 @@ function! LSPStatusLine() abort
         \ )
 endfunction
 
-function! RegisterLSPKeys() abort
+function! LSP_RegisterKeys() abort
     nmap <silent> <leader>ld :ALEGoToDefinition<CR>
     nmap <silent> <leader>lr :ALEFindReferences<CR>
     nmap <silent> <leader>lh :ALEHover<CR>
@@ -319,7 +317,7 @@ nnoremap <leader>ve :e $MYVIMRC<CR>
 nnoremap <leader>vs :so $MYVIMRC<CR>:noh<CR>:EditorConfigReload<CR>
 
 " Set LSP Keys
-call RegisterLSPKeys()
+call LSP_RegisterKeys()
 
 " =============================================================
 " = Theming and Looks =
