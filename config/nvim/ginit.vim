@@ -2,7 +2,7 @@
 " Github: https://github.com/creativenull
 " File: gvimrc/ginit.vim
 " Description: Currently, tested on a Linux machine.
-" =============================================================
+" =====================================================================================================================
 if exists('g:GuiLoaded')
     set linespace=2
 
