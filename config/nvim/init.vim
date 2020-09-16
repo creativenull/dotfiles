@@ -1,10 +1,8 @@
-" Name: Arnold Chand
-" Github: https://github.com/creativenull
-" File: init.vim
-" Description: My minimal vimrc config, only requirement is to
-"              have vim-plug installed before installing plugins.
-"              Currently, tested on a Linux machine.
-"
+" =============================================================
+" Arnold Chand
+" https://github.com/creativenull
+" (neo)vim config
+" =============================================================
 filetype plugin indent on
 
 " Global variable to use for config
