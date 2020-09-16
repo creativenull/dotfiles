@@ -1,7 +1,14 @@
+" Name: Arnold Chand
+" Github: https://github.com/creativenull
+" File: .vimrc/init.vim
+" Description: My vimrc, pre-requisites:
+"              + vim-plug
+"              + ripgrep
+"              + Set environment variables: $PYTHON3_HOST_PROG, $NVIMRC_PLUGINS_DIR, $NVIMRC_CONFIG_DIR
+"
+"              Currently, tested on a Linux machine.
 " =============================================================
-" Arnold Chand
-" https://github.com/creativenull
-" (neo)vim config
+" = Plugin Manager =
 " =============================================================
 filetype plugin indent on
 
@@ -12,22 +19,21 @@ let g:python_host_prog = $PYTHON_HOST_PROG
 let g:plugins_dir = $NVIMRC_PLUGINS_DIR
 let g:config_dir = $NVIMRC_CONFIG_DIR
 
-" =============================================================
-" = Plugin Manager =
-" =============================================================
 call plug#begin(g:plugins_dir)
 
 " Core
-Plug 'Shougo/context_filetype.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'dense-analysis/ale'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'jremmen/vim-ripgrep'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
+Plug 'dense-analysis/ale'
+
+Plug 'Shougo/context_filetype.vim'
 Plug 'tyru/caw.vim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " Theme, Syntax
 Plug 'ap/vim-buftabline'
@@ -36,54 +42,13 @@ Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'sheerun/vim-polyglot'
 Plug 'yggdroot/indentline'
+Plug 'ryym/vim-riot'
 
 call plug#end()
 
 " =============================================================
 " = Plugin Options =
 " =============================================================
-" --- ALE Options ---
-call ale#linter#Define('php', {
-\   'name': 'intelephense',
-\   'lsp': 'stdio',
-\   'executable': 'intelephense',
-\   'command': '%e --stdio',
-\   'project_root': function('ale_linters#php#langserver#GetProjectRoot')
-\ })
-
-" ALE general config
-let g:ale_fix_on_save = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_hover_cursor = 0
-let g:ale_completion_enabled = 1
-let g:ale_completion_delay = 100
-let g:ale_completion_max_suggestions = 10
-let g:ale_completion_autoimport = 1
-
-" ALE linters config
-let g:ale_linters_explicit = 1
-let g:ale_linters = {
-\   'css': ['stylelint'],
-\   'javascript': ['tsserver', 'eslint'],
-\   'javascriptreact': ['tsserver', 'eslint'],
-\   'php': ['intelephense'],
-\   'scss': ['stylelint'],
-\   'typescript': ['tsserver', 'eslint'],
-\   'typescriptreact': ['tsserver', 'eslint'],
-\   'vue': ['vls', 'eslint']
-\ }
-
-" ALE fixers config
-let g:ale_fixers = {
-\   '*': ['trim_whitespace', 'remove_trailing_lines']
-\ }
-
-" --- Fuzzy Finder Options ---
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
 
@@ -92,21 +57,52 @@ let g:user_emmet_leader_key = '<C-z>'
 
 " --- Lightline Options ---
 let g:lightline = {
-\   'colorscheme': 'default',
-\   'component': { 'line': 'LN %l/%L' },
-\   'component_function': {
-\       'gitbranch': 'gitbranch#name',
-\       'lsp': 'LSP_StatueLine'
-\   },
-\   'active': {
-\       'left': [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
-\       'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ]
-\   }
-\ }
+    \   'colorscheme': 'default',
+    \   'component': { 'line': 'LN %l/%L' },
+    \   'component_function': {
+    \       'gitbranch': 'gitbranch#name',
+    \       'lsp': 'LSPStatusLine',
+    \   },
+    \   'active': {
+    \       'left': [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
+    \       'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ],
+    \   },
+    \ }
 
 " --- vim-buftabline Options ---
 let g:buftabline_show = 1
 let g:buftabline_indicators = 1
+
+" --- fzf Options ---
+nnoremap <C-p> :GFiles<CR>
+nnoremap <C-t> :Rg<CR>
+
+" --- ALE Options ---
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+let g:ale_completion_max_suggestions = 10
+let g:ale_completion_delay = 100
+
+let g:ale_hover_cursor = 0
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_fix_on_save = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+    \   'javascript': ['eslint', 'tsserver'],
+    \   'javascriptreact': ['eslint', 'tsserver'],
+    \   'typescript': ['eslint', 'tsserver'],
+    \   'typescriptreact': ['eslint', 'tsserver'],
+    \   'vue': ['vls'],
+    \   'scss': ['stylelint'],
+    \   'css': ['stylelint'],
+    \   'php': ['intelephense'],
+    \ }
 
 " =============================================================
 " = General =
@@ -117,7 +113,6 @@ set encoding=utf8
 " Completion options
 set completeopt=menu,preview,longest,menuone,noinsert,noselect
 set shortmess+=c
-" set omnifunc=ale#completion#OmniFunc
 
 " Search options
 set hlsearch
@@ -207,9 +202,9 @@ function! MDSetNoConceal() abort
     let g:vim_markdown_conceal_code_blocks = 0
 endfunction
 
-" LSP Setup
+" Language Server Protocol setup
 " ---
-function! LSP_StatueLine() abort
+function! LSPStatusLine() abort
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
@@ -220,7 +215,7 @@ function! LSP_StatueLine() abort
         \ )
 endfunction
 
-function! LSP_RegisterKeys() abort
+function! LSPSetKeys() abort
     nmap <silent> <leader>ld :ALEGoToDefinition<CR>
     nmap <silent> <leader>lr :ALEFindReferences<CR>
     nmap <silent> <leader>lh :ALEHover<CR>
@@ -234,13 +229,8 @@ endfunction
 " Show codeblocks, links in md files
 augroup md_noconceal
     autocmd!
-    autocmd FileType markdown call MDSetNoConceal()
+    autocmd BufRead *.md call MDSetNoConceal()
 augroup END
-
-" =============================================================
-" = Commands =
-" =============================================================
-command! Config edit $MYVIMRC
 
 " =============================================================
 " = Key Bindings =
@@ -277,10 +267,7 @@ imap <C-Space> <C-x><C-o>
 let mapleader=' '
 
 " Disable highlights
-noremap <leader><CR> :noh<CR>
-
-" Reload file
-nnoremap <leader>r :e!<CR>
+nnoremap <leader><CR> :noh<CR>
 
 " Buffer maps
 " ---
@@ -316,8 +303,16 @@ nnoremap <leader>ve :e $MYVIMRC<CR>
 " Source the vimrc to reflect changes
 nnoremap <leader>vs :so $MYVIMRC<CR>:noh<CR>:EditorConfigReload<CR>
 
-" Set LSP Keys
-call LSP_RegisterKeys()
+" Reload file
+nnoremap <leader>r :e!<CR>
+
+" LSP key mappings
+call LSPSetKeys()
+
+" =============================================================
+" = Commands =
+" =============================================================
+command! Config edit $MYVIMRC
 
 " =============================================================
 " = Theming and Looks =
