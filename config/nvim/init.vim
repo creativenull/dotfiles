@@ -61,7 +61,7 @@ let g:lightline = {
     \   'component': { 'line': 'LN %l/%L' },
     \   'component_function': {
     \       'gitbranch': 'gitbranch#name',
-    \       'lsp': 'LSPStatusLine',
+    \       'lsp': 'LSP_StatusLine',
     \   },
     \   'active': {
     \       'left': [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
@@ -90,19 +90,31 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 let g:ale_fix_on_save = 1
-let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+let g:ale_fixers = {
+    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \   'php': ['phpcbf']
+    \ }
 
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
+    \   'css': ['stylelint'],
     \   'javascript': ['eslint', 'tsserver'],
     \   'javascriptreact': ['eslint', 'tsserver'],
+    \   'php': ['intelephense', 'phpcs', 'phan'],
+    \   'scss': ['stylelint'],
     \   'typescript': ['eslint', 'tsserver'],
     \   'typescriptreact': ['eslint', 'tsserver'],
-    \   'vue': ['vls'],
-    \   'scss': ['stylelint'],
-    \   'css': ['stylelint'],
-    \   'php': ['intelephense'],
+    \   'vue': ['vls']
     \ }
+
+let g:ale_php_phan_use_client = 1
+call ale#linter#Define('php', {
+    \   'name': 'intelephense',
+    \   'lsp': 'stdio',
+    \   'executable': 'intelephense',
+    \   'command': '%e --stdio',
+    \   'project_root': function('ale_linters#php#langserver#GetProjectRoot')
+    \ })
 
 " =====================================================================================================================
 " = General =
@@ -204,7 +216,7 @@ endfunction
 
 " Language Server Protocol setup
 " ---
-function! LSPStatusLine() abort
+function! LSP_StatusLine() abort
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
@@ -215,7 +227,7 @@ function! LSPStatusLine() abort
         \ )
 endfunction
 
-function! LSPSetKeys() abort
+function! LSP_RegisterKeys() abort
     nmap <silent> <leader>ld :ALEGoToDefinition<CR>
     nmap <silent> <leader>lr :ALEFindReferences<CR>
     nmap <silent> <leader>lh :ALEHover<CR>
@@ -230,6 +242,16 @@ endfunction
 augroup md_noconceal
     autocmd!
     autocmd BufRead *.md call MDSetNoConceal()
+augroup END
+
+" Manual completion
+augroup completion_ominfunc
+    autocmd!
+    autocmd FileType javascript,javascriptreact set omnifunc=ale#completion#OmniFunc
+    autocmd FileType typescript,typescriptreact set omnifunc=ale#completion#OmniFunc
+    autocmd FileType css,scss set omnifunc=ale#completion#OmniFunc
+    autocmd FileType vue set omnifunc=ale#completion#OmniFunc
+    autocmd FileType php set omnifunc=ale#completion#OmniFunc
 augroup END
 
 " =====================================================================================================================
@@ -307,7 +329,7 @@ nnoremap <leader>vs :so $MYVIMRC<CR>:noh<CR>:EditorConfigReload<CR>
 nnoremap <leader>r :e!<CR>
 
 " LSP key mappings
-call LSPSetKeys()
+call LSP_RegisterKeys()
 
 " =====================================================================================================================
 " = Commands =
