@@ -8,8 +8,7 @@
 "
 "              Currently, tested on a Linux machine.
 " =====================================================================================================================
-" = Plugin Manager =
-" =====================================================================================================================
+
 filetype plugin indent on
 
 " Global variable to use for config
@@ -19,36 +18,16 @@ let g:python_host_prog = $PYTHON_HOST_PROG
 let g:plugins_dir = $NVIMRC_PLUGINS_DIR
 let g:config_dir = $NVIMRC_CONFIG_DIR
 
-call plug#begin(g:plugins_dir)
-
-" Core
-Plug 'airblade/vim-gitgutter'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-surround'
-Plug 'dense-analysis/ale'
-
-Plug 'Shougo/context_filetype.vim'
-Plug 'tyru/caw.vim'
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Theme, Syntax
-Plug 'ap/vim-buftabline'
-Plug 'gruvbox-community/gruvbox'
-Plug 'itchyny/lightline.vim'
-Plug 'itchyny/vim-gitbranch'
-Plug 'sheerun/vim-polyglot'
-Plug 'yggdroot/indentline'
-Plug 'ryym/vim-riot'
-
-call plug#end()
-
 " =====================================================================================================================
-" = Plugin Options =
+" = Plugin Global Options =
 " =====================================================================================================================
+
+" --- UltiSnips Options ---
+let g:UltiSnipsExpandTrigger = '<C-z>.'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+let g:UltiSnipsSnippetDirectories = [expand('$HOME/.config/nvim/vim-snippets/UltiSnips')]
+
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
 
@@ -78,10 +57,8 @@ nnoremap <C-p> :GFiles<CR>
 nnoremap <C-t> :Rg<CR>
 
 " --- ALE Options ---
-let g:ale_completion_enabled = 1
-let g:ale_completion_autoimport = 1
 let g:ale_completion_max_suggestions = 10
-let g:ale_completion_delay = 100
+let g:ale_completion_autoimport = 1
 
 let g:ale_hover_cursor = 0
 
@@ -108,6 +85,45 @@ let g:ale_linters = {
     \ }
 
 let g:ale_php_phan_use_client = 1
+
+" =====================================================================================================================
+" = Plugin Manager =
+" =====================================================================================================================
+
+call plug#begin(g:plugins_dir)
+
+" Core
+Plug 'airblade/vim-gitgutter'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-surround'
+Plug 'dense-analysis/ale'
+Plug 'SirVer/ultisnips', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
+
+Plug 'Shougo/context_filetype.vim'
+Plug 'tyru/caw.vim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Theme, Syntax
+Plug 'ap/vim-buftabline'
+Plug 'gruvbox-community/gruvbox'
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
+Plug 'sheerun/vim-polyglot'
+Plug 'yggdroot/indentline'
+Plug 'ryym/vim-riot'
+
+call plug#end()
+
+" =====================================================================================================================
+" = Plugin Function Options =
+" =====================================================================================================================
+
+" --- ALE ---
 call ale#linter#Define('php', {
     \   'name': 'intelephense',
     \   'lsp': 'stdio',
@@ -116,9 +132,14 @@ call ale#linter#Define('php', {
     \   'project_root': function('ale_linters#php#langserver#GetProjectRoot')
     \ })
 
+" --- deoplete ---
+call deoplete#custom#option('sources', { '_': ['ultisnips', 'ale'] })
+call deoplete#custom#option('auto_complete_delay', 100)
+
 " =====================================================================================================================
 " = General =
 " =====================================================================================================================
+
 set nocompatible
 set encoding=utf8
 
@@ -200,6 +221,7 @@ set autoread
 " =====================================================================================================================
 " = Functions =
 " =====================================================================================================================
+
 " Set any other options for dark theme
 function! ThemeSetDark() abort
     let g:gruvbox_contrast_dark = 'hard'
@@ -220,8 +242,8 @@ function! LSP_StatusLine() abort
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? '🟢' : printf(
-        \   '%d 🔴 %d 🟡',
+    return l:counts.total == 0 ? 'ale 🟢' : printf(
+        \   'ale %d 🔴 %d 🟡',
         \   all_errors,
         \   all_non_errors,
         \ )
@@ -238,6 +260,7 @@ endfunction
 " =====================================================================================================================
 " = Auto Commands (single/groups) =
 " =====================================================================================================================
+
 " Show codeblocks, links in md files
 augroup md_noconceal
     autocmd!
@@ -245,18 +268,19 @@ augroup md_noconceal
 augroup END
 
 " Manual completion
-augroup completion_ominfunc
+augroup enable_autocompletion
     autocmd!
-    autocmd FileType javascript,javascriptreact set omnifunc=ale#completion#OmniFunc
-    autocmd FileType typescript,typescriptreact set omnifunc=ale#completion#OmniFunc
-    autocmd FileType css,scss set omnifunc=ale#completion#OmniFunc
-    autocmd FileType vue set omnifunc=ale#completion#OmniFunc
-    autocmd FileType php set omnifunc=ale#completion#OmniFunc
+    autocmd FileType javascript,javascriptreact call deoplete#enable()
+    autocmd FileType typescript,typescriptreact call deoplete#enable()
+    autocmd FileType css,scss call deoplete#enable()
+    autocmd FileType vue call deoplete#enable()
+    autocmd FileType php call deoplete#enable()
 augroup END
 
 " =====================================================================================================================
 " = Key Bindings =
 " =====================================================================================================================
+
 " Unbind default bindings for arrow keys, trust me this is for your own good
 vnoremap <up> <nop>
 vnoremap <down> <nop>
@@ -334,11 +358,13 @@ call LSP_RegisterKeys()
 " =====================================================================================================================
 " = Commands =
 " =====================================================================================================================
+
 command! Config edit $MYVIMRC
 
 " =====================================================================================================================
 " = Theming and Looks =
 " =====================================================================================================================
+
 syntax on
 set number
 set termguicolors
