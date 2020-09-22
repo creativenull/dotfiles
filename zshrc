@@ -17,18 +17,20 @@ fi
 # List alias
 alias l="ls -lah"
 
-# Python host prog for vim
-export PYTHON3_HOST_PROG='/usr/bin/python3'
-export PYTHON_HOST_PROG='/usr/bin/python2'
+# Directory colors (WSL Only)
+eval `dircolors ~/.dircolors`
 
-# Editor paths and aliases
-alias g="git"
+# neovim
+export PYTHON3_HOST_PROG=/usr/bin/python3
+export PYTHON_HOST_PROG=/usr/bin/python2
+export NVIMRC_CONFIG_DIR=$HOME/.config/nvim
+export NVIMRC_PLUGINS_DIR=$HOME/.local/share/nvim/plugged
+
+# Global aliases
 alias v="nvim"
-alias vg="nvim-qt.exe&"
-alias p="sudo pacman"
-alias a="sudo apt"
 
 # Git aliases
+alias g="git"
 alias gA="git add -A"
 alias ga="git add"
 alias gbr="git branch"
@@ -43,6 +45,7 @@ alias gi="git init && git checkout -b main"
 alias gl="git pull"
 alias gp="git push"
 alias gre="git reset --hard HEAD"
+alias grs="git restore"
 alias gro="git remote"
 alias gs="git status"
 alias gst="git stash"
