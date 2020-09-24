@@ -26,7 +26,6 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 let g:UltiSnipsExpandTrigger = '<C-z>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-let g:UltiSnipsSnippetDirectories = [expand('$HOME/.config/nvim/vim-snippets/UltiSnips')]
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
@@ -86,6 +85,10 @@ let g:ale_linters = {
 
 let g:ale_php_phan_use_client = 1
 
+
+" --- deoplete Options ---
+let g:deoplete#enable_at_startup = 1
+
 " =====================================================================================================================
 " = Plugin Manager =
 " =====================================================================================================================
@@ -99,7 +102,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'dense-analysis/ale'
-Plug 'SirVer/ultisnips', { 'do': ':UpdateRemotePlugins' }
+Plug 'SirVer/ultisnips'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
 
 Plug 'Shougo/context_filetype.vim'
@@ -267,16 +270,6 @@ augroup md_noconceal
     autocmd BufRead *.md call MDSetNoConceal()
 augroup END
 
-" Manual completion
-augroup enable_autocompletion
-    autocmd!
-    autocmd FileType javascript,javascriptreact call deoplete#enable()
-    autocmd FileType typescript,typescriptreact call deoplete#enable()
-    autocmd FileType css,scss call deoplete#enable()
-    autocmd FileType vue call deoplete#enable()
-    autocmd FileType php call deoplete#enable()
-augroup END
-
 " =====================================================================================================================
 " = Key Bindings =
 " =====================================================================================================================
@@ -306,7 +299,7 @@ nnoremap <C-o> "+p<CR>
 " File explorer
 noremap <F3> :Ex<CR>
 
-" Auto-completion
+" Manual completion
 imap <C-Space> <C-x><C-o>
 
 " Leader Map
