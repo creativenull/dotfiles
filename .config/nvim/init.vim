@@ -26,7 +26,6 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 let g:UltiSnipsExpandTrigger = '<C-z>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-let g:UltiSnipsSnippetDirectories = [expand('$HOME/.config/nvim/vim-snippets/UltiSnips')]
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
@@ -53,11 +52,11 @@ let g:buftabline_show = 1
 let g:buftabline_indicators = 1
 
 " --- fzf Options ---
-nnoremap <C-p> :GFiles<CR>
+let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
+nnoremap <C-p> :Files<CR>
 nnoremap <C-t> :Rg<CR>
 
 " --- ALE Options ---
-let g:ale_completion_max_suggestions = 10
 let g:ale_completion_autoimport = 1
 
 let g:ale_hover_cursor = 0
@@ -65,6 +64,7 @@ let g:ale_hover_cursor = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
 
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
