@@ -1,0 +1,31 @@
+snippet sfc "Vue Single File Component"
+<template>
+</template>
+
+<script>
+export default {
+  name: '$1'
+}
+</script>
+
+<style scoped>
+</style>
+$0
+endsnippet
+
+snippet sfc_ts "Vue Single File Component"
+<template>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: '$1'
+})
+</script>
+
+<style scoped>
+</style>
+$0
+endsnippet
