@@ -22,6 +22,9 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " = Plugin Global Options =
 " =====================================================================================================================
 
+" --- ProjectRC Options ---
+let g:projectrc_key = 'asd9u80'
+
 " --- UltiSnips Options ---
 let g:UltiSnipsExpandTrigger = '<C-z>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
@@ -58,6 +61,7 @@ nnoremap <C-t> :Rg<CR>
 
 " --- ALE Options ---
 let g:ale_completion_autoimport = 1
+let g:ale_completion_max_suggestions = 50
 
 let g:ale_hover_cursor = 0
 
@@ -68,20 +72,19 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \   'php': ['phpcbf'],
     \ }
 
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
-    \   'css': ['stylelint'],
-    \   'javascript': ['eslint', 'tsserver'],
-    \   'javascriptreact': ['eslint', 'tsserver'],
-    \   'php': ['intelephense', 'phpcs', 'phan'],
-    \   'scss': ['stylelint'],
-    \   'typescript': ['eslint', 'tsserver'],
-    \   'typescriptreact': ['eslint', 'tsserver'],
-    \   'vue': ['vls'],
-    \ }
+   \   'css': ['stylelint'],
+   \   'javascript': ['eslint', 'tsserver'],
+   \   'javascriptreact': ['eslint', 'tsserver'],
+   \   'php': ['intelephense', 'phpcs', 'phan'],
+   \   'scss': ['stylelint'],
+   \   'typescript': ['eslint', 'tsserver'],
+   \   'typescriptreact': ['eslint', 'tsserver'],
+   \   'vue': ['vls'],
+   \ }
 
 let g:ale_php_phan_use_client = 1
 
@@ -89,6 +92,7 @@ let g:ale_php_phan_use_client = 1
 let g:deoplete#enable_at_startup = 1
 
 " --- vim-startify Options ---
+let g:startify_change_to_dir = 0
 let g:startify_lists = [
     \   { 'type': 'dir',       'header': ['   MRU '. getcwd()]  },
     \   { 'type': 'sessions',  'header': ['   Sessions']        },
@@ -133,15 +137,6 @@ call plug#end()
 " =====================================================================================================================
 " = Plugin Function Options =
 " =====================================================================================================================
-
-" --- ALE ---
-call ale#linter#Define('php', {
-    \   'name': 'intelephense',
-    \   'lsp': 'stdio',
-    \   'executable': 'intelephense',
-    \   'command': '%e --stdio',
-    \   'project_root': function('ale_linters#php#langserver#GetProjectRoot')
-    \ })
 
 " --- deoplete ---
 call deoplete#custom#option('sources', { '_': ['ultisnips', 'ale'] })
@@ -233,18 +228,11 @@ set autoread
 " = Functions =
 " =====================================================================================================================
 
-" Set any other options for dark theme
-function! ThemeSetDark() abort
+function! SetDarkTheme() abort
     let g:gruvbox_contrast_dark = 'hard'
     let g:gruvbox_sign_column = 'dark0_hard'
     let g:gruvbox_invert_selection = 0
     let g:gruvbox_number_column = 'dark0_hard'
-endfunction
-
-" Show the link parentheses and code blocks on markdown filetypes
-function! MDSetNoConceal() abort
-    let g:vim_markdown_conceal = 0
-    let g:vim_markdown_conceal_code_blocks = 0
 endfunction
 
 " Language Server Protocol setup
@@ -268,15 +256,23 @@ function! LSP_RegisterKeys() abort
     nmap <silent> <leader>le :lopen<CR>
 endfunction
 
+function! LoadProjectSettings() abort
+    let l:cwd = getcwd()
+    let l:project_file = l:cwd . '/.vim/settings.vim'
+    if filereadable(l:project_file)
+        echom '[creativenull_localrc] Settings found!'
+    endif
+endfunction
+
+function! MDNoConceal() abort
+    set conceallevel=0
+    let g:vim_markdown_conceal = 0
+    let g:vim_markdown_conceal_code_blocks = 0
+endfunction
+
 " =====================================================================================================================
 " = Auto Commands (single/groups) =
 " =====================================================================================================================
-
-" Show codeblocks, links in md files
-augroup md_noconceal
-    autocmd!
-    autocmd BufRead *.md call MDSetNoConceal()
-augroup END
 
 " =====================================================================================================================
 " = Key Bindings =
@@ -361,6 +357,7 @@ call LSP_RegisterKeys()
 " =====================================================================================================================
 
 command! Config edit $MYVIMRC
+command! MarkdownNoConceal call MDNoConceal()
 
 " =====================================================================================================================
 " = Theming and Looks =
@@ -371,6 +368,6 @@ set number
 set termguicolors
 set relativenumber
 
-call ThemeSetDark()
+call SetDarkTheme()
 set background=dark
 colorscheme gruvbox

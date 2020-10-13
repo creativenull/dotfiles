@@ -18,13 +18,13 @@ function! s:get_settings_path() abort
 endfunction
 
 " Check if the file exists
-function! s:is_settings() abort
+function! s:settings_exists() abort
     return filereadable(<SID>get_settings_path())
 endfunction
 
 " Check if key value is set
 function! s:has_key() abort
-    if exists('g:projectrc_key')
+    if exists('g:projectrc_key') && g:projectrc_key != ''
         return 1
     endif
 
@@ -33,6 +33,10 @@ endfunction
 
 " Compare the key set with the key in settings.vim
 function! s:is_key_match() abort
+    if !<SID>settings_exists()
+        return 0
+    endif
+
     let l:file_contents = readfile(<SID>get_settings_path(), '', 1)
     let l:secret_key = split(l:file_contents[0], '=')[1]
 
@@ -47,7 +51,7 @@ endfunction
 
 " Initial checks before loading the project settings
 function! s:run_projectrc() abort
-    if <SID>has_key() && <SID>is_key_match() && <SID>is_settings()
+    if <SID>has_key() && <SID>is_key_match()
         call <SID>load_project_settings()
     endif
 endfunction
