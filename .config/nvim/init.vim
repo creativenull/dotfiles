@@ -24,7 +24,7 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " =============================================================================
 
 " --- ProjectRC Options ---
-let g:projectrc_key = ''
+let g:projectrc_key = 'asd9u80'
 
 " --- UltiSnips Options ---
 let g:UltiSnipsExpandTrigger = '<C-z>.'
@@ -39,7 +39,7 @@ let g:user_emmet_leader_key = '<C-z>'
 
 " --- Lightline Options ---
 let g:lightline = {
-    \   'colorscheme': 'default',
+    \   'colorscheme': 'gruvbox',
     \   'component': { 'line': 'LN %l/%L' },
     \   'component_function': {
     \       'gitbranch': 'gitbranch#name',
@@ -228,11 +228,21 @@ set autoread
 " = Functions =
 " =============================================================================
 
-function! SetDarkTheme() abort
+function! ThemeSetDark() abort
     let g:gruvbox_contrast_dark = 'hard'
     let g:gruvbox_sign_column = 'dark0_hard'
     let g:gruvbox_invert_selection = 0
     let g:gruvbox_number_column = 'dark0_hard'
+    set background=dark
+endfunction
+
+function! ThemeSetLight() abort
+    let g:gruvbox_contrast_light='soft'
+    let g:gruvbox_sign_column='light0_soft'
+    let g:gruvbox_invert_selection=0
+    let g:gruvbox_number_column='light0_soft'
+    let g:indentLine_color_term=242
+    set background=light
 endfunction
 
 function! MDToggleConceal() abort
@@ -366,6 +376,5 @@ set number
 set termguicolors
 set relativenumber
 
-call SetDarkTheme()
-set background=dark
+call ThemeSetDark()
 colorscheme gruvbox
