@@ -62,7 +62,6 @@ nnoremap <C-t> :Rg<CR>
 
 " --- ALE Options ---
 let g:ale_completion_autoimport = 1
-let g:ale_completion_max_suggestions = 50
 
 let g:ale_hover_cursor = 0
 
@@ -115,7 +114,7 @@ Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'dense-analysis/ale'
 Plug 'SirVer/ultisnips'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'Shougo/context_filetype.vim'
 Plug 'tyru/caw.vim'
@@ -140,7 +139,7 @@ call plug#end()
 " =============================================================================
 
 " --- deoplete ---
-call deoplete#custom#option('sources', { '_': ['ultisnips', 'ale'] })
+call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
 call deoplete#custom#option('auto_complete_delay', 100)
 
 " =============================================================================
@@ -236,6 +235,18 @@ function! SetDarkTheme() abort
     let g:gruvbox_number_column = 'dark0_hard'
 endfunction
 
+function! MDToggleConceal() abort
+    if &conceallevel == 2
+        set conceallevel=0
+        let g:vim_markdown_conceal = 0
+        let g:vim_markdown_conceal_code_blocks = 0
+    else
+        set conceallevel=2
+        let g:vim_markdown_conceal = 1
+        let g:vim_markdown_conceal_code_blocks = 1
+    endif
+endfunction
+
 " Language Server Protocol setup
 " ---
 function! LSP_StatusLine() abort
@@ -255,20 +266,6 @@ function! LSP_RegisterKeys() abort
     nmap <silent> <leader>lh :ALEHover<CR>
     nmap <silent> <F2> :ALERename<CR>
     nmap <silent> <leader>le :lopen<CR>
-endfunction
-
-function! LoadProjectSettings() abort
-    let l:cwd = getcwd()
-    let l:project_file = l:cwd . '/.vim/settings.vim'
-    if filereadable(l:project_file)
-        echom '[creativenull_localrc] Settings found!'
-    endif
-endfunction
-
-function! MDNoConceal() abort
-    set conceallevel=0
-    let g:vim_markdown_conceal = 0
-    let g:vim_markdown_conceal_code_blocks = 0
 endfunction
 
 " =============================================================================
@@ -358,7 +355,7 @@ call LSP_RegisterKeys()
 " =============================================================================
 
 command! Config edit $MYVIMRC
-command! MarkdownNoConceal call MDNoConceal()
+command! MDToggleConceal call MDToggleConceal()
 
 " =============================================================================
 " = Theming and Looks =
