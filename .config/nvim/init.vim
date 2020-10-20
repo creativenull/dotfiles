@@ -24,7 +24,7 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " =============================================================================
 
 " --- ProjectRC Options ---
-let g:projectrc_key = 'asd9u80'
+let g:projectrc_key = ''
 
 " --- UltiSnips Options ---
 let g:UltiSnipsExpandTrigger = '<C-z>.'
