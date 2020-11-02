@@ -151,7 +151,7 @@ set nocompatible
 set encoding=utf8
 
 " Completion options
-set completeopt+=menuone,noinsert,noselect
+set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " Search options
