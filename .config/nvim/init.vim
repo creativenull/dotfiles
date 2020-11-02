@@ -24,7 +24,10 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " =============================================================================
 
 " --- ProjectRC Options ---
-let g:projectrc_key = ''
+let g:projectrc_key = '<custom-key-here>'
+
+" --- deoplete Options ---
+let g:deoplete#enable_at_startup = 1
 
 " --- UltiSnips Options ---
 let g:UltiSnipsExpandTrigger = '<C-z>.'
@@ -88,9 +91,6 @@ let g:ale_linters = {
 
 let g:ale_php_phan_use_client = 1
 
-" --- deoplete Options ---
-let g:deoplete#enable_at_startup = 1
-
 " --- vim-startify Options ---
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
@@ -141,6 +141,7 @@ call plug#end()
 " --- deoplete ---
 call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
 call deoplete#custom#option('auto_complete_delay', 100)
+call deoplete#custom#option('smart_case', v:true)
 
 " =============================================================================
 " = General =
@@ -150,7 +151,7 @@ set nocompatible
 set encoding=utf8
 
 " Completion options
-set completeopt=menu,preview,longest,menuone,noinsert,noselect
+set completeopt+=menuone,noinsert,noselect
 set shortmess+=c
 
 " Search options
