@@ -15,7 +15,7 @@ else
 fi
 
 # List alias
-alias l="ls -lah"
+alias l="ls -Aohg --group-directories-first"
 
 # Directory colors (WSL Only)
 eval `dircolors ~/.dircolors`
@@ -28,6 +28,8 @@ export NVIMRC_PLUGINS_DIR=$HOME/.local/share/nvim/plugged
 
 # Global aliases
 alias v="nvim"
+alias os-update="echo 'update'"
+alias os-pkg="echo 'pkg'"
 
 # Git aliases
 alias g="git"
@@ -51,5 +53,5 @@ alias gs="git status"
 alias gst="git stash"
 alias gt="git tag"
 
-# By default run tmux
-[[ $TERM != "screen" ]] && exec tmux
+# Run tmux
+#[[ $TERM != "screen" ]] && exec tmux
