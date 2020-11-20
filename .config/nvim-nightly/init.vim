@@ -23,7 +23,7 @@ set runtimepath-=/usr/share/nvim/site/after
 set runtimepath^=~/.config/nvim-nightly
 set runtimepath+=~/.config/nvim-nightly/after
 
-let g:projectrc_key = 'asd9u80'
+let g:projectrc_key = 'SECRET_KEY'
 
 " =============================================================================
 " = Plugin Manager =
