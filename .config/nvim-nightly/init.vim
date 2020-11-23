@@ -1,76 +1,92 @@
 filetype plugin indent on
 
+" Pack
 set packpath-=~/.config/nvim
 set packpath-=~/.config/nvim/after
 set packpath-=~/.local/share/nvim/site
 set packpath-=~/.local/share/nvim/site/after
+set packpath-=/etc/xdg/nvim
+set packpath-=/etc/xdg/nvim/after
+set packpath-=/usr/local/share/nvim/site
+set packpath-=/usr/local/share/nvim/site/after
+set packpath-=/usr/share/nvim/site
+set packpath-=/usr/share/nvim/site/after
 
-set packpath^=~/.local/share/nvim-nightly/plugins
+set packpath^=~/.config/nvim-nightly
+set packpath+=~/.config/nvim-nightly/after
+set packpath^=~/.local/share/nvim-nightly/site
+set packpath+=~/.local/share/nvim-nightly/site/after
 
+" Runtime
 set runtimepath-=~/.config/nvim
 set runtimepath-=~/.config/nvim/after
 set runtimepath-=~/.local/share/nvim/site
 set runtimepath-=~/.local/share/nvim/site/after
-set runtimepath-=~/.local/share/nvim/site/after
 set runtimepath-=/etc/xdg/nvim
-set runtimepath-=/usr/local/share/nvim/site
-set runtimepath-=/usr/share/nvim/site
 set runtimepath-=/etc/xdg/nvim/after
-set runtimepath-=/usr/local/share/nvim/site/after
+set runtimepath-=/usr/share/nvim/site
 set runtimepath-=/usr/share/nvim/site/after
+set runtimepath-=/usr/local/share/nvim/site
+set runtimepath-=/usr/local/share/nvim/site/after
 
-
-set runtimepath^=~/.config/nvim-nightly
 set runtimepath+=~/.config/nvim-nightly/after
+set runtimepath^=~/.config/nvim-nightly
+set runtimepath+=~/.local/share/nvim-nightly/site/after
+set runtimepath^=~/.local/share/nvim-nightly/site
 
-let g:projectrc_key = 'SECRET_KEY'
+" =============================================================================
+" = Project Key =
+" =============================================================================
+
+let g:projectrc_key = 'asd9u80'
 
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
 
-packadd minpac
+function! MinPacInit() abort
+    packadd minpac
 
-call minpac#init()
-call minpac#add('k-takata/minpac', { 'type': 'opt' })
+    call minpac#init()
+    call minpac#add('k-takata/minpac', { 'type': 'opt' })
 
-call minpac#add('itchyny/vim-gitbranch')
-call minpac#add('itchyny/lightline.vim')
-call minpac#add('editorconfig/editorconfig-vim')
-call minpac#add('gruvbox-community/gruvbox')
-call minpac#add('yggdroot/indentline')
-call minpac#add('jiangmiao/auto-pairs')
-call minpac#add('tpope/vim-surround')
-call minpac#add('Shougo/context_filetype.vim')
-call minpac#add('tyru/caw.vim')
-" call minpac#add('ap/vim-buftabline')
+    " Core
+    call minpac#add('creativenull/projectcmd.nvim', { 'type': 'opt' })
+    call minpac#add('editorconfig/editorconfig-vim')
+    call minpac#add('jiangmiao/auto-pairs')
+    call minpac#add('tpope/vim-surround')
+    call minpac#add('Shougo/context_filetype.vim')
+    call minpac#add('tyru/caw.vim')
+    call minpac#add('lewis6991/gitsigns.nvim', { 'type': 'opt' })
+    
+    " LSP
+    call minpac#add('neovim/nvim-lspconfig', { 'type': 'opt' })
+    call minpac#add('nvim-lua/completion-nvim', { 'type': 'opt' })
+    call minpac#add('nvim-lua/lsp-status.nvim', { 'type': 'opt' })
+    call minpac#add('nvim-lua/popup.nvim', { 'type': 'opt' })
+    call minpac#add('nvim-lua/plenary.nvim', { 'type': 'opt' })
+    call minpac#add('nvim-telescope/telescope.nvim', { 'type': 'opt' })
+    
+    " Theme
+    call minpac#add('gruvbox-community/gruvbox')
+    call minpac#add('itchyny/lightline.vim')
+    call minpac#add('itchyny/vim-gitbranch')
+    call minpac#add('yggdroot/indentline')
+    call minpac#add('ap/vim-buftabline')
+    call minpac#add('nvim-treesitter/nvim-treesitter', { 'type': 'opt' })
+endfunction
 
-call minpac#add('kyazdani42/nvim-web-devicons', { 'type': 'opt' })
-packadd nvim-web-devicons
-call minpac#add('akinsho/nvim-bufferline.lua', { 'type': 'opt' })
-packadd nvim-bufferline.lua
+" Lua Plugins
+packadd gitsigns.nvim
+packadd projectcmd.nvim
 
-call minpac#add('neovim/nvim-lspconfig', { 'type': 'opt' })
 packadd nvim-lspconfig
-
-call minpac#add('nvim-lua/completion-nvim', { 'type': 'opt' })
 packadd completion-nvim
-
-call minpac#add('nvim-lua/lsp-status.nvim', { 'type': 'opt' })
 packadd lsp-status.nvim
-
-call minpac#add('nvim-lua/popup.nvim', { 'type': 'opt' })
-call minpac#add('nvim-lua/plenary.nvim', { 'type': 'opt' })
-call minpac#add('nvim-telescope/telescope.nvim', { 'type': 'opt' })
 packadd popup.nvim
 packadd plenary.nvim
 packadd telescope.nvim
-
-call minpac#add('nvim-treesitter/nvim-treesitter', { 'type': 'opt' })
 packadd nvim-treesitter
-
-call minpac#add('lewis6991/gitsigns.nvim', { 'type': 'opt' })
-packadd gitsigns.nvim
 
 " =============================================================================
 " = Plugin Options =
@@ -99,8 +115,8 @@ let g:lightline = {
     \ }
 
 " --- vim-buftabline ---
-" let g:buftabline_show = 1
-" let g:buftabline_indicators = 1
+let g:buftabline_show = 1
+let g:buftabline_indicators = 1
 
 " =============================================================================
 " = Auto Commands =
@@ -112,7 +128,8 @@ let g:lightline = {
 
 " Display LSP diagnostics to statusline
 function! LSP_StatusLine() abort
-    let l:diagnostics = luaeval("require('lsp-status').diagnostics()")
+    " let l:diagnostics = luaeval("require('lsp-status').diagnostics()")
+    let l:diagnostics = { 'errors': 0, 'warnings': 0 }
     let l:errors = l:diagnostics.errors
     let l:warnings = l:diagnostics.warnings
 
@@ -213,7 +230,7 @@ set noshowmode
 set laststatus=2
 
 " Tab line
-" set showtabline=1
+set showtabline=2
 
 " Better display
 set cmdheight=2
@@ -290,9 +307,9 @@ nnoremap <leader>r :e!<CR>
 " =============================================================================
 " = Commands =
 " =============================================================================
-command! PackUpdate call minpac#update()
-command! PackStatus call minpac#status()
-command! PackClean call minpac#clean()
+command! PackUpdate source $MYVIMRC | call MinPacInit() | call minpac#update()
+command! PackClean  source $MYVIMRC | call MinPacInit() | call minpac#clean()
+command! PackStatus packadd minpac | call minpac#status()
 
 command! Config edit $MYVIMRC
 command! ConfigLua edit $HOME/.config/nvim-nightly/lua/init.lua
