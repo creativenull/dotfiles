@@ -38,7 +38,7 @@ set runtimepath^=~/.local/share/nvim-nightly/site
 " = Project Key =
 " =============================================================================
 
-let g:projectrc_key = 'asd9u80'
+let g:projectrc_key = $NVIMRC_PROJECT_KEY
 
 " =============================================================================
 " = Plugin Manager =
