@@ -82,14 +82,12 @@ let g:ale_linters = {
    \   'css': ['stylelint'],
    \   'javascript': ['eslint', 'tsserver'],
    \   'javascriptreact': ['eslint', 'tsserver'],
-   \   'php': ['intelephense', 'phpcs', 'phan'],
+   \   'php': ['intelephense', 'phpcs', 'phpstan'],
    \   'scss': ['stylelint'],
    \   'typescript': ['eslint', 'tsserver'],
    \   'typescriptreact': ['eslint', 'tsserver'],
    \   'vue': ['vls'],
    \ }
-
-let g:ale_php_phan_use_client = 1
 
 " --- vim-startify Options ---
 let g:startify_change_to_dir = 0
@@ -264,7 +262,7 @@ function! LSP_StatusLine() abort
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? 'ale 🟢' : printf(
+    return l:counts.total == 0 ? '' : printf(
         \   'ale %d 🔴 %d 🟡',
         \   all_errors,
         \   all_non_errors,
@@ -272,10 +270,10 @@ function! LSP_StatusLine() abort
 endfunction
 
 function! LSP_RegisterKeys() abort
+    nmap <silent> <F2>       :ALERename<CR>
     nmap <silent> <leader>ld :ALEGoToDefinition<CR>
     nmap <silent> <leader>lr :ALEFindReferences<CR>
     nmap <silent> <leader>lh :ALEHover<CR>
-    nmap <silent> <F2> :ALERename<CR>
     nmap <silent> <leader>le :lopen<CR>
 endfunction
 
