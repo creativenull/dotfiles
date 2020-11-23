@@ -24,7 +24,7 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " =============================================================================
 
 " --- ProjectRC Options ---
-let g:projectrc_key = '<custom-key-here>'
+let g:projectrc_key = $NVIMRC_PROJECT_KEY
 
 " --- deoplete Options ---
 let g:deoplete#enable_at_startup = 1
