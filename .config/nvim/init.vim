@@ -281,6 +281,14 @@ endfunction
 " = Auto Commands (single/groups) =
 " =============================================================================
 
+augroup lsp_setup
+    autocmd!
+    autocmd FileType javascript,javascriptreact call LSP_RegisterKeys()
+    autocmd FileType typescript,typescriptreact call LSP_RegisterKeys()
+    autocmd FileType vue call LSP_RegisterKeys()
+    autocmd FileType php call LSP_RegisterKeys()
+augroup END
+
 " =============================================================================
 " = Key Bindings =
 " =============================================================================
