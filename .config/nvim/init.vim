@@ -364,15 +364,14 @@ nnoremap <leader>vs :so $MYVIMRC<CR>:noh<CR>:EditorConfigReload<CR>
 " Reload file
 nnoremap <leader>r :e!<CR>
 
-" LSP key mappings
-call LSP_RegisterKeys()
-
 " =============================================================================
 " = Commands =
 " =============================================================================
 
 command! Config edit $MYVIMRC
+command! ConfigDir edit $NVIMRC_CONFIG_DIR
 command! MDToggleConceal call MDToggleConceal()
+command! LSPRegisterKeys call LSPRegisterKeys()
 
 " =============================================================================
 " = Theming and Looks =
