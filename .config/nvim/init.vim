@@ -23,8 +23,8 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " = Plugin Global Options =
 " =============================================================================
 
-" --- ProjectRC Options ---
-let g:projectrc_key = $NVIMRC_PROJECT_KEY
+" --- ProjectCMD Options ---
+let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
 
 " --- deoplete Options ---
 let g:deoplete#enable_at_startup = 1
@@ -82,7 +82,7 @@ let g:ale_linters = {
    \   'css': ['stylelint'],
    \   'javascript': ['eslint', 'tsserver'],
    \   'javascriptreact': ['eslint', 'tsserver'],
-   \   'php': ['intelephense', 'phpcs', 'phpstan'],
+   \   'php': ['intelephense_ftplugin', 'phpcs', 'phpstan'],
    \   'scss': ['stylelint'],
    \   'typescript': ['eslint', 'tsserver'],
    \   'typescriptreact': ['eslint', 'tsserver'],
@@ -105,6 +105,7 @@ let g:startify_lists = [
 call plug#begin(g:plugins_dir)
 
 " Core
+Plug 'creativenull/projectcmd.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
