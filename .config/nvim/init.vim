@@ -82,7 +82,7 @@ let g:ale_linters = {
    \   'css': ['stylelint'],
    \   'javascript': ['eslint', 'tsserver'],
    \   'javascriptreact': ['eslint', 'tsserver'],
-   \   'php': ['intelephense_ftplugin', 'phpcs', 'phpstan'],
+   \   'php': ['intelephense', 'phpcs', 'phpstan'],
    \   'scss': ['stylelint'],
    \   'typescript': ['eslint', 'tsserver'],
    \   'typescriptreact': ['eslint', 'tsserver'],
