@@ -9,16 +9,13 @@ export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-	export EDITOR='nvim'
+	export EDITOR=nvim
 else
-	export EDITOR='nvim'
+	export EDITOR=nvim
 fi
 
-# List alias
-alias l="ls -Aohg --group-directories-first"
-
-# Directory colors (WSL Only)
-eval `dircolors ~/.dircolors`
+# List files/dir
+alias l="lsd -lA --blocks permission,size,date,name --date relative --group-dirs first"
 
 # neovim
 export PYTHON3_HOST_PROG=/usr/bin/python3
@@ -27,12 +24,12 @@ export NVIMRC_CONFIG_DIR=$HOME/.config/nvim
 export NVIMRC_PLUGINS_DIR=$HOME/.local/share/nvim/plugged
 
 # Global aliases
-alias v="nvim"
-alias os-update="echo 'update'"
-alias os-pkg="echo 'pkg'"
+alias v=nvim
+alias os-update="sudo apt update && sudo apt upgrade"
+alias os-pkg="sudo apt"
 
 # Git aliases
-alias g="git"
+alias g=git
 alias gA="git add -A"
 alias ga="git add"
 alias gbr="git branch"
@@ -52,6 +49,3 @@ alias gro="git remote"
 alias gs="git status"
 alias gst="git stash"
 alias gt="git tag"
-
-# Run tmux
-#[[ $TERM != "screen" ]] && exec tmux
