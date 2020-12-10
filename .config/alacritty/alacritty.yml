@@ -87,7 +87,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: JetBrainsMono NF
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
     style: Regular
@@ -115,7 +115,7 @@ font:
     #style: Italic
 
   # Point size
-  size: 13
+  size: 12
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -348,9 +348,6 @@ selection:
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: false
 
-# Allow terminal applications to change Alacritty's window title.
-dynamic_title: true
-
 cursor:
   # Cursor style
   #
@@ -377,10 +374,7 @@ live_config_reload: true
 #   - (Linux) user login shell
 #   - (Windows) powershell
 shell:
-  program: /bin/zsh
-  args:
-    - -c
-    - "tmux -2"
+  program: /usr/bin/zsh
 
 # Startup directory
 #
