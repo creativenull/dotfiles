@@ -90,7 +90,7 @@ require('creativenull.lsp')
 -- Treesitter
 vim.cmd('packadd nvim-treesitter')
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = { 'html', 'css', 'json', 'javascript', 'typescript', 'tsx', 'python', 'php', 'lua' },
+    ensure_installed = { 'html', 'css', 'json', 'javascript', 'typescript', 'python', 'php', 'lua' },
     highlight = {
         enable = true
     }
@@ -113,12 +113,12 @@ telescope.setup {
     }
 }
 
-nnoremap('<C-p>', '<cmd>lua require"telescope.builtin".find_files{}<CR>')
-nnoremap('<C-t>', '<cmd>lua require"telescope.builtin".lsp_document_symbols{}<CR>')
+nnoremap('<C-p>', '<cmd>Telescope find_files find_command=rg,--files,--hidden,--iglob,!.git<CR>')
+nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
 
 -- Gitsigns
 vim.cmd('packadd gitsigns.nvim')
-require('gitsigns').setup()
+require('gitsigns').setup{}
 
 -- =============================================================================
 -- = General =
