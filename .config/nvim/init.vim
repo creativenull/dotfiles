@@ -42,17 +42,17 @@ let g:user_emmet_leader_key = '<C-z>'
 
 " --- Lightline Options ---
 let g:lightline = {
-    \   'colorscheme': 'gruvbox',
-    \   'component': { 'line': 'LN %l/%L' },
-    \   'component_function': {
-    \       'gitbranch': 'gitbranch#name',
-    \       'lsp': 'LSP_StatusLine',
-    \   },
-    \   'active': {
-    \       'left': [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
-    \       'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ],
-    \   },
-    \ }
+    \ 'colorscheme': 'gruvbox',
+    \ 'component': { 'line': 'LN %l/%L' },
+    \ 'component_function': {
+    \     'gitbranch': 'gitbranch#name',
+    \     'lsp': 'LSP_StatusLine',
+    \ },
+    \ 'active': {
+    \     'left':  [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
+    \     'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ],
+    \ },
+\ }
 
 " --- vim-buftabline Options ---
 let g:buftabline_show = 1
@@ -74,29 +74,29 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
-    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ }
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ }
 
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
-   \   'css': ['stylelint'],
-   \   'javascript': ['eslint', 'tsserver'],
-   \   'javascriptreact': ['eslint', 'tsserver'],
-   \   'php': ['intelephense', 'phpcs', 'phpstan'],
-   \   'scss': ['stylelint'],
-   \   'typescript': ['eslint', 'tsserver'],
-   \   'typescriptreact': ['eslint', 'tsserver'],
-   \   'vue': ['vls'],
-   \ }
+    \ 'css':             ['stylelint'],
+    \ 'javascript':      ['eslint', 'tsserver'],
+    \ 'javascriptreact': ['eslint', 'tsserver'],
+    \ 'php':             ['intelephense_ftplugin', 'phpcs', 'phpstan'],
+    \ 'scss':            ['stylelint'],
+    \ 'typescript':      ['eslint', 'tsserver'],
+    \ 'typescriptreact': ['eslint', 'tsserver'],
+    \ 'vue':             ['vls'],
+\ }
 
 " --- vim-startify Options ---
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
-    \   { 'type': 'dir',       'header': ['   MRU '. getcwd()]  },
-    \   { 'type': 'sessions',  'header': ['   Sessions']        },
-    \   { 'type': 'bookmarks', 'header': ['   Bookmarks']       },
-    \   { 'type': 'commands',  'header': ['   Commands']        },
-    \ ]
+    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()]  },
+    \ { 'type': 'sessions',  'header': ['   Sessions']        },
+    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']       },
+    \ { 'type': 'commands',  'header': ['   Commands']        },
+\ ]
 
 " =============================================================================
 " = Plugin Manager =
@@ -264,16 +264,17 @@ function! LSP_StatusLine() abort
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
     return l:counts.total == 0 ? '' : printf(
-        \   'ale %d 🔴 %d 🟡',
-        \   all_errors,
-        \   all_non_errors,
-        \ )
+        \ 'ale %d 🔴 %d 🟡',
+        \ all_errors,
+        \ all_non_errors,
+    \ )
 endfunction
 
 function! LSP_RegisterKeys() abort
     nmap <silent> <F2>       :ALERename<CR>
     nmap <silent> <leader>ld :ALEGoToDefinition<CR>
     nmap <silent> <leader>lr :ALEFindReferences<CR>
+    nmap <silent> <leader>lf :ALEFix<CR>
     nmap <silent> <leader>lh :ALEHover<CR>
     nmap <silent> <leader>le :lopen<CR>
 endfunction
