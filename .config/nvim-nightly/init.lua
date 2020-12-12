@@ -33,6 +33,9 @@ vim.cmd('set runtimepath^=~/.local/share/nvim-nightly/site')
 -- Utils
 require('creativenull.utils')
 
+local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
+local local_dir = os.getenv('HOME') .. '/.local/share/nvim-nightly'
+
 -- =============================================================================
 -- = Functions =
 -- =============================================================================
@@ -51,31 +54,7 @@ end
 -- =============================================================================
 
 vim.cmd('packadd packer.nvim')
-local packer = require('packer')
-packer.init({ package_root = '~/.local/share/nvim-nightly/site/pack' })
-packer.startup(function()
-    use { 'wbthomason/packer.nvim', opt = true }
-
-    -- Editor
-    use { 'jiangmiao/auto-pairs' }
-    use { 'tpope/vim-surround' }
-    use { 'Shougo/context_filetype.vim' }
-    use { 'tyru/caw.vim' }
-    use { 'lewis6991/gitsigns.nvim', opt = true }
-
-    -- LSP
-    use { 'neovim/nvim-lspconfig', opt = true  }
-    use { 'nvim-lua/completion-nvim', opt = true  }
-    use { 'nvim-lua/lsp-status.nvim', opt = true  }
-    use { 'nvim-telescope/telescope.nvim', opt = true  }
-    use { 'nvim-lua/popup.nvim', opt = true  }
-    use { 'nvim-lua/plenary.nvim', opt = true  }
-
-    -- Themes and Syntax
-    use { 'gruvbox-community/gruvbox' }
-    use { 'yggdroot/indentline' }
-    use { 'nvim-treesitter/nvim-treesitter', opt = true }
-end)
+require('creativenull.plugins')
 
 -- =============================================================================
 -- = Plugin Options =
@@ -120,9 +99,17 @@ nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
 vim.cmd('packadd gitsigns.nvim')
 require('gitsigns').setup{}
 
+-- ProjectCMD
+-- vim.cmd('packadd projectcmd.nvim')
+-- require('projectcmd').setup {
+--     key = os.getenv('NVIMRC_PROJECT_KEY')
+-- }
+
 -- =============================================================================
 -- = General =
 -- =============================================================================
+
+vim.cmd('filetype plugin indent on')
 
 -- Completion options
 vim.o.completeopt = 'menuone,noinsert,noselect'
@@ -214,12 +201,12 @@ inoremap('<right>', '<nop>')
 inoremap('jk', '<ESC>')
 
 -- Map escape from terminal input to Normal mode
-tnoremap('<ESC>', "<C-\\><C-n>")
-tnoremap('<C-[>', "<C-\\><C-n>")
+tnoremap('<ESC>', [[ <C-\><C-n> ]])
+tnoremap('<C-[>', [[ <C-\><C-n> ]])
 
 -- Copy/Paste from the system clipboard
-vnoremap('<C-i>', '"+y<CR>')
-nnoremap('<C-o>', '"+p<CR>')
+vnoremap('<C-i>', [[ "+y<CR> ]])
+nnoremap('<C-o>', [[ "+p<CR> ]])
 
 -- File explorer
 nnoremap('<F3>', ':Ex<CR>')
@@ -246,10 +233,10 @@ nnoremap('<right>', ':vertical resize +2<CR>')
 -- Text maps
 -- ---------
 -- Move a line of text Alt+[j/k]
-nnoremap('<M-j>', 'mz:m+<CR>`z')
-nnoremap('<M-k>', 'mz:m-2<CR>`z')
-vnoremap('<M-j>', ":m'>+<CR>`<my`>mzgv`yo`z")
-vnoremap('<M-k>', ":m'<-2<CR>`>my`<mzgv`yo`z")
+nnoremap('<M-j>', [[ mz:m+<CR>`z ]])
+nnoremap('<M-k>', [[ mz:m-2<CR>`z ]])
+vnoremap('<M-j>', [[ :m'>+<CR>`<my`>mzgv`yo`z ]])
+vnoremap('<M-k>', [[ :m'<-2<CR>`>my`<mzgv`yo`z ]])
 
 -- Reload file
 nnoremap('<leader>r', ':e!<CR>')
@@ -261,7 +248,9 @@ nnoremap('<leader>r', ':e!<CR>')
 vim.cmd('command! ToggleConceal lua ToggleConceal()')
 
 vim.cmd('command! Config edit $MYVIMRC')
-vim.cmd('command! ConfigDir edit $HOME/.config/nvim-nightly')
+vim.cmd('command! ConfigPlugins edit ' .. config_dir .. '/lua/creativenull/plugins.lua')
+vim.cmd('command! ConfigDir edit ' .. config_dir)
+vim.cmd('command! ConfigReload luafile $MYVIMRC')
 
 -- =============================================================================
 -- = Theming and Looks =
