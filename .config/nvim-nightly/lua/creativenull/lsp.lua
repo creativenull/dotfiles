@@ -13,7 +13,6 @@ local function lsp_register_keys()
 end
 
 local function completion_setup(client)
-    vim.g.completion_confirm_key = [[ <C-y> ]]
     vim.g.completion_matching_smart_case = 1
     vim.g.completion_enable_snippet = 'UltiSnips'
     vim.g.completion_trigger_keyword_length = 3
@@ -66,10 +65,14 @@ lsp.intelephense.setup{
 
 -- Lua LSP
 lsp.sumneko_lua.setup {
+    cmd = { 'luals' },
     on_attach = on_attach,
     capabilities = lsp_status.capabilities,
     settings = {
         Lua = {
+            runtime = {
+                version = 'Lua 5.1'
+            },
             diagnostics = {
                 globals = {
                     'vim',
