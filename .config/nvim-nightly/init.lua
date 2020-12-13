@@ -31,7 +31,7 @@ vim.cmd('set runtimepath+=~/.local/share/nvim-nightly/site/after')
 vim.cmd('set runtimepath^=~/.local/share/nvim-nightly/site')
 
 -- Utils
-require('creativenull.utils')
+local util = require('creativenull.utils')
 
 local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
 local local_dir = os.getenv('HOME') .. '/.local/share/nvim-nightly'
@@ -40,6 +40,8 @@ local local_dir = os.getenv('HOME') .. '/.local/share/nvim-nightly'
 -- = Functions =
 -- =============================================================================
 
+-- Toggle the conceal level to show
+-- or hide chars in markdown, json and co.
 function ToggleConceal()
     local conceal = vim.wo.conceallevel
     if conceal == 0 then
@@ -47,6 +49,66 @@ function ToggleConceal()
     else
         vim.wo.conceallevel = 0
     end
+end
+
+-- Returns the vim mode
+function CursorMode()
+    local mode_map = {
+        ['n'] = 'NORMAL',
+        ['v'] = 'VISUAL',
+        ['V'] = 'V-LINE',
+        [''] = 'V-BLOCK',
+        ['i'] = 'INSERT',
+        ['R'] = 'REPLACE',
+        ['Rv'] = 'V-REPLACE',
+        ['c'] = 'COMMAND',
+    }
+
+    return mode_map[vim.fn.mode()]
+end
+
+-- Check for the git repo and return the
+-- branch name if it exists
+function GitBranch()
+    local cmd = 'git branch --show-current'
+
+    local is_dir = util.is_dir(vim.fn.getcwd() .. '/.git')
+    if not is_dir then
+        return ''
+    end
+
+    local fp = io.popen(cmd)
+    local branch = fp:read('*a')
+
+    -- TODO:
+    -- Will need to check if the '^@' chars are at the end
+    -- instead of implicitly removing the last 2 chars
+    branch = string.sub(branch, 0, -2)
+    return branch
+end
+
+function LSPStatus()
+    local diagnostics = require('lsp-status').diagnostics()
+    if diagnostics.errors > 0 or diagnostics.warnings > 0 then
+        return string.format('LSP %d 🔴 %d 🟡 ', diagnostics.errors, diagnostics.warnings)
+    end
+
+    return ''
+end
+
+function StatusLine()
+    local status = ''
+
+    -- left side
+    status = status .. [[ %-{luaeval("CursorMode()")}]]
+    status = status .. [[ %-{luaeval("GitBranch()")}]]
+    status = status .. [[ %-t %-m %-r ]]
+
+    -- right side
+    status = status .. [[ %= %y LN %l/%L]]
+    status = status .. [[ %{luaeval("LSPStatus()")}]]
+
+    return status
 end
 
 -- =============================================================================
@@ -110,6 +172,8 @@ require('gitsigns').setup{}
 -- =============================================================================
 
 vim.cmd('filetype plugin indent on')
+
+vim.o.statusline = StatusLine()
 
 -- Completion options
 vim.o.completeopt = 'menuone,noinsert,noselect'
@@ -248,8 +312,10 @@ nnoremap('<leader>r', ':e!<CR>')
 vim.cmd('command! ToggleConceal lua ToggleConceal()')
 
 vim.cmd('command! Config edit $MYVIMRC')
-vim.cmd('command! ConfigPlugins edit ' .. config_dir .. '/lua/creativenull/plugins.lua')
 vim.cmd('command! ConfigDir edit ' .. config_dir)
+vim.cmd('command! ConfigPlugins edit ' .. config_dir .. '/lua/creativenull/plugins.lua')
+vim.cmd('command! ConfigLSP edit ' .. config_dir .. '/lua/creativenull/lsp.lua')
+
 vim.cmd('command! ConfigReload luafile $MYVIMRC')
 
 -- =============================================================================
