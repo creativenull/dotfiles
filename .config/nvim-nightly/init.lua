@@ -63,8 +63,9 @@ function CursorMode()
         ['Rv'] = 'V-REPLACE',
         ['c'] = 'COMMAND',
     }
+    local current_mode = mode_map[vim.fn.mode()]
 
-    return mode_map[vim.fn.mode()]
+    return current_mode
 end
 
 -- Check for the git repo and return the
@@ -84,9 +85,10 @@ function GitBranch()
     -- Will need to check if the '^@' chars are at the end
     -- instead of implicitly removing the last 2 chars
     branch = string.sub(branch, 0, -2)
-    return branch
+    return [[ ]] .. branch
 end
 
+-- nvim-lsp status diagnostics
 function LSPStatus()
     local diagnostics = require('lsp-status').diagnostics()
     if diagnostics.errors > 0 or diagnostics.warnings > 0 then
@@ -96,10 +98,24 @@ function LSPStatus()
     return ''
 end
 
+-- Add color to the whole statusline
+function StatusLineColor(mode)
+    if mode == 'INSERT' then
+        return '%#GruvboxBlueBg#'
+    elseif mode == 'VISUAL' or mode == 'V-LINE' or mode == 'V-BLOCK' then
+        return '%#GruvboxOrangeBg#'
+    elseif mode == 'COMMAND' then
+        return '%#GruvboxPurpleBg#'
+    else
+        return '%1*'
+    end
+end
+
 function StatusLine()
     local status = ''
 
     -- left side
+    status = status .. StatusLineColor(CursorMode())
     status = status .. [[ %-{luaeval("CursorMode()")}]]
     status = status .. [[ %-{luaeval("GitBranch()")}]]
     status = status .. [[ %-t %-m %-r ]]
@@ -110,6 +126,84 @@ function StatusLine()
 
     return status
 end
+
+-- =============================================================================
+-- = General =
+-- =============================================================================
+
+vim.cmd('filetype plugin indent on')
+
+vim.o.termguicolors = true
+
+-- Completion options
+vim.o.completeopt = 'menuone,noinsert,noselect'
+vim.o.shortmess = vim.o.shortmess .. 'c'
+
+-- Search options
+vim.o.hlsearch = true
+vim.o.incsearch = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.wrapscan = true
+
+-- Indent options
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.tabstop = 4
+vim.o.expandtab = true
+vim.o.autoindent = true
+vim.o.smartindent = true
+
+-- Line options
+vim.o.showmatch = true
+vim.o.showbreak = '+++'
+vim.o.textwidth = 120
+vim.o.scrolloff = 3
+vim.wo.linebreak = true
+vim.wo.colorcolumn = '120'
+
+-- No backups or swapfiles needed
+vim.o.backup = false
+vim.o.writebackup = false
+vim.o.swapfile = false
+
+-- Lazy redraw
+vim.o.lazyredraw = true
+
+-- Undo history
+vim.o.undolevels = 1000
+
+-- Buffers/Tabs/Windows
+vim.o.hidden = true
+
+-- update time to 300ms
+vim.o.updatetime = 300
+
+-- Set spelling
+vim.o.spell = false
+
+-- For git
+vim.wo.signcolumn = 'yes'
+
+-- Mouse support
+vim.o.mouse = 'a'
+
+-- backspace behaviour
+vim.o.backspace = 'indent,eol,start'
+
+-- Status line
+vim.o.showmode = false
+vim.o.laststatus = 2
+vim.wo.statusline = '%!luaeval("StatusLine()")'
+
+-- Tab line
+vim.o.showtabline = 2
+
+-- Better display
+vim.o.cmdheight = 2
+
+-- Auto reload file if changed outside vim, or just :e!
+vim.o.autoread = true
 
 -- =============================================================================
 -- = Plugin Manager =
@@ -166,83 +260,6 @@ require('gitsigns').setup{}
 -- require('projectcmd').setup {
 --     key = os.getenv('NVIMRC_PROJECT_KEY')
 -- }
-
--- =============================================================================
--- = General =
--- =============================================================================
-
-vim.cmd('filetype plugin indent on')
-
-vim.o.statusline = StatusLine()
-
--- Completion options
-vim.o.completeopt = 'menuone,noinsert,noselect'
-vim.o.shortmess = vim.o.shortmess .. 'c'
-
--- Search options
-vim.o.hlsearch = true
-vim.o.incsearch = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.wrapscan = true
-
--- Indent options
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
-vim.o.tabstop = 4
-vim.o.expandtab = true
-vim.o.autoindent = true
-vim.o.smartindent = true
-
--- Line options
-vim.o.showmatch = true
-vim.o.showbreak = '+++'
-vim.o.textwidth = 120
-vim.o.scrolloff = 3
-vim.wo.linebreak = true
-vim.wo.colorcolumn = '120'
-
--- No backups or swapfiles needed
-vim.o.backup = false
-vim.o.writebackup = false
-vim.o.swapfile = false
-
--- Lazy redraw
-vim.o.lazyredraw = true
-
--- Undo history
-vim.o.undolevels = 1000
-
--- Buffers/Tabs/Windows
-vim.o.hidden = true
-
--- update time to 300ms
-vim.o.updatetime = 300
-
--- Set spelling
-vim.o.spell = false
-
--- For git
-vim.o.signcolumn = 'yes'
-
--- Mouse support
-vim.o.mouse = 'a'
-
--- backspace behaviour
-vim.o.backspace = 'indent,eol,start'
-
--- Status line
-vim.o.showmode = false
-vim.o.laststatus = 2
-
--- Tab line
-vim.o.showtabline = 2
-
--- Better display
-vim.o.cmdheight = 2
-
--- Auto reload file if changed outside vim, or just :e!
-vim.o.autoread = true
 
 -- =============================================================================
 -- = Keybindings =
@@ -334,3 +351,8 @@ vim.g.gruvbox_invert_selection = 0
 vim.g.gruvbox_number_column = 'dark0_hard'
 
 vim.cmd('colorscheme gruvbox')
+vim.cmd [[hi GruvboxBlueBg ctermfg=235 ctermbg=66 guifg=#1d2021 guibg=#458588]]
+vim.cmd [[hi GruvboxGreenBg ctermfg=235 ctermbg=106 guifg=#1d2021 guibg=#98971a]]
+vim.cmd [[hi GruvboxOrangeBg ctermfg=235 ctermbg=166 guifg=#1d2021 guibg=#d65d0e]]
+vim.cmd [[hi GruvboxPurpleBg ctermfg=235 ctermbg=132 guifg=#1d2021 guibg=#b16286]]
+vim.cmd [[hi! User1 ctermfg=223 ctermbg=239 guifg=#ebdbb2 guibg=#504945]]
