@@ -20,7 +20,126 @@ let g:plugins_dir = $NVIMRC_PLUGINS_DIR
 let g:config_dir = $NVIMRC_CONFIG_DIR
 
 " =============================================================================
-" = Plugin Global Options =
+" = Functions =
+" =============================================================================
+
+function! SetDarkTheme() abort
+    let g:gruvbox_contrast_dark = 'hard'
+    let g:gruvbox_sign_column = 'dark0_hard'
+    let g:gruvbox_invert_selection = 0
+    let g:gruvbox_number_column = 'dark0_hard'
+    let g:ayucolor='mirage'
+    set background=dark
+endfunction
+
+function! SetLightTheme() abort
+    let g:gruvbox_contrast_light='soft'
+    let g:gruvbox_sign_column='light0_soft'
+    let g:gruvbox_invert_selection=0
+    let g:gruvbox_number_column='light0_soft'
+    let g:indentLine_color_term=242
+    set background=light
+endfunction
+
+function! MDToggleConceal() abort
+    if &conceallevel == 2
+        set conceallevel=0
+        let g:vim_markdown_conceal = 0
+        let g:vim_markdown_conceal_code_blocks = 0
+    else
+        set conceallevel=2
+        let g:vim_markdown_conceal = 1
+        let g:vim_markdown_conceal_code_blocks = 1
+    endif
+endfunction
+
+" Language Server Protocol setup
+" ---
+function! RegisterLspKeymaps() abort
+    nmap <silent> <F2>       :ALERename<CR>
+    nmap <silent> <leader>ld :ALEGoToDefinition<CR>
+    nmap <silent> <leader>lr :ALEFindReferences<CR>
+    nmap <silent> <leader>lf :ALEFix<CR>
+    nmap <silent> <leader>lh :ALEHover<CR>
+    nmap <silent> <leader>le :lopen<CR>
+endfunction
+
+" Status Line
+" ---
+function! LSPStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? 'ALE ' : printf(
+        \ 'ALE %d 🔴 %d 🟡 ',
+        \ all_errors,
+        \ all_non_errors,
+    \ )
+endfunction
+
+function! CursorMode()
+    let l:mode_map = {
+        \ '': 'V-BLOCK',
+        \ 'R':  'REPLACE',
+        \ 'Rv': 'V-REPLACE',
+        \ 'V':  'V-LINE',
+        \ 'c':  'COMMAND',
+        \ 'i':  'INSERT',
+        \ 'n':  'NORMAL',
+        \ 'v':  'VISUAL',
+    \}
+    let l:current_mode = mode_map[mode()]
+
+    return printf('%s ', l:current_mode)
+endfunction
+
+function! GitBranch()
+    let l:branch = gitbranch#name()
+    return branch == '' ? ' ' : printf('  %s ', branch)
+endfunction
+
+function! BufferName()
+    let l:buf = expand('%:t')
+    return buf == '[No Name]' ? '' : printf('%s ', buf)
+endfunction
+
+function! StatusLineRender()
+    let l:left_sep = "\uE0B8"
+    let l:right_sep = "\uE0BA"
+    let l:statusline = [
+        \ '%1* %-{CursorMode()}',
+        \ '%7*' . left_sep,
+        \ '%2*%-{GitBranch()}',
+        \ '%-{BufferName()}',
+        \ '%8*' . left_sep . ' ',
+        \ '%*%-m %-r',
+        \ '%=',
+        \ '%y LN %l/%L ',
+        \ '%9*' . right_sep,
+        \ '%3* %{LSPStatus()}%*',
+        \]
+
+    return join(statusline, '')
+endfunction
+
+" =============================================================================
+" = Auto Commands (single/groups) =
+" =============================================================================
+
+" FZF statusline hide
+autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
+
+" LSP Keymap Register
+augroup lsp_setup
+    autocmd!
+    autocmd FileType javascript,javascriptreact call RegisterLspKeymaps()
+    autocmd FileType typescript,typescriptreact call RegisterLspKeymaps()
+    autocmd FileType vue call RegisterLspKeymaps()
+    autocmd FileType php call RegisterLspKeymaps()
+augroup END
+
+" =============================================================================
+" = Plugin Options =
 " =============================================================================
 
 " --- ProjectCMD Options ---
@@ -40,23 +159,10 @@ let g:vue_pre_processors = ['typescript', 'scss']
 " --- Emmet ---
 let g:user_emmet_leader_key = '<C-z>'
 
-" --- Lightline Options ---
-let g:lightline = {
-    \ 'colorscheme': 'gruvbox',
-    \ 'component': { 'line': 'LN %l/%L' },
-    \ 'component_function': {
-    \     'gitbranch': 'gitbranch#name',
-    \     'lsp': 'LSP_StatusLine',
-    \ },
-    \ 'active': {
-    \     'left':  [ [ 'mode', 'paste' ], [ 'gitbranch' ] ],
-    \     'right': [ [ 'lsp' ], [ 'line' ], [ 'filetype' ] ],
-    \ },
-\ }
-
 " --- vim-buftabline Options ---
 let g:buftabline_show = 1
 let g:buftabline_indicators = 1
+let g:buftabline_numbers = 2
 
 " --- fzf Options ---
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
@@ -79,14 +185,14 @@ let g:ale_fixers = {
 
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
-    \ 'css':             ['stylelint'],
-    \ 'javascript':      ['eslint', 'tsserver'],
+    \ 'css': ['stylelint'],
+    \ 'javascript': ['eslint', 'tsserver'],
     \ 'javascriptreact': ['eslint', 'tsserver'],
-    \ 'php':             ['intelephense_ftplugin', 'phpcs', 'phpstan'],
-    \ 'scss':            ['stylelint'],
-    \ 'typescript':      ['eslint', 'tsserver'],
+    \ 'php': ['intelephense_ftplugin', 'phpcs', 'phpstan'],
+    \ 'scss': ['stylelint'],
+    \ 'typescript': ['eslint', 'tsserver'],
     \ 'typescriptreact': ['eslint', 'tsserver'],
-    \ 'vue':             ['vls'],
+    \ 'vue': ['vls'],
 \ }
 
 " --- vim-startify Options ---
@@ -108,10 +214,9 @@ call plug#begin(g:plugins_dir)
 Plug 'creativenull/projectcmd.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
-Plug 'dense-analysis/ale'
+Plug 'creativenull/ale'
 Plug 'SirVer/ultisnips'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -123,13 +228,15 @@ Plug 'junegunn/fzf.vim'
 
 " Theme, Syntax
 Plug 'ap/vim-buftabline'
-Plug 'gruvbox-community/gruvbox'
-Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'sheerun/vim-polyglot'
 Plug 'yggdroot/indentline'
-Plug 'ryym/vim-riot'
 Plug 'mhinz/vim-startify'
+Plug 'gruvbox-community/gruvbox'
+Plug 'aonemd/kuroi.vim'
+Plug 'srcery-colors/srcery-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 call plug#end()
 
@@ -151,7 +258,7 @@ set encoding=utf8
 
 " Completion options
 set completeopt=menuone,noinsert,noselect
-set shortmess+=c
+set shortmess+=wc
 
 " Search options
 set hlsearch
@@ -214,6 +321,7 @@ set backspace=indent,eol,start
 " Status line
 set noshowmode
 set laststatus=2
+set statusline=%!StatusLineRender()
 
 " Tab line
 set showtabline=2
@@ -223,73 +331,6 @@ set cmdheight=2
 
 " Auto reload file if changed outside vim, or just :e!
 set autoread
-
-" =============================================================================
-" = Functions =
-" =============================================================================
-
-function! ThemeSetDark() abort
-    let g:gruvbox_contrast_dark = 'hard'
-    let g:gruvbox_sign_column = 'dark0_hard'
-    let g:gruvbox_invert_selection = 0
-    let g:gruvbox_number_column = 'dark0_hard'
-    set background=dark
-endfunction
-
-function! ThemeSetLight() abort
-    let g:gruvbox_contrast_light='soft'
-    let g:gruvbox_sign_column='light0_soft'
-    let g:gruvbox_invert_selection=0
-    let g:gruvbox_number_column='light0_soft'
-    let g:indentLine_color_term=242
-    set background=light
-endfunction
-
-function! MDToggleConceal() abort
-    if &conceallevel == 2
-        set conceallevel=0
-        let g:vim_markdown_conceal = 0
-        let g:vim_markdown_conceal_code_blocks = 0
-    else
-        set conceallevel=2
-        let g:vim_markdown_conceal = 1
-        let g:vim_markdown_conceal_code_blocks = 1
-    endif
-endfunction
-
-" Language Server Protocol setup
-" ---
-function! LSP_StatusLine() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? '' : printf(
-        \ 'ale %d 🔴 %d 🟡',
-        \ all_errors,
-        \ all_non_errors,
-    \ )
-endfunction
-
-function! LSP_RegisterKeys() abort
-    nmap <silent> <F2>       :ALERename<CR>
-    nmap <silent> <leader>ld :ALEGoToDefinition<CR>
-    nmap <silent> <leader>lr :ALEFindReferences<CR>
-    nmap <silent> <leader>lf :ALEFix<CR>
-    nmap <silent> <leader>lh :ALEHover<CR>
-    nmap <silent> <leader>le :lopen<CR>
-endfunction
-
-" =============================================================================
-" = Auto Commands (single/groups) =
-" =============================================================================
-
-augroup lsp_setup
-    autocmd!
-    autocmd FileType javascript,javascriptreact call LSP_RegisterKeys()
-    autocmd FileType typescript,typescriptreact call LSP_RegisterKeys()
-    autocmd FileType vue call LSP_RegisterKeys()
-    autocmd FileType php call LSP_RegisterKeys()
-augroup END
 
 " =============================================================================
 " = Key Bindings =
@@ -372,8 +413,9 @@ nnoremap <leader>r :e!<CR>
 
 command! Config edit $MYVIMRC
 command! ConfigDir edit $NVIMRC_CONFIG_DIR
+command! ConfigReload so $MYVIMRC
 command! MDToggleConceal call MDToggleConceal()
-command! LSPRegisterKeys call LSPRegisterKeys()
+command! LSPRegisterKeymaps call RegisterLspKeymaps()
 
 " =============================================================================
 " = Theming and Looks =
@@ -381,8 +423,31 @@ command! LSPRegisterKeys call LSPRegisterKeys()
 
 syntax on
 set number
-set termguicolors
 set relativenumber
+set t_Co=256
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+endif
 
-call ThemeSetDark()
+call SetDarkTheme()
 colorscheme gruvbox
+
+" Buftabline
+hi BufTabLineCurrent ctermfg=235 ctermbg=72 guifg=#1d2021 guibg=#689d6a
+
+" Blue
+hi User1 ctermfg=235 ctermbg=66 guifg=#1d2021 guibg=#458588
+" Aqua
+hi User2 ctermfg=235 ctermbg=72 guifg=#1d2021 guibg=#689d6a
+" Purple
+hi User3 ctermfg=235 ctermbg=132 guifg=#1d2021 guibg=#b16286
+
+" Seperator colors
+" bluefg -> aquabg
+hi User7 cterm=reverse ctermfg=72 ctermbg=66 gui=reverse guifg=#689d6a guibg=#458588
+" bluefg -> statuslinebg
+hi User8 cterm=reverse ctermfg=239 ctermbg=72 gui=reverse guifg=#504945 guibg=#689d6a
+" statuslinebg -> purplefg
+hi User9 cterm=reverse ctermfg=239 ctermbg=132 gui=reverse guifg=#504945 guibg=#b16286
