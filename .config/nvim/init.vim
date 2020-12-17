@@ -70,8 +70,8 @@ function! LSPStatus() abort
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? ' ALE ' : printf(
-        \ ' ALE %d 🔴 %d 🟡 ',
+    return l:counts.total == 0 ? 'ALE ' : printf(
+        \ 'ALE %d 🔴 %d 🟡 ',
         \ all_errors,
         \ all_non_errors,
     \ )
@@ -95,7 +95,7 @@ endfunction
 
 function! GitBranch()
     let l:branch = gitbranch#name()
-    return branch == '' ? '' : printf('  %s', branch)
+    return branch == '' ? ' ' : printf('  %s ', branch)
 endfunction
 
 function! BufferName()
@@ -109,11 +109,14 @@ function! StatusLineRender()
     let l:statusline = [
         \ '%1* %-{CursorMode()}',
         \ '%7*' . left_sep,
-        \ '%2*%-{GitBranch()} ',
-        \ '%-{BufferName()}%8*' . left_sep . ' %*%-m %-r',
+        \ '%2*%-{GitBranch()}',
+        \ '%-{BufferName()}',
+        \ '%8*' . left_sep . ' ',
+        \ '%*%-m %-r',
         \ '%=',
         \ '%y LN %l/%L ',
-        \ '%9*' . right_sep . '%3*%{LSPStatus()}%*',
+        \ '%9*' . right_sep,
+        \ '%3* %{LSPStatus()}%*',
         \]
 
     return join(statusline, '')
