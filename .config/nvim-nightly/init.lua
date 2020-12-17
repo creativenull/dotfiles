@@ -31,12 +31,17 @@ vim.cmd('set runtimepath+=~/.local/share/nvim-nightly/site/after')
 vim.cmd('set runtimepath^=~/.local/share/nvim-nightly/site')
 
 -- Utils
-require('creativenull.utils')
+local util = require('creativenull.utils')
+
+local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
+local local_dir = os.getenv('HOME') .. '/.local/share/nvim-nightly'
 
 -- =============================================================================
 -- = Functions =
 -- =============================================================================
 
+-- Toggle the conceal level to show
+-- or hide chars in markdown, json and co.
 function ToggleConceal()
     local conceal = vim.wo.conceallevel
     if conceal == 0 then
@@ -46,83 +51,89 @@ function ToggleConceal()
     end
 end
 
--- =============================================================================
--- = Plugin Manager =
--- =============================================================================
-
-vim.cmd('packadd packer.nvim')
-local packer = require('packer')
-packer.init({ package_root = '~/.local/share/nvim-nightly/site/pack' })
-packer.startup(function()
-    use { 'wbthomason/packer.nvim', opt = true }
-
-    -- Editor
-    use { 'jiangmiao/auto-pairs' }
-    use { 'tpope/vim-surround' }
-    use { 'Shougo/context_filetype.vim' }
-    use { 'tyru/caw.vim' }
-    use { 'lewis6991/gitsigns.nvim', opt = true }
-
-    -- LSP
-    use { 'neovim/nvim-lspconfig', opt = true  }
-    use { 'nvim-lua/completion-nvim', opt = true  }
-    use { 'nvim-lua/lsp-status.nvim', opt = true  }
-    use { 'nvim-telescope/telescope.nvim', opt = true  }
-    use { 'nvim-lua/popup.nvim', opt = true  }
-    use { 'nvim-lua/plenary.nvim', opt = true  }
-
-    -- Themes and Syntax
-    use { 'gruvbox-community/gruvbox' }
-    use { 'yggdroot/indentline' }
-    use { 'nvim-treesitter/nvim-treesitter', opt = true }
-end)
-
--- =============================================================================
--- = Plugin Options =
--- =============================================================================
-
--- LSP
-vim.cmd('packadd lsp-status.nvim')
-vim.cmd('packadd completion-nvim')
-vim.cmd('packadd nvim-lspconfig')
-require('creativenull.lsp')
-
--- Treesitter
-vim.cmd('packadd nvim-treesitter')
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = { 'html', 'css', 'json', 'javascript', 'typescript', 'python', 'php', 'lua' },
-    highlight = {
-        enable = true
+-- Returns the vim mode
+function CursorMode()
+    local mode_map = {
+        ['n'] = 'NORMAL',
+        ['v'] = 'VISUAL',
+        ['V'] = 'V-LINE',
+        [''] = 'V-BLOCK',
+        ['i'] = 'INSERT',
+        ['R'] = 'REPLACE',
+        ['Rv'] = 'V-REPLACE',
+        ['c'] = 'COMMAND',
     }
-}
+    local current_mode = mode_map[vim.fn.mode()]
 
--- Telescope
-vim.cmd('packadd popup.nvim')
-vim.cmd('packadd plenary.nvim')
-vim.cmd('packadd telescope.nvim')
-local telescope = require('telescope')
-local telescope_actions = require('telescope.actions')
-telescope.setup {
-    defaults = {
-        mappings = {
-            i = {
-                ['<C-k>'] = telescope_actions.move_selection_previous,
-                ['<C-j>'] = telescope_actions.move_selection_next,
-            }
-        }
-    }
-}
+    return current_mode
+end
 
-nnoremap('<C-p>', '<cmd>Telescope find_files find_command=rg,--files,--hidden,--iglob,!.git<CR>')
-nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
+-- Check for the git repo and return the
+-- branch name if it exists
+function GitBranch()
+    local cmd = 'git branch --show-current'
 
--- Gitsigns
-vim.cmd('packadd gitsigns.nvim')
-require('gitsigns').setup{}
+    local is_dir = util.is_dir(vim.fn.getcwd() .. '/.git')
+    if not is_dir then
+        return ''
+    end
+
+    local fp = io.popen(cmd)
+    local branch = fp:read('*a')
+
+    -- TODO:
+    -- Will need to check if the '^@' chars are at the end
+    -- instead of implicitly removing the last 2 chars
+    branch = string.sub(branch, 0, -2)
+    return [[ ]] .. branch
+end
+
+-- nvim-lsp status diagnostics
+function LSPStatus()
+    local diagnostics = require('lsp-status').diagnostics()
+    if diagnostics.errors > 0 or diagnostics.warnings > 0 then
+        return string.format('LSP %d 🔴 %d 🟡 ', diagnostics.errors, diagnostics.warnings)
+    end
+
+    return ''
+end
+
+-- Add color to the whole statusline
+function StatusLineColor(mode)
+    if mode == 'INSERT' then
+        return '%#GruvboxBlueBg#'
+    elseif mode == 'VISUAL' or mode == 'V-LINE' or mode == 'V-BLOCK' then
+        return '%#GruvboxOrangeBg#'
+    elseif mode == 'COMMAND' then
+        return '%#GruvboxPurpleBg#'
+    else
+        return '%1*'
+    end
+end
+
+function StatusLine()
+    local status = ''
+
+    -- left side
+    status = status .. StatusLineColor(CursorMode())
+    status = status .. [[ %-{luaeval("CursorMode()")}]]
+    status = status .. [[ %-{luaeval("GitBranch()")}]]
+    status = status .. [[ %-t %-m %-r ]]
+
+    -- right side
+    status = status .. [[ %= %y LN %l/%L]]
+    status = status .. [[ %{luaeval("LSPStatus()")}]]
+
+    return status
+end
 
 -- =============================================================================
 -- = General =
 -- =============================================================================
+
+vim.cmd('filetype plugin indent on')
+
+vim.o.termguicolors = true
 
 -- Completion options
 vim.o.completeopt = 'menuone,noinsert,noselect'
@@ -172,7 +183,7 @@ vim.o.updatetime = 300
 vim.o.spell = false
 
 -- For git
-vim.o.signcolumn = 'yes'
+vim.wo.signcolumn = 'yes'
 
 -- Mouse support
 vim.o.mouse = 'a'
@@ -183,6 +194,7 @@ vim.o.backspace = 'indent,eol,start'
 -- Status line
 vim.o.showmode = false
 vim.o.laststatus = 2
+vim.wo.statusline = '%!luaeval("StatusLine()")'
 
 -- Tab line
 vim.o.showtabline = 2
@@ -192,6 +204,62 @@ vim.o.cmdheight = 2
 
 -- Auto reload file if changed outside vim, or just :e!
 vim.o.autoread = true
+
+-- =============================================================================
+-- = Plugin Manager =
+-- =============================================================================
+
+vim.cmd('packadd packer.nvim')
+require('creativenull.plugins')
+
+-- =============================================================================
+-- = Plugin Options =
+-- =============================================================================
+
+-- LSP
+vim.cmd('packadd lsp-status.nvim')
+vim.cmd('packadd completion-nvim')
+vim.cmd('packadd nvim-lspconfig')
+require('creativenull.lsp')
+
+-- Treesitter
+vim.cmd('packadd nvim-treesitter')
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = { 'html', 'css', 'json', 'javascript', 'typescript', 'python', 'php', 'lua' },
+    highlight = {
+        enable = true
+    }
+}
+
+-- Telescope
+vim.cmd('packadd popup.nvim')
+vim.cmd('packadd plenary.nvim')
+vim.cmd('packadd telescope.nvim')
+local telescope = require('telescope')
+local telescope_actions = require('telescope.actions')
+telescope.setup {
+    defaults = {
+        mappings = {
+            i = {
+                ['<C-k>'] = telescope_actions.move_selection_previous,
+                ['<C-j>'] = telescope_actions.move_selection_next,
+            }
+        }
+    }
+}
+
+nnoremap('<C-p>', '<cmd>Telescope find_files find_command=rg,--files,--hidden,--iglob,!.git<CR>')
+nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
+
+-- Gitsigns
+vim.cmd('packadd gitsigns.nvim')
+require('gitsigns').setup{}
+
+-- ProjectCMD
+-- vim.cmd('packadd projectcmd.nvim')
+-- require('projectcmd').setup {
+--     key = os.getenv('NVIMRC_PROJECT_KEY')
+-- }
 
 -- =============================================================================
 -- = Keybindings =
@@ -214,12 +282,12 @@ inoremap('<right>', '<nop>')
 inoremap('jk', '<ESC>')
 
 -- Map escape from terminal input to Normal mode
-tnoremap('<ESC>', "<C-\\><C-n>")
-tnoremap('<C-[>', "<C-\\><C-n>")
+tnoremap('<ESC>', [[ <C-\><C-n> ]])
+tnoremap('<C-[>', [[ <C-\><C-n> ]])
 
 -- Copy/Paste from the system clipboard
-vnoremap('<C-i>', '"+y<CR>')
-nnoremap('<C-o>', '"+p<CR>')
+vnoremap('<C-i>', [[ "+y<CR> ]])
+nnoremap('<C-o>', [[ "+p<CR> ]])
 
 -- File explorer
 nnoremap('<F3>', ':Ex<CR>')
@@ -246,10 +314,10 @@ nnoremap('<right>', ':vertical resize +2<CR>')
 -- Text maps
 -- ---------
 -- Move a line of text Alt+[j/k]
-nnoremap('<M-j>', 'mz:m+<CR>`z')
-nnoremap('<M-k>', 'mz:m-2<CR>`z')
-vnoremap('<M-j>', ":m'>+<CR>`<my`>mzgv`yo`z")
-vnoremap('<M-k>', ":m'<-2<CR>`>my`<mzgv`yo`z")
+nnoremap('<M-j>', [[ mz:m+<CR>`z ]])
+nnoremap('<M-k>', [[ mz:m-2<CR>`z ]])
+vnoremap('<M-j>', [[ :m'>+<CR>`<my`>mzgv`yo`z ]])
+vnoremap('<M-k>', [[ :m'<-2<CR>`>my`<mzgv`yo`z ]])
 
 -- Reload file
 nnoremap('<leader>r', ':e!<CR>')
@@ -261,7 +329,11 @@ nnoremap('<leader>r', ':e!<CR>')
 vim.cmd('command! ToggleConceal lua ToggleConceal()')
 
 vim.cmd('command! Config edit $MYVIMRC')
-vim.cmd('command! ConfigDir edit $HOME/.config/nvim-nightly')
+vim.cmd('command! ConfigDir edit ' .. config_dir)
+vim.cmd('command! ConfigPlugins edit ' .. config_dir .. '/lua/creativenull/plugins.lua')
+vim.cmd('command! ConfigLSP edit ' .. config_dir .. '/lua/creativenull/lsp.lua')
+
+vim.cmd('command! ConfigReload luafile $MYVIMRC')
 
 -- =============================================================================
 -- = Theming and Looks =
@@ -279,3 +351,8 @@ vim.g.gruvbox_invert_selection = 0
 vim.g.gruvbox_number_column = 'dark0_hard'
 
 vim.cmd('colorscheme gruvbox')
+vim.cmd [[hi GruvboxBlueBg ctermfg=235 ctermbg=66 guifg=#1d2021 guibg=#458588]]
+vim.cmd [[hi GruvboxGreenBg ctermfg=235 ctermbg=106 guifg=#1d2021 guibg=#98971a]]
+vim.cmd [[hi GruvboxOrangeBg ctermfg=235 ctermbg=166 guifg=#1d2021 guibg=#d65d0e]]
+vim.cmd [[hi GruvboxPurpleBg ctermfg=235 ctermbg=132 guifg=#1d2021 guibg=#b16286]]
+vim.cmd [[hi! User1 ctermfg=223 ctermbg=239 guifg=#ebdbb2 guibg=#504945]]

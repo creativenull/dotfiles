@@ -1,5 +1,7 @@
 local vim = vim
 
+local Utils = {}
+
 local function map(type, input, output)
     vim.api.nvim_set_keymap(type, input, output, {})
 end
@@ -39,3 +41,11 @@ end
 function tmap(input, output)
 	map('t', input, output)
 end
+
+-- returns nil if not exists
+function Utils.is_dir(filepath)
+    local ok, _ = os.rename(filepath, filepath)
+    return ok
+end
+
+return Utils

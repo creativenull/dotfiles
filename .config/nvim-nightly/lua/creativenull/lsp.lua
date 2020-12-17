@@ -1,7 +1,8 @@
 local lsp_status = require('lsp-status')
 local lsp = require('lspconfig')
+local completion = require('completion')
 
-local function LSPRegisterKeys()
+local function lsp_register_keys()
     nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
     nnoremap('<leader>lm', '<cmd>lua vim.lsp.diagnostic.code_action()<CR>')
     nnoremap('<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
@@ -11,14 +12,25 @@ local function LSPRegisterKeys()
     nnoremap('<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
 end
 
+local function completion_setup(client)
+    vim.g.completion_matching_smart_case = 1
+    vim.g.completion_enable_snippet = 'UltiSnips'
+    vim.g.completion_trigger_keyword_length = 3
+    completion.on_attach(client)
+end
+
 local function on_attach(client)
     print('Attached to ' .. client.name)
-    lsp_status.on_attach(client)
-    require('completion').on_attach(client)
 
-    LSPRegisterKeys()
-    imap('<C-Space>', '<Plug>(completion_trigger)')
-    vim.cmd('autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()')
+    -- Statusline
+    lsp_status.on_attach(client)
+
+    -- Completion
+    completion_setup(client)
+
+    -- LSP
+    vim.cmd [[ autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics() ]]
+    lsp_register_keys()
 end
 
 -- TS/JS LSP
@@ -53,11 +65,14 @@ lsp.intelephense.setup{
 
 -- Lua LSP
 lsp.sumneko_lua.setup {
+    cmd = { 'luals' },
     on_attach = on_attach,
     capabilities = lsp_status.capabilities,
-    cmd = { 'luals' },
     settings = {
         Lua = {
+            runtime = {
+                version = 'Lua 5.1'
+            },
             diagnostics = {
                 globals = {
                     'vim',
@@ -81,9 +96,10 @@ lsp.sumneko_lua.setup {
     }
 }
 
-local eslint = require('creativenull.linters.eslint')
-local prettier = require('creativenull.formatters.prettier')
-local prettier_standard = require('creativenull.formatters.prettier_standard')
+-- Diagnostic LSP
+local eslint = require('creativenull.diagnosticls.linters.eslint')
+local prettier = require('creativenull.diagnosticls.formatters.prettier')
+local prettier_standard = require('creativenull.diagnosticls.formatters.prettier_standard')
 lsp.diagnosticls.setup {
     on_attach = on_attach,
     capabilities = lsp_status.capabilities,
