@@ -1,4 +1,8 @@
 function! TabLine#get_tail(tail)
+    if empty(a:tail)
+        return ''
+    endif
+
     let l:tail_arr = split(a:tail, '/')
     let l:end_file = tail_arr[len(tail_arr) - 1]
     let l:tag_dir = tail_arr[len(tail_arr) - 2]

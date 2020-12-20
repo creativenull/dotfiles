@@ -91,24 +91,12 @@ endfunction
 autocmd! FileType fzf set laststatus=0 tabline=FZF noruler
     \| autocmd BufLeave <buffer> set laststatus=2 tabline=%!TabLine#render() ruler
 
-" LSP Keymap Register
-augroup lsp_setup
-    autocmd!
-    autocmd FileType javascript,javascriptreact call SetLspKeymaps()
-    autocmd FileType typescript,typescriptreact call SetLspKeymaps()
-    autocmd FileType vue call SetLspKeymaps()
-    autocmd FileType php call SetLspKeymaps()
-augroup END
-
 " =============================================================================
 " = Plugin Options =
 " =============================================================================
 
 " --- ProjectCMD Options ---
 let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
-
-" --- deoplete Options ---
-let g:deoplete#enable_at_startup = 1
 
 " --- UltiSnips Options ---
 let g:UltiSnipsExpandTrigger = '<C-z>.'
@@ -127,29 +115,18 @@ nnoremap <C-p> :Files<CR>
 nnoremap <C-t> :Rg<CR>
 
 " --- ALE Options ---
-let g:ale_completion_autoimport = 1
-
 let g:ale_hover_cursor = 0
 
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
+let g:ale_completion_autoimport = 1
+
+let g:ale_echo_msg_error_str = ''
+let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
+let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-\ }
-
-let g:ale_linters_explicit = 1
-let g:ale_linters = {
-    \ 'css': ['stylelint'],
-    \ 'javascript': ['eslint', 'tsserver'],
-    \ 'javascriptreact': ['eslint', 'tsserver'],
-    \ 'php': ['intelephense_ftplugin', 'phpcs', 'phpstan'],
-    \ 'scss': ['stylelint'],
-    \ 'typescript': ['eslint', 'tsserver'],
-    \ 'typescriptreact': ['eslint', 'tsserver'],
-    \ 'vue': ['vls'],
 \ }
 
 " --- vim-startify Options ---
@@ -157,8 +134,6 @@ let g:startify_change_to_dir = 0
 let g:startify_lists = [
     \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
     \ { 'type': 'sessions',  'header': ['   Sessions']       },
-    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-    \ { 'type': 'commands',  'header': ['   Commands']       },
 \ ]
 
 " =============================================================================
@@ -202,7 +177,7 @@ call plug#end()
 
 " --- deoplete ---
 call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 100)
+call deoplete#custom#option('auto_complete_delay', 300)
 call deoplete#custom#option('smart_case', v:true)
 
 " =============================================================================
@@ -252,9 +227,6 @@ set undolevels=1000
 
 " Buffers/Tabs/Windows
 set hidden
-
-" update time to 300ms
-set updatetime=300
 
 " Set spelling
 set nospell
@@ -370,7 +342,7 @@ nnoremap <leader>r :e!<CR>
 
 command! Config edit $MYVIMRC
 command! ConfigDir edit $NVIMRC_CONFIG_DIR
-command! ConfigReload so $MYVIMRC
+command! ConfigReload so $MYVIMRC | noh | exe ':EditorConfigReload'
 command! ToggleConceal call ToggleConceal()
 command! SetLspKeymaps call SetLspKeymaps()
 
