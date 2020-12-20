@@ -12,8 +12,6 @@
 
 filetype plugin indent on
 
-" Global variable to use for config
-" ---
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
 let g:plugins_dir = $NVIMRC_PLUGINS_DIR
@@ -23,25 +21,24 @@ let g:config_dir = $NVIMRC_CONFIG_DIR
 " = Functions =
 " =============================================================================
 
-function! SetDarkTheme() abort
+function! SetDarkTheme()
     let g:gruvbox_contrast_dark = 'hard'
     let g:gruvbox_sign_column = 'dark0_hard'
     let g:gruvbox_invert_selection = 0
     let g:gruvbox_number_column = 'dark0_hard'
-    let g:ayucolor='mirage'
     set background=dark
 endfunction
 
-function! SetLightTheme() abort
-    let g:gruvbox_contrast_light='soft'
-    let g:gruvbox_sign_column='light0_soft'
-    let g:gruvbox_invert_selection=0
-    let g:gruvbox_number_column='light0_soft'
-    let g:indentLine_color_term=242
+function! SetLightTheme()
+    let g:gruvbox_contrast_light = 'soft'
+    let g:gruvbox_sign_column = 'light0_soft'
+    let g:gruvbox_invert_selection = 0
+    let g:gruvbox_number_column = 'light0_soft'
+    let g:indentLine_color_term = 242
     set background=light
 endfunction
 
-function! MDToggleConceal() abort
+function! ToggleConceal()
     if &conceallevel == 2
         set conceallevel=0
         let g:vim_markdown_conceal = 0
@@ -53,9 +50,7 @@ function! MDToggleConceal() abort
     endif
 endfunction
 
-" Language Server Protocol setup
-" ---
-function! RegisterLspKeymaps() abort
+function! SetLspKeymaps()
     nmap <silent> <F2>       :ALERename<CR>
     nmap <silent> <leader>ld :ALEGoToDefinition<CR>
     nmap <silent> <leader>lr :ALEFindReferences<CR>
@@ -64,62 +59,28 @@ function! RegisterLspKeymaps() abort
     nmap <silent> <leader>le :lopen<CR>
 endfunction
 
-" Status Line
-" ---
-function! LSPStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? 'ALE ' : printf(
-        \ 'ALE %d 🔴 %d 🟡 ',
-        \ all_errors,
-        \ all_non_errors,
-    \ )
-endfunction
+function! SetCustomHighlights()
+    " TabLine
+    hi TabLine gui=NONE guibg=#3c3836 guifg=#a89984
+    hi TabLineSel guifg=#1d2021 guibg=#689d6a
+    hi TabLineSelLeftSep guifg=#689d6a guibg=#3c3836
+    hi TabLineSelRightSep gui=reverse guifg=#689d6a guibg=#3c3836
 
-function! CursorMode()
-    let l:mode_map = {
-        \ '': 'V-BLOCK',
-        \ 'R':  'REPLACE',
-        \ 'Rv': 'V-REPLACE',
-        \ 'V':  'V-LINE',
-        \ 'c':  'COMMAND',
-        \ 'i':  'INSERT',
-        \ 'n':  'NORMAL',
-        \ 'v':  'VISUAL',
-    \}
-    let l:current_mode = mode_map[mode()]
+    " StatusLine
+    " Bluebg
+    hi User1 guifg=#1d2021 guibg=#458588
+    " Aquabg
+    hi User2 guifg=#1d2021 guibg=#689d6a
+    " Purplebg
+    hi User3 guifg=#1d2021 guibg=#b16286
 
-    return printf('%s ', l:current_mode)
-endfunction
-
-function! GitBranch()
-    let l:branch = gitbranch#name()
-    return branch == '' ? ' ' : printf('  %s ', branch)
-endfunction
-
-function! BufferName()
-    let l:buf = expand('%:t')
-    return buf == '[No Name]' ? '' : printf('%s ', buf)
-endfunction
-
-function! StatusLineRender()
-    let l:left_sep = "\uE0B8"
-    let l:right_sep = "\uE0BA"
-    let l:statusline = [
-        \ '%1* %-{CursorMode()}',
-        \ '%7*' . left_sep,
-        \ '%2*%-{GitBranch()}',
-        \ '%-{BufferName()}',
-        \ '%8*' . left_sep . ' ',
-        \ '%*%-m %-r',
-        \ '%=',
-        \ '%y LN %l/%L ',
-        \ '%9*' . right_sep,
-        \ '%3* %{LSPStatus()}%*',
-        \]
-
-    return join(statusline, '')
+    " Seperator colors
+    " bluefg -> aquabg
+    hi User7 gui=reverse guifg=#689d6a guibg=#458588
+    " aquafg -> statuslinebg
+    hi User8 gui=reverse guifg=#504945 guibg=#689d6a
+    " statuslinebg -> purplefg
+    hi User9 gui=reverse guifg=#504945 guibg=#b16286
 endfunction
 
 " =============================================================================
@@ -127,15 +88,16 @@ endfunction
 " =============================================================================
 
 " FZF statusline hide
-autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
+autocmd! FileType fzf set laststatus=0 tabline=FZF noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 tabline=%!TabLine#render() ruler
 
 " LSP Keymap Register
 augroup lsp_setup
     autocmd!
-    autocmd FileType javascript,javascriptreact call RegisterLspKeymaps()
-    autocmd FileType typescript,typescriptreact call RegisterLspKeymaps()
-    autocmd FileType vue call RegisterLspKeymaps()
-    autocmd FileType php call RegisterLspKeymaps()
+    autocmd FileType javascript,javascriptreact call SetLspKeymaps()
+    autocmd FileType typescript,typescriptreact call SetLspKeymaps()
+    autocmd FileType vue call SetLspKeymaps()
+    autocmd FileType php call SetLspKeymaps()
 augroup END
 
 " =============================================================================
@@ -158,11 +120,6 @@ let g:vue_pre_processors = ['typescript', 'scss']
 
 " --- Emmet ---
 let g:user_emmet_leader_key = '<C-z>'
-
-" --- vim-buftabline Options ---
-let g:buftabline_show = 1
-let g:buftabline_indicators = 1
-let g:buftabline_numbers = 2
 
 " --- fzf Options ---
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
@@ -198,10 +155,10 @@ let g:ale_linters = {
 " --- vim-startify Options ---
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
-    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()]  },
-    \ { 'type': 'sessions',  'header': ['   Sessions']        },
-    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']       },
-    \ { 'type': 'commands',  'header': ['   Commands']        },
+    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+    \ { 'type': 'sessions',  'header': ['   Sessions']       },
+    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+    \ { 'type': 'commands',  'header': ['   Commands']       },
 \ ]
 
 " =============================================================================
@@ -227,7 +184,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Theme, Syntax
-Plug 'ap/vim-buftabline'
 Plug 'itchyny/vim-gitbranch'
 Plug 'sheerun/vim-polyglot'
 Plug 'yggdroot/indentline'
@@ -321,10 +277,11 @@ set backspace=indent,eol,start
 " Status line
 set noshowmode
 set laststatus=2
-set statusline=%!StatusLineRender()
+set statusline=%!StatusLine#render()
 
 " Tab line
 set showtabline=2
+set tabline=%!TabLine#render()
 
 " Better display
 set cmdheight=2
@@ -365,7 +322,7 @@ noremap <F3> :Ex<CR>
 imap <C-Space> <C-x><C-o>
 
 " Leader Map
-let mapleader=' '
+let mapleader = ' '
 
 " Disable highlights
 nnoremap <leader><CR> :noh<CR>
@@ -414,8 +371,8 @@ nnoremap <leader>r :e!<CR>
 command! Config edit $MYVIMRC
 command! ConfigDir edit $NVIMRC_CONFIG_DIR
 command! ConfigReload so $MYVIMRC
-command! MDToggleConceal call MDToggleConceal()
-command! LSPRegisterKeymaps call RegisterLspKeymaps()
+command! ToggleConceal call ToggleConceal()
+command! SetLspKeymaps call SetLspKeymaps()
 
 " =============================================================================
 " = Theming and Looks =
@@ -433,21 +390,4 @@ endif
 
 call SetDarkTheme()
 colorscheme gruvbox
-
-" Buftabline
-hi BufTabLineCurrent ctermfg=235 ctermbg=72 guifg=#1d2021 guibg=#689d6a
-
-" Blue
-hi User1 ctermfg=235 ctermbg=66 guifg=#1d2021 guibg=#458588
-" Aqua
-hi User2 ctermfg=235 ctermbg=72 guifg=#1d2021 guibg=#689d6a
-" Purple
-hi User3 ctermfg=235 ctermbg=132 guifg=#1d2021 guibg=#b16286
-
-" Seperator colors
-" bluefg -> aquabg
-hi User7 cterm=reverse ctermfg=72 ctermbg=66 gui=reverse guifg=#689d6a guibg=#458588
-" bluefg -> statuslinebg
-hi User8 cterm=reverse ctermfg=239 ctermbg=72 gui=reverse guifg=#504945 guibg=#689d6a
-" statuslinebg -> purplefg
-hi User9 cterm=reverse ctermfg=239 ctermbg=132 gui=reverse guifg=#504945 guibg=#b16286
+call SetCustomHighlights()
