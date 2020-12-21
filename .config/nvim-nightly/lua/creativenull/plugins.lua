@@ -1,7 +1,8 @@
 local packer = require('packer')
 
 packer.init({
-    package_root = '~/.local/share/nvim-nightly/site/pack'
+    package_root = '~/.local/share/nvim-nightly/site/pack',
+    compile_path = '~/.config/nvim-nightly/plugin/packer_compiled.vim'
 })
 
 return packer.startup(function()
@@ -20,9 +21,12 @@ return packer.startup(function()
     use { 'neovim/nvim-lspconfig', opt = true  }
     use { 'nvim-lua/completion-nvim', opt = true  }
     use { 'nvim-lua/lsp-status.nvim', opt = true  }
-    use { 'nvim-telescope/telescope.nvim', opt = true  }
-    use { 'nvim-lua/popup.nvim', opt = true  }
-    use { 'nvim-lua/plenary.nvim', opt = true  }
+    use { 'nvim-telescope/telescope.nvim', opt = true,
+        requires = {
+            { 'nvim-lua/popup.nvim', opt = true },
+            { 'nvim-lua/plenary.nvim', opt = true }
+        }
+    }
 
     -- Themes and Syntax
     use 'gruvbox-community/gruvbox'
