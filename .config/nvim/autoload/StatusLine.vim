@@ -39,6 +39,7 @@ endfunction
 function! StatusLine#render() abort
     let l:left_sep = ""
     let l:right_sep = ""
+    let l:right_line_sep = ""
     let l:statusline = [
         \ '%1* %-{StatusLine#mode()}',
         \ '%7*' . left_sep,
@@ -47,7 +48,7 @@ function! StatusLine#render() abort
         \ '%8*' . left_sep . ' ',
         \ '%*%-m %-r',
         \ '%=',
-        \ '%y  %l/%L ',
+        \ '%y '. right_line_sep .'  %l/%L ',
         \ '%9*' . right_sep,
         \ '%3* %{StatusLine#lsp()}%*',
         \]
