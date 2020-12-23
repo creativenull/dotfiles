@@ -11,6 +11,10 @@ function! TabLine#get_tail(tail)
     return filename
 endfunction
 
+function! TabLine#switch_buffer(minwid, clicks, btn, modifiers) abort
+    execute 'buffer ' . a:minwid
+endfunction
+
 function! TabLine#render() abort
     let l:sep = ""
     let l:bufnums = range(1, bufnr('$'))
@@ -26,15 +30,15 @@ function! TabLine#render() abort
                 " ain't no way i == 1,
                 " cuz first buffer can be any number
                 if len(result) == 0
-                    call add(result, '%#TabLineSel# ' . filename .
+                    call add(result, '%#TabLineSel# %M' . filename .
                             \' %#TabLineSelLeftSep#' . sep . '%0*')
                 else
                     call add(result, '%#TabLineSelRightSep#' . sep .
-                            \'%#TabLineSel# ' . filename .
+                            \'%#TabLineSel# %M' . filename .
                             \' %#TabLineSelLeftSep#' . sep . '%0*')
                 endif
             else
-                call add(result, '%#TabLine# ' . filename . ' %0*')
+                call add(result, '%' . i . '@TabLine#switch_buffer@' . '%#TabLine# ' . filename . ' %T%0*')
             endif
         endif
     endfor
