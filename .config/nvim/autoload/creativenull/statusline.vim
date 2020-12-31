@@ -1,15 +1,6 @@
-function! StatusLine#lsp() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? 'ALE ' : printf(
-        \ 'ALE %d 🔴 %d 🟡 ',
-        \ all_errors,
-        \ all_non_errors,
-    \ )
-endfunction
-
-function! StatusLine#mode()
+" Statusline functions
+" ====================
+function! s:cursor_mode()
     let l:mode_map = {
         \ '': 'V-BLOCK',
         \ 'R':  'REPLACE',
@@ -25,32 +16,43 @@ function! StatusLine#mode()
     return printf('%s ', l:current_mode)
 endfunction
 
-function! StatusLine#git_branch()
+function! s:git_branch()
     let l:branch = gitbranch#name()
     return branch == '' ? '' : printf('  %s ', branch)
 endfunction
 
-function! StatusLine#filename()
+function! s:filename()
     let l:left_sep_line = ""
     let l:buf = expand('%:t')
     return buf == '' ? '' : printf('%s %s ', left_sep_line, buf)
 endfunction
 
-function! StatusLine#render() abort
+function! s:lsp() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? 'ALE ' : printf(
+        \ 'ALE %d 🔴 %d 🟡 ',
+        \ all_errors,
+        \ all_non_errors,
+    \ )
+endfunction
+
+function! creativenull#statusline#render() abort
     let l:left_sep = ""
     let l:right_sep = ""
     let l:right_line_sep = ""
     let l:statusline = [
-        \ '%1* %-{StatusLine#mode()}',
+        \ '%1* ' . <SID>cursor_mode(),
         \ '%7*' . left_sep,
-        \ '%2*%-{StatusLine#git_branch()}',
-        \ '%-{StatusLine#filename()}',
+        \ '%2*' . <SID>git_branch(),
+        \ <SID>filename(),
         \ '%8*' . left_sep . ' ',
         \ '%*%-m %-r',
         \ '%=',
-        \ '%y '. right_line_sep .'  %l/%L ',
+        \ '  %l/%L ',
         \ '%9*' . right_sep,
-        \ '%3* %{StatusLine#lsp()}%*',
+        \ '%3* ' . <SID>lsp() . '%*',
         \]
 
     return join(statusline, '')

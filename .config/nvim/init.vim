@@ -60,27 +60,35 @@ function! SetLspKeymaps()
 endfunction
 
 function! SetCustomHighlights()
+    let l:st_bg = synIDattr(synIDtrans(hlID('StatusLine')), 'fg')
+    let l:tb_text_color = '#a89984'
+    let l:tb_bg = '#3c3836'
+    let l:text_color = '#1d2021'
+    let l:blue = '#458588'
+    let l:aqua = '#689d6a'
+    let l:purple = '#b16286'
+
     " TabLine
-    hi TabLine gui=NONE guibg=#3c3836 guifg=#a89984
-    hi TabLineSel guifg=#1d2021 guibg=#689d6a
-    hi TabLineSelLeftSep guifg=#689d6a guibg=#3c3836
-    hi TabLineSelRightSep gui=reverse guifg=#689d6a guibg=#3c3836
+    execute printf('hi TabLine gui=NONE guibg=%s guifg=%s', tb_bg, tb_text_color)
+    execute printf('hi TabLineSel guifg=%s guibg=%s', text_color, aqua)
+    execute printf('hi TabLineSelLeftSep guifg=%s guibg=%s', aqua, tb_bg)
+    execute printf('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', aqua, tb_bg)
 
     " StatusLine
-    " Bluebg
-    hi User1 guifg=#1d2021 guibg=#458588
-    " Aquabg
-    hi User2 guifg=#1d2021 guibg=#689d6a
-    " Purplebg
-    hi User3 guifg=#1d2021 guibg=#b16286
+    " CursorMode - Bluebg
+    execute printf('hi User1 guifg=%s guibg=%s', text_color, blue)
+    " Git,Filename - Aquabg
+    execute printf('hi User2 guifg=%s guibg=%s', text_color, aqua)
+    " LSPStatus - Purplebg
+    execute printf('hi User3 guifg=%s guibg=%s', text_color, purple)
 
     " Seperator colors
     " bluefg -> aquabg
-    hi User7 gui=reverse guifg=#689d6a guibg=#458588
+    execute printf('hi User7 guifg=%s guibg=%s', blue, aqua)
     " aquafg -> statuslinebg
-    hi User8 gui=reverse guifg=#504945 guibg=#689d6a
+    execute printf('hi User8 guifg=%s guibg=%s', aqua, st_bg)
     " statuslinebg -> purplefg
-    hi User9 gui=reverse guifg=#504945 guibg=#b16286
+    execute printf('hi User9 guifg=%s guibg=%s', purple, st_bg)
 endfunction
 
 " =============================================================================
@@ -89,96 +97,7 @@ endfunction
 
 " FZF statusline hide
 autocmd! FileType fzf set laststatus=0 tabline=FZF noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 tabline=%!TabLine#render() ruler
-
-" =============================================================================
-" = Plugin Options =
-" =============================================================================
-
-" --- ProjectCMD Options ---
-let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
-
-" --- UltiSnips Options ---
-let g:UltiSnipsExpandTrigger = '<C-z>.'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-" --- vim-polyglot Options ---
-let g:vue_pre_processors = ['typescript', 'scss']
-
-" --- Emmet ---
-let g:user_emmet_leader_key = '<C-z>'
-
-" --- fzf Options ---
-let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
-nnoremap <C-p> :Files<CR>
-nnoremap <C-t> :Rg<CR>
-
-" --- ALE Options ---
-let g:ale_hover_cursor = 0
-
-let g:ale_completion_autoimport = 1
-
-let g:ale_echo_msg_error_str = ''
-let g:ale_echo_msg_warning_str = ''
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
-let g:ale_linters_explicit = 1
-let g:ale_fix_on_save = 1
-let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-\ }
-
-" --- vim-startify Options ---
-let g:startify_change_to_dir = 0
-let g:startify_lists = [
-    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']       },
-\ ]
-
-" =============================================================================
-" = Plugin Manager =
-" =============================================================================
-
-call plug#begin(g:plugins_dir)
-
-" Core
-Plug 'creativenull/projectcmd.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-surround'
-Plug 'creativenull/ale'
-Plug 'SirVer/ultisnips'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-Plug 'Shougo/context_filetype.vim'
-Plug 'tyru/caw.vim'
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Theme, Syntax
-Plug 'itchyny/vim-gitbranch'
-Plug 'sheerun/vim-polyglot'
-Plug 'yggdroot/indentline'
-Plug 'mhinz/vim-startify'
-Plug 'gruvbox-community/gruvbox'
-Plug 'aonemd/kuroi.vim'
-Plug 'srcery-colors/srcery-vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
-
-call plug#end()
-
-" =============================================================================
-" = Plugin Function Options =
-" =============================================================================
-
-" --- deoplete ---
-call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 300)
-call deoplete#custom#option('smart_case', v:true)
+    \| autocmd BufLeave <buffer> set laststatus=2 tabline=%!creativenull#tabline_render() ruler
 
 " =============================================================================
 " = General =
@@ -249,11 +168,12 @@ set backspace=indent,eol,start
 " Status line
 set noshowmode
 set laststatus=2
-set statusline=%!StatusLine#render()
+set statusline=%!creativenull#statusline#render()
 
 " Tab line
 set showtabline=2
-set tabline=%!TabLine#render()
+" set tabline=%!TabLine#render()
+set tabline=%!creativenull#tabline_render()
 
 " Better display
 set cmdheight=2
@@ -345,6 +265,92 @@ command! ConfigDir edit $NVIMRC_CONFIG_DIR
 command! ConfigReload so $MYVIMRC | noh | exe ':EditorConfigReload'
 command! ToggleConceal call ToggleConceal()
 command! SetLspKeymaps call SetLspKeymaps()
+
+" =============================================================================
+" = Plugin Options =
+" =============================================================================
+
+" --- ProjectCMD Options ---
+let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
+
+" --- UltiSnips Options ---
+let g:UltiSnipsExpandTrigger = '<C-z>.'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+" --- vim-polyglot Options ---
+let g:vue_pre_processors = ['typescript', 'scss']
+
+" --- Emmet ---
+let g:user_emmet_leader_key = '<C-z>'
+
+" --- fzf Options ---
+let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
+nnoremap <C-p> :Files<CR>
+nnoremap <C-t> :Rg<CR>
+
+" --- ALE Options ---
+let g:ale_hover_cursor = 0
+
+let g:ale_completion_autoimport = 1
+
+let g:ale_echo_msg_error_str = ''
+let g:ale_echo_msg_warning_str = ''
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_linters_explicit = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+
+" --- vim-startify Options ---
+let g:startify_change_to_dir = 0
+let g:startify_lists = [
+    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+    \ { 'type': 'sessions',  'header': ['   Sessions']       },
+    \ ]
+
+" =============================================================================
+" = Plugin Manager =
+" =============================================================================
+
+call plug#begin(g:plugins_dir)
+
+" Core
+Plug 'creativenull/projectcmd.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-surround'
+Plug 'creativenull/ale'
+Plug 'SirVer/ultisnips'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'Shougo/context_filetype.vim'
+Plug 'tyru/caw.vim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Theme, Syntax
+Plug 'itchyny/vim-gitbranch'
+Plug 'sheerun/vim-polyglot'
+Plug 'yggdroot/indentline'
+Plug 'mhinz/vim-startify'
+Plug 'gruvbox-community/gruvbox'
+Plug 'aonemd/kuroi.vim'
+Plug 'srcery-colors/srcery-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
+
+call plug#end()
+
+" =============================================================================
+" = Plugin Function Options =
+" =============================================================================
+
+" --- deoplete ---
+call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
+call deoplete#custom#option('auto_complete_delay', 300)
+call deoplete#custom#option('smart_case', v:true)
 
 " =============================================================================
 " = Theming and Looks =
