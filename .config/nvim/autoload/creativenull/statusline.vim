@@ -2,14 +2,14 @@
 " ====================
 function! s:cursor_mode()
     let l:mode_map = {
-        \ '': 'V-BLOCK',
-        \ 'R':  'REPLACE',
-        \ 'Rv': 'V-REPLACE',
-        \ 'V':  'V-LINE',
-        \ 'c':  'COMMAND',
-        \ 'i':  'INSERT',
-        \ 'n':  'NORMAL',
-        \ 'v':  'VISUAL',
+        \ '': 'VB',
+        \ 'R':  'R',
+        \ 'Rv': 'VR',
+        \ 'V':  'VL',
+        \ 'c':  'C',
+        \ 'i':  'I',
+        \ 'n':  'N',
+        \ 'v':  'V',
     \}
     let l:current_mode = mode_map[mode()]
 
@@ -22,7 +22,7 @@ function! s:git_branch()
 endfunction
 
 function! s:filename()
-    let l:left_sep_line = ""
+    let l:left_sep_line = ''
     let l:buf = expand('%:t')
     return buf == '' ? '' : printf('%s %s ', left_sep_line, buf)
 endfunction
@@ -39,9 +39,8 @@ function! s:lsp() abort
 endfunction
 
 function! creativenull#statusline#render() abort
-    let l:left_sep = ""
-    let l:right_sep = ""
-    let l:right_line_sep = ""
+    let l:left_sep = ''
+    let l:right_sep = ''
     let l:statusline = [
         \ '%1* ' . <SID>cursor_mode(),
         \ '%7*' . left_sep,

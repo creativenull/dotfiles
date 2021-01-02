@@ -59,36 +59,54 @@ function! SetLspKeymaps()
     nmap <silent> <leader>le :lopen<CR>
 endfunction
 
-function! SetCustomHighlights()
-    let l:st_bg = synIDattr(synIDtrans(hlID('StatusLine')), 'fg')
-    let l:tb_text_color = '#a89984'
-    let l:tb_bg = '#3c3836'
+function! SetStatuslineHighlights() abort
+    let l:st_bg = synIDattr(hlID('StatusLine'), 'bg')
+    let l:is_reverse = synIDattr(hlID('StatusLine'), 'reverse', 'gui')
+    if is_reverse == 1
+        let l:st_bg = synIDattr(hlID('StatusLine'), 'fg')
+    endif
+
     let l:text_color = '#1d2021'
     let l:blue = '#458588'
     let l:aqua = '#689d6a'
     let l:purple = '#b16286'
 
-    " TabLine
-    execute printf('hi TabLine gui=NONE guibg=%s guifg=%s', tb_bg, tb_text_color)
-    execute printf('hi TabLineSel guifg=%s guibg=%s', text_color, aqua)
-    execute printf('hi TabLineSelLeftSep guifg=%s guibg=%s', aqua, tb_bg)
-    execute printf('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', aqua, tb_bg)
+    let l:cursor_bg = blue
+    let l:filename_git_bg = aqua
+    let l:lsp_bg = purple
+    let l:cursor_filename_sep_fg = blue
+    let l:cursor_filename_sep_bg = aqua
+    let l:filename_st_fg = aqua
+    let l:filename_st_bg = st_bg
+    let l:lsp_st_fg = purple
+    let l:lsp_st_bg = st_bg
 
-    " StatusLine
-    " CursorMode - Bluebg
-    execute printf('hi User1 guifg=%s guibg=%s', text_color, blue)
-    " Git,Filename - Aquabg
-    execute printf('hi User2 guifg=%s guibg=%s', text_color, aqua)
-    " LSPStatus - Purplebg
-    execute printf('hi User3 guifg=%s guibg=%s', text_color, purple)
+    " CursorMode
+    execute printf('hi User1 guifg=%s guibg=%s', text_color, cursor_bg)
+    " Git,Filename
+    execute printf('hi User2 guifg=%s guibg=%s', text_color, filename_git_bg)
+    " LSPStatus
+    execute printf('hi User3 guifg=%s guibg=%s', text_color, lsp_bg)
 
-    " Seperator colors
+    " Seperators
     " bluefg -> aquabg
-    execute printf('hi User7 guifg=%s guibg=%s', blue, aqua)
+    execute printf('hi User7 guifg=%s guibg=%s', cursor_filename_sep_fg, cursor_filename_sep_bg)
     " aquafg -> statuslinebg
-    execute printf('hi User8 guifg=%s guibg=%s', aqua, st_bg)
+    execute printf('hi User8 guifg=%s guibg=%s', filename_st_fg, filename_st_bg)
     " statuslinebg -> purplefg
-    execute printf('hi User9 guifg=%s guibg=%s', purple, st_bg)
+    execute printf('hi User9 guifg=%s guibg=%s', lsp_st_fg, lsp_st_bg)
+endfunction
+
+function! SetTablineHighlights() abort
+    let l:tb_fill_bg = synIDattr(hlID('TabLineFill'), 'bg')
+    let l:tb_fill_fg = synIDattr(hlID('TabLineFill'), 'fg')
+    let l:text_color = '#1d2021'
+    let l:blue = '#458588'
+
+    execute printf('hi TabLine gui=NONE guifg=%s guibg=%s', tb_fill_fg, tb_fill_bg)
+    execute printf('hi TabLineSel guifg=%s guibg=%s', text_color, blue)
+    execute printf('hi TabLineSelLeftSep guifg=%s guibg=%s', blue, tb_fill_bg)
+    execute printf('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', blue, tb_fill_bg)
 endfunction
 
 " =============================================================================
@@ -96,8 +114,13 @@ endfunction
 " =============================================================================
 
 " FZF statusline hide
-autocmd! FileType fzf set laststatus=0 tabline=FZF noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 tabline=%!creativenull#tabline_render() ruler
+au! FileType fzf set laststatus=0 noruler
+   \| au BufLeave <buffer> set laststatus=2 ruler
+
+augroup statusline_hi
+    au!
+    au ColorScheme * call SetStatuslineHighlights() | call SetTablineHighlights()
+augroup END
 
 " =============================================================================
 " = General =
@@ -170,10 +193,9 @@ set noshowmode
 set laststatus=2
 set statusline=%!creativenull#statusline#render()
 
-" Tab line
+" Tabline
 set showtabline=2
-" set tabline=%!TabLine#render()
-set tabline=%!creativenull#tabline_render()
+set tabline=%!creativenull#tabline#render()
 
 " Better display
 set cmdheight=2
@@ -331,15 +353,11 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Theme, Syntax
-Plug 'itchyny/vim-gitbranch'
 Plug 'sheerun/vim-polyglot'
+Plug 'itchyny/vim-gitbranch'
 Plug 'yggdroot/indentline'
 Plug 'mhinz/vim-startify'
 Plug 'gruvbox-community/gruvbox'
-Plug 'aonemd/kuroi.vim'
-Plug 'srcery-colors/srcery-vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 call plug#end()
 
@@ -359,13 +377,7 @@ call deoplete#custom#option('smart_case', v:true)
 syntax on
 set number
 set relativenumber
-set t_Co=256
-if exists('+termguicolors')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    set termguicolors
-endif
+set termguicolors
 
 call SetDarkTheme()
 colorscheme gruvbox
-call SetCustomHighlights()
