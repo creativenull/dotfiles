@@ -1,5 +1,5 @@
 local vim = vim
-local Tabline = {}
+local M = {}
 
 local HI_TABLINE_SEL = '%#TabLineSel#'
 local HI_TABLINE_SEL_LEFT_SEP = '%#TabLineSelLeftSep#'
@@ -34,46 +34,45 @@ local function format_buf(filename)
     return string.format('%s %s %s', HI_TABLINE, filename, HI_CLEAR)
 end
 
-function Tabline.set_highlights()
-    local aqua = '#689d6a'
+function M.set_highlights()
+    local tb_fill_bg = vim.fn.synIDattr(vim.fn.hlID('TabLineFill'), 'bg#')
+    local tb_fill_fg = vim.fn.synIDattr(vim.fn.hlID('TabLineFill'), 'fg#')
+    local text_color = '#1d2021'
     local blue = '#458588'
-    local purple = '#b16286'
 
-    -- Buftabline
-    vim.cmd(string.format('hi TabLineSel guifg=#1d2021 guibg=%s', aqua))
-    vim.cmd(string.format('hi TabLine gui=NONE guibg=#3c3836 guifg=#a89984'))
-    vim.cmd(string.format('hi TabLineSel guifg=#1d2021 guibg=%s', aqua))
-    vim.cmd(string.format('hi TabLineSelLeftSep guifg=%s guibg=#3c3836', aqua))
-    vim.cmd(string.format('hi TabLineSelRightSep gui=reverse guifg=%s guibg=#3c3836', aqua))
+    vim.cmd(string.format('hi TabLine gui=NONE guifg=%s guibg=%s', tb_fill_fg, tb_fill_bg))
+    vim.cmd(string.format('hi TabLineSel guifg=%s guibg=%s', text_color, blue))
+    vim.cmd(string.format('hi TabLineSelLeftSep guifg=%s guibg=%s', blue, tb_fill_bg))
+    vim.cmd(string.format('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', blue, tb_fill_bg))
 end
 
-function Tabline.get_tail(tail)
+local function get_tail(tail)
     if tail == '' or tail == nil then return '' end
 
     local tail_arr = vim.fn.split(tail, '/')
     local file = tail_arr[#tail_arr]
     local dir = tail_arr[#tail_arr - 1]
 
+    if dir == nil then return string.format('%s', file) end
+
     return string.format('%s/%s', dir, file)
 end
 
-function Tabline.render()
-    local sep = ""
+function M.render()
+    local sep = ""
     local buffers = vim.fn.bufnr('$')
     local current = vim.fn.bufname()
     local filename = ''
     local tabline = {}
 
-    Tabline.set_highlights()
-
     for i = 1, buffers do
         if vim.fn.bufexists(i) == 1 and vim.fn.buflisted(i) == 1 then
             -- If item first AND current, then separator on right
             -- If item middle or end AND current, then separator on left and right
-            filename = Tabline.get_tail(vim.fn.bufname(i))
+            filename = get_tail(vim.fn.bufname(i))
             if current == vim.fn.bufname(i) then
                 -- ain't no way i == 1,
-                -- cuz first buffer can be any number
+                -- cuz first buffer can be any number :(
                 if table.maxn(tabline) == 0 then
                     table.insert(tabline, format_buf_selected_first(filename, sep))
                 else
@@ -91,4 +90,4 @@ function Tabline.render()
     return table.concat(tabline, '')
 end
 
-return Tabline
+return M

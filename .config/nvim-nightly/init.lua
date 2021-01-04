@@ -31,10 +31,69 @@ vim.cmd 'set runtimepath+=~/.local/share/nvim-nightly/site/after'
 vim.cmd 'set runtimepath^=~/.local/share/nvim-nightly/site'
 
 -- Utils
-require 'creativenull.utils'
+local v = require 'creativenull.utils'
 
 local CONFIG_DIR = os.getenv('HOME') .. '/.config/nvim-nightly'
 local LOCAL_DIR = os.getenv('HOME') .. '/.local/share/nvim-nightly'
+
+-- =============================================================================
+-- = Plugin Manager =
+-- =============================================================================
+
+require 'creativenull.plugins'
+
+-- =============================================================================
+-- = Plugin Options =
+-- =============================================================================
+
+-- LSP
+require 'creativenull.lsp'
+
+-- Treesitter
+require 'nvim-treesitter.configs'.setup {
+    ensure_installed = { 'html', 'css', 'json', 'javascript', 'typescript', 'python', 'php', 'lua' },
+    highlight = { enable = true }
+}
+
+-- Telescope
+local telescope = require 'telescope'
+local telescope_actions = require 'telescope.actions'
+telescope.setup {
+    defaults = {
+        mappings = {
+            i = {
+                ['<C-k>'] = telescope_actions.move_selection_previous,
+                ['<C-j>'] = telescope_actions.move_selection_next,
+            }
+        }
+    }
+}
+
+v.nnoremap('<C-p>', '<cmd>Telescope find_files find_command=rg,--files,--hidden,--iglob,!.git<CR>')
+v.nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
+
+-- Gitsigns
+require 'gitsigns'.setup{}
+
+-- ProjectCMD
+-- require('projectcmd').setup {
+--     key = os.getenv('NVIMRC_PROJECT_KEY')
+-- }
+
+-- =============================================================================
+-- = Autocmds =
+-- =============================================================================
+
+vim.cmd 'augroup yank_hl'
+vim.cmd 'au!'
+vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank { higroup = "Search", timeout = 500 }]]
+vim.cmd 'augroup END'
+
+vim.cmd 'augroup statusline_tabline_hi'
+vim.cmd 'au!'
+vim.cmd [[au ColorScheme * lua require('creativenull.statusline').set_highlights()]]
+vim.cmd [[au ColorScheme * lua require('creativenull.tabline').set_highlights()]]
+vim.cmd 'augroup END'
 
 -- =============================================================================
 -- = Theming and Looks =
@@ -52,30 +111,6 @@ vim.g.gruvbox_invert_selection = 0
 vim.g.gruvbox_number_column = 'dark0_hard'
 
 vim.cmd 'colorscheme gruvbox'
-
--- =============================================================================
--- = Functions =
--- =============================================================================
-
--- Toggle the conceal level to show
--- or hide chars in markdown, json and co.
-function ToggleConceal()
-    local conceal = vim.wo.conceallevel
-    if conceal == 0 then
-        vim.wo.conceallevel = 2
-    else
-        vim.wo.conceallevel = 0
-    end
-end
-
--- =============================================================================
--- = Autocmds =
--- =============================================================================
-
-vim.cmd 'augroup yank_hl'
-vim.cmd 'autocmd!'
-vim.cmd 'au TextYankPost * silent! lua vim.highlight.on_yank { higroup = "Search", timeout = 500 }'
-vim.cmd 'augroup end'
 
 -- =============================================================================
 -- = General =
@@ -142,11 +177,11 @@ vim.o.backspace = 'indent,eol,start'
 -- Status line
 vim.o.showmode = false
 vim.o.laststatus = 2
-vim.o.statusline = [[%!luaeval("require'creativenull.statusline'.render()")]]
+vim.o.statusline = [[%!luaeval("require('creativenull.statusline').render()")]]
 
 -- Tab line
 vim.o.showtabline = 2
-vim.o.tabline = [[%!luaeval("require'creativenull.tabline'.render()")]]
+vim.o.tabline = [[%!luaeval("require('creativenull.tabline').render()")]]
 
 -- Better display
 vim.o.cmdheight = 2
@@ -155,131 +190,73 @@ vim.o.cmdheight = 2
 vim.o.autoread = true
 
 -- =============================================================================
--- = Plugin Manager =
--- =============================================================================
-
-vim.cmd 'packadd packer.nvim'
-require 'creativenull.plugins'
-
--- =============================================================================
--- = Plugin Options =
--- =============================================================================
-
--- LSP
-vim.cmd 'packadd lsp-status.nvim'
-vim.cmd 'packadd completion-nvim'
-vim.cmd 'packadd nvim-lspconfig'
-require 'creativenull.lsp'
-
--- Treesitter
-vim.cmd 'packadd nvim-treesitter'
-require 'nvim-treesitter.configs'.setup {
-    ensure_installed = { 'html', 'css', 'json', 'javascript', 'typescript', 'python', 'php', 'lua' },
-    highlight = {
-        enable = true
-    }
-}
-
--- Telescope
-vim.cmd 'packadd popup.nvim'
-vim.cmd 'packadd plenary.nvim'
-vim.cmd 'packadd telescope.nvim'
-local telescope = require 'telescope'
-local telescope_actions = require 'telescope.actions'
-telescope.setup {
-    defaults = {
-        mappings = {
-            i = {
-                ['<C-k>'] = telescope_actions.move_selection_previous,
-                ['<C-j>'] = telescope_actions.move_selection_next,
-            }
-        }
-    }
-}
-
-nnoremap('<C-p>', '<cmd>Telescope find_files find_command=rg,--files,--hidden,--iglob,!.git<CR>')
-nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
-
--- Gitsigns
-vim.cmd 'packadd gitsigns.nvim'
-require 'gitsigns'.setup{}
-
--- ProjectCMD
--- vim.cmd('packadd projectcmd.nvim')
--- require('projectcmd').setup {
---     key = os.getenv('NVIMRC_PROJECT_KEY')
--- }
-
--- =============================================================================
 -- = Keybindings =
 -- =============================================================================
 
 vim.g.mapleader = ' '
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
-vnoremap('<up>',    '<nop>')
-vnoremap('<down>',  '<nop>')
-vnoremap('<left>',  '<nop>')
-vnoremap('<right>', '<nop>')
+v.vnoremap('<up>',    '<nop>')
+v.vnoremap('<down>',  '<nop>')
+v.vnoremap('<left>',  '<nop>')
+v.vnoremap('<right>', '<nop>')
 
-inoremap('<up>',    '<nop>')
-inoremap('<down>',  '<nop>')
-inoremap('<left>',  '<nop>')
-inoremap('<right>', '<nop>')
+v.inoremap('<up>',    '<nop>')
+v.inoremap('<down>',  '<nop>')
+v.inoremap('<left>',  '<nop>')
+v.inoremap('<right>', '<nop>')
 
 -- Map Esc, to perform quick switching between Normal and Insert mode
-inoremap('jk', '<ESC>')
+v.inoremap('jk', '<ESC>')
 
 -- Map escape from terminal input to Normal mode
-tnoremap('<ESC>', [[<C-\><C-n>]])
-tnoremap('<C-[>', [[<C-\><C-n>]])
+v.tnoremap('<ESC>', [[<C-\><C-n>]])
+v.tnoremap('<C-[>', [[<C-\><C-n>]])
 
 -- Copy/Paste from the system clipboard
-vnoremap('<C-i>', [["+y<CR>]])
-nnoremap('<C-o>', [["+p<CR>]])
+v.vnoremap('<C-i>', [["+y<CR>]])
+v.nnoremap('<C-o>', [["+p<CR>]])
 
 -- File explorer
-nnoremap('<F3>', ':Ex<CR>')
+v.nnoremap('<F3>', ':Ex<CR>')
+
+-- Omnifunc
+v.inoremap('<C-Space>', '<C-x><C-o>')
 
 -- Disable highlights
-nnoremap('<leader><CR>', ':noh<CR>')
+v.nnoremap('<leader><CR>', ':noh<CR>')
 
 -- Buffer maps
 -- -----------
 -- List all buffers
-nnoremap('<leader>ba', ':buffers<CR>')
-nnoremap('<leader>bn', ':enew<CR>')
-nnoremap('<C-l>',      ':bnext<CR>')
-nnoremap('<C-h>',      ':bprevious<CR>')
-nnoremap('<leader>bd', ':bp<BAR>sp<BAR>bn<BAR>bd<CR>')
+v.nnoremap('<leader>ba', ':buffers<CR>')
+v.nnoremap('<leader>bn', ':enew<CR>')
+v.nnoremap('<C-l>',      ':bnext<CR>')
+v.nnoremap('<C-h>',      ':bprevious<CR>')
+v.nnoremap('<leader>bd', ':bp<BAR>sp<BAR>bn<BAR>bd<CR>')
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
-nnoremap('<up>',    ':resize +2<CR>')
-nnoremap('<down>',  ':resize -2<CR>')
-nnoremap('<left>',  ':vertical resize -2<CR>')
-nnoremap('<right>', ':vertical resize +2<CR>')
+v.nnoremap('<up>',    ':resize +2<CR>')
+v.nnoremap('<down>',  ':resize -2<CR>')
+v.nnoremap('<left>',  ':vertical resize -2<CR>')
+v.nnoremap('<right>', ':vertical resize +2<CR>')
 
 -- Text maps
 -- ---------
 -- Move a line of text Alt+[j/k]
-nnoremap('<M-j>', [[mz:m+<CR>`z]])
-nnoremap('<M-k>', [[mz:m-2<CR>`z]])
-vnoremap('<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]])
-vnoremap('<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
+v.nnoremap('<M-j>', [[mz:m+<CR>`z]])
+v.nnoremap('<M-k>', [[mz:m-2<CR>`z]])
+v.vnoremap('<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]])
+v.vnoremap('<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
 
 -- Reload file
-nnoremap('<leader>r', ':e!<CR>')
+v.nnoremap('<leader>r', ':e!<CR>')
 
 -- =============================================================================
 -- = Commands =
 -- =============================================================================
 
-vim.cmd('command! ToggleConceal lua ToggleConceal()')
-
 vim.cmd('command! Config edit $MYVIMRC')
 vim.cmd('command! ConfigDir edit ' .. CONFIG_DIR)
-vim.cmd('command! ConfigPlugins edit ' .. CONFIG_DIR .. '/lua/creativenull/plugins.lua')
-vim.cmd('command! ConfigLSP edit ' .. CONFIG_DIR .. '/lua/creativenull/lsp.lua')
-
 vim.cmd('command! ConfigReload luafile $MYVIMRC')

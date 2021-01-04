@@ -37,6 +37,11 @@ local function on_attach(client)
     vim.cmd [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()]]
 end
 
+lsp.pyls.setup {
+    on_attach = on_attach,
+    capabilities = lsp_status.capabilities
+}
+
 -- TS/JS LSP
 lsp.tsserver.setup {
     on_attach = on_attach,
@@ -65,39 +70,6 @@ lsp.vimls.setup{
 lsp.intelephense.setup{
     on_attach = on_attach,
     capabilities = lsp_status.capabilities
-}
-
--- Lua LSP
-lsp.sumneko_lua.setup {
-    cmd = { 'luals' },
-    on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
-    settings = {
-        Lua = {
-            runtime = {
-                version = 'Lua 5.1'
-            },
-            diagnostics = {
-                globals = {
-                    'vim',
-                    'use',
-                    'imap',
-                    'nmap',
-                    'vmap',
-                    'tmap',
-                    'inoremap',
-                    'nnoremap',
-                    'vnoremap',
-                    'tnoremap'
-                }
-            },
-            workspace = {
-                library = {
-                    ['$VIMRUNTIME/lua'] = true,
-                }
-            }
-        }
-    }
 }
 
 -- Diagnostic LSP

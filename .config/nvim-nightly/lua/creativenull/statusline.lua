@@ -1,19 +1,20 @@
 local vim = vim
-local lsp_status = require 'lsp-status'
+local lsp_status = require'lsp-status'
 
-local Statusline = {}
+local M = {}
 
--- Returns the vim mode
-function Statusline.mode()
+local function cursor_mode()
     local mode_map = {
-        ['n'] = 'NORMAL',
-        ['v'] = 'VISUAL',
-        ['V'] = 'V-LINE',
-        [''] = 'V-BLOCK',
-        ['i'] = 'INSERT',
-        ['R'] = 'REPLACE',
-        ['Rv'] = 'V-REPLACE',
-        ['c'] = 'COMMAND',
+        ['n'] = 'N',
+        ['v'] = 'V',
+        ['V'] = 'V',
+        [''] = 'V',
+        ['i'] = 'I',
+        ['ic'] = 'I',
+        ['ix'] = 'I',
+        ['R'] = 'R',
+        ['Rv'] = 'R',
+        ['c'] = 'C',
     }
     local m = vim.api.nvim_get_mode()
     local current_mode = mode_map[m.mode]
@@ -23,30 +24,35 @@ end
 
 -- Get the current git branch
 -- inspired from github.com/galaxyline/provider_vcs.lua
-function Statusline.git_branch()
+local function git_branch()
     local fp = io.open(vim.fn.getcwd() .. '/.git/HEAD')
-    if fp == nil then return '' end
+    if fp == nil then
+        return ''
+    end
 
     local HEAD = fp:read()
     fp:close()
 
     local branch = HEAD:match('ref: refs/heads/(.+)')
-    if branch == '' then return '' end
+    if branch == '' then
+        return ''
+    end
 
     return string.format('  %s ', branch)
 end
 
--- Get the current buffer name
-function Statusline.filename()
+local function filename()
     local left_sep_line = ""
     local bufname = vim.fn.expand('%:t')
-    if bufname == '' then return '' end
+
+    if bufname == '' then
+        return ''
+    end
 
     return string.format('%s %s ', left_sep_line, bufname)
 end
 
--- nvim-lsp status diagnostics
-function Statusline.lsp()
+local function lsp()
     local diagnostics = lsp_status.diagnostics()
     if diagnostics.errors > 0 or diagnostics.warnings > 0 then
         return string.format('LSP %d 🔴 %d 🟡 ', diagnostics.errors, diagnostics.warnings)
@@ -55,7 +61,7 @@ function Statusline.lsp()
     return 'LSP '
 end
 
-function Statusline.set_highlights()
+function M.set_highlights()
     local statusline_bg = vim.fn.synIDattr(vim.fn.hlID('StatusLine'), 'fg#')
     local statusline_fg = vim.fn.synIDattr(vim.fn.hlID('StatusLine'), 'bg#')
 
@@ -80,7 +86,7 @@ function Statusline.set_highlights()
 end
 
 -- Render the statusline
-function Statusline.render()
+function M.render()
     local status = ''
 
     -- Feeling Hacky? Use this
@@ -89,26 +95,25 @@ function Statusline.render()
 
     local left_sep = ""
     local right_sep = ""
-
-    Statusline.set_highlights()
+    local right_line_sep = ""
 
     -- left side
     status = status .. '%1*'
-    status = status .. Statusline.mode()
+    status = status .. cursor_mode()
     status = status .. '%7*' .. left_sep
-    status = status .. '%2*' .. Statusline.git_branch()
-    status = status .. Statusline.filename()
+    status = status .. '%2*' .. git_branch()
+    status = status .. filename()
     status = status .. '%8*' .. left_sep .. ' '
     status = status .. '%*%-m %-r'
 
     -- right side
     status = status .. '%='
-    status = status .. '%y  %l/%L '
+    status = status .. '  %l/%L '
     status = status .. '%9*' .. right_sep
     status = status .. '%3* '
-    status = status .. Statusline.lsp() .. '%*'
+    status = status .. lsp() .. '%*'
 
     return status
 end
 
-return Statusline
+return M
