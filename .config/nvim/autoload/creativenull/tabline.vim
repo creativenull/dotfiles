@@ -4,11 +4,14 @@ function! s:get_tail(tail)
     endif
 
     let l:tail_arr = split(a:tail, '/')
-    let l:end_file = tail_arr[len(tail_arr) - 1]
-    let l:tag_dir = tail_arr[len(tail_arr) - 2]
-    let l:filename = tag_dir . '/' . end_file
+    let l:filename = tail_arr[len(tail_arr) - 1]
+    let l:parent_dir = tail_arr[len(tail_arr) - 2]
 
-    return filename
+    if filename == parent_dir
+        return filename
+    else
+        return parent_dir . '/' . filename
+    endif
 endfunction
 
 function! creativenull#tabline#switch_buf(minwid, clicks, btn, modifiers) abort
