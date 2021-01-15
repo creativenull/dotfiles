@@ -308,6 +308,7 @@ let g:user_emmet_leader_key = '<C-z>'
 
 " --- fzf Options ---
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
+let g:fzf_preview_window = []
 nnoremap <C-p> :Files<CR>
 nnoremap <C-t> :Rg<CR>
 
@@ -367,8 +368,14 @@ call plug#end()
 
 " --- deoplete ---
 call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 300)
+call deoplete#custom#option('auto_complete_delay', 200)
 call deoplete#custom#option('smart_case', v:true)
+
+" --- fzf Options ---
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview('up:50%', 'ctrl-/'), <bang>0)
 
 " =============================================================================
 " = Theming and Looks =
