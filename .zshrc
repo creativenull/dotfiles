@@ -15,7 +15,7 @@ else
 fi
 
 # List files/dir
-alias l="lsd -lA --blocks permission,size,date,name --date relative --group-dirs first"
+alias l="lsd -lA"
 
 # neovim
 export PYTHON3_HOST_PROG=/usr/bin/python3
