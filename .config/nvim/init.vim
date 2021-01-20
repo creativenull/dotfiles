@@ -368,8 +368,10 @@ call plug#end()
 
 " --- deoplete ---
 call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 200)
+call deoplete#custom#option('auto_complete_delay', 100)
 call deoplete#custom#option('smart_case', v:true)
+call deoplete#custom#option('ignore_case', v:true)
+call deoplete#custom#option('max_list', 10)
 
 " --- fzf Options ---
 command! -bang -nargs=* Rg
