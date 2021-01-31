@@ -1,5 +1,4 @@
-local vim = vim
-local lsp_status = require'lsp-status'
+local lsp_status = require 'lsp-status'
 
 local M = {}
 
