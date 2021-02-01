@@ -9,18 +9,103 @@
 "
 "              Currently, tested on a Linux machine.
 " =============================================================================
-
 filetype plugin indent on
 
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
-let g:plugins_dir = $NVIMRC_PLUGINS_DIR
-let g:config_dir = $NVIMRC_CONFIG_DIR
+
+" =============================================================================
+" = Plugin Options =
+" =============================================================================
+" --- ProjectCMD Options ---
+let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
+
+" --- UltiSnips Options ---
+let g:UltiSnipsExpandTrigger = '<C-z>.'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+" --- vim-polyglot Options ---
+let g:vue_pre_processors = ['typescript', 'scss']
+
+" --- Emmet ---
+let g:user_emmet_leader_key = '<C-z>'
+
+" --- fzf Options ---
+let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
+let g:fzf_preview_window = []
+nnoremap <C-p> :Files<CR>
+nnoremap <C-t> :Rg<CR>
+
+" --- ALE Options ---
+let g:ale_hover_cursor = 0
+
+let g:ale_completion_autoimport = 1
+
+let g:ale_echo_msg_error_str = ''
+let g:ale_echo_msg_warning_str = ''
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_linters_explicit = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+
+" --- vim-startify Options ---
+let g:startify_change_to_dir = 0
+let g:startify_lists = [
+    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+    \ { 'type': 'sessions',  'header': ['   Sessions']       },
+    \ ]
+
+" =============================================================================
+" = Plugin Manager =
+" =============================================================================
+
+call plug#begin($NVIMRC_PLUGINS_DIR)
+
+" Core
+Plug 'creativenull/projectcmd.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-surround'
+Plug 'creativenull/ale'
+Plug 'SirVer/ultisnips'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'Shougo/context_filetype.vim'
+Plug 'tyru/caw.vim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Theme, Syntax
+Plug 'sheerun/vim-polyglot'
+Plug 'itchyny/vim-gitbranch'
+Plug 'yggdroot/indentline'
+Plug 'mhinz/vim-startify'
+Plug 'gruvbox-community/gruvbox'
+
+call plug#end()
+
+" =============================================================================
+" = Plugin Function Options =
+" =============================================================================
+" --- deoplete ---
+call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
+call deoplete#custom#option('auto_complete_delay', 50)
+call deoplete#custom#option('smart_case', v:true)
+call deoplete#custom#option('ignore_case', v:true)
+call deoplete#custom#option('max_list', 10)
+
+" --- fzf Options ---
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview('up:50%', 'ctrl-/'), <bang>0)
 
 " =============================================================================
 " = Functions =
 " =============================================================================
-
 function! SetDarkTheme()
     let g:gruvbox_contrast_dark = 'hard'
     let g:gruvbox_sign_column = 'dark0_hard'
@@ -112,7 +197,6 @@ endfunction
 " =============================================================================
 " = Auto Commands (single/groups) =
 " =============================================================================
-
 " FZF statusline hide
 au! FileType fzf set laststatus=0 noruler
    \| au BufLeave <buffer> set laststatus=2 ruler
@@ -123,9 +207,19 @@ augroup statusline_hi
 augroup END
 
 " =============================================================================
-" = General =
+" = Theming and Looks =
 " =============================================================================
+syntax on
+set number
+set relativenumber
+set termguicolors
 
+call SetDarkTheme()
+colorscheme gruvbox
+
+" =============================================================================
+" = Options =
+" =============================================================================
 set encoding=utf8
 
 " Completion options
@@ -204,8 +298,9 @@ set cmdheight=2
 set autoread
 
 " =============================================================================
-" = Key Bindings =
+" = Keybindings =
 " =============================================================================
+let mapleader = ' '
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
 vnoremap <up> <nop>
@@ -217,9 +312,6 @@ inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
-
-" Leader Map
-let mapleader = ' '
 
 " Map Esc, to perform quick switching between Normal and Insert mode
 inoremap jk <ESC>
@@ -281,7 +373,6 @@ nnoremap <leader>r :e!<CR>
 " =============================================================================
 " = Commands =
 " =============================================================================
-
 command! Config edit $MYVIMRC
 command! ConfigDir edit $NVIMRC_CONFIG_DIR
 command! ConfigReload so $MYVIMRC | noh | exe ':EditorConfigReload'
@@ -289,105 +380,3 @@ command! ToggleConceal call ToggleConceal()
 command! SetLspKeymaps call SetLspKeymaps()
 command! -nargs=* W w
 
-" =============================================================================
-" = Plugin Options =
-" =============================================================================
-
-" --- ProjectCMD Options ---
-let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
-
-" --- UltiSnips Options ---
-let g:UltiSnipsExpandTrigger = '<C-z>.'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-" --- vim-polyglot Options ---
-let g:vue_pre_processors = ['typescript', 'scss']
-
-" --- Emmet ---
-let g:user_emmet_leader_key = '<C-z>'
-
-" --- fzf Options ---
-let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
-let g:fzf_preview_window = []
-nnoremap <C-p> :Files<CR>
-nnoremap <C-t> :Rg<CR>
-
-" --- ALE Options ---
-let g:ale_hover_cursor = 0
-
-let g:ale_completion_autoimport = 1
-
-let g:ale_echo_msg_error_str = ''
-let g:ale_echo_msg_warning_str = ''
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
-let g:ale_linters_explicit = 1
-let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
-
-" --- vim-startify Options ---
-let g:startify_change_to_dir = 0
-let g:startify_lists = [
-    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']       },
-    \ ]
-
-" =============================================================================
-" = Plugin Manager =
-" =============================================================================
-
-call plug#begin(g:plugins_dir)
-
-" Core
-Plug 'creativenull/projectcmd.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-surround'
-Plug 'creativenull/ale'
-Plug 'SirVer/ultisnips'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-Plug 'Shougo/context_filetype.vim'
-Plug 'tyru/caw.vim'
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Theme, Syntax
-Plug 'sheerun/vim-polyglot'
-Plug 'itchyny/vim-gitbranch'
-Plug 'yggdroot/indentline'
-Plug 'mhinz/vim-startify'
-Plug 'gruvbox-community/gruvbox'
-
-call plug#end()
-
-" =============================================================================
-" = Plugin Function Options =
-" =============================================================================
-
-" --- deoplete ---
-call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 50)
-call deoplete#custom#option('smart_case', v:true)
-call deoplete#custom#option('ignore_case', v:true)
-call deoplete#custom#option('max_list', 10)
-
-" --- fzf Options ---
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview('up:50%', 'ctrl-/'), <bang>0)
-
-" =============================================================================
-" = Theming and Looks =
-" =============================================================================
-
-syntax on
-set number
-set relativenumber
-set termguicolors
-
-call SetDarkTheme()
-colorscheme gruvbox
