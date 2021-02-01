@@ -126,7 +126,6 @@ augroup END
 " = General =
 " =============================================================================
 
-set nocompatible
 set encoding=utf8
 
 " Completion options
@@ -138,7 +137,6 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
-set wrapscan
 
 " Indent options
 set shiftwidth=4
@@ -154,18 +152,20 @@ set linebreak
 set showbreak=+++
 set textwidth=120
 set colorcolumn=120
-set scrolloff=3
+set scrolloff=5
 
-" No backups or swapfiles needed
-set nobackup
-set nowritebackup
-set noswapfile
+" Backups and swapfile
+set dir=~/.cache/nvim
+set backup
+set backupdir=~/.cache/nvim
+set undofile
+set undodir=~/.cache/nvim
+set undolevels=1000
+set history=1000
 
 " Lazy redraw
+set complete-=i
 set lazyredraw
-
-" Undo history
-set undolevels=1000
 
 " Buffers/Tabs/Windows
 set hidden
@@ -218,6 +218,9 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
+" Leader Map
+let mapleader = ' '
+
 " Map Esc, to perform quick switching between Normal and Insert mode
 inoremap jk <ESC>
 
@@ -234,9 +237,6 @@ noremap <F3> :Ex<CR>
 
 " Manual completion
 imap <C-Space> <C-x><C-o>
-
-" Leader Map
-let mapleader = ' '
 
 " Disable highlights
 nnoremap <leader><CR> :noh<CR>
@@ -287,6 +287,7 @@ command! ConfigDir edit $NVIMRC_CONFIG_DIR
 command! ConfigReload so $MYVIMRC | noh | exe ':EditorConfigReload'
 command! ToggleConceal call ToggleConceal()
 command! SetLspKeymaps call SetLspKeymaps()
+command! -nargs=* W w
 
 " =============================================================================
 " = Plugin Options =
@@ -368,7 +369,7 @@ call plug#end()
 
 " --- deoplete ---
 call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 100)
+call deoplete#custom#option('auto_complete_delay', 50)
 call deoplete#custom#option('smart_case', v:true)
 call deoplete#custom#option('ignore_case', v:true)
 call deoplete#custom#option('max_list', 10)
