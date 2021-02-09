@@ -1,9 +1,12 @@
-local utils = require 'creativenull.utils'
 local telescope = require 'telescope'
+local telescope_builtin = require 'telescope.builtin'
 local telescope_actions = require 'telescope.actions'
+local M = {}
 
 telescope.setup {
     defaults = {
+        layout_strategy = 'vertical',
+        use_less = false,
         mappings = {
             i = {
                 ['<C-k>'] = telescope_actions.move_selection_previous,
@@ -13,5 +16,16 @@ telescope.setup {
     }
 }
 
-utils.nnoremap('<C-p>', '<cmd>Telescope find_files find_command=rg,--files,--hidden,--iglob,!.git<CR>')
-utils.nnoremap('<C-t>', '<cmd>Telescope live_grep<CR>')
+function M.find_files()
+    local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
+    telescope_builtin.find_files {
+        find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', '.', config_dir },
+        previewer = false
+    }
+end
+
+function M.live_grep()
+    telescope_builtin.live_grep {}
+end
+
+return M

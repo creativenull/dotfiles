@@ -1,2 +1,7 @@
 vim.cmd('command! Config edit $MYVIMRC')
 vim.cmd('command! ConfigReload luafile $MYVIMRC')
+vim.cmd('command! -nargs=* W w')
+vim.cmd('command! -nargs=* Wq wq')
+vim.cmd('command! -nargs=* Q q')
+vim.cmd('command! -nargs=* Qa qa')
+vim.cmd('command! -nargs=* QA qa')

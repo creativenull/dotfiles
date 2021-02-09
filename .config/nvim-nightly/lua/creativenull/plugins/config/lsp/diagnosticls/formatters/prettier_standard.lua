@@ -1,6 +1,6 @@
 local prettier_standard = {
     command = 'prettier-standard',
-    args = { '--stdin' },
+    args = { '--stdin', '--stdin-filepath', '%filepath' },
     rootPatterns = {
         'package.json',
         '.prettierignore',

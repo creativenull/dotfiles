@@ -28,11 +28,11 @@ vim.wo.linebreak = true
 vim.wo.colorcolumn = '120'
 
 -- No backups or swapfiles needed
-vim.o.dir = os.getenv 'HOME' .. '/.cache/nvim'
+vim.o.dir = os.getenv('HOME') .. '/.cache/nvim'
 vim.o.backup = true
-vim.o.backupdir = os.getenv 'HOME' .. '/.cache/nvim'
+vim.o.backupdir = os.getenv('HOME') .. '/.cache/nvim'
 vim.o.undofile = true
-vim.o.undodir = os.getenv 'HOME' .. '/.cache/nvim'
+vim.o.undodir = os.getenv('HOME') .. '/.cache/nvim'
 vim.o.undolevels = 1000
 vim.o.history = 1000
 

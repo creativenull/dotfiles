@@ -23,7 +23,8 @@ function M.setup(lsp_opts)
             formatFiletypes = {
                 javascript = 'prettier',
                 javascriptreact = 'prettier',
-                typescript = 'prettier'
+                typescript = 'prettier',
+                typescriptreact = 'prettier'
             },
             linters = {
                 eslint = eslint

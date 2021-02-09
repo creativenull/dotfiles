@@ -1,5 +1,4 @@
 local lsp_status = require 'lsp-status'
-
 local M = {}
 
 local function cursor_mode()
@@ -55,9 +54,9 @@ local function lsp()
     local diagnostics = lsp_status.diagnostics()
     if diagnostics.errors > 0 or diagnostics.warnings > 0 then
         return string.format('LSP %d 🔴 %d 🟡 ', diagnostics.errors, diagnostics.warnings)
+    else
+        return 'LSP '
     end
-
-    return 'LSP '
 end
 
 function M.set_highlights()

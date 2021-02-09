@@ -31,7 +31,7 @@ packer.startup(function()
     -- Themes and Syntax
     use 'gruvbox-community/gruvbox'
     use 'yggdroot/indentline'
-    use 'nvim-treesitter/nvim-treesitter'
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 end)
 
 -- Plugin Configs

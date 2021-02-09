@@ -4,17 +4,6 @@ local lsp = require 'lspconfig'
 local lsp_status = require 'lsp-status'
 local utils = require 'creativenull.utils'
 
--- Key-bindings set only when a LSP is registered
-local function set_lsp_keymaps()
-    utils.nnoremap('<leader>lm', '<cmd>lua vim.lsp.diagnostic.code_action()<CR>')
-    utils.nnoremap('<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
-    utils.nnoremap('<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-    utils.nnoremap('<leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>')
-    utils.nnoremap('<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>')
-    utils.nnoremap('<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
-    utils.nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
-end
-
 -- Completion opts for LSP
 local function completion_setup()
     completion.on_attach {
@@ -28,12 +17,14 @@ end
 
 local function on_attach(client)
     print('Attached to ' .. client.name)
-    set_lsp_keymaps()
     completion_setup()
     lsp_status.on_attach(client)
 
-    -- Register hold event to show diagnostic errors/warnings
-    vim.cmd [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()]]
+    -- LSP diagnostics
+    vim.cmd 'augroup lsp_diagnostics_view'
+    vim.cmd 'au!'
+    vim.cmd [[au CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()]]
+    vim.cmd 'augroup end'
 end
 
 lsp.tsserver.setup {
@@ -45,6 +36,11 @@ lsp.tsserver.setup {
 lsp.denols.setup {
     on_attach = on_attach,
     capabilities = lsp_status.capabilities,
+    init_options = {
+        enable = true,
+        unstable = true,
+        importMap = './import_map.json'
+    },
     root_dir = lsp.util.root_pattern('.denols')
 }
 
