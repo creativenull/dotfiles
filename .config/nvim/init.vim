@@ -13,6 +13,8 @@ filetype plugin indent on
 
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
+let g:plugins_dir = $NVIMRC_PLUGINS_DIR
+let g:config_dir = $NVIMRC_PLUGINS_DIR
 
 " =============================================================================
 " = Plugin Options =
@@ -60,7 +62,7 @@ let g:startify_lists = [
 " = Plugin Manager =
 " =============================================================================
 
-call plug#begin($NVIMRC_PLUGINS_DIR)
+call plug#begin(g:plugins_dir)
 
 " Core
 Plug 'creativenull/projectcmd.vim'
@@ -136,12 +138,12 @@ function! ToggleConceal()
 endfunction
 
 function! SetLspKeymaps()
-    nmap <silent> <F2>       :ALERename<CR>
-    nmap <silent> <leader>ld :ALEGoToDefinition<CR>
-    nmap <silent> <leader>lr :ALEFindReferences<CR>
-    nmap <silent> <leader>lf :ALEFix<CR>
-    nmap <silent> <leader>lh :ALEHover<CR>
-    nmap <silent> <leader>le :lopen<CR>
+    nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
+    nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
+    nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
+    nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
+    nnoremap <silent> <leader>le <cmd>lopen<CR>
+    nnoremap <silent> <F2>       <cmd>ALERename<CR>
 endfunction
 
 function! SetStatuslineHighlights() abort
@@ -197,14 +199,13 @@ endfunction
 " =============================================================================
 " = Auto Commands (single/groups) =
 " =============================================================================
-" FZF statusline hide
-au! FileType fzf set laststatus=0 noruler
-   \| au BufLeave <buffer> set laststatus=2 ruler
+au! FileType fzf set laststatus=0 noruler | au BufLeave <buffer> set laststatus=2 ruler
 
 augroup statusline_hi
     au!
-    au ColorScheme * call SetStatuslineHighlights() | call SetTablineHighlights()
-augroup END
+    au ColorScheme * call SetStatuslineHighlights()
+    au ColorScheme * call SetTablineHighlights()
+augroup end
 
 " =============================================================================
 " = Theming and Looks =
@@ -264,7 +265,7 @@ set lazyredraw
 " Buffers/Tabs/Windows
 set hidden
 
-" Set spelling
+" spelling
 set nospell
 
 " For git
@@ -275,9 +276,6 @@ set mouse=a
 
 " File format type
 set fileformats=unix
-
-" no sounds
-set visualbell t_vb=
 
 " backspace behaviour
 set backspace=indent,eol,start
@@ -374,9 +372,13 @@ nnoremap <leader>r :e!<CR>
 " = Commands =
 " =============================================================================
 command! Config edit $MYVIMRC
-command! ConfigDir edit $NVIMRC_CONFIG_DIR
 command! ConfigReload so $MYVIMRC | noh | exe ':EditorConfigReload'
 command! ToggleConceal call ToggleConceal()
 command! SetLspKeymaps call SetLspKeymaps()
-command! -nargs=* W w
 
+" I can't release my shift key fast enough :')
+command! -nargs=* W w
+command! -nargs=* Wq wq
+command! -nargs=* Q q
+command! -nargs=* Qa qa
+command! -nargs=* QA qa
