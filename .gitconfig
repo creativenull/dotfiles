@@ -8,3 +8,5 @@
 	ui = auto
 [init]
 	defaultBranch = main
+[pull]
+	ff = only
