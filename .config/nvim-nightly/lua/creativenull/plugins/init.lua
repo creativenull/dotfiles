@@ -18,6 +18,7 @@ packer.startup(function()
     use 'tyru/caw.vim'
     use 'lewis6991/gitsigns.nvim'
     use 'editorconfig/editorconfig-vim'
+    use 'mattn/emmet-vim'
 
     -- LSP
     use 'neovim/nvim-lspconfig'
@@ -39,3 +40,4 @@ require(current_path .. '.config.lsp')
 require(current_path .. '.config.treesitter')
 require(current_path .. '.config.telescope')
 require(current_path .. '.config.gitsigns')
+require(current_path .. '.config.emmet')
