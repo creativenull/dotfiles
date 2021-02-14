@@ -2,13 +2,7 @@ local xo = {
     sourceName = 'xo',
     command = 'xo',
     debounce = 100,
-    args = {
-        '--reporter',
-        'json',
-        '--stdin',
-        '--stdin-filename',
-        '%filepath',
-    },
+    args = {  '--stdin', '--stdin-filename', '%filepath', '--reporter', 'json' },
     parseJson = {
         errorsRoot = '[0].messages',
         line = 'line',
@@ -24,7 +18,8 @@ local xo = {
     },
     rootPatterns = {
         'package.json',
-    },
+        '.eslintignore'
+    }
 }
 
 return xo

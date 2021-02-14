@@ -1,6 +1,6 @@
 local prettier = {
     command = 'prettier',
-    args = { '--stdin-filepath', '%filepath' },
+    args = { '--stdin', '--stdin-filepath', '%filepath' },
     rootPatterns = {
         '.prettierrc',
         '.prettierrc.json',
@@ -12,8 +12,8 @@ local prettier = {
         '.prettierrc.js',
         '.prettierrc.cjs',
         'prettier.config.js',
-        'prettier.config.cjs',
-    },
+        'prettier.config.cjs'
+    }
 }
 
 return prettier
