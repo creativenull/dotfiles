@@ -73,6 +73,7 @@ Plug 'tpope/vim-surround'
 Plug 'creativenull/ale'
 Plug 'SirVer/ultisnips'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'godlygeek/tabular'
 
 Plug 'Shougo/context_filetype.vim'
 Plug 'tyru/caw.vim'

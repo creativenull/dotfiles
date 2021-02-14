@@ -49,7 +49,5 @@ function! creativenull#tabline#render() abort
     " after the last tab fill with TabLineFill and reset tab page nr
     call add(result, '%#TabLineFill#')
 
-    let l:tablinelist = join(result, '')
-
-    return tablinelist
+    return join(result, '')
 endfunction
