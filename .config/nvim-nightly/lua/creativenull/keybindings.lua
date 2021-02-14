@@ -62,7 +62,7 @@ utils.vnoremap('<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
 utils.nnoremap('<leader>r', ':e!<CR>')
 
 -- Reload config
-utils.nnoremap('<leader>vs', ':luafile $MYVIMRC<CR>')
+utils.nnoremap('<leader>vs', '<cmd>ConfigReload<CR>')
 
 -- Telescope
 utils.nnoremap('<C-p>', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_files()<CR>]])
@@ -74,5 +74,6 @@ utils.nnoremap('<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
 utils.nnoremap('<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 utils.nnoremap('<leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>')
 utils.nnoremap('<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>')
+utils.nnoremap('<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 utils.nnoremap('<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
 utils.nnoremap('<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
