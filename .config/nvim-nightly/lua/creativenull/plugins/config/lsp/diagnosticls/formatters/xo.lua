@@ -1,6 +1,6 @@
 local xo = {
     command = 'xo',
-    args = { '--fix', '--stdin', '--stdin-filename', '%filepath' },
+    args = { '--stdin', '--stdin-filename', '%filepath', '--fix' },
     rootPatterns = { 'package.json' }
 }
 

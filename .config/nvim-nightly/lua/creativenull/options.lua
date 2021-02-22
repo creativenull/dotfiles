@@ -12,12 +12,13 @@ vim.o.smartcase = true
 vim.o.wrapscan = true
 
 -- Indent options
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
 vim.o.tabstop = 4
+vim.o.shiftwidth = 0
+vim.o.softtabstop = 4
 vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
+vim.o.smarttab = true
 
 -- Line options
 vim.o.showmatch = true
@@ -60,14 +61,18 @@ vim.o.backspace = 'indent,eol,start'
 -- Status line
 vim.o.showmode = false
 vim.o.laststatus = 2
-vim.o.statusline = [[%!luaeval("require'creativenull.statusline'.render()")]]
+vim.o.statusline = require 'creativenull.statusline'.get_statusline()
 
 -- Tab line
 vim.o.showtabline = 2
-vim.o.tabline = [[%!luaeval("require'creativenull.tabline'.render()")]]
+vim.o.tabline = require 'creativenull.tabline'.get_tabline()
 
 -- Better display
 vim.o.cmdheight = 2
 
 -- Auto reload file if changed outside vim, or just :e!
 vim.o.autoread = true
+
+-- Invisible chars list
+vim.wo.list = true
+vim.o.listchars = [[tab:▸ ,trail:·,space:·]]

@@ -62,7 +62,7 @@ utils.vnoremap('<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
 utils.nnoremap('<leader>r', ':e!<CR>')
 
 -- Reload config
-utils.nnoremap('<leader>vs', '<cmd>ConfigReload<CR>')
+utils.nnoremap('<leader>vs', '<cmd>ConfigReload<CR><cmd>noh<CR><cmd>EditorConfigReload<CR>')
 
 -- Telescope
 utils.nnoremap('<C-p>', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_files()<CR>]])
