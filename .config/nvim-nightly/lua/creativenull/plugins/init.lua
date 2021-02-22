@@ -17,7 +17,7 @@ packer.startup(function()
   use 'tyru/caw.vim'
   use { 'lewis6991/gitsigns.nvim', requires = {
     { 'nvim-lua/plenary.nvim' }
-  } }
+  }}
   use 'editorconfig/editorconfig-vim'
   use 'mattn/emmet-vim'
 
@@ -31,7 +31,6 @@ packer.startup(function()
   }}
 
   -- Themes and Syntax
-  use 'gruvbox-community/gruvbox'
   use 'srcery-colors/srcery-vim'
   use 'neoclide/jsonc.vim'
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
