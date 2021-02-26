@@ -66,11 +66,11 @@ call plug#begin(g:plugins_dir)
 
 " Core
 Plug 'creativenull/projectcmd.vim'
+Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
-Plug 'creativenull/ale'
 Plug 'SirVer/ultisnips'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'godlygeek/tabular'
@@ -84,9 +84,8 @@ Plug 'junegunn/fzf.vim'
 " Theme, Syntax
 Plug 'sheerun/vim-polyglot'
 Plug 'itchyny/vim-gitbranch'
-Plug 'yggdroot/indentline'
 Plug 'mhinz/vim-startify'
-Plug 'gruvbox-community/gruvbox'
+Plug 'srcery-colors/srcery-vim'
 
 call plug#end()
 
@@ -109,24 +108,7 @@ command! -bang -nargs=* Rg
 " =============================================================================
 " = Functions =
 " =============================================================================
-function! SetDarkTheme()
-    let g:gruvbox_contrast_dark = 'hard'
-    let g:gruvbox_sign_column = 'dark0_hard'
-    let g:gruvbox_invert_selection = 0
-    let g:gruvbox_number_column = 'dark0_hard'
-    set background=dark
-endfunction
-
-function! SetLightTheme()
-    let g:gruvbox_contrast_light = 'soft'
-    let g:gruvbox_sign_column = 'light0_soft'
-    let g:gruvbox_invert_selection = 0
-    let g:gruvbox_number_column = 'light0_soft'
-    let g:indentLine_color_term = 242
-    set background=light
-endfunction
-
-function! ToggleConceal()
+function! ToggleConceal() abort
     if &conceallevel == 2
         set conceallevel=0
         let g:vim_markdown_conceal = 0
@@ -138,7 +120,7 @@ function! ToggleConceal()
     endif
 endfunction
 
-function! SetLspKeymaps()
+function! SetLspKeymaps() abort
     nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
     nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
     nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
@@ -208,6 +190,12 @@ augroup statusline_hi
     au ColorScheme * call SetTablineHighlights()
 augroup end
 
+augroup set_invisible_chars
+    au!
+    au FileType help set nolist
+    au FileType fzf set nolist
+augroup end
+
 " =============================================================================
 " = Theming and Looks =
 " =============================================================================
@@ -216,8 +204,7 @@ set number
 set relativenumber
 set termguicolors
 
-call SetDarkTheme()
-colorscheme gruvbox
+colorscheme srcery
 
 " =============================================================================
 " = Options =
@@ -226,7 +213,7 @@ set encoding=utf8
 
 " Completion options
 set completeopt=menuone,noinsert,noselect
-set shortmess+=wc
+set shortmess+=c
 
 " Search options
 set hlsearch
@@ -295,6 +282,10 @@ set cmdheight=2
 
 " Auto reload file if changed outside vim, or just :e!
 set autoread
+
+" Invisible chars
+set list
+set listchars=tab:▸\ ,trail:·,space:·
 
 " =============================================================================
 " = Keybindings =
