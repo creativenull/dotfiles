@@ -1,31 +1,31 @@
 local M = {}
 
-local function map(mode, lhs, rhs)
-  vim.api.nvim_set_keymap(mode, lhs, rhs)
+local function key_mapper(mode, lhs, rhs, opts, is_buf)
+  local default_opts = { noremap = true, silent = true }
+  local has_opts = opts ~= nil and not vim.tbl_isempty(opts)
+
+  if is_buf ~= nil and is_buf == true then
+    if has_opts then
+      vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, vim.tbl_extend('force', default_opts, opts))
+    else
+      vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, default_opts)
+    end
+  else
+    if has_opts then
+      vim.api.nvim_set_keymap(mode, lhs, rhs, vim.tbl_extend('force', default_opts, opts))
+    else
+      vim.api.nvim_set_keymap(mode, lhs, rhs, default_opts)
+    end
+  end
 end
 
-local function noremap(mode, lhs, rhs)
-  vim.api.nvim_set_keymap(mode, lhs, rhs, { noremap = true, silent = true })
+function M.keymap(mode, lhs, rhs, opts)
+  key_mapper(mode, lhs, rhs, opts, false)
 end
 
-local function buf_noremap(mode, lhs, rhs)
-  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
+function M.buf_keymap(mode, lhs, rhs, opts)
+  key_mapper(mode, lhs, rhs, opts, true)
 end
-
-function M.nmap(lhs, rhs) map('n', lhs, rhs) end
-function M.imap(lhs, rhs) map('i', lhs, rhs) end
-function M.vmap(lhs, rhs) map('v', lhs, rhs) end
-function M.tmap(lhs, rhs) map('t', lhs, rhs) end
-
-function M.nnoremap(lhs, rhs) noremap('n', lhs, rhs) end
-function M.inoremap(lhs, rhs) noremap('i', lhs, rhs) end
-function M.vnoremap(lhs, rhs) noremap('v', lhs, rhs) end
-function M.tnoremap(lhs, rhs) noremap('t', lhs, rhs) end
-
-function M.buf_nnoremap(lhs, rhs) buf_noremap('n', lhs, rhs) end
-function M.buf_inoremap(lhs, rhs) buf_noremap('i', lhs, rhs) end
-function M.buf_vnoremap(lhs, rhs) buf_noremap('v', lhs, rhs) end
-function M.buf_tnoremap(lhs, rhs) buf_noremap('t', lhs, rhs) end
 
 -- Reload the all modules that reside
 -- in config lua/ dir
