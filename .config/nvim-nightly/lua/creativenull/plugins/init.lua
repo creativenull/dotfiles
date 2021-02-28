@@ -2,6 +2,8 @@ vim.cmd 'packadd packer.nvim'
 local packer = require 'packer'
 
 -- Why do this? https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
+-- A little more context, if you have a different location for your init.lua outside ~/.config/nvim
+-- in my case, this is ~/.config/nvim-nightly - you may want to set a custom location for packer
 packer.init {
   package_root = '~/.local/share/nvim-nightly/site/pack',
   compile_path = '~/.config/nvim-nightly/plugin/packer_compiled.vim'
