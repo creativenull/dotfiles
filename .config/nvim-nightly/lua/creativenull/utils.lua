@@ -1,28 +1,31 @@
 local M = {}
 
-local function map(type, input, output)
-  vim.api.nvim_set_keymap(type, input, output, {})
+local function map(mode, lhs, rhs)
+  vim.api.nvim_set_keymap(mode, lhs, rhs)
 end
 
-local function noremap(type, input, output)
-  vim.api.nvim_set_keymap(type, input, output, { noremap = true, silent = true })
+local function noremap(mode, lhs, rhs)
+  vim.api.nvim_set_keymap(mode, lhs, rhs, { noremap = true, silent = true })
 end
 
-function M.nnoremap(input, output) noremap('n', input, output) end
+local function buf_noremap(mode, lhs, rhs)
+  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
+end
 
-function M.inoremap(input, output) noremap('i', input, output) end
+function M.nmap(lhs, rhs) map('n', lhs, rhs) end
+function M.imap(lhs, rhs) map('i', lhs, rhs) end
+function M.vmap(lhs, rhs) map('v', lhs, rhs) end
+function M.tmap(lhs, rhs) map('t', lhs, rhs) end
 
-function M.vnoremap(input, output) noremap('v', input, output) end
+function M.nnoremap(lhs, rhs) noremap('n', lhs, rhs) end
+function M.inoremap(lhs, rhs) noremap('i', lhs, rhs) end
+function M.vnoremap(lhs, rhs) noremap('v', lhs, rhs) end
+function M.tnoremap(lhs, rhs) noremap('t', lhs, rhs) end
 
-function M.tnoremap(input, output) noremap('t', input, output) end
-
-function M.nmap(input, output) map('n', input, output) end
-
-function M.imap(input, output) map('i', input, output) end
-
-function M.vmap(input, output) map('v', input, output) end
-
-function M.tmap(input, output) map('t', input, output) end
+function M.buf_nnoremap(lhs, rhs) buf_noremap('n', lhs, rhs) end
+function M.buf_inoremap(lhs, rhs) buf_noremap('i', lhs, rhs) end
+function M.buf_vnoremap(lhs, rhs) buf_noremap('v', lhs, rhs) end
+function M.buf_tnoremap(lhs, rhs) buf_noremap('t', lhs, rhs) end
 
 -- Reload the all modules that reside
 -- in config lua/ dir

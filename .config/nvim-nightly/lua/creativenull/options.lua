@@ -26,12 +26,14 @@ vim.o.showbreak = '+++'
 vim.o.textwidth = 120
 vim.o.scrolloff = 5
 vim.wo.linebreak = true
-vim.wo.colorcolumn = '120'
+vim.wo.colorcolumn = '120' -- some prefer 80, but I just like to break the rules :)
 
--- No backups or swapfiles needed
+-- Move swapfiles and backups into cache
 vim.o.dir = os.getenv('HOME') .. '/.cache/nvim'
 vim.o.backup = true
 vim.o.backupdir = os.getenv('HOME') .. '/.cache/nvim'
+
+-- Enable the integrated undo features
 vim.o.undofile = true
 vim.o.undodir = os.getenv('HOME') .. '/.cache/nvim'
 vim.o.undolevels = 1000
