@@ -1,6 +1,7 @@
 vim.cmd 'packadd packer.nvim'
 local packer = require 'packer'
 
+-- Why do this? https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 packer.init {
   package_root = '~/.local/share/nvim-nightly/site/pack',
   compile_path = '~/.config/nvim-nightly/plugin/packer_compiled.vim'
