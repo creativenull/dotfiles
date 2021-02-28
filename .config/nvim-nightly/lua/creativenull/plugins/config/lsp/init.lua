@@ -1,27 +1,17 @@
 local lsp = require 'lspconfig'
 local lsp_status = require 'lsp-status'
-local completion = require 'completion'
-local u = require 'creativenull.utils'
+local utils = require 'creativenull.utils'
 local M = {}
 
-local function register_completion()
-  completion.on_attach {
-    confirm_key = [[<C-y>]],
-    enable_snippet = 'UltiSnips',
-    matching_smart_case = true,
-    enable_auto_hover = false,
-    enable_auto_signature = false
-  }
-end
-
 local function register_buf_keymaps()
-  u.buf_nnoremap('<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
-  u.buf_nnoremap('<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-  u.buf_nnoremap('<leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>')
-  u.buf_nnoremap('<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>')
-  u.buf_nnoremap('<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-  u.buf_nnoremap('<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
-  u.buf_nnoremap('<F2>',       '<cmd>lua vim.lsp.buf.rename()<CR>')
+  utils.buf_keymap('n', '<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
+  utils.buf_keymap('n', '<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+  utils.buf_keymap('n', '<leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>')
+  utils.buf_keymap('n', '<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>')
+  utils.buf_keymap('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+  utils.buf_keymap('n', '<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
+  utils.buf_keymap('n', '<F2>',       '<cmd>lua vim.lsp.buf.rename()<CR>')
+  utils.buf_keymap('i', '<C-y>',      'compe#confirm("<CR>")', { expr = true })
 end
 
 local function register_cursorhold_event()
@@ -35,13 +25,12 @@ end
 local function on_attach(client, bufnr)
   print('Attached to ' .. client.name)
   lsp_status.on_attach(client)
-  register_completion()
   register_buf_keymaps()
   register_cursorhold_event()
 end
 
 -- TODO
--- Move this function to projectcmd.nvim for integrated nvim-lsp support
+-- Copy this function to projectcmd.nvim for integrated nvim-lsp support
 -- Register lsp for projectcmd.nvim plugin
 _G.RegisterLsp = function(lsp_name, opts)
   local default_opts = {
@@ -62,7 +51,7 @@ _G.RegisterLsp = function(lsp_name, opts)
   end
 end
 
--- Examples below, it don't hurt nobody
+vim.lsp.set_log_level("debug")
 
 --[[
 lsp.tsserver.setup {

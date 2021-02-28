@@ -27,7 +27,8 @@ packer.startup(function()
 
   -- LSP
   use 'neovim/nvim-lspconfig'
-  use 'nvim-lua/completion-nvim'
+  use 'hrsh7th/nvim-compe'
+  -- use 'nvim-lua/completion-nvim'
   use 'nvim-lua/lsp-status.nvim'
 
   -- Themes and Syntax
@@ -45,3 +46,4 @@ require(current_path .. '.config.telescope')
 require(current_path .. '.config.gitsigns')
 require(current_path .. '.config.emmet')
 require(current_path .. '.config.projectcmd')
+require(current_path .. '.config.compe')
