@@ -1,13 +1,15 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
-" File: .vimrc/init.vim
 " Description: My vimrc, pre-requisites:
-"              + vim-plug
-"              + ripgrep
-"              + Set environment variables: $PYTHON3_HOST_PROG,
-"                $NVIMRC_PLUGINS_DIR, $NVIMRC_CONFIG_DIR
+"   + vim-plug
+"   + ripgrep
+"   + Environment variables:
+"       $PYTHON3_HOST_PROG
+"       $NVIMRC_PLUGINS_DIR
+"       $NVIMRC_CONFIG_DIR
+"       $NVIMRC_PROJECTCMD_KEY
 "
-"              Currently, tested on a Linux machine.
+" Currently, tested on a Linux machine.
 " =============================================================================
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
@@ -34,8 +36,8 @@ let g:user_emmet_leader_key = '<C-z>'
 " --- fzf Options ---
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
 let g:fzf_preview_window = []
-nnoremap <C-p> :Files<CR>
-nnoremap <C-t> :Rg<CR>
+nnoremap <C-p> <cmd>Files<CR>
+nnoremap <C-t> <cmd>Rg<CR>
 
 " --- ALE Options ---
 let g:ale_hover_cursor = 0
@@ -52,9 +54,9 @@ let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 " --- vim-startify Options ---
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
-    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']       },
-    \ ]
+	\{ 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+	\{ 'type': 'sessions',  'header': ['   Sessions']       },
+	\]
 
 " =============================================================================
 " = Plugin Manager =
@@ -96,82 +98,82 @@ call deoplete#custom#option('max_list', 10)
 
 " --- fzf Options ---
 command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview('up:50%', 'ctrl-/'), <bang>0)
+	\ call fzf#vim#grep(
+	\   "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
+	\   fzf#vim#with_preview('up:50%', 'ctrl-/'), <bang>0)
 
 " =============================================================================
 " = Functions =
 " =============================================================================
 function! ToggleConceal() abort
-    if &conceallevel == 2
-        set conceallevel=0
-        let g:vim_markdown_conceal = 0
-        let g:vim_markdown_conceal_code_blocks = 0
-    else
-        set conceallevel=2
-        let g:vim_markdown_conceal = 1
-        let g:vim_markdown_conceal_code_blocks = 1
-    endif
+	if &conceallevel == 2
+		set conceallevel=0
+		let g:vim_markdown_conceal = 0
+		let g:vim_markdown_conceal_code_blocks = 0
+	else
+		set conceallevel=2
+		let g:vim_markdown_conceal = 1
+		let g:vim_markdown_conceal_code_blocks = 1
+	endif
 endfunction
 
 function! SetLspKeymaps() abort
-    nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
-    nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
-    nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
-    nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
-    nnoremap <silent> <leader>le <cmd>lopen<CR>
-    nnoremap <silent> <F2>       <cmd>ALERename<CR>
+	nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
+	nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
+	nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
+	nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
+	nnoremap <silent> <leader>le <cmd>lopen<CR>
+	nnoremap <silent> <F2>       <cmd>ALERename<CR>
 endfunction
 
 function! SetStatuslineHighlights() abort
-    let l:st_bg = synIDattr(hlID('StatusLine'), 'bg')
-    let l:is_reverse = synIDattr(hlID('StatusLine'), 'reverse', 'gui')
-    if is_reverse == 1
-        let l:st_bg = synIDattr(hlID('StatusLine'), 'fg')
-    endif
+	let l:st_bg = synIDattr(hlID('StatusLine'), 'bg')
+	let l:is_reverse = synIDattr(hlID('StatusLine'), 'reverse', 'gui')
+	if is_reverse == 1
+		let l:st_bg = synIDattr(hlID('StatusLine'), 'fg')
+	endif
 
-    let l:text_color = '#1d2021'
-    let l:blue = '#458588'
-    let l:aqua = '#689d6a'
-    let l:purple = '#b16286'
+	let l:text_color = '#1d2021'
+	let l:blue = '#458588'
+	let l:aqua = '#689d6a'
+	let l:purple = '#b16286'
 
-    let l:cursor_bg = blue
-    let l:filename_git_bg = aqua
-    let l:lsp_bg = purple
-    let l:cursor_filename_sep_fg = blue
-    let l:cursor_filename_sep_bg = aqua
-    let l:filename_st_fg = aqua
-    let l:filename_st_bg = st_bg
-    let l:lsp_st_fg = purple
-    let l:lsp_st_bg = st_bg
+	let l:cursor_bg = blue
+	let l:filename_git_bg = aqua
+	let l:lsp_bg = purple
+	let l:cursor_filename_sep_fg = blue
+	let l:cursor_filename_sep_bg = aqua
+	let l:filename_st_fg = aqua
+	let l:filename_st_bg = st_bg
+	let l:lsp_st_fg = purple
+	let l:lsp_st_bg = st_bg
 
-    " CursorMode
-    execute printf('hi User1 guifg=%s guibg=%s', text_color, cursor_bg)
-    " Git,Filename
-    execute printf('hi User2 guifg=%s guibg=%s', text_color, filename_git_bg)
-    " LSPStatus
-    execute printf('hi User3 guifg=%s guibg=%s', text_color, lsp_bg)
+	" CursorMode
+	execute printf('hi User1 guifg=%s guibg=%s', text_color, cursor_bg)
+	" Git,Filename
+	execute printf('hi User2 guifg=%s guibg=%s', text_color, filename_git_bg)
+	" LSPStatus
+	execute printf('hi User3 guifg=%s guibg=%s', text_color, lsp_bg)
 
-    " Seperators
-    " bluefg -> aquabg
-    execute printf('hi User7 guifg=%s guibg=%s', cursor_filename_sep_fg, cursor_filename_sep_bg)
-    " aquafg -> statuslinebg
-    execute printf('hi User8 guifg=%s guibg=%s', filename_st_fg, filename_st_bg)
-    " statuslinebg -> purplefg
-    execute printf('hi User9 guifg=%s guibg=%s', lsp_st_fg, lsp_st_bg)
+	" Seperators
+	" bluefg -> aquabg
+	execute printf('hi User7 guifg=%s guibg=%s', cursor_filename_sep_fg, cursor_filename_sep_bg)
+	" aquafg -> statuslinebg
+	execute printf('hi User8 guifg=%s guibg=%s', filename_st_fg, filename_st_bg)
+	" statuslinebg -> purplefg
+	execute printf('hi User9 guifg=%s guibg=%s', lsp_st_fg, lsp_st_bg)
 endfunction
 
 function! SetTablineHighlights() abort
-    let l:tb_fill_bg = synIDattr(hlID('TabLineFill'), 'bg')
-    let l:tb_fill_fg = synIDattr(hlID('TabLineFill'), 'fg')
-    let l:text_color = '#1d2021'
-    let l:blue = '#458588'
+	let l:tb_fill_bg = synIDattr(hlID('TabLineFill'), 'bg')
+	let l:tb_fill_fg = synIDattr(hlID('TabLineFill'), 'fg')
+	let l:text_color = '#1d2021'
+	let l:blue = '#458588'
 
-    execute printf('hi TabLine gui=NONE guifg=%s guibg=%s', tb_fill_fg, tb_fill_bg)
-    execute printf('hi TabLineSel guifg=%s guibg=%s', text_color, blue)
-    execute printf('hi TabLineSelLeftSep guifg=%s guibg=%s', blue, tb_fill_bg)
-    execute printf('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', blue, tb_fill_bg)
+	execute printf('hi TabLine gui=NONE guifg=%s guibg=%s', tb_fill_fg, tb_fill_bg)
+	execute printf('hi TabLineSel guifg=%s guibg=%s', text_color, blue)
+	execute printf('hi TabLineSelLeftSep guifg=%s guibg=%s', blue, tb_fill_bg)
+	execute printf('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', blue, tb_fill_bg)
 endfunction
 
 " =============================================================================
@@ -180,15 +182,15 @@ endfunction
 au! FileType fzf set laststatus=0 noruler | au BufLeave <buffer> set laststatus=2 ruler
 
 augroup statusline_hi
-    au!
-    au ColorScheme * call SetStatuslineHighlights()
-    au ColorScheme * call SetTablineHighlights()
+	au!
+	au ColorScheme * call SetStatuslineHighlights()
+	au ColorScheme * call SetTablineHighlights()
 augroup end
 
 augroup set_invisible_chars
-    au!
-    au FileType help set nolist
-    au FileType fzf set nolist
+	au!
+	au FileType help set nolist
+	au FileType fzf set nolist
 augroup end
 
 " =============================================================================
@@ -299,62 +301,61 @@ vnoremap <C-i> "+y<CR>
 nnoremap <C-o> "+p<CR>
 
 " File explorer
-noremap <F3> :Ex<CR>
+noremap <F3> <cmd>Ex<CR>
 
 " Manual completion
 imap <C-Space> <C-x><C-o>
 
 " Disable highlights
-nnoremap <leader><CR> :noh<CR>
+nnoremap <leader><CR> <cmd>noh<CR>
 
 " Buffer maps
 " ---
 " List all buffers
-nnoremap <leader>bl :buffers<CR>
-" Create a new buffer
-nnoremap <leader>bn :enew<CR>
+nnoremap <leader>bl <cmd>buffers<CR>
 " Go to next buffer
-nnoremap <C-l> :bnext<CR>
+nnoremap <C-l> <cmd>bnext<CR>
 " Go to previous buffer
-nnoremap <C-h> :bprevious<CR>
+nnoremap <C-h> <cmd>bprevious<CR>
 " Close the current buffer
-nnoremap <leader>bd :bp<BAR>sp<BAR>bn<BAR>bd<CR>
+nnoremap <leader>bd <cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
-nnoremap <up> :resize +2<CR>
-nnoremap <down> :resize -2<CR>
-nnoremap <left> :vertical resize -2<CR>
-nnoremap <right> :vertical resize +2<CR>
+nnoremap <up>    <cmd>resize +2<CR>
+nnoremap <down>  <cmd>resize -2<CR>
+nnoremap <left>  <cmd>vertical resize -2<CR>
+nnoremap <right> <cmd>vertical resize +2<CR>
 
 " Text maps
 " ---
 " Move a line of text Alt+[j/k]
 nnoremap <M-j> mz:m+<CR>`z
 nnoremap <M-k> mz:m-2<CR>`z
-vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
-vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
+vnoremap <M-j> <cmd>m'>+<CR>`<my`>mzgv`yo`z
+vnoremap <M-k> <cmd>m'<-2<CR>`>my`<mzgv`yo`z
 
 " Edit vimrc and gvimrc
-nnoremap <leader>ve :e $MYVIMRC<CR>
+nnoremap <leader>ve <cmd>edit $MYVIMRC<CR>
 
 " Source the vimrc to reflect changes
-nnoremap <leader>vs :so $MYVIMRC<CR>:noh<CR>:EditorConfigReload<CR>
+nnoremap <leader>vs <cmd>source $MYVIMRC<CR><cmd>noh<CR><cmd>EditorConfigReload<CR>
 
 " Reload file
-nnoremap <leader>r :e!<CR>
+nnoremap <leader>r <cmd>edit!<CR>
 
 " =============================================================================
 " = Commands =
 " =============================================================================
 command! Config edit $MYVIMRC
-command! ConfigReload so $MYVIMRC | noh | exe ':EditorConfigReload'
+command! ConfigReload source $MYVIMRC | noh | execute ':EditorConfigReload'
 command! ToggleConceal call ToggleConceal()
 command! SetLspKeymaps call SetLspKeymaps()
 
 " I can't release my shift key fast enough :')
 command! -nargs=* W w
 command! -nargs=* Wq wq
+command! -nargs=* WQ wq
 command! -nargs=* Q q
 command! -nargs=* Qa qa
 command! -nargs=* QA qa
