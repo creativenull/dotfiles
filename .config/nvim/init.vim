@@ -9,8 +9,6 @@
 "
 "              Currently, tested on a Linux machine.
 " =============================================================================
-filetype plugin indent on
-
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
 let g:plugins_dir = $NVIMRC_PLUGINS_DIR
@@ -61,7 +59,6 @@ let g:startify_lists = [
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
-
 call plug#begin(g:plugins_dir)
 
 " Core
@@ -74,10 +71,8 @@ Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'godlygeek/tabular'
-
 Plug 'Shougo/context_filetype.vim'
 Plug 'tyru/caw.vim'
-
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -199,7 +194,6 @@ augroup end
 " =============================================================================
 " = Theming and Looks =
 " =============================================================================
-syntax on
 set number
 set relativenumber
 set termguicolors
@@ -209,15 +203,11 @@ colorscheme srcery
 " =============================================================================
 " = Options =
 " =============================================================================
-set encoding=utf8
-
 " Completion options
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " Search options
-set hlsearch
-set incsearch
 set ignorecase
 set smartcase
 
@@ -225,8 +215,7 @@ set smartcase
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-set expandtab
-set autoindent
+set noexpandtab
 set smartindent
 
 " Line options
@@ -247,7 +236,6 @@ set undolevels=1000
 set history=1000
 
 " Lazy redraw
-set complete-=i
 set lazyredraw
 
 " Buffers/Tabs/Windows
@@ -270,7 +258,6 @@ set backspace=indent,eol,start
 
 " Status line
 set noshowmode
-set laststatus=2
 set statusline=%!creativenull#statusline#render()
 
 " Tabline
@@ -279,9 +266,6 @@ set tabline=%!creativenull#tabline#render()
 
 " Better display
 set cmdheight=2
-
-" Auto reload file if changed outside vim, or just :e!
-set autoread
 
 " Invisible chars
 set list
