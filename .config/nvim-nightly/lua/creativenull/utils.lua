@@ -1,5 +1,6 @@
 local M = {}
 
+-- Set global or buffer key map
 local function key_mapper(mode, lhs, rhs, opts, is_buf)
   local default_opts = { noremap = true, silent = true }
   local has_opts = opts ~= nil and not vim.tbl_isempty(opts)

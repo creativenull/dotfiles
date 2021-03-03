@@ -29,6 +29,14 @@ local function on_attach(client, bufnr)
   register_cursorhold_event()
 end
 
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = true,
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+})
+
 -- TODO
 -- Copy this function to projectcmd.nvim for integrated nvim-lsp support
 -- Register lsp for projectcmd.nvim plugin
@@ -51,7 +59,7 @@ _G.RegisterLsp = function(lsp_name, opts)
   end
 end
 
-vim.lsp.set_log_level("debug")
+-- vim.lsp.set_log_level("debug")
 
 --[[
 lsp.tsserver.setup {
