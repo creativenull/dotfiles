@@ -1,10 +1,11 @@
 # dotfiles and config
 
++ SpaceVim
 + alacritty
 + gitconfig
++ kitty
 + neovim
 + neovim (nightly)
-+ SpaceVim
 + tmux
 + vscode
 + zsh
