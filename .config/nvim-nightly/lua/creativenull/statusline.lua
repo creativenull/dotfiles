@@ -12,24 +12,24 @@ end
 
 local function cursor_mode()
   local mode_map = {
-    ['n']  = 'N',
-    ['v']  = 'V',
-    ['V']  = 'V',
-    [''] = 'V',
-    ['i']  = 'I',
-    ['ic'] = 'I',
-    ['ix'] = 'I',
-    ['R']  = 'R',
-    ['Rv'] = 'R',
-    ['c']  = 'C',
+    ['n']  = 'NORMAL',
+    ['v']  = 'VISUAL',
+    ['V']  = 'VISUAL',
+    [''] = 'VISUAL',
+    ['i']  = 'INSERT',
+    ['ic'] = 'INSERT',
+    ['ix'] = 'INSERT',
+    ['R']  = 'REPLACE',
+    ['Rv'] = 'REPLACE',
+    ['c']  = 'COMMAND',
   }
 
   local mode_colors = {
-    ['N']  = { fg = '#FCE8C3', bg = '#585858' },
-    ['V']  = { fg = '#262626', bg = '#FBB829' },
-    ['I']  = { fg = '#FCE8C3', bg = '#EF2F27' },
-    ['R'] = { fg = '#FCE8C3', bg = '#EF2F27' },
-    ['C'] = { fg = '#FCE8C3', bg = '#2C78BF' },
+    ['NORMAL']  = { fg = '#FCE8C3', bg = '#585858' },
+    ['VISUAL']  = { fg = '#262626', bg = '#FBB829' },
+    ['INSERT']  = { fg = '#FCE8C3', bg = '#EF2F27' },
+    ['REPLACE'] = { fg = '#FCE8C3', bg = '#EF2F27' },
+    ['COMMAND'] = { fg = '#FCE8C3', bg = '#2C78BF' },
   }
 
   local m = vim.api.nvim_get_mode()
