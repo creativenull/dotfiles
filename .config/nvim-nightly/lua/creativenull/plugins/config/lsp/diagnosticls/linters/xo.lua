@@ -1,4 +1,4 @@
-local xo = {
+return {
   sourceName = 'xo',
   command = 'xo',
   debounce = 100,
@@ -17,9 +17,6 @@ local xo = {
     [1] = 'warning'
   },
   rootPatterns = {
-    'package.json',
     '.eslintignore'
   }
 }
-
-return xo

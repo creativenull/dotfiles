@@ -1,4 +1,4 @@
-local ts_standard = {
+return {
   sourceName = 'ts_standard',
   command = 'ts-standard',
   debounce = 100,
@@ -16,5 +16,3 @@ local ts_standard = {
   },
   rootPatterns = { '.git', '.gitignore' }
 }
-
-return ts_standard

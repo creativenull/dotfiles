@@ -1,4 +1,4 @@
-local eslint = {
+return {
   sourceName = 'eslint',
   command = 'eslint',
   debounce = 100,
@@ -17,7 +17,6 @@ local eslint = {
     [1] = 'warning'
   },
   rootPatterns = {
-    'package.json',
     '.eslintrc',
     '.eslintrc.cjs',
     '.eslintrc.js',
@@ -26,5 +25,3 @@ local eslint = {
     '.eslintrc.yml'
   }
 }
-
-return eslint

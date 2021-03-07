@@ -1,4 +1,4 @@
-local standard = {
+return {
   sourceName = 'standard',
   command = 'standard',
   debounce = 100,
@@ -14,7 +14,5 @@ local standard = {
       message = 3
     }
   },
-  rootPatterns = { '.git', '.gitignore' }
+  rootPatterns = { '.git' }
 }
-
-return standard

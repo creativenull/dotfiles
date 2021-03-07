@@ -1,10 +1,7 @@
-local prettier_standard = {
+return {
   command = 'prettier-standard',
   args = { '--stdin' },
   rootPatterns = {
-    'package.json',
     '.prettierignore'
   }
 }
-
-return prettier_standard

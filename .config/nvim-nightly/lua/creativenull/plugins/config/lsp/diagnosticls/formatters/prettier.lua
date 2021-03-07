@@ -1,4 +1,4 @@
-local prettier = {
+return {
   command = 'prettier',
   args = { '--stdin', '--stdin-filepath', '%filepath' },
   rootPatterns = {
@@ -15,5 +15,3 @@ local prettier = {
     'prettier.config.cjs'
   }
 }
-
-return prettier

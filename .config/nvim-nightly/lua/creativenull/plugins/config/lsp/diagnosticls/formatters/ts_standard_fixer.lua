@@ -1,7 +1,5 @@
-local ts_standard_fixer = {
+return {
   command = 'ts-standard',
   args = { '--fix', '--stdin', '--stdin-filename', '%filepath' },
-  rootPatterns = { '.git', '.gitignore' }
+  rootPatterns = { '.git' }
 }
-
-return ts_standard_fixer
