@@ -1,1 +1,7 @@
-require 'gitsigns'.setup {}
+local M = {}
+
+M.config = function()
+  require 'gitsigns'.setup {}
+end
+
+return M

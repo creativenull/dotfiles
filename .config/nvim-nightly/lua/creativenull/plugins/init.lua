@@ -1,5 +1,6 @@
 vim.cmd 'packadd packer.nvim'
 local packer = require 'packer'
+local current_path = (...):gsub('%.init$', '')
 
 -- Why do this? https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 -- A little more context, if you have a different location for your init.lua outside ~/.config/nvim
@@ -9,44 +10,66 @@ packer.init {
   compile_path = '~/.config/nvim-nightly/plugin/packer_compiled.vim'
 }
 
-packer.startup(function()
+packer.startup(function(use)
   use { 'wbthomason/packer.nvim', opt = true }
 
   -- Editor
-  use 'creativenull/projectcmd.nvim'
+  use {
+    'creativenull/projectcmd.nvim',
+    config = require(current_path .. '.config.projectcmd').config()
+  }
+
   use 'tpope/vim-surround'
+
   use 'SirVer/ultisnips'
+
   use 'Shougo/context_filetype.vim'
+
   use 'tyru/caw.vim'
-  use { 'lewis6991/gitsigns.nvim', requires = {
-    { 'nvim-lua/plenary.nvim' }
-  }}
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = require(current_path .. '.config.gitsigns').config()
+  }
+
   use 'editorconfig/editorconfig-vim'
-  use 'mattn/emmet-vim'
-  use { 'nvim-telescope/telescope.nvim', requires = {
-    { 'nvim-lua/popup.nvim' },
-    { 'nvim-lua/plenary.nvim' }
-  }}
+
+  use {
+    'mattn/emmet-vim',
+    config = require(current_path .. '.config.emmet').config()
+  }
+
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' },
+    config = require(current_path .. '.config.telescope').config()
+}
 
   -- LSP
-  use 'neovim/nvim-lspconfig'
-  use 'hrsh7th/nvim-compe'
-  -- use 'nvim-lua/completion-nvim'
+  use {
+    'neovim/nvim-lspconfig',
+    setup = require(current_path .. '.config.lsp').setup(),
+    config = require(current_path .. '.config.lsp').config()
+  }
+
+  use {
+    'hrsh7th/nvim-compe',
+    config = require(current_path .. '.config.compe').config()
+  }
+
   use 'nvim-lua/lsp-status.nvim'
 
   -- Themes and Syntax
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    config = require(current_path .. '.config.treesitter').config()
+  }
+
   use 'neoclide/jsonc.vim'
+
   use 'iloginow/vim-stylus'
+
   use 'srcery-colors/srcery-vim'
 end)
-
--- Plugin Configs
-local current_path = (...):gsub('%.init$', '')
-require(current_path .. '.config.lsp')
-require(current_path .. '.config.treesitter')
-require(current_path .. '.config.telescope')
-require(current_path .. '.config.gitsigns')
-require(current_path .. '.config.emmet')
-require(current_path .. '.config.projectcmd')
-require(current_path .. '.config.compe')
