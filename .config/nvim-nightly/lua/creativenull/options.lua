@@ -1,5 +1,3 @@
-vim.cmd 'filetype plugin indent on'
-
 -- Completion options
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.o.shortmess = vim.o.shortmess .. 'c'
