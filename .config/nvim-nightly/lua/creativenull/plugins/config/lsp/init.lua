@@ -20,7 +20,7 @@ end
 local function register_cursorhold_event()
   vim.cmd 'augroup lsp_diagnostic_popup'
   vim.cmd 'au!'
-  vim.cmd 'au CursorHold  <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()'
+  vim.cmd 'au CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()'
   vim.cmd 'au CursorMoved <buffer> lua vim.lsp.buf.clear_references()'
   vim.cmd 'augroup end'
 end
@@ -75,51 +75,9 @@ local function register_lsp(lsp_name, opts)
   end
 end
 
--- Register diagnosticls options
-local function register_diagnosticls(opts)
-  local eslint = require(current_path .. '.diagnosticls.linters.eslint')
-  local prettier = require(current_path .. '.diagnosticls.formatters.prettier')
-  local setup_opts = {
-    on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
-    root_dir = lsp.util.root_pattern('.git'),
-    init_options = {
-      filetypes = {},
-      formatFiletypes = {},
-      linters = {
-        eslint = eslint
-      },
-      formatters = {
-        prettier = prettier
-      }
-    }
-  }
-
-  -- extract info from opts into init_options
-  local filetypes = {}
-  for k1,v1 in pairs(opts) do
-    table.insert(filetypes, k1)
-
-    for k2,v2 in pairs(v1) do
-      if k2 == 'linter' then
-        setup_opts.init_options.filetypes[k1] = v2
-      end
-
-      if k2 == 'formatter' then
-        setup_opts.init_options.formatFiletypes[k1] = v2
-      end
-    end
-  end
-
-  setup_opts.filetypes = filetypes
-
-  lsp.diagnosticls.setup(setup_opts)
-end
-
--- Setup before loading the plugin
+-- Before loading plugin
 M.setup = function()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = true,
     virtual_text = false,
     signs = true,
@@ -127,101 +85,10 @@ M.setup = function()
   })
 end
 
--- Register function after loading plugin
+-- After loading plugin
 M.config = function()
   _G.RegisterLsp = register_lsp
-  _G.RegisterDiagnosticLS = register_diagnosticls
+  -- vim.lsp.set_log_level("debug")
 end
 
 return M
-
--- vim.lsp.set_log_level("debug")
-
--- Examples below
-
---[[
-lsp.tsserver.setup {
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities
-}
---]]
-
---[[
-lsp.denols.setup {
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities,
-  init_options = {
-    enable = true,
-    unstable = true,
-    importMap = './import_map.json'
-  },
-  root_dir = lsp.util.root_pattern('.denols')
-}
---]]
-
---[[
-lsp.vuels.setup {
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities,
-  init_options = {
-    config = {
-      css = {},
-      emmet = {},
-      html = {
-        suggest = {}
-      },
-      javascript = {
-        format = {}
-      },
-      stylusSupremacy = {},
-      typescript = {
-        format = {}
-      },
-      vetur = {
-        completion = {
-          autoImport = false,
-          tagCasing = "kebab",
-          useScaffoldSnippets = false
-        },
-        format = {
-          defaultFormatter = {
-            js = "none",
-            ts = "none"
-          },
-          defaultFormatterOptions = {},
-          scriptInitialIndent = false,
-          styleInitialIndent = false
-        },
-        useWorkspaceDependencies = false,
-        validation = {
-          script = true,
-          style = true,
-          template = false
-        }
-      }
-    }
-  }
-}
---]]
-
---[[
-lsp.jsonls.setup {
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities
-}
---]]
-
---[[
-lsp.intelephense.setup {
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities
-}
---]]
-
---[[
-local current_path = (...):gsub('%.init$', '')
-require (current_path .. '.diagnosticls').setup {
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities
-}
---]]

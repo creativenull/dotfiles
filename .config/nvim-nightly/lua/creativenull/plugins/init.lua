@@ -1,6 +1,6 @@
 vim.cmd 'packadd packer.nvim'
-local packer = require 'packer'
 local current_path = (...):gsub('%.init$', '')
+local packer = require 'packer'
 
 -- Why do this? https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 -- A little more context, if you have a different location for your init.lua outside ~/.config/nvim
@@ -44,13 +44,18 @@ packer.startup(function(use)
     'nvim-telescope/telescope.nvim',
     requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' },
     config = require(current_path .. '.config.telescope').config()
-}
+  }
 
   -- LSP
   use {
     'neovim/nvim-lspconfig',
     setup = require(current_path .. '.config.lsp').setup(),
     config = require(current_path .. '.config.lsp').config()
+  }
+
+  use {
+    'creativenull/diagnosticls-nvim',
+    requires = { 'neovim/nvim-lspconfig' }
   }
 
   use {
