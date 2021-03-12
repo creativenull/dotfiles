@@ -6,13 +6,21 @@ local M = {}
 
 -- LSP Buffer Keymaps
 local function register_buf_keymaps()
+  -- utils.buf_keymap('n', '<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
+  -- utils.buf_keymap('n', '<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+  -- utils.buf_keymap('n', '<leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>')
+  -- utils.buf_keymap('n', '<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>')
+  -- utils.buf_keymap('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+  -- utils.buf_keymap('n', '<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
+  -- utils.buf_keymap('n', '<F2>',       '<cmd>lua vim.lsp.buf.rename()<CR>')
+  -- utils.buf_keymap('i', '<C-y>',      'compe#confirm("<CR>")', { expr = true })
+
   utils.buf_keymap('n', '<leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>')
   utils.buf_keymap('n', '<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-  utils.buf_keymap('n', '<leader>lr', '<cmd>lua vim.lsp.buf.references()<CR>')
-  utils.buf_keymap('n', '<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>')
-  utils.buf_keymap('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+  utils.buf_keymap('n', '<leader>lh', '<cmd>Lspsaga hover_doc<CR>')
+  utils.buf_keymap('n', '<leader>la', '<cmd>Lspsaga code_action<CR>')
   utils.buf_keymap('n', '<leader>le', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
-  utils.buf_keymap('n', '<F2>',       '<cmd>lua vim.lsp.buf.rename()<CR>')
+  utils.buf_keymap('n', '<F2>',       '<cmd>Lspsaga rename<CR>')
   utils.buf_keymap('i', '<C-y>',      'compe#confirm("<CR>")', { expr = true })
 end
 
@@ -20,8 +28,9 @@ end
 local function register_cursorhold_event()
   vim.cmd 'augroup lsp_diagnostic_popup'
   vim.cmd 'au!'
-  vim.cmd 'au CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()'
-  vim.cmd 'au CursorMoved <buffer> lua vim.lsp.buf.clear_references()'
+  vim.cmd 'au CursorHold <buffer> lua require"lspsaga.diagnostic".show_line_diagnostics()'
+  -- vim.cmd 'au CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()'
+  -- vim.cmd 'au CursorMoved <buffer> lua vim.lsp.buf.clear_references()'
   vim.cmd 'augroup end'
 end
 

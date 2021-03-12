@@ -11,7 +11,8 @@ M.config = function()
       'lua',
       'python',
       'tsx',
-      'typescript'
+      'typescript',
+      'svelte',
     },
     highlight = {
       enable = true

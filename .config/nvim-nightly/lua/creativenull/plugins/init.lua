@@ -59,6 +59,12 @@ packer.startup(function(use)
   }
 
   use {
+    'glepnir/lspsaga.nvim',
+    requires = { 'neovim/nvim-lspconfig' },
+    config = require'lspsaga'.init_lsp_saga()
+  }
+
+  use {
     'hrsh7th/nvim-compe',
     config = require(current_path .. '.config.compe').config()
   }
@@ -71,6 +77,8 @@ packer.startup(function(use)
     run = ':TSUpdate',
     config = require(current_path .. '.config.treesitter').config()
   }
+
+  use 'evanleck/vim-svelte'
 
   use 'neoclide/jsonc.vim'
 
