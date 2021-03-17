@@ -332,8 +332,8 @@ nnoremap <right> <cmd>vertical resize +2<CR>
 " Move a line of text Alt+[j/k]
 nnoremap <M-j> mz:m+<CR>`z
 nnoremap <M-k> mz:m-2<CR>`z
-vnoremap <M-j> <cmd>m'>+<CR>`<my`>mzgv`yo`z
-vnoremap <M-k> <cmd>m'<-2<CR>`>my`<mzgv`yo`z
+vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Edit vimrc and gvimrc
 nnoremap <leader>ve <cmd>edit $MYVIMRC<CR>
