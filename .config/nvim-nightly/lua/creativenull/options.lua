@@ -1,6 +1,7 @@
 -- Completion options
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.o.shortmess = vim.o.shortmess .. 'c'
+vim.o.updatetime = 100
 
 -- Search options
 vim.o.hlsearch = true
@@ -27,13 +28,13 @@ vim.wo.linebreak = true
 vim.wo.colorcolumn = '120' -- some prefer 80, but I just like to break the rules :)
 
 -- Move swapfiles and backups into cache
-vim.o.dir = os.getenv('HOME') .. '/.cache/nvim'
+vim.o.dir = os.getenv('HOME') .. '/.cache/nvim-nightly'
 vim.o.backup = true
-vim.o.backupdir = os.getenv('HOME') .. '/.cache/nvim'
+vim.o.backupdir = os.getenv('HOME') .. '/.cache/nvim-nightly'
 
 -- Enable the integrated undo features
 vim.o.undofile = true
-vim.o.undodir = os.getenv('HOME') .. '/.cache/nvim'
+vim.o.undodir = os.getenv('HOME') .. '/.cache/nvim-nightly'
 vim.o.undolevels = 1000
 vim.o.history = 1000
 
@@ -42,9 +43,6 @@ vim.o.lazyredraw = true
 
 -- Buffers/Tabs/Windows
 vim.o.hidden = true
-
--- update time to 300ms
-vim.o.updatetime = 300
 
 -- Set spelling
 vim.o.spell = false
