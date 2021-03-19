@@ -231,7 +231,7 @@ set backspace=indent,eol,start
 
 " Status line
 set noshowmode
-let &statusline=' %{CursorMode()} %{gitbranch#name()} %{expand("%:t")} %m %=%l/%L '
+let &statusline=' %{CursorMode()} %{gitbranch#name()} %{expand("%:t")} %m%y %=%l/%L '
 
 " Tabline
 set showtabline=2
