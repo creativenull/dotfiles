@@ -14,6 +14,18 @@ function! s:get_tail(tail)
     endif
 endfunction
 
+function! creativenull#tabline#set_hl() abort
+    let l:tb_fill_bg = synIDattr(hlID('TabLineFill'), 'bg')
+    let l:tb_fill_fg = synIDattr(hlID('TabLineFill'), 'fg')
+    let l:text_color = '#1d2021'
+    let l:blue = '#458588'
+
+    execute printf('hi TabLine gui=NONE guifg=%s guibg=%s', tb_fill_fg, tb_fill_bg)
+    execute printf('hi TabLineSel guifg=%s guibg=%s', text_color, blue)
+    execute printf('hi TabLineSelLeftSep guifg=%s guibg=%s', blue, tb_fill_bg)
+    execute printf('hi TabLineSelRightSep gui=reverse guifg=%s guibg=%s', blue, tb_fill_bg)
+endfunction
+
 function! creativenull#tabline#switch_buf(minwid, clicks, btn, modifiers) abort
     execute 'buffer ' . a:minwid
 endfunction
@@ -34,11 +46,11 @@ function! creativenull#tabline#render() abort
                 " cuz first buffer can be any number
                 if len(result) == 0
                     call add(result, '%#TabLineSel# %M' . filename .
-                            \' %#TabLineSelLeftSep#' . sep . '%0*')
+                        \' %#TabLineSelLeftSep#' . sep . '%0*')
                 else
                     call add(result, '%#TabLineSelRightSep#' . sep .
-                            \'%#TabLineSel# %M' . filename .
-                            \' %#TabLineSelLeftSep#' . sep . '%0*')
+                        \'%#TabLineSel# %M' . filename .
+                        \' %#TabLineSelLeftSep#' . sep . '%0*')
                 endif
             else
                 call add(result, '%' . i . '@creativenull#tabline#switch_buf@' . '%#TabLine# ' . filename . ' %T%0*')
