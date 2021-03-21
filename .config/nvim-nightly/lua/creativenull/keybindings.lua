@@ -65,6 +65,6 @@ utils.keymap('n', '<leader>r', '<cmd>e!<CR>')
 utils.keymap('n', '<leader>vs', '<cmd>ConfigReload<CR><cmd>noh<CR><cmd>EditorConfigReload<CR>')
 
 -- Telescope
-utils.keymap('n', '<C-p>', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_project_files()<CR>]])
+utils.keymap('n', '<C-p>', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_files()<CR>]])
 utils.keymap('n', '<C-t>', [[<cmd>lua require'creativenull.plugins.config.telescope'.live_grep()<CR>]])
-utils.keymap('n', '<leader>vf', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_vim_config_files()<CR>]])
+utils.keymap('n', '<leader>vf', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_config_files()<CR>]])

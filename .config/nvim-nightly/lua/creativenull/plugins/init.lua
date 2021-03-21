@@ -5,7 +5,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
 end
 
-vim.cmd('packadd packer.nvim')
+vim.cmd 'packadd packer.nvim'
 local packer = require 'packer'
 
 -- Why do this? https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
@@ -20,66 +20,35 @@ packer.startup(function(use)
   use { 'wbthomason/packer.nvim', opt = true }
 
   -- Editor
+  use 'nvim-lua/popup.nvim'
+  use 'nvim-lua/plenary.nvim'
   use 'tpope/vim-surround'
   use 'SirVer/ultisnips'
   use 'Shougo/context_filetype.vim'
   use 'tyru/caw.vim'
   use 'editorconfig/editorconfig-vim'
-
-  use {
-    'creativenull/projectcmd.nvim',
-    config = require(current_path .. '.config.projectcmd').config()
-  }
-
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = { 'nvim-lua/plenary.nvim' },
-    config = require(current_path .. '.config.gitsigns').config()
-  }
-
-  use {
-    'mattn/emmet-vim',
-    config = require(current_path .. '.config.emmet').config(),
-  }
-
-  use {
-    'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' },
-    config = require(current_path .. '.config.telescope').config(),
-  }
+  use 'creativenull/projectcmd.nvim'
+  use 'lewis6991/gitsigns.nvim'
+  use 'mattn/emmet-vim'
+  use 'nvim-telescope/telescope.nvim'
 
   -- LSP
+  use 'neovim/nvim-lspconfig'
   use 'nvim-lua/lsp-status.nvim'
-
-  use {
-    'hrsh7th/nvim-compe',
-    config = require(current_path .. '.config.compe').config(),
-  }
-
-  use {
-    'neovim/nvim-lspconfig',
-    setup = require(current_path .. '.config.lsp').setup(),
-    config = require(current_path .. '.config.lsp').config(),
-  }
-
-  use {
-    'creativenull/diagnosticls-nvim',
-    requires = { 'neovim/nvim-lspconfig' },
-  }
-
-  use {
-    'glepnir/lspsaga.nvim',
-    requires = { 'neovim/nvim-lspconfig' },
-    config = require'lspsaga'.init_lsp_saga(),
-  }
+  use 'hrsh7th/nvim-compe'
+  use 'creativenull/diagnosticls-nvim'
+  use 'glepnir/lspsaga.nvim'
 
   -- Themes and Syntax
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-    config = require(current_path .. '.config.treesitter').config()
-  }
-
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use 'sheerun/vim-polyglot'
   use 'srcery-colors/srcery-vim'
 end)
+
+require(current_path .. '.config.compe')
+require(current_path .. '.config.emmet')
+require(current_path .. '.config.gitsigns')
+require(current_path .. '.config.projectcmd')
+require(current_path .. '.config.telescope')
+require(current_path .. '.config.treesitter')
+require(current_path .. '.config.lsp')

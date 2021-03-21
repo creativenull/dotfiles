@@ -2,7 +2,6 @@ local lsp = require 'lspconfig'
 local lsp_status = require 'lsp-status'
 local utils = require 'creativenull.utils'
 local current_path = (...):gsub('%.init$', '')
-local M = {}
 
 -- LSP Buffer Keymaps
 local function register_buf_keymaps()
@@ -65,26 +64,18 @@ local function register_lsp(lsp_name, opts)
   end
 end
 
--- Before loading plugin
-M.setup = function()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = true,
-    virtual_text = false,
-    signs = true,
-    update_in_insert = true,
-  })
-end
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = true,
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+})
 
--- After loading plugin
-M.config = function()
-  _G.RegisterLsp = register_lsp
+_G.RegisterLsp = register_lsp
 
-  require 'diagnosticls-nvim'.init {
-    on_attach = on_attach,
-    root_dir = require 'lspconfig'.util.root_pattern('.git')
-  }
+require 'diagnosticls-nvim'.init {
+  on_attach = on_attach,
+  root_dir = require 'lspconfig'.util.root_pattern('.git')
+}
 
-  -- vim.lsp.set_log_level("debug")
-end
-
-return M
+-- vim.lsp.set_log_level("debug")
