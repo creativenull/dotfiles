@@ -1,3 +1,8 @@
+" Name: Arnold Chand
+" Github: https://github.com/creativenull
+" Tabline Functions
+" =============================================================================
+
 function! s:get_tail(tail)
     if empty(a:tail)
         return ''
