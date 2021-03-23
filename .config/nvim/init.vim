@@ -31,6 +31,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
+let g:polyglot_disabled = ['php', 'autoindent', 'sensible']
 
 " --- Emmet ---
 let g:user_emmet_leader_key = '<C-z>'
@@ -135,18 +136,58 @@ function! SetLspKeymaps() abort
     nnoremap <silent> <leader>le <cmd>lopen<CR>
 endfunction
 
-function! CursorMode() abort
+function! s:cursor_mode() abort
     if mode() == 'n'
-        return 'NORMAL'
+        return '%#StatusLineCursorNormal# NORMAL %*'
     elseif mode() == 'i'
-        return 'INSERT'
+        return '%#StatusLineCursorInsert# INSERT %*'
     elseif mode() == 'c'
-        return 'COMMAND'
+        return '%#StatusLineCursorCommand# COMMAND %*'
     elseif mode() == 'v' || mode() == 'V' || mode() == ''
-        return 'VISUAL'
+        return '%#StatusLineCursorVisual# VISUAL %*'
     elseif mode() == 'R' || mode() == 'Rv' || mode() == 'Rx'
-        return 'REPLACE'
+        return '%#StatusLineCursorReplace# REPLACE %*'
     endif
+endfunction
+
+function! s:lsp_statusline() abort
+    if exists('g:loaded_ale')
+        let l:lsp_hl = '%#StatusLineLSP#'
+        let l:counts = ale#statusline#Count(bufnr(''))
+        let l:all_errors = l:counts.error + l:counts.style_error
+        let l:all_non_errors = l:counts.total - l:all_errors
+        return l:counts.total == 0 ? lsp_hl . ' ALE ' : printf(
+            \ '%s ALE %d 🔴 %d 🟡 ',
+            \ lsp_hl,
+            \ all_errors,
+            \ all_non_errors,
+        \ )
+    endif
+
+    return lsp_hl . ' NONE '
+endfunction
+
+function! s:lsp_hl()
+    hi! StatusLineLSP guibg=#53FDE9 guifg=#1C1B19
+endfunction
+
+function! s:statusline_hl()
+    let l:text_color_black = '#1C1B19'
+    let l:text_color_white = '#D0BFA1'
+    let l:statusline_highlights = [
+        \ printf('hi! StatusLineCursorNormal  guibg=#519F50 guifg=%s', text_color_black),
+        \ printf('hi! StatusLineCursorInsert  guibg=#EF2F27 guifg=%s', text_color_white),
+        \ printf('hi! StatusLineCursorVisual  guibg=#FBB829 guifg=%s', text_color_black),
+        \ printf('hi! StatusLineCursorReplace guibg=#FBB829 guifg=%s', text_color_black),
+        \ printf('hi! StatusLineCursorCommand guibg=#2C78BF guifg=%s', text_color_white),
+    \ ]
+    for statusline_hl in statusline_highlights
+        execute statusline_hl
+    endfor
+endfunction
+
+function! StatusLineRender() abort
+  return s:cursor_mode() . ' %{gitbranch#name()} %{expand("%:t")} %m %=%l/%L ' . s:lsp_statusline()
 endfunction
 
 " =============================================================================
@@ -170,6 +211,8 @@ set relativenumber
 set termguicolors
 
 colorscheme srcery
+call s:statusline_hl()
+call s:lsp_hl()
 
 " =============================================================================
 " = Options =
@@ -209,7 +252,6 @@ set history=10000
 
 " Performance
 set lazyredraw
-set complete-=i
 
 " Buffers/Tabs/Windows
 set hidden
@@ -231,7 +273,7 @@ set backspace=indent,eol,start
 
 " Status line
 set noshowmode
-let &statusline=' %{CursorMode()} %{gitbranch#name()} %{expand("%:t")} %m%y %=%l/%L '
+set statusline=%!StatusLineRender()
 
 " Tabline
 set showtabline=2
@@ -306,7 +348,7 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 nnoremap <leader>ve <cmd>edit $MYVIMRC<CR>
 
 " Source the vimrc to reflect changes
-nnoremap <leader>vs <cmd>source $MYVIMRC<CR><cmd>noh<CR><cmd>EditorConfigReload<CR>
+nnoremap <leader>vs <cmd>execute ':ConfigReload'<CR>
 
 " Reload file
 nnoremap <leader>r <cmd>edit!<CR>
