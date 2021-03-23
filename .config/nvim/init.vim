@@ -187,7 +187,7 @@ function! s:statusline_hl()
 endfunction
 
 function! StatusLineRender() abort
-  return s:cursor_mode() . ' %{gitbranch#name()} %{expand("%:t")} %m %=%l/%L ' . s:lsp_statusline()
+    return s:cursor_mode() . ' %{gitbranch#name()} %{expand("%:t")} %m %=%l/%L ' . s:lsp_statusline()
 endfunction
 
 " =============================================================================
