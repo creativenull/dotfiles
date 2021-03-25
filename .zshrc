@@ -15,6 +15,7 @@ else
 fi
 
 # List files/dir
+alias ls="lsd -A"
 alias l="lsd -lA"
 
 # neovim
@@ -24,9 +25,9 @@ export NVIMRC_CONFIG_DIR=$HOME/.config/nvim
 export NVIMRC_PLUGINS_DIR=$HOME/.local/share/nvim/plugged
 
 # Global aliases
-alias v="nvim"
-alias os-update="sudo apt update && sudo apt upgrade"
-alias os-pkg="sudo apt"
+alias v=nvim
+alias os-update="echo 'Add your sudo apt update here'"
+alias os-pkg="echo 'Add your sudo apt install here'"
 
 # Git aliases
 alias g="git"
