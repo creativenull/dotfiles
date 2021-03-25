@@ -1,0 +1,6 @@
+require('creativenull.plugins.config.compe')
+require('creativenull.plugins.config.gitsigns')
+require('creativenull.plugins.config.projectcmd')
+require('creativenull.plugins.config.telescope')
+require('creativenull.plugins.config.treesitter')
+require('creativenull.plugins.config.lsp')

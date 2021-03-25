@@ -1,4 +1,3 @@
-local current_path = (...):gsub('%.init$', '')
 local install_path = os.getenv('HOME') .. '/.local/share/nvim-nightly/site/pack/packer/opt/packer.nvim'
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -16,6 +15,10 @@ packer.init {
   compile_path = '~/.config/nvim-nightly/plugin/packer_compiled.vim'
 }
 
+-- For plugins that use g: vars as settings
+require('creativenull.plugins.config')
+
+-- Load plugins
 packer.startup(function(use)
   use { 'wbthomason/packer.nvim', opt = true }
 
@@ -45,10 +48,5 @@ packer.startup(function(use)
   use 'srcery-colors/srcery-vim'
 end)
 
-require(current_path .. '.config.compe')
-require(current_path .. '.config.emmet')
-require(current_path .. '.config.gitsigns')
-require(current_path .. '.config.projectcmd')
-require(current_path .. '.config.telescope')
-require(current_path .. '.config.treesitter')
-require(current_path .. '.config.lsp')
+-- For plugins that load settings using setup()
+require('creativenull.plugins.config.setup')
