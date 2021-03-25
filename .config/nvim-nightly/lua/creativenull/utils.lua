@@ -52,4 +52,13 @@ function M.toggle_conceal()
   end
 end
 
+-- Dumb way to set an autocmd group
+function M.set_augroup(group, autocmds)
+  local cmd = vim.api.nvim_command
+  cmd('augroup ' .. group)
+  cmd('au!')
+  for _, autocmd in pairs(autocmds) do cmd(autocmd) end
+  cmd('augroup end')
+end
+
 return M
