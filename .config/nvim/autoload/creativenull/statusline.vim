@@ -14,6 +14,10 @@ let s:cursor_colors = {
     \ 'command': { 'bg': '#2C78BF', 'fg': s:text_color_white },
 \ }
 
+let s:cursor_mode_hl = {
+    \ 'normal': 'StatusLineCursorNormal'
+\ }
+
 function! s:cursor_mode() abort
     if mode() == 'n'
         return '%#StatusLineCursorNormal# NORMAL %*'
@@ -66,6 +70,9 @@ function! creativenull#statusline#highlights()
 
     " LSP
     hi! StatusLineLSP guibg=#53FDE9 guifg=#1C1B19
+
+    " Not current window
+    hi! StatusLineNC gui=underline
 endfunction
 
 function! creativenull#statusline#render() abort

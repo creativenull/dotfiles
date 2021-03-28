@@ -18,6 +18,54 @@ let g:plugins_dir = $NVIMRC_PLUGINS_DIR
 let g:config_dir = $NVIMRC_PLUGINS_DIR
 
 " =============================================================================
+" = Functions =
+" =============================================================================
+
+function! s:toggle_conceal() abort
+    if &conceallevel == 2
+        set conceallevel=0
+        let g:vim_markdown_conceal = 0
+        let g:vim_markdown_conceal_code_blocks = 0
+    else
+        set conceallevel=2
+        let g:vim_markdown_conceal = 1
+        let g:vim_markdown_conceal_code_blocks = 1
+    endif
+endfunction
+
+function! SetLspKeymaps() abort
+    nnoremap <silent> <F2> <cmd>ALERename<CR>
+    nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
+    nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
+    nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
+    nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
+    nnoremap <silent> <leader>le <cmd>lopen<CR>
+endfunction
+
+" =============================================================================
+" = Auto Command Groups =
+" =============================================================================
+
+" au! FileType fzf setlocal laststatus=0 noruler | au BufLeave <buffer> setlocal laststatus=2 ruler
+
+augroup fzf_state
+    au!
+    au FileType fzf setlocal laststatus=0 noruler | au BufLeave <buffer> setlocal laststatus=2 ruler
+augroup end
+
+augroup set_invisible_chars
+    au!
+    au FileType help setlocal nolist
+    au FileType fzf setlocal nolist
+augroup end
+
+augroup statusline_window_state
+    au!
+    au WinEnter * setlocal statusline=%!creativenull#statusline#render()
+    au WinLeave * setlocal statusline=^^^%=^^^
+augroup end
+
+" =============================================================================
 " = Plugin Options =
 " =============================================================================
 
@@ -112,43 +160,6 @@ command! -bang -nargs=* Rg
     \ )
 
 " =============================================================================
-" = Functions =
-" =============================================================================
-
-function! s:toggle_conceal() abort
-    if &conceallevel == 2
-        set conceallevel=0
-        let g:vim_markdown_conceal = 0
-        let g:vim_markdown_conceal_code_blocks = 0
-    else
-        set conceallevel=2
-        let g:vim_markdown_conceal = 1
-        let g:vim_markdown_conceal_code_blocks = 1
-    endif
-endfunction
-
-function! SetLspKeymaps() abort
-    nnoremap <silent> <F2> <cmd>ALERename<CR>
-    nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
-    nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
-    nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
-    nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
-    nnoremap <silent> <leader>le <cmd>lopen<CR>
-endfunction
-
-" =============================================================================
-" = Auto Commands (single/groups) =
-" =============================================================================
-
-au! FileType fzf set laststatus=0 noruler | au BufLeave <buffer> set laststatus=2 ruler
-
-augroup set_invisible_chars
-    au!
-    au FileType help set nolist
-    au FileType fzf set nolist
-augroup end
-
-" =============================================================================
 " = Theming and Looks =
 " =============================================================================
 
@@ -207,8 +218,8 @@ set nospell
 " For git
 set signcolumn=yes
 
-" Mouse support
-set mouse=a
+" No mouse support, who uses that? They were definitely NOT in my previous commits :')
+set mouse=
 
 " File format type
 set fileformats=unix
@@ -306,6 +317,8 @@ command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | noh | execute ':EditorConfigReload'
 command! ToggleConceal call <SID>toggle_conceal()
 command! SetLspKeymaps call SetLspKeymaps()
+command! Codeshot call creativenull#codeshot#enable()
+command! NoCodeshot call creativenull#codeshot#disable()
 
 " I can't release my shift key fast enough :')
 command! -nargs=* W w
