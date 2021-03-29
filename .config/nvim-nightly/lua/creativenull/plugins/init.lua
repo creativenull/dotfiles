@@ -44,7 +44,7 @@ packer.startup(function(use)
 
   -- Themes and Syntax
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'sheerun/vim-polyglot'
+  -- use { 'sheerun/vim-polyglot', ft = { 'vim' } }
   use 'srcery-colors/srcery-vim'
 end)
 

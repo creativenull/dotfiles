@@ -50,8 +50,8 @@ vim.o.spell = false
 -- For git
 vim.wo.signcolumn = 'yes'
 
--- Mouse support
-vim.o.mouse = 'a'
+-- No mouse support
+vim.o.mouse = ''
 
 -- backspace behaviour
 vim.o.backspace = 'indent,eol,start'
