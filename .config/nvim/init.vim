@@ -248,10 +248,10 @@ set listchars=tab:▸\ ,trail:·,space:·
 let mapleader = ' '
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
-vnoremap <up> <nop>
-vnoremap <down> <nop>
-vnoremap <left> <nop>
-vnoremap <right> <nop>
+noremap <up> <nop>
+noremap <down> <nop>
+noremap <left> <nop>
+noremap <right> <nop>
 
 inoremap <up> <nop>
 inoremap <down> <nop>
@@ -282,7 +282,7 @@ nnoremap <leader>bl <cmd>buffers<CR>
 nnoremap <C-l> <cmd>bnext<CR>
 " Go to previous buffer
 nnoremap <C-h> <cmd>bprevious<CR>
-" Close the current buffer
+" Close the current buffer, and more?
 nnoremap <leader>bd <cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
 
 " Resize window panes, we can use those arrow keys
