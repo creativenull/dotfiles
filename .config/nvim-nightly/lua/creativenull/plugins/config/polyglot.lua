@@ -1,1 +1,1 @@
-vim.g.polyglot_disabled = { 'sensible', 'autoindent' }
+vim.g.polyglot_disabled = { 'sensible' }

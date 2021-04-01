@@ -22,8 +22,9 @@ utils.keymap('t', '<ESC>', [[<C-\><C-n>]])
 utils.keymap('t', '<C-[>', [[<C-\><C-n>]])
 
 -- Copy/Paste from the system clipboard
-utils.keymap('v', '<C-i>', [["+y<CR>]])
-utils.keymap('n', '<C-o>', [["+p<CR>]])
+-- Use at your own risk
+-- utils.keymap('v', '<C-i>', [["+y<CR>]])
+-- utils.keymap('n', '<C-o>', [["+p<CR>]])
 
 -- File explorer
 utils.keymap('n', '<F3>', '<cmd>Ex<CR>')
@@ -38,9 +39,11 @@ utils.keymap('n', '<leader><CR>', '<cmd>noh<CR>')
 -- -----------
 -- List all buffers
 utils.keymap('n', '<leader>ba', '<cmd>buffers<CR>')
-utils.keymap('n', '<leader>bn', '<cmd>enew<CR>')
+-- Next buffer
 utils.keymap('n', '<C-l>',      '<cmd>bnext<CR>')
+-- Previous buffer
 utils.keymap('n', '<C-h>',      '<cmd>bprevious<CR>')
+-- Close buffer, and more?
 utils.keymap('n', '<leader>bd', '<cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>')
 
 -- Resize window panes, we can use those arrow keys
@@ -59,7 +62,7 @@ utils.keymap('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]])
 utils.keymap('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
 
 -- Reload file
-utils.keymap('n', '<leader>r', '<cmd>e!<CR>')
+utils.keymap('n', '<leader>r', '<cmd>edit!<CR>')
 
 -- Reload config
 utils.keymap('n', '<leader>vs', '<cmd>ConfigReload<CR><cmd>noh<CR><cmd>EditorConfigReload<CR>')
