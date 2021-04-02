@@ -11,5 +11,11 @@ require'nvim-treesitter.configs'.setup {
     'typescript',
     'svelte'
   },
-  highlight = { enable = true }
+  highlight = { enable = true },
+  indent = {
+    enable = true,
+    disable = {
+      'svelte'
+    }
+  }
 }

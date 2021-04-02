@@ -49,7 +49,7 @@ packer.startup(function(use)
 
   -- Themes and Syntax
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'sheerun/vim-polyglot'
+  use 'evanleck/vim-svelte'
   use 'srcery-colors/srcery-vim'
 end)
 
