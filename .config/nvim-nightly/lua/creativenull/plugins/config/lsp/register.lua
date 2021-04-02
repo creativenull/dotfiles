@@ -1,4 +1,3 @@
-local current_path = (...):gsub('%.init$', '')
 local lsp = require 'lspconfig'
 local lsp_status = require 'lsp-status'
 local utils = require 'creativenull.utils'
@@ -25,7 +24,7 @@ local function on_attach(client, bufnr)
 end
 
 -- Register LSP client
-function M.register_lsp(lsp_name, opts)
+local function register_lsp(lsp_name, opts)
   if lsp[lsp_name] == nil then
     local msg = ' "' .. lsp_name .. '" does not exist in nvim-lspconfig'
     vim.api.nvim_err_writeln(msg)
@@ -58,5 +57,8 @@ function M.register_lsp(lsp_name, opts)
     lsp[lsp_name].setup(default_opts)
   end
 end
+
+M.on_attach = on_attach
+M.register_lsp = register_lsp
 
 return M

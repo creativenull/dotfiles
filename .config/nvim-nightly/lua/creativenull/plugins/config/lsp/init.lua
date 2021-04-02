@@ -8,8 +8,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
 _G.RegisterLsp = require 'creativenull.plugins.config.lsp.register'.register_lsp
 
 require 'diagnosticls-nvim'.init {
-  on_attach = on_attach,
-  root_dir = require 'lspconfig'.util.root_pattern('.git')
+  on_attach = require 'creativenull.plugins.config.lsp.register'.on_attach
 }
 
 -- For debug
