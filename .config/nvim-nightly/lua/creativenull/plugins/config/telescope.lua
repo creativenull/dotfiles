@@ -5,14 +5,10 @@ local M = {}
 
 telescope.setup {
   defaults = {
-    layout_strategy = 'vertical',
-    use_less = false,
-    mappings = {
-      i = {
-        ['<C-k>'] = telescope_actions.move_selection_previous,
-        ['<C-j>'] = telescope_actions.move_selection_next
-      }
-    }
+    prompt_position = 'top',
+    layout_strategy = 'horizontal',
+    sorting_strategy = 'ascending',
+    use_less = false
   }
 }
 
