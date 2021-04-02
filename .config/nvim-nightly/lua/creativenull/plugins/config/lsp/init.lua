@@ -5,6 +5,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   update_in_insert = true,
 })
 
+-- Global lsp register function
 _G.RegisterLsp = require 'creativenull.plugins.config.lsp.register'.register_lsp
 
 require 'diagnosticls-nvim'.init {
