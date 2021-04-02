@@ -30,14 +30,14 @@ packer.startup(function(use)
   use 'nvim-lua/plenary.nvim'
 
   -- Editor
+  use 'creativenull/projectcmd.nvim'
   use 'tpope/vim-surround'
   use 'SirVer/ultisnips'
   use 'Shougo/context_filetype.vim'
   use 'tyru/caw.vim'
   use 'editorconfig/editorconfig-vim'
-  use 'creativenull/projectcmd.nvim'
-  use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use 'mattn/emmet-vim'
+  use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' } }
 
   -- LSP
