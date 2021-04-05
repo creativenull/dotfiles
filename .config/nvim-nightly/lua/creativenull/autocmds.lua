@@ -13,7 +13,7 @@ set_augroup('statusline_tabline_hl', {
 
 -- Statusline render
 set_augroup('statusline_local', {
-  [[au WinEnter * lua require 'creativenull.statusline'.setlocal_active_statusline()]],
+  [[au WinEnter,BufEnter * lua require 'creativenull.statusline'.setlocal_active_statusline()]],
   [[au WinLeave * lua require 'creativenull.statusline'.setlocal_inactive_statusline()]]
 })
 
@@ -28,3 +28,6 @@ set_augroup('netrw_exit',{ 'au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<C
 
 -- lua 2 space indent
 set_augroup('lua_indent', { 'au FileType lua setlocal tabstop=2' })
+
+-- nvim biscuits
+set_augroup('biscuits_hl', { 'au ColorScheme * hi BiscuitColor guifg=#444444 gui=italic' })
