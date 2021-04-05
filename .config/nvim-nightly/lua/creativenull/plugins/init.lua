@@ -18,8 +18,8 @@ packer.init {
   compile_path = os.getenv('HOME') .. '/.config/nvim-nightly/plugin/packer_compiled.vim'
 }
 
--- For plugins that use g: vars for plugin config
-require('creativenull.plugins.config')
+-- For plugins that use g: as config
+require 'creativenull.plugins.config'.init()
 
 -- Load plugins
 packer.startup(function(use)
@@ -28,15 +28,16 @@ packer.startup(function(use)
   -- Deps
   use 'nvim-lua/popup.nvim'
   use 'nvim-lua/plenary.nvim'
+  use 'Shougo/context_filetype.vim'
 
   -- Editor
   use 'creativenull/projectcmd.nvim'
   use 'tpope/vim-surround'
   use 'SirVer/ultisnips'
-  use 'Shougo/context_filetype.vim'
-  use 'tyru/caw.vim'
   use 'editorconfig/editorconfig-vim'
   use 'mattn/emmet-vim'
+  use 'windwp/nvim-autopairs'
+  use { 'tyru/caw.vim', requires = { 'Shougo/context_filetype.vim' } }
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' } }
 
@@ -44,14 +45,15 @@ packer.startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/lsp-status.nvim'
   use 'hrsh7th/nvim-compe'
-  use 'creativenull/diagnosticls-nvim'
   use 'glepnir/lspsaga.nvim'
+  use 'creativenull/diagnosticls-nvim'
 
   -- Themes and Syntax
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use { 'code-biscuits/nvim-biscuits', requires = 'nvim-treesitter/nvim-treesitter' }
   use 'evanleck/vim-svelte'
   use 'srcery-colors/srcery-vim'
 end)
 
--- For plugins that load settings using setup()
-require('creativenull.plugins.config.setup')
+-- For plugins that use setup() as config
+require 'creativenull.plugins.config'.setup()
