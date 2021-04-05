@@ -17,14 +17,14 @@ local function register_lsp_keymaps()
 end
 
 -- LSP on attach event
-local function on_attach(client, bufnr)
+function M.on_attach(client, bufnr)
   lsp_status.on_attach(client)
   register_lsp_keymaps()
   print('Attached to ' .. client.name)
 end
 
 -- Register LSP client
-local function register_lsp(lsp_name, opts)
+function M.register_lsp(lsp_name, opts)
   if lsp[lsp_name] == nil then
     local msg = ' "' .. lsp_name .. '" does not exist in nvim-lspconfig'
     vim.api.nvim_err_writeln(msg)
@@ -37,7 +37,7 @@ local function register_lsp(lsp_name, opts)
   end
 
   local default_opts = {
-    on_attach = on_attach,
+    on_attach = M.on_attach,
     capabilities = lsp_status.capabilities
   }
 
@@ -54,8 +54,5 @@ local function register_lsp(lsp_name, opts)
     lsp[lsp_name].setup(default_opts)
   end
 end
-
-M.on_attach = on_attach
-M.register_lsp = register_lsp
 
 return M
