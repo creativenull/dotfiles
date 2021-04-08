@@ -37,6 +37,7 @@ packer.startup(function(use)
   use 'editorconfig/editorconfig-vim'
   use 'mattn/emmet-vim'
   use 'windwp/nvim-autopairs'
+  use 'kevinhwang91/nvim-bqf'
   use { 'tyru/caw.vim', requires = { 'Shougo/context_filetype.vim' } }
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' } }
@@ -52,7 +53,12 @@ packer.startup(function(use)
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use { 'code-biscuits/nvim-biscuits', requires = 'nvim-treesitter/nvim-treesitter' }
   use 'evanleck/vim-svelte'
+  use 'karb94/neoscroll.nvim'
   use 'srcery-colors/srcery-vim'
+
+  -- For Development
+  -- use '~/projects/github.com/creativenull/projectcmd.nvim'
+  -- use '~/projects/github.com/creativenull/diagnosticls-nvim'
 end)
 
 -- For plugins that use setup() as config

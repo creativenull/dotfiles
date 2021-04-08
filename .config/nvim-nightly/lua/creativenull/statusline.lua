@@ -1,5 +1,13 @@
 local lsp_status = require 'lsp-status'
 local M = {}
+local text_colors = { black = '#1C1B19', white = '#D0BFA1' }
+local cursor_colors = {
+  normal  = { bg = '#519F50', fg = text_colors.black, hl = 'StatusLineCursorNormal' },
+  insert  = { bg = '#EF2F27', fg = text_colors.white, hl = 'StatusLineCursorInsert' },
+  visual  = { bg = '#FBB829', fg = text_colors.black, hl = 'StatusLineCursorVisual' },
+  replace = { bg = '#FBB829', fg = text_colors.black, hl = 'StatusLineCursorReplace' },
+  command = { bg = '#2C78BF', fg = text_colors.white, hl = 'StatusLineCursorCommand' },
+}
 
 local function set_cursor_mode_hi(fg, bg)
   local left_bg = '#3A3A3A'

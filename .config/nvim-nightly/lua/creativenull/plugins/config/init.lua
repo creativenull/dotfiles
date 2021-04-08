@@ -1,20 +1,23 @@
+local modconfig = (...)
 local M = {}
 
 function M.init()
-  require 'creativenull.plugins.config.emmet'
+  require(modconfig .. '.emmet')
 end
 
 function M.setup()
-  require 'creativenull.plugins.config.projectcmd'
-  require 'creativenull.plugins.config.compe'
-  require 'creativenull.plugins.config.gitsigns'
-  require 'creativenull.plugins.config.telescope'
-  require 'creativenull.plugins.config.lsp'
-  require 'creativenull.plugins.config.autopairs'
+  require(modconfig .. '.lsp')
+  require(modconfig .. '.projectcmd')
+  require(modconfig .. '.compe')
+  require(modconfig .. '.gitsigns')
+  require(modconfig .. '.telescope')
+  require(modconfig .. '.autopairs')
+  require(modconfig .. '.lspsaga')
+  require(modconfig .. '.neoscroll')
 
   -- treesitter and co
-  require 'creativenull.plugins.config.treesitter'
-  require 'creativenull.plugins.config.biscuits'
+  require(modconfig .. '.treesitter')
+  require(modconfig .. '.biscuits')
 end
 
 return M
