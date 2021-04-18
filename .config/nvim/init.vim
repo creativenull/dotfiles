@@ -65,6 +65,18 @@ augroup statusline_window_state
     au WinLeave * setlocal statusline=^^^%=^^^
 augroup end
 
+augroup netrw_opts
+    au!
+    au FileType netrw setl bufhidden=delete
+    au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
+augroup END
+
+augroup colorscheme_opts
+    au!
+    au ColorScheme * call creativenull#statusline#highlights()
+    au ColorScheme * highlight default link HighlightedyankRegion Search
+augroup END
+
 " =============================================================================
 " = Plugin Options =
 " =============================================================================
@@ -86,6 +98,7 @@ let g:user_emmet_leader_key = '<C-z>'
 
 " --- fzf Options ---
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
+let $FZF_DEFAULT_OPTS='--reverse'
 let g:fzf_preview_window = []
 nnoremap <C-p> <cmd>Files<CR>
 nnoremap <C-t> <cmd>Rg<CR>
@@ -108,6 +121,9 @@ let g:startify_lists = [
     \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
     \ { 'type': 'sessions',  'header': ['   Sessions']       },
 \ ]
+
+" --- hlyank Options ---
+let g:highlightedyank_highlight_duration = 500
 
 " =============================================================================
 " = Plugin Manager =
@@ -136,6 +152,7 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
 Plug 'srcery-colors/srcery-vim'
+Plug 'machakann/vim-highlightedyank'
 
 call plug#end()
 
@@ -155,7 +172,7 @@ command! -bang -nargs=* Rg
     \ call fzf#vim#grep(
     \ "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(<q-args>),
     \ 1,
-    \ fzf#vim#with_preview('up:50%', 'ctrl-/'),
+    \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
     \ <bang>0
     \ )
 
@@ -168,7 +185,6 @@ set relativenumber
 set termguicolors
 
 colorscheme srcery
-call creativenull#statusline#highlights()
 
 " =============================================================================
 " = Options =
@@ -177,6 +193,7 @@ call creativenull#statusline#highlights()
 " Completion options
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
+set updatetime=500
 
 " Search options
 set ignorecase
@@ -241,6 +258,8 @@ set cmdheight=2
 set list
 set listchars=tab:▸\ ,trail:·,space:·
 
+set guicursor=n-v-c-ci-sm-ve-i:block,r-cr-o:hor20
+
 " =============================================================================
 " = Keybindings =
 " =============================================================================
@@ -304,7 +323,7 @@ vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 nnoremap <leader>ve <cmd>edit $MYVIMRC<CR>
 
 " Source the vimrc to reflect changes
-nnoremap <leader>vs <cmd>execute ':ConfigReload'<CR>
+nnoremap <leader>vs <cmd>ConfigReload<CR>
 
 " Reload file
 nnoremap <leader>r <cmd>edit!<CR>
