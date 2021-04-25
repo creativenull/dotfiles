@@ -1,4 +1,5 @@
--- Why do this? https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
+-- DO NOT DO THIS, check the link
+-- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 -- Runtime Path
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
@@ -36,9 +37,9 @@ vim.cmd('set packpath+=~/.local/share/nvim-nightly/site/after')
 -- ===========================================================================
 -- = Initialize =
 -- ===========================================================================
+require 'creativenull.plugins'
 require 'creativenull.autocmds'
 require 'creativenull.commands'
 require 'creativenull.options'
-require 'creativenull.plugins'
 require 'creativenull.colorscheme'
 require 'creativenull.keybindings'
