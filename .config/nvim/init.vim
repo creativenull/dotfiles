@@ -125,6 +125,10 @@ let g:startify_lists = [
 " --- hlyank Options ---
 let g:highlightedyank_highlight_duration = 500
 
+" --- buftabline Options ---
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
@@ -151,6 +155,7 @@ Plug 'ap/vim-buftabline'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
+Plug 'jwalton512/vim-blade'
 Plug 'srcery-colors/srcery-vim'
 Plug 'machakann/vim-highlightedyank'
 
@@ -240,9 +245,6 @@ set mouse=
 
 " File format type
 set fileformats=unix
-
-" backspace behaviour
-set backspace=indent,eol,start
 
 " Status line
 set noshowmode
