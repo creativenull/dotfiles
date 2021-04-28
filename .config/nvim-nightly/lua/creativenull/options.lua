@@ -73,3 +73,5 @@ vim.o.autoread = true
 -- Invisible chars list
 vim.wo.list = true
 vim.o.listchars = [[tab:▸ ,trail:·,space:·]]
+
+vim.o.guicursor = 'n-v-c-ci-sm-ve-i:block,r-cr-o:hor20'

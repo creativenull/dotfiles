@@ -6,10 +6,10 @@ function M.init()
 end
 
 function M.setup()
+  require(modconfig .. '.gitsigns')
   require(modconfig .. '.lsp')
   require(modconfig .. '.projectcmd')
   require(modconfig .. '.compe')
-  require(modconfig .. '.gitsigns')
   require(modconfig .. '.telescope')
   require(modconfig .. '.autopairs')
   require(modconfig .. '.lspsaga')

@@ -71,3 +71,4 @@ keymap('n', '<leader>vs', '<cmd>ConfigReload<CR><cmd>noh<CR><cmd>EditorConfigRel
 keymap('n', '<C-p>', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_files()<CR>]])
 keymap('n', '<C-t>', [[<cmd>lua require'creativenull.plugins.config.telescope'.live_grep()<CR>]])
 keymap('n', '<leader>vf', [[<cmd>lua require'creativenull.plugins.config.telescope'.find_config_files()<CR>]])
+keymap('n', '<leader>ff', [[<cmd>lua require'creativenull.plugins.config.telescope'.file_browser()<CR>]])

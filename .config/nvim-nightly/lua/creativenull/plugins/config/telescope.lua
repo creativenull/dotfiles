@@ -31,4 +31,8 @@ M.live_grep = function()
   telescope_builtin.live_grep {}
 end
 
+M.file_browser = function()
+  telescope_builtin.file_browser {}
+end
+
 return M

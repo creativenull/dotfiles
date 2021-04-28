@@ -50,6 +50,7 @@ packer.startup(function(use)
   use 'creativenull/diagnosticls-nvim'
 
   -- Themes and Syntax
+  use 'norcalli/nvim-colorizer.lua'
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use { 'code-biscuits/nvim-biscuits', requires = 'nvim-treesitter/nvim-treesitter' }
   use 'evanleck/vim-svelte'
@@ -57,7 +58,7 @@ packer.startup(function(use)
   use 'srcery-colors/srcery-vim'
 
   -- For Development
-  -- use '~/projects/github.com/creativenull/projectcmd.nvim'
+  -- use { '~/projects/github.com/creativenull/projectcmd.nvim', branch = 'v2' }
   -- use '~/projects/github.com/creativenull/diagnosticls-nvim'
 end)
 
