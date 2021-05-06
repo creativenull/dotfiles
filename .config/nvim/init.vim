@@ -33,6 +33,17 @@ function! s:toggle_conceal() abort
     endif
 endfunction
 
+function! LspStatus()
+    if exists('g:loaded_ale')
+        let l:counts = ale#statusline#Count(bufnr(''))
+        let l:all_errors = counts.error + counts.style_error
+        let l:all_non_errors = counts.total - all_errors
+        return counts.total == 0 ? 'ALE' : printf(' %d 🔴 %d 🟡 ALE', all_errors, all_non_errors)
+    endif
+
+    return ''
+endfunction
+
 function! SetLspKeymaps() abort
     nnoremap <silent> <F2> <cmd>ALERename<CR>
     nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
@@ -40,6 +51,14 @@ function! SetLspKeymaps() abort
     nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
     nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
     nnoremap <silent> <leader>le <cmd>lopen<CR>
+endfunction
+
+function! s:codeshot_enable() abort
+    setlocal nolist nonumber norelativenumber signcolumn=no
+endfunction
+
+function! s:codeshot_disable() abort
+    setlocal list number relativenumber signcolumn=yes
 endfunction
 
 " =============================================================================
@@ -59,23 +78,16 @@ augroup set_invisible_chars
     au FileType fzf setlocal nolist
 augroup end
 
-augroup statusline_window_state
-    au!
-    au WinEnter * setlocal statusline=%!creativenull#statusline#render()
-    au WinLeave * setlocal statusline=^^^%=^^^
-augroup end
-
 augroup netrw_opts
     au!
     au FileType netrw setl bufhidden=delete
     au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
-augroup END
+augroup end
 
 augroup colorscheme_opts
     au!
-    au ColorScheme * call creativenull#statusline#highlights()
     au ColorScheme * highlight default link HighlightedyankRegion Search
-augroup END
+augroup end
 
 " =============================================================================
 " = Plugin Options =
@@ -105,13 +117,12 @@ nnoremap <C-t> <cmd>Rg<CR>
 
 " --- ALE Options ---
 let g:ale_hover_cursor = 0
-
 let g:ale_completion_autoimport = 1
-
+" let g:ale_floating_preview = 1
+" let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰']
 let g:ale_echo_msg_error_str = ''
 let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
 let g:ale_linters_explicit = 1
 let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
@@ -128,6 +139,19 @@ let g:highlightedyank_highlight_duration = 500
 " --- buftabline Options ---
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
+
+" --- lightline Options ---
+let g:lightline = {}
+let g:lightline.colorscheme = 'srcery'
+let g:lightline.component = { 'lineinfo': 'L:%l/%L C:%c' }
+let g:lightline.active = {
+    \ 'left': [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ],
+    \ 'right': [ ['lspstatus'], ['lineinfo'], ['filetype', 'fileencoding'] ],
+\ }
+let g:lightline.component_function = {
+    \ 'gitbranch': 'gitbranch#name',
+    \ 'lspstatus': 'LspStatus'
+\ }
 
 " =============================================================================
 " = Plugin Manager =
@@ -151,6 +175,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Theme, Syntax
+Plug 'itchyny/lightline.vim'
 Plug 'ap/vim-buftabline'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-startify'
@@ -186,9 +211,7 @@ command! -bang -nargs=* Rg
 " =============================================================================
 
 set number
-set relativenumber
 set termguicolors
-
 colorscheme srcery
 
 " =============================================================================
@@ -248,7 +271,6 @@ set fileformats=unix
 
 " Status line
 set noshowmode
-set statusline=%!creativenull#statusline#render()
 
 " Tabline
 set showtabline=2
@@ -338,8 +360,9 @@ command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | noh | execute ':EditorConfigReload'
 command! ToggleConceal call <SID>toggle_conceal()
 command! SetLspKeymaps call SetLspKeymaps()
-command! Codeshot call creativenull#codeshot#enable()
-command! NoCodeshot call creativenull#codeshot#disable()
+
+command! Codeshot call <SID>codeshot_enable()
+command! NoCodeshot call <SID>codeshot_disable()
 
 " I can't release my shift key fast enough :')
 command! -nargs=* W w
