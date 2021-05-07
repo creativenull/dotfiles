@@ -14,8 +14,6 @@
 
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
-let g:plugins_dir = $NVIMRC_PLUGINS_DIR
-let g:config_dir = $NVIMRC_PLUGINS_DIR
 
 " =============================================================================
 " = Functions =
@@ -44,7 +42,16 @@ function! LspStatus()
     return ''
 endfunction
 
-function! SetLspKeymaps() abort
+function! RegisterLsp() abort
+    " --- Deoplete Options ---
+    call deoplete#enable()
+    call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
+    call deoplete#custom#option('auto_complete_delay', 50)
+    call deoplete#custom#option('smart_case', v:true)
+    call deoplete#custom#option('ignore_case', v:true)
+    call deoplete#custom#option('max_list', 10)
+
+    " --- ALE Keymaps ---
     nnoremap <silent> <F2> <cmd>ALERename<CR>
     nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
     nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
@@ -64,8 +71,6 @@ endfunction
 " =============================================================================
 " = Auto Command Groups =
 " =============================================================================
-
-" au! FileType fzf setlocal laststatus=0 noruler | au BufLeave <buffer> setlocal laststatus=2 ruler
 
 augroup fzf_state
     au!
@@ -109,8 +114,8 @@ let g:polyglot_disabled = ['php', 'autoindent', 'sensible']
 let g:user_emmet_leader_key = '<C-z>'
 
 " --- fzf Options ---
-let $FZF_DEFAULT_COMMAND='rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS='--reverse'
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
 nnoremap <C-p> <cmd>Files<CR>
 nnoremap <C-t> <cmd>Rg<CR>
@@ -157,45 +162,58 @@ let g:lightline.component_function = {
 " = Plugin Manager =
 " =============================================================================
 
-call plug#begin(g:plugins_dir)
+function! PackagerInit(opts) abort
+    call packager#init(a:opts)
+    call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
-" Core
-Plug 'creativenull/projectcmd.vim'
-Plug 'dense-analysis/ale'
-Plug 'airblade/vim-gitgutter'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-surround'
-Plug 'SirVer/ultisnips'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'godlygeek/tabular'
-Plug 'Shougo/context_filetype.vim'
-Plug 'tyru/caw.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+    " Core
+    call packager#add('creativenull/projectcmd.vim')
+    call packager#add('dense-analysis/ale')
+    call packager#add('airblade/vim-gitgutter')
+    call packager#add('editorconfig/editorconfig-vim')
+    call packager#add('mattn/emmet-vim')
+    call packager#add('tpope/vim-surround')
+    call packager#add('SirVer/ultisnips')
+    call packager#add('Shougo/deoplete.nvim')
+    call packager#add('godlygeek/tabular')
+    call packager#add('Shougo/context_filetype.vim')
+    call packager#add('tyru/caw.vim')
+    call packager#add('junegunn/fzf', { 'do': './install --bin' })
+    call packager#add('junegunn/fzf.vim')
 
-" Theme, Syntax
-Plug 'itchyny/lightline.vim'
-Plug 'ap/vim-buftabline'
-Plug 'itchyny/vim-gitbranch'
-Plug 'mhinz/vim-startify'
-Plug 'sheerun/vim-polyglot'
-Plug 'jwalton512/vim-blade'
-Plug 'srcery-colors/srcery-vim'
-Plug 'machakann/vim-highlightedyank'
+    " Theme, Syntax
+    call packager#add('itchyny/lightline.vim')
+    call packager#add('ap/vim-buftabline')
+    call packager#add('itchyny/vim-gitbranch')
+    call packager#add('mhinz/vim-startify')
+    call packager#add('sheerun/vim-polyglot')
+    call packager#add('jwalton512/vim-blade')
+    call packager#add('srcery-colors/srcery-vim')
+    call packager#add('machakann/vim-highlightedyank')
+endfunction
 
-call plug#end()
+" Package manager bootstrapping strategy
+let s:manager_path = expand('~/.local/share/nvim/site/pack/packager/opt/vim-packager')
+let s:manager_plugins_path = expand('~/.local/share/nvim/site/pack/packager')
+let s:manager_git = 'https://github.com/kristijanhusak/vim-packager.git'
+if isdirectory(s:manager_path) == 0
+    let s:cli = printf('!git clone %s %s', s:manager_git, s:manager_path)
+    execute s:cli
+
+    " Setup the manager and install plugins
+    packadd vim-packager
+    call PackagerInit({ 'dir': s:manager_plugins_path })
+    call packager#install()
+endif
+
+command! -nargs=* -bar PackagerInstall call PackagerInit() | call packager#install(<args>)
+command! -nargs=* -bar PackagerUpdate call PackagerInit() | call packager#update(<args>)
+command! -bar PackagerClean call PackagerInit() | call packager#clean()
+command! -bar PackagerStatus call PackagerInit() | call packager#status()
 
 " =============================================================================
 " = Plugin Function Options =
 " =============================================================================
-
-" --- deoplete ---
-call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('auto_complete_delay', 50)
-call deoplete#custom#option('smart_case', v:true)
-call deoplete#custom#option('ignore_case', v:true)
-call deoplete#custom#option('max_list', 10)
 
 " --- fzf Options ---
 command! -bang -nargs=* Rg
@@ -221,7 +239,7 @@ colorscheme srcery
 " Completion options
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
-set updatetime=500
+set updatetime=250
 
 " Search options
 set ignorecase
@@ -295,7 +313,6 @@ noremap <up> <nop>
 noremap <down> <nop>
 noremap <left> <nop>
 noremap <right> <nop>
-
 inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
@@ -359,7 +376,6 @@ nnoremap <leader>r <cmd>edit!<CR>
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | noh | execute ':EditorConfigReload'
 command! ToggleConceal call <SID>toggle_conceal()
-command! SetLspKeymaps call SetLspKeymaps()
 
 command! Codeshot call <SID>codeshot_enable()
 command! NoCodeshot call <SID>codeshot_disable()
