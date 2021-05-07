@@ -163,6 +163,7 @@ let g:lightline.component_function = {
 " =============================================================================
 
 function! PackagerInit(opts) abort
+    packadd vim-packager
     call packager#init(a:opts)
     call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
@@ -193,23 +194,22 @@ function! PackagerInit(opts) abort
 endfunction
 
 " Package manager bootstrapping strategy
-let s:manager_path = expand('~/.local/share/nvim/site/pack/packager/opt/vim-packager')
-let s:manager_plugins_path = expand('~/.local/share/nvim/site/pack/packager')
+let s:manager_path = stdpath('data') . '/site/pack/packager/opt/vim-packager'
 let s:manager_git = 'https://github.com/kristijanhusak/vim-packager.git'
+let s:manager_opts = { 'dir': stdpath('data') . '/site/pack/packager' }
 if isdirectory(s:manager_path) == 0
     let s:cli = printf('!git clone %s %s', s:manager_git, s:manager_path)
     execute s:cli
 
     " Setup the manager and install plugins
-    packadd vim-packager
-    call PackagerInit({ 'dir': s:manager_plugins_path })
+    call PackagerInit(s:manager_opts)
     call packager#install()
 endif
 
-command! -nargs=* -bar PackagerInstall call PackagerInit() | call packager#install(<args>)
-command! -nargs=* -bar PackagerUpdate call PackagerInit() | call packager#update(<args>)
-command! -bar PackagerClean call PackagerInit() | call packager#clean()
-command! -bar PackagerStatus call PackagerInit() | call packager#status()
+command! -nargs=* -bar PackagerInstall call PackagerInit(s:manager_opts) | call packager#install(<args>)
+command! -nargs=* -bar PackagerUpdate call PackagerInit(s:manager_opts) | call packager#update(<args>)
+command! -bar PackagerClean call PackagerInit(s:manager_opts) | call packager#clean()
+command! -bar PackagerStatus call PackagerInit(s:manager_opts) | call packager#status()
 
 " =============================================================================
 " = Plugin Function Options =
