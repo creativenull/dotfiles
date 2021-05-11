@@ -12,8 +12,10 @@
 " Currently, tested on a Linux machine.
 " =============================================================================
 
+let mapleader = ' '
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
+let g:undodir = expand('~/.cache/nvim/undo')
 
 " =============================================================================
 " = Functions =
@@ -28,6 +30,13 @@ function! s:toggle_conceal() abort
         set conceallevel=2
         let g:vim_markdown_conceal = 1
         let g:vim_markdown_conceal_code_blocks = 1
+    endif
+endfunction
+
+function! s:options_init() abort
+    if isdirectory(g:undodir) == v:false
+        let s:cmd = printf('!mkdir %s', g:undodir)
+        execute s:cmd
     endif
 endfunction
 
@@ -197,7 +206,7 @@ endfunction
 let s:manager_path = stdpath('data') . '/site/pack/packager/opt/vim-packager'
 let s:manager_git = 'https://github.com/kristijanhusak/vim-packager.git'
 let s:manager_opts = { 'dir': stdpath('data') . '/site/pack/packager' }
-if isdirectory(s:manager_path) == 0
+if isdirectory(s:manager_path) == v:false
     let s:cli = printf('!git clone %s %s', s:manager_git, s:manager_path)
     execute s:cli
 
@@ -236,6 +245,8 @@ colorscheme srcery
 " = Options =
 " =============================================================================
 
+call s:options_init()
+
 " Completion options
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
@@ -260,53 +271,48 @@ set textwidth=120
 set colorcolumn=120
 set scrolloff=5
 
-" Backups and swapfile
-set dir=~/.cache/nvim
-set backup
-set backupdir=~/.cache/nvim
+" No backups and swapfiles but undo tree
+set nobackup
+set noswapfile
 set undofile
-set undodir=~/.cache/nvim
+let &undodir=g:undodir
 set undolevels=10000
 set history=10000
 
-" Performance
+" Performance gainzzz
 set lazyredraw
 
-" Buffers/Tabs/Windows
+" Hide a buffer when abandoned using :bd
 set hidden
 
-" spelling
+" Spelling only for markdown
 set nospell
 
-" For git
+" For git signs
 set signcolumn=yes
 
-" No mouse support, who uses that? They were definitely NOT in my previous commits :')
+" No mouse support, who uses that? They were definitely NOT in my previous commits xD
 set mouse=
 
-" File format type
-set fileformats=unix
-
-" Status line
+" Hide the `-- INSERT --` on the command line below
 set noshowmode
 
-" Tabline
+" Always show the tabline on top
 set showtabline=2
 
-" Better display
+" Show 2 lines of command output on the command line below
 set cmdheight=2
 
-" Invisible chars
+" Show invisible characters for code
 set list
 set listchars=tab:▸\ ,trail:·,space:·
 
+" Show block cursor in all modes except on replace and command
 set guicursor=n-v-c-ci-sm-ve-i:block,r-cr-o:hor20
 
 " =============================================================================
 " = Keybindings =
 " =============================================================================
-
-let mapleader = ' '
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
 noremap <up> <nop>
