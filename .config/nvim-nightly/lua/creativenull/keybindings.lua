@@ -21,11 +21,6 @@ keymap('i', 'jk', '<ESC>')
 keymap('t', '<ESC>', [[<C-\><C-n>]])
 keymap('t', '<C-[>', [[<C-\><C-n>]])
 
--- Copy/Paste from the system clipboard
--- Use at your own risk
--- keymap('v', '<C-i>', [["+y<CR>]])
--- keymap('n', '<C-o>', [["+p<CR>]])
-
 -- File explorer
 keymap('n', '<F3>', '<cmd>Ex<CR>')
 

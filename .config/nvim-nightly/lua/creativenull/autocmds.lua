@@ -2,26 +2,15 @@ local set_augroup = require 'creativenull.utils'.set_augroup
 
 -- Yank highlight
 set_augroup('yank_hl', {
-  'au TextYankPost * silent! lua vim.highlight.on_yank({ higroup = "Search", timeout = 500 })'
+  [[au TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'Search', timeout = 500 })]]
 })
 
--- Statusline/Tabline highlights
-set_augroup('statusline_tabline_hl', {
-  'au ColorScheme * lua require "creativenull.statusline".set_highlights()',
-  'au ColorScheme * lua require "creativenull.tabline".set_highlights()'
-})
-
+-- Set Transparent Backgrounds
 set_augroup('transparent_bg', {
   'au ColorScheme * hi! Normal guibg=NONE',
   'au ColorScheme * hi! SignColumn guibg=NONE',
   'au ColorScheme * hi! LineNr guibg=NONE',
   'au ColorScheme * hi! CursorLineNr guibg=NONE',
-})
-
--- Statusline render
-set_augroup('statusline_local', {
-  'au WinEnter,BufEnter * lua require "creativenull.statusline".setlocal_active_statusline()',
-  'au WinLeave * lua require "creativenull.statusline".setlocal_inactive_statusline()'
 })
 
  -- Hide invisible chars in help and telescope
@@ -42,5 +31,5 @@ set_augroup('lua_indent', {
 
 -- nvim biscuits
 set_augroup('biscuits_hl', {
-  'au ColorScheme * hi BiscuitColor guifg=#555555 gui=italic'
+  'au ColorScheme * hi BiscuitColor guifg=#444444 gui=italic'
 })

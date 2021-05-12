@@ -31,35 +31,37 @@ packer.startup(function(use)
   use 'Shougo/context_filetype.vim'
 
   -- Editor
-  use 'creativenull/projectcmd.nvim'
+  -- use 'creativenull/projectcmd.nvim'
   use 'tpope/vim-surround'
   use 'SirVer/ultisnips'
   use 'editorconfig/editorconfig-vim'
   use 'mattn/emmet-vim'
   use 'windwp/nvim-autopairs'
   use 'kevinhwang91/nvim-bqf'
-  use { 'tyru/caw.vim', requires = { 'Shougo/context_filetype.vim' } }
-  use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-  use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' } }
+  use 'tyru/caw.vim'
+  use 'lewis6991/gitsigns.nvim'
+  use 'nvim-telescope/telescope.nvim'
 
   -- LSP
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/lsp-status.nvim'
   use 'hrsh7th/nvim-compe'
   use 'glepnir/lspsaga.nvim'
-  use 'creativenull/diagnosticls-nvim'
+  -- use 'creativenull/diagnosticls-nvim'
 
   -- Themes and Syntax
   use 'norcalli/nvim-colorizer.lua'
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use { 'code-biscuits/nvim-biscuits', requires = 'nvim-treesitter/nvim-treesitter' }
   use 'evanleck/vim-svelte'
-  use 'karb94/neoscroll.nvim'
   use 'srcery-colors/srcery-vim'
+  use 'kyazdani42/nvim-web-devicons'
+  use { 'glepnir/galaxyline.nvim', branch = 'main' }
+  use 'glepnir/zephyr-nvim'
 
   -- For Development
-  -- use { '~/projects/github.com/creativenull/projectcmd.nvim', branch = 'v2' }
-  -- use '~/projects/github.com/creativenull/diagnosticls-nvim'
+  use { '~/projects/github.com/creativenull/projectcmd.nvim', branch = 'v2' }
+  use '~/projects/github.com/creativenull/diagnosticls-nvim'
 end)
 
 -- For plugins that use setup() as config

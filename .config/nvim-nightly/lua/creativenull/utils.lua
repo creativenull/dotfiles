@@ -1,34 +1,25 @@
 local M = {}
+local DEFAULT_OPTS = { noremap = true, silent = true }
 
--- Set global or buffer key map
-local function key_mapper(mode, lhs, rhs, opts, is_buf)
+-- Global key map
+-- @param mode
+M.keymap = function(mode, lhs, rhs, opts)
   local has_opts = opts ~= nil and not vim.tbl_isempty(opts)
-  local default_opts = {
-    noremap = true,
-    silent = true,
-  }
-
-  if is_buf ~= nil and is_buf == true then
-    if has_opts then
-      vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, vim.tbl_extend('force', default_opts, opts))
-    else
-      vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, default_opts)
-    end
+  if has_opts then
+    vim.api.nvim_set_keymap(mode, lhs, rhs, vim.tbl_extend('force', DEFAULT_OPTS, opts))
   else
-    if has_opts then
-      vim.api.nvim_set_keymap(mode, lhs, rhs, vim.tbl_extend('force', default_opts, opts))
-    else
-      vim.api.nvim_set_keymap(mode, lhs, rhs, default_opts)
-    end
+    vim.api.nvim_set_keymap(mode, lhs, rhs, DEFAULT_OPTS)
   end
 end
 
-function M.keymap(mode, lhs, rhs, opts)
-  key_mapper(mode, lhs, rhs, opts, false)
-end
-
-function M.buf_keymap(mode, lhs, rhs, opts)
-  key_mapper(mode, lhs, rhs, opts, true)
+-- Buffer key map
+M.buf_keymap = function(bufnr, mode, lhs, rhs, opts)
+  local has_opts = opts ~= nil and not vim.tbl_isempty(opts)
+  if has_opts then
+    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, vim.tbl_extend('force', DEFAULT_OPTS, opts))
+  else
+    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, DEFAULT_OPTS)
+  end
 end
 
 -- Reload the all modules that reside

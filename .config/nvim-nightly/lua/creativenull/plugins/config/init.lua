@@ -1,23 +1,29 @@
 local modconfig = (...)
 local M = {}
 
-function M.init()
-  require(modconfig .. '.emmet')
+local function add(modname)
+  local modulepath = string.format('%s.%s', modconfig, modname)
+  require(modulepath)
 end
 
-function M.setup()
-  require(modconfig .. '.gitsigns')
-  require(modconfig .. '.lsp')
-  require(modconfig .. '.projectcmd')
-  require(modconfig .. '.compe')
-  require(modconfig .. '.telescope')
-  require(modconfig .. '.autopairs')
-  require(modconfig .. '.lspsaga')
-  require(modconfig .. '.neoscroll')
+M.init = function()
+  add('emmet')
+end
+
+M.setup = function()
+  add('gitsigns')
+  add('lsp')
+  add('projectcmd')
+  add('compe')
+  add('telescope')
+  add('autopairs')
+  add('lspsaga')
 
   -- treesitter and co
-  require(modconfig .. '.treesitter')
-  require(modconfig .. '.biscuits')
+  add('treesitter')
+  add('biscuits')
+
+  require 'creativenull.statusline'
 end
 
 return M

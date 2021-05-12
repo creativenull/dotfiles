@@ -1,177 +1,376 @@
-local lsp_status = require 'lsp-status'
-local M = {}
-local text_colors = { black = '#1C1B19', white = '#D0BFA1' }
-local cursor_colors = {
-  normal  = { bg = '#519F50', fg = text_colors.black, hl = 'StatusLineCursorNormal' },
-  insert  = { bg = '#EF2F27', fg = text_colors.white, hl = 'StatusLineCursorInsert' },
-  visual  = { bg = '#FBB829', fg = text_colors.black, hl = 'StatusLineCursorVisual' },
-  replace = { bg = '#FBB829', fg = text_colors.black, hl = 'StatusLineCursorReplace' },
-  command = { bg = '#2C78BF', fg = text_colors.white, hl = 'StatusLineCursorCommand' },
+local gl = require 'galaxyline'
+local gls = gl.section
+gl.short_line_list = { 'LuaTree', 'vista', 'dbui' }
+
+local diagnostic = require 'galaxyline.provider_diagnostic'
+local vcs = require 'galaxyline.provider_vcs'
+local fileinfo = require 'galaxyline.provider_fileinfo'
+local extension = require 'galaxyline.provider_extensions'
+local colors = require 'galaxyline.colors'
+local buffer = require 'galaxyline.provider_buffer'
+local whitespace = require 'galaxyline.provider_whitespace'
+local lspclient = require 'galaxyline.provider_lsp'
+
+local zephyr = {
+  base0 = '#1B2229',
+  base1 = '#1c1f24',
+  base2 = '#202328',
+  base3 = '#23272e',
+  base4 = '#3f444a',
+  base5 = '#5B6268',
+  base6 = '#73797e',
+  base7 = '#9ca0a4',
+  base8 = '#b1b1b1',
+
+  bg = '#282a36',
+  bg1 = '#504945',
+  bg_popup = '#3E4556',
+  bg_highlight  = '#2E323C',
+  bg_visual = '#b3deef',
+
+  fg = '#bbc2cf',
+  fg_alt  = '#5B6268',
+
+  red = '#e95678',
+
+  redwine = '#d16d9e',
+  orange = '#D98E48',
+  yellow = '#f0c674',
+
+  light_green = '#abcf84',
+  green = '#afd700',
+  dark_green = '#98be65',
+
+  cyan = '#36d0e0',
+  blue = '#61afef',
+  violet = '#b294bb',
+  magenta = '#c678dd',
+  teal = '#1abc9c',
+  grey = '#928374',
+  brown = '#c78665',
+  black = '#000000',
+
+  bracket = '#80A0C2',
+  currsor_bg = '#4f5b66',
+  none = 'NONE',
 }
 
-local function set_cursor_mode_hi(fg, bg)
-  local left_bg = '#3A3A3A'
-  local cursor_mode_hi = string.format('hi! StatusLineCursorMode guifg=%s guibg=%s', fg, bg)
-  local cursor_mode_sep_hi = string.format('hi! StatusLineCursorModeSep guifg=%s guibg=%s', bg, left_bg)
-
-  vim.cmd(cursor_mode_hi)
-  vim.cmd(cursor_mode_sep_hi)
-end
-
-local function cursor_mode()
-  local mode_map = {
-    ['n']  = 'NORMAL',
-    ['v']  = 'VISUAL',
-    ['V']  = 'VISUAL',
-    [''] = 'VISUAL',
-    ['i']  = 'INSERT',
-    ['ic'] = 'INSERT',
-    ['ix'] = 'INSERT',
-    ['R']  = 'REPLACE',
-    ['Rv'] = 'REPLACE',
-    ['c']  = 'COMMAND',
+local mode_provider = function()
+  local alias = {
+    n      = 'NORMAL ',
+    i      = 'INSERT ',
+    c      = 'COMMAND ',
+    cv     = 'COMMAND ',
+    ce     = 'COMMAND ',
+    v      = 'VISUAL ',
+    V      = 'VISUAL-L ',
+    [''] = 'VISUAL-B ',
+    s      = 'SELECT ',
+    S      = 'SELECT-L ',
+    [''] = 'SELECT-B ',
+    R      = 'REPLACE ',
+    Rc     = 'REPLACE ',
+    Rv     = 'REPLACE ',
+    Rx     = 'REPLACE ',
   }
-
-  local mode_colors = {
-    ['NORMAL']  = { fg = '#FCE8C3', bg = '#585858' },
-    ['VISUAL']  = { fg = '#262626', bg = '#FBB829' },
-    ['INSERT']  = { fg = '#FCE8C3', bg = '#EF2F27' },
-    ['REPLACE'] = { fg = '#FCE8C3', bg = '#EF2F27' },
-    ['COMMAND'] = { fg = '#FCE8C3', bg = '#2C78BF' },
-  }
-
-  local m = vim.api.nvim_get_mode()
-  local current_mode = mode_map[m.mode]
-  local current_mode_color = mode_colors[current_mode]
-  local seperator = ''
-  local cursor_mode_hi = '%#StatusLineCursorMode#'
-  local cursor_mode_sep_hi = '%#StatusLineCursorModeSep#'
-
-  set_cursor_mode_hi(current_mode_color.fg, current_mode_color.bg)
-  return string.format('%s %s %s%s%s', cursor_mode_hi, current_mode, cursor_mode_sep_hi, seperator, '%*')
+  return alias[vim.fn.mode()]
 end
 
-local function set_git_branch_hi(fg, bg)
-  local git_branch_hi = string.format('hi! StatusLineGitBranch guifg=%s guibg=%s', fg, bg)
-  local git_branch_sep_hi = string.format('hi! StatusLineGitBranchSep guifg=%s guibg=%s', bg, '#585858')
-
-  vim.cmd(git_branch_hi)
-  vim.cmd(git_branch_sep_hi)
+local space_provider = function()
+  return ' '
 end
 
--- Get the current git branch
--- inspired from github.com/galaxyline/provider_vcs.lua
-local function git_branch()
-  local git_branch_hi = '%#StatusLineGitBranch#'
-  local git_branch_sep_hi = '%#StatusLineGitBranchSep#'
-  local separator = ''
-
-  set_git_branch_hi('#FCE8C3', '#3A3A3A')
-
-  local fp = io.open(vim.fn.getcwd() .. '/.git/HEAD')
-  if fp == nil then
-    return string.format('%s %s%s%s', git_branch_hi, git_branch_sep_hi, separator, '%*')
-  end
-
-  local head = fp:read()
-  fp:close()
-
-  local branch = head:match('ref: refs/heads/(.+)')
-  if branch == '' then
-    return string.format('%s %s%s%s', git_branch_hi, git_branch_sep_hi, separator, '%*')
-  end
-
-  return string.format('%s  %s %s%s%s', git_branch_hi, branch, git_branch_sep_hi, separator, '%*')
+local line_info_provider = function()
+  local bufnr = vim.fn.bufnr()
+  local bufinfo = vim.fn.getbufinfo(bufnr)
+  bufinfo = bufinfo[1]
+  local linecount = bufinfo.linecount
+  local linenum = bufinfo.lnum
+  local col = vim.fn.col('.')
+  return string.format('%s/%s:%s', linenum, linecount, col)
 end
 
-local function set_filename_hi(fg, bg)
-  local statusline_bg = vim.fn.synIDattr(vim.fn.hlID('StatusLine'), 'bg#')
-  local filename_hi = string.format('hi! StatusLineFilename guifg=%s guibg=%s', fg, bg)
-  local filename_sep_hi = string.format('hi! StatusLineFilenameSep guifg=%s guibg=%s', bg, statusline_bg)
-
-  vim.cmd(filename_hi)
-  vim.cmd(filename_sep_hi)
+local lsp_error_provider = function()
+  local bufnr = vim.fn.bufnr()
+  local errors = vim.lsp.diagnostic.get_count(bufnr, [[Error]])
+  if errors ~= 0 then return string.format('E:%s ', errors) end
+  return ''
 end
 
-local function filename()
-  local separator = ''
-  local filename_hi = '%#StatusLineFilename#'
-  local filename_sep_hi = '%#StatusLineFilenameSep#'
+local lsp_warning_provider = function()
+  local bufnr = vim.fn.bufnr()
+  local warnings = vim.lsp.diagnostic.get_count(bufnr, [[Warning]])
+  if warnings ~= 0 then return string.format('W:%s ', warnings) end
+  return ''
+end
+
+local lsp_text_provider = function()
+  local clients = vim.lsp.buf_get_clients()
+  if vim.tbl_isempty(clients) then return '' end
+  return 'LSP'
+end
+
+local show_if_buf_exists = function()
   local bufname = vim.fn.expand('%:t')
-
-  set_filename_hi('#FCE8C3', '#585858')
-  if bufname == '' then
-    return string.format('%s %s%s%s', filename_hi, filename_sep_hi, separator, '%*')
-  end
-
-  return string.format('%s %s %s%s%s', filename_hi, bufname, filename_sep_hi, separator, '%*')
+  if vim.fn.empty(bufname) == 1 then return false end
+  return true
 end
 
-local function set_lsp_hi(fg, bg)
-  local statusline_bg = vim.fn.synIDattr(vim.fn.hlID('StatusLine'), 'bg#')
-  local lsp_hi = string.format('hi! StatusLineLsp guifg=%s guibg=%s', fg, bg)
-  local lsp_sep_hi = string.format('hi! StatusLineLspSep guifg=%s guibg=%s', bg, statusline_bg)
+--[[
+-- Active Statusline
+--]]
+gls.left = {
+  -- Vim Mode {{
+  {
+    VimModeSpaceBeforer = {
+      provider = space_provider,
+      highlight = { zephyr.bg, zephyr.teal },
+    },
+  },
 
-  vim.cmd(lsp_hi)
-  vim.cmd(lsp_sep_hi)
-end
+  {
+    VimMode = {
+      provider = mode_provider,
+      highlight = { zephyr.bg, zephyr.teal },
+      separator = '',
+      separator_highlight = { zephyr.teal, zephyr.bg },
+    },
+  },
+  -- }}
 
-local function lsp()
-  local lsp_hi = '%#StatusLineLsp#'
-  local lsp_sep_hi = '%#StatusLineLspSep#'
-  local separator = ""
-  local lsp_status_sep = string.format('%s%s%s', lsp_sep_hi, separator, lsp_hi)
-  local diagnostics = lsp_status.diagnostics()
+  -- Git {{
+  {
+    GitBranchSpaceBefore = {
+      provider = space_provider,
+      highlight = { zephyr.bg, zephyr.bg },
+    },
+  },
 
-  if diagnostics.errors > 0 or diagnostics.warnings > 0 then
-    set_lsp_hi('#121212', '#FF5C8F')
-    return string.format('%s LSP %d 🔴 %d 🟡 ', lsp_status_sep, diagnostics.errors, diagnostics.warnings)
-  else
-    set_lsp_hi('#121212', '#519F50')
-    return string.format('%s LSP ', lsp_status_sep)
-  end
-end
+  {
+    GitBranch = {
+      provider = vcs.get_git_branch,
+      highlight = { zephyr.fg, zephyr.bg },
+      icon = ' ',
+    },
+  },
 
-function M.set_highlights()
-  local statusline_hi = string.format('hi! StatusLine guifg=%s guibg=%s', '#FCE8C3', '#262626')
-  local statusline_nc_hi = string.format('hi! StatusLineNC gui=NONE guifg=%s guibg=%s', '#FCE8C3', '#121212')
+  {
+    GitBranchSpaceAfter = {
+      provider = space_provider,
+      highlight = { zephyr.fg, zephyr.bg },
+      separator = '',
+      separator_highlight = {
+        zephyr.bg,
+        function()
+          if show_if_buf_exists() then
+            return zephyr.blue
+          else
+            return zephyr.bg
+          end
+        end
+      },
+    },
+  },
+  -- }}
 
-  vim.cmd(statusline_hi)
-  vim.cmd(statusline_nc_hi)
-end
+  -- File Info {{
+  {
+    FileInfoSpaceBefore = {
+      provider = space_provider,
+      condition = show_if_buf_exists,
+      highlight = { zephyr.blue, zephyr.blue },
+    },
+  },
 
--- Render the statusline
-function M.render()
-  -- Feeling Hacky? Use this
-  -- local left_sep = vim.fn.eval([[printf("\uE0B8")]])
-  -- local right_sep = vim.fn.eval([[printf("\uE0BA")]])
-  local status = ''
+  {
+    FileIcon = {
+      provider = fileinfo.get_file_icon,
+      condition = show_if_buf_exists,
+      highlight = { zephyr.bg, zephyr.blue },
+    },
+  },
 
-  -- left side
-  status = status .. '%*'
-  status = status .. cursor_mode()
-  status = status .. git_branch()
-  status = status .. filename()
-  status = status .. '%* %-m %-r'
+  {
+    Filename = {
+      provider = fileinfo.get_current_file_name,
+      condition = show_if_buf_exists,
+      highlight = { zephyr.bg, zephyr.blue },
+      separator = '',
+      separator_highlight = { zephyr.blue, zephyr.bg },
+    },
+  },
+  -- }}
+}
 
-  -- right side
-  status = status .. '%='
-  status = status .. ' %l/%L '
-  status = status .. lsp() .. '%*'
+-- Right Side
+gls.right = {
+  -- File Encoding/Format {{
+  {
+    FileEncoding = {
+      provider = fileinfo.get_file_encode,
+      highlight = { zephyr.bg, zephyr.redwine },
+      separator = '',
+      separator_highlight = { zephyr.redwine, zephyr.bg },
+    },
+  },
 
-  return status
-end
+  {
+    FileEncodingSpaceAfter = {
+      provider = space_provider,
+      highlight = { zephyr.redwine, zephyr.redwine },
+    },
+  },
 
-function M.get_statusline()
-  return [[%!luaeval("require'creativenull.statusline'.render()")]]
-end
+  {
+    FileFormat = {
+      provider = fileinfo.get_file_format,
+      highlight = { zephyr.bg, zephyr.redwine },
+    },
+  },
 
-function M.setlocal_active_statusline()
-  vim.api.nvim_win_set_option(0, 'statusline', M.get_statusline())
-end
+  {
+    FileFormatSpaceAfter = {
+      provider = space_provider,
+      highlight = { zephyr.redwine, zephyr.redwine },
+    },
+  },
+  -- }}
 
-function M.setlocal_inactive_statusline()
-  vim.api.nvim_win_set_option(0, 'statusline', '^^^%=^^^')
-end
+  -- Line Info {{
+  {
+    LineInfoSpaceBefore = {
+      provider = space_provider,
+      condition = show_if_buf_exists,
+      highlight = { zephyr.bg, zephyr.bg },
+      separator = '',
+      separator_highlight = { zephyr.bg, zephyr.redwine },
+    },
+  },
 
-return M
+  {
+    LineInfo = {
+      provider = line_info_provider,
+      condition = show_if_buf_exists,
+      highlight = { zephyr.fg, zephyr.bg },
+    },
+  },
+
+  {
+    LineInfoSpaceAfter = {
+      provider = space_provider,
+      condition = show_if_buf_exists,
+      highlight = { zephyr.bg, zephyr.bg },
+    },
+  },
+  -- }}
+
+  -- LSP Status {{
+  {
+    LspInfoSpaceBefore = {
+      provider = space_provider,
+      highlight = { zephyr.fg_alt, zephyr.fg_alt },
+      separator = '',
+      separator_highlight = {
+        zephyr.fg_alt,
+        function()
+          if show_if_buf_exists() then
+            return zephyr.bg
+          else
+            return zephyr.redwine
+          end
+        end
+      },
+    },
+  },
+
+  {
+    LspErrorInfo = {
+      provider = lsp_error_provider,
+      highlight = { zephyr.red, zephyr.fg_alt },
+    },
+  },
+
+  {
+    LspWarningInfo = {
+      provider = lsp_warning_provider,
+      highlight = { zephyr.yellow, zephyr.fg_alt },
+    },
+  },
+
+  {
+    LspInfo = {
+      provider = lsp_text_provider,
+      highlight = { zephyr.fg, zephyr.fg_alt },
+    },
+  },
+
+  {
+    LspInfoSpaceAfter = {
+      provider = space_provider,
+      highlight = { zephyr.fg_alt, zephyr.fg_alt },
+    },
+  },
+  -- }}
+}
+
+--[[
+-- Inactive Statusline
+--]]
+gls.short_line_left = {
+  {
+    FileSpaceBefore = {
+      provider = space_provider,
+      highlight = { zephyr.blue, zephyr.blue },
+    },
+  },
+
+  {
+    FileIcon = {
+      provider = fileinfo.get_file_icon,
+      highlight = { zephyr.bg, zephyr.blue },
+    },
+  },
+
+  {
+    Filename = {
+      provider = fileinfo.get_current_file_name,
+      highlight = { zephyr.bg, zephyr.blue },
+      separator = '',
+      separator_highlight = { zephyr.blue, zephyr.bg },
+    },
+  },
+}
+
+gls.short_line_right = {
+  -- File Encoding/Format {{
+  {
+    FileEncoding = {
+      provider = fileinfo.get_file_encode,
+      highlight = { zephyr.bg, zephyr.redwine },
+      separator = '',
+      separator_highlight = { zephyr.redwine, zephyr.bg },
+    },
+  },
+
+  {
+    FileEncodingSpaceAfter = {
+      provider = space_provider,
+      highlight = { zephyr.redwine, zephyr.redwine },
+    },
+  },
+
+  {
+    FileFormat = {
+      provider = fileinfo.get_file_format,
+      highlight = { zephyr.bg, zephyr.redwine },
+    },
+  },
+
+  {
+    FileFormatSpaceAfter = {
+      provider = space_provider,
+      highlight = { zephyr.redwine, zephyr.redwine },
+    },
+  },
+  -- }}
+}

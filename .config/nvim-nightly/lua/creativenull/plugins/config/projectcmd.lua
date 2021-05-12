@@ -5,4 +5,4 @@
 --  autoload = true
 --}
 
-require 'projectcmd'.setup()
+require 'projectcmd'.setup {}

@@ -15,7 +15,7 @@ _G.SetupLsp = setup_lsp
 -- Init of diagnosticls-nvim plugin
 require 'diagnosticls-nvim'.init { on_attach = on_attach }
 
-SetupLsp('tsserver')
+-- SetupLsp('denols')
 
 -- For debugging
 -- vim.lsp.set_log_level('debug')

@@ -1,3 +1,5 @@
+local set_augroup = require 'creativenull.utils'.set_augroup
+
 -- Completion options
 if string.match(vim.o.shortmess, 'c') == nil then vim.o.shortmess = vim.o.shortmess .. 'c' end
 vim.o.completeopt = 'menuone,noinsert,noselect'
@@ -18,6 +20,17 @@ vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.smarttab = true
+
+_G.SetBufferInit = function()
+  local bufnr = vim.fn.bufnr()
+  vim.bo[bufnr].shiftwidth = 0
+  vim.bo[bufnr].softtabstop = 4
+  vim.bo[bufnr].expandtab = true
+  vim.bo[bufnr].autoindent = true
+  vim.bo[bufnr].smartindent = true
+end
+
+set_augroup('set_buf_opts', { 'au BufEnter,BufNew <buffer> lua SetBufferInit()' })
 
 -- Line options
 vim.o.showmatch = true
@@ -58,11 +71,9 @@ vim.o.backspace = 'indent,eol,start'
 
 -- Status line
 vim.o.showmode = false
-vim.o.statusline = require 'creativenull.statusline'.get_statusline()
 
 -- Tab line
-vim.o.showtabline = 2
-vim.o.tabline = require 'creativenull.tabline'.get_tabline()
+vim.o.showtabline = 1
 
 -- Better display
 vim.o.cmdheight = 2
