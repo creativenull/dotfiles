@@ -35,4 +35,10 @@ M.file_browser = function()
   telescope_builtin.file_browser {}
 end
 
+M.buffers = function()
+  telescope_builtin.buffers {
+    previewer = false
+  }
+end
+
 return M

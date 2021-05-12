@@ -4,14 +4,13 @@ local keymap = require 'creativenull.utils'.keymap
 vim.g.mapleader = ' '
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
-keymap('v', '<up>',    '<nop>')
-keymap('v', '<down>',  '<nop>')
-keymap('v', '<left>',  '<nop>')
+keymap('v', '<up>', '<nop>')
+keymap('v', '<down>', '<nop>')
+keymap('v', '<left>', '<nop>')
 keymap('v', '<right>', '<nop>')
-
-keymap('i', '<up>',    '<nop>')
-keymap('i', '<down>',  '<nop>')
-keymap('i', '<left>',  '<nop>')
+keymap('i', '<up>', '<nop>')
+keymap('i', '<down>', '<nop>')
+keymap('i', '<left>', '<nop>')
 keymap('i', '<right>', '<nop>')
 
 -- Map Esc, to perform quick switching between Normal and Insert mode
@@ -33,19 +32,19 @@ keymap('n', '<leader><CR>', '<cmd>noh<CR>')
 -- Buffer maps
 -- -----------
 -- List all buffers
-keymap('n', '<leader>ba', '<cmd>buffers<CR>')
+keymap('n', '<leader>bl', [[<cmd>lua require'creativenull.plugins.config.telescope'.buffers()<CR>]])
 -- Next buffer
-keymap('n', '<C-l>',      '<cmd>bnext<CR>')
+keymap('n', '<C-l>', '<cmd>bnext<CR>')
 -- Previous buffer
-keymap('n', '<C-h>',      '<cmd>bprevious<CR>')
+keymap('n', '<C-h>', '<cmd>bprevious<CR>')
 -- Close buffer, and more?
 keymap('n', '<leader>bd', '<cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>')
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
-keymap('n', '<up>',    '<cmd>resize +2<CR>')
-keymap('n', '<down>',  '<cmd>resize -2<CR>')
-keymap('n', '<left>',  '<cmd>vertical resize -2<CR>')
+keymap('n', '<up>', '<cmd>resize +2<CR>')
+keymap('n', '<down>', '<cmd>resize -2<CR>')
+keymap('n', '<left>', '<cmd>vertical resize -2<CR>')
 keymap('n', '<right>', '<cmd>vertical resize +2<CR>')
 
 -- Text maps
