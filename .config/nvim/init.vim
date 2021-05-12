@@ -35,7 +35,7 @@ endfunction
 
 function! s:options_init() abort
     if isdirectory(g:undodir) == v:false
-        let s:cmd = printf('!mkdir %s', g:undodir)
+        let s:cmd = printf('!mkdir -p %s', g:undodir)
         execute s:cmd
     endif
 endfunction
