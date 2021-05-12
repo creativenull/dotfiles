@@ -7,23 +7,22 @@ local function add(modname)
 end
 
 M.init = function()
-  add('emmet')
+  add 'emmet'
 end
 
 M.setup = function()
-  add('gitsigns')
-  add('lsp')
-  add('projectcmd')
-  add('compe')
-  add('telescope')
-  add('autopairs')
-  add('lspsaga')
+  add 'gitsigns'
+  add 'lsp'
+  add 'projectcmd'
+  add 'compe'
+  add 'telescope'
+  add 'autopairs'
+  add 'lspsaga'
+  add 'galaxyline'
 
   -- treesitter and co
-  add('treesitter')
-  add('biscuits')
-
-  require 'creativenull.statusline'
+  add 'treesitter'
+  add 'biscuits'
 end
 
 return M
