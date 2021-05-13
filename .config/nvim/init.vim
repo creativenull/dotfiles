@@ -157,15 +157,13 @@ let g:buftabline_indicators = 1
 " --- lightline Options ---
 let g:lightline = {}
 let g:lightline.colorscheme = 'srcery'
-let g:lightline.component = { 'lineinfo': 'L:%l/%L C:%c' }
-let g:lightline.active = {
-    \ 'left': [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ],
-    \ 'right': [ ['lspstatus'], ['lineinfo'], ['filetype', 'fileencoding'] ],
-\ }
-let g:lightline.component_function = {
-    \ 'gitbranch': 'gitbranch#name',
-    \ 'lspstatus': 'LspStatus'
-\ }
+let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
+let g:lightline.active = {}
+let g:lightline.active.left = [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ]
+let g:lightline.active.right = [ ['lspstatus'], ['lineinfo'], ['filetype', 'fileencoding'] ]
+let g:lightline.component_function = {}
+let g:lightline.component_function.gitbranch = 'gitbranch#name'
+let g:lightline.component_function.lspstatus = 'LspStatus'
 
 " =============================================================================
 " = Plugin Manager =
