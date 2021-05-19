@@ -4,41 +4,41 @@ local telescope_actions = require 'telescope.actions'
 local M = {}
 
 telescope.setup {
-  defaults = {
-    prompt_position = 'top',
-    layout_strategy = 'horizontal',
-    sorting_strategy = 'ascending',
-    use_less = false
-  }
+    defaults = {
+        prompt_position = 'top',
+        layout_strategy = 'horizontal',
+        sorting_strategy = 'ascending',
+        use_less = false
+    }
 }
 
 M.find_files = function()
-  telescope_builtin.find_files {
-    find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' },
-    previewer = false
-  }
+    telescope_builtin.find_files {
+        find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' },
+        previewer = false
+    }
 end
 
 M.find_config_files = function()
-  local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
-  telescope_builtin.find_files {
-    find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', config_dir },
-    previewer = false
-  }
+    local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
+    telescope_builtin.find_files {
+        find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', config_dir },
+        previewer = false
+    }
 end
 
 M.live_grep = function()
-  telescope_builtin.live_grep {}
+    telescope_builtin.live_grep {}
 end
 
 M.file_browser = function()
-  telescope_builtin.file_browser {}
+    telescope_builtin.file_browser {}
 end
 
 M.buffers = function()
-  telescope_builtin.buffers {
-    previewer = false
-  }
+    telescope_builtin.buffers {
+        previewer = false
+    }
 end
 
 return M

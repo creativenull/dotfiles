@@ -22,12 +22,13 @@ vim.o.smartindent = true
 vim.o.smarttab = true
 
 _G.SetBufferInit = function()
-  local bufnr = vim.fn.bufnr()
-  vim.bo[bufnr].shiftwidth = 0
-  vim.bo[bufnr].softtabstop = 4
-  vim.bo[bufnr].expandtab = true
-  vim.bo[bufnr].autoindent = true
-  vim.bo[bufnr].smartindent = true
+    local bufnr = vim.fn.bufnr()
+    vim.bo[bufnr].tabstop = 4
+    vim.bo[bufnr].shiftwidth = 0
+    vim.bo[bufnr].softtabstop = 4
+    vim.bo[bufnr].expandtab = true
+    vim.bo[bufnr].autoindent = true
+    vim.bo[bufnr].smartindent = true
 end
 
 set_augroup('set_buf_opts', { 'au BufEnter,BufNew <buffer> lua SetBufferInit()' })
@@ -73,7 +74,7 @@ vim.o.backspace = 'indent,eol,start'
 vim.o.showmode = false
 
 -- Tab line
-vim.o.showtabline = 1
+vim.o.showtabline = 2
 
 -- Better display
 vim.o.cmdheight = 2
@@ -82,7 +83,7 @@ vim.o.cmdheight = 2
 vim.o.autoread = true
 
 -- Invisible chars list
-vim.wo.list = true
-vim.o.listchars = [[tab:▸ ,trail:·,space:·]]
+-- vim.wo.list = true
+-- vim.o.listchars = [[tab:▸ ,trail:·,space:·]]
 
 vim.o.guicursor = 'n-v-c-ci-sm-ve-i:block,r-cr-o:hor20'
