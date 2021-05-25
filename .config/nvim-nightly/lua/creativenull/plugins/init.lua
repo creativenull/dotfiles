@@ -31,7 +31,7 @@ packer.startup(function(use)
     use 'Shougo/context_filetype.vim'
 
     -- Editor
-    -- use 'creativenull/projectcmd.nvim'
+    use 'creativenull/projectcmd.nvim'
     use 'tpope/vim-surround'
     use 'SirVer/ultisnips'
     use 'editorconfig/editorconfig-vim'
@@ -47,7 +47,7 @@ packer.startup(function(use)
     use 'nvim-lua/lsp-status.nvim'
     use 'hrsh7th/nvim-compe'
     use 'glepnir/lspsaga.nvim'
-    -- use 'creativenull/diagnosticls-nvim'
+    use 'creativenull/diagnosticls-nvim'
 
     -- Themes and Syntax
     use 'norcalli/nvim-colorizer.lua'
@@ -61,10 +61,6 @@ packer.startup(function(use)
     use 'folke/todo-comments.nvim'
     use 'glepnir/zephyr-nvim'
     use 'srcery-colors/srcery-vim'
-
-    -- For Development
-    use { '~/projects/github.com/creativenull/projectcmd.nvim', branch = 'v2' }
-    use '~/projects/github.com/creativenull/diagnosticls-nvim'
 end)
 
 -- For plugins that use setup() as config
