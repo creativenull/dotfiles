@@ -26,3 +26,9 @@ set_augroup('nolist_by_ft', {
 set_augroup('biscuits_hl', {
   'au ColorScheme * hi BiscuitColor guifg=#999999 gui=italic'
 })
+
+-- lua ft
+set_augroup('lua_ft', {
+  'au FileType lua setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab',
+  'au FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab'
+})

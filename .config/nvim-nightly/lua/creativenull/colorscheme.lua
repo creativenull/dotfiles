@@ -1,4 +1,4 @@
-vim.wo.number = true
-vim.o.termguicolors = true
+vim.opt.number = true
+vim.opt.termguicolors = true
 vim.cmd 'colorscheme zephyr'
 require 'colorizer'.setup()

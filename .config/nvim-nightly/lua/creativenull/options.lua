@@ -1,102 +1,69 @@
-local set_augroup = require 'creativenull.utils'.set_augroup
-
 -- Completion options
-if string.match(vim.o.shortmess, 'c') == nil then
-  vim.o.shortmess = vim.o.shortmess .. 'c'
-end
-vim.o.completeopt = 'menuone,noinsert,noselect'
-vim.o.updatetime = 100
+vim.opt.shortmess:append('c')
+vim.opt.completeopt = 'menuone,noinsert,noselect'
+vim.opt.updatetime = 250
 
 -- Search options
-vim.o.hlsearch = true
-vim.o.incsearch = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.wrapscan = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.wrapscan = true
 
 -- Indent options
-vim.bo.tabstop = 4
-vim.bo.shiftwidth = 0
-vim.bo.softtabstop = 4
-vim.bo.expandtab = true
-vim.bo.autoindent = true
-vim.bo.smartindent = true
-vim.o.smarttab = true
-
-function SetBufferInit()
-  local bufnr = vim.fn.bufnr()
-  vim.bo[bufnr].tabstop = 4
-  vim.bo[bufnr].shiftwidth = 0
-  vim.bo[bufnr].softtabstop = 4
-  vim.bo[bufnr].expandtab = true
-  vim.bo[bufnr].autoindent = true
-  vim.bo[bufnr].smartindent = true
-end
-
-function SetLuaFtOptions()
-  local bufnr = vim.fn.bufnr()
-  vim.bo[bufnr].tabstop = 2
-  vim.bo[bufnr].shiftwidth = 0
-  vim.bo[bufnr].softtabstop = 2
-  vim.bo[bufnr].expandtab = true
-end
-
-set_augroup('set_buf_opts', {
-  'au FileType * lua SetBufferInit()',
-  'au FileType lua lua SetLuaFtOptions()'
-})
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 0
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.smarttab = true
 
 -- Line options
-vim.o.showmatch = true
-vim.o.showbreak = '+++'
-vim.bo.textwidth = 120
-vim.o.scrolloff = 5
-vim.wo.linebreak = true
-vim.wo.colorcolumn = '120' -- some prefer 80, but I just like to break the rules :)
+vim.opt.showmatch = true
+vim.opt.showbreak = '+++'
+vim.opt.textwidth = 120
+vim.opt.scrolloff = 5
+vim.opt.linebreak = true
+vim.opt.colorcolumn = '120'
 
 -- Move swapfiles and backups into cache
-vim.o.directory = vim.env.HOME .. '/.cache/nvim-nightly'
-vim.o.backup = true
-vim.o.backupdir = vim.env.HOME .. '/.cache/nvim-nightly'
+vim.opt.directory = vim.env.HOME .. '/.cache/nvim-nightly'
+vim.opt.backup = true
+vim.opt.backupdir = vim.env.HOME .. '/.cache/nvim-nightly'
 
 -- Enable the integrated undo features
-vim.o.undofile = true
-vim.o.undodir = vim.env.HOME .. '/.cache/nvim-nightly'
-vim.o.undolevels = 1000
-vim.o.history = 1000
+vim.opt.undofile = true
+vim.opt.undodir = vim.env.HOME .. '/.cache/nvim-nightly'
+vim.opt.undolevels = 10000
+vim.opt.history = 10000
 
 -- Lazy redraw
-vim.o.lazyredraw = true
+vim.opt.lazyredraw = true
 
 -- Buffers/Tabs/Windows
-vim.o.hidden = true
+vim.opt.hidden = true
 
 -- Set spelling
-vim.wo.spell = false
+vim.opt.spell = false
 
 -- For git
-vim.wo.signcolumn = 'yes'
+vim.opt.signcolumn = 'yes'
 
 -- No mouse support
-vim.o.mouse = ''
+vim.opt.mouse = ''
 
 -- backspace behaviour
-vim.o.backspace = 'indent,eol,start'
+vim.opt.backspace = 'indent,eol,start'
 
 -- Status line
-vim.o.showmode = false
+vim.opt.showmode = false
 
 -- Tab line
-vim.o.showtabline = 2
+vim.opt.showtabline = 2
 
 -- Better display
-vim.o.cmdheight = 2
+vim.opt.cmdheight = 2
 
 -- Auto reload file if changed outside vim, or just :e!
-vim.o.autoread = true
-
--- Invisible chars list
--- vim.wo.list = true
--- vim.o.listchars = [[tab:▸ ,trail:·,space:·]]
-
-vim.o.guicursor = 'n-v-c-ci-sm-ve-i:block,r-cr-o:hor20'
+vim.opt.autoread = true
