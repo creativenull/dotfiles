@@ -31,7 +31,7 @@ function M.reload_config()
     end
   end
 
-  dofile(os.getenv('MYVIMRC'))
+  dofile(vim.env.MYVIMRC)
 end
 
 -- Toggle Conceal for markdown, json, etc

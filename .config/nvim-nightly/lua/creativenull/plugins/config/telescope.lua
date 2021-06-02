@@ -20,7 +20,7 @@ M.find_files = function()
 end
 
 M.find_config_files = function()
-  local config_dir = os.getenv('HOME') .. '/.config/nvim-nightly'
+  local config_dir = vim.env.HOME .. '/.config/nvim-nightly'
   telescope_builtin.find_files {
     find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', config_dir },
     previewer = false
