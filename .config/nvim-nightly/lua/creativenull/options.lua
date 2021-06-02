@@ -1,7 +1,9 @@
 local set_augroup = require 'creativenull.utils'.set_augroup
 
 -- Completion options
-if string.match(vim.o.shortmess, 'c') == nil then vim.o.shortmess = vim.o.shortmess .. 'c' end
+if string.match(vim.o.shortmess, 'c') == nil then
+  vim.o.shortmess = vim.o.shortmess .. 'c'
+end
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.o.updatetime = 100
 
@@ -13,42 +15,53 @@ vim.o.smartcase = true
 vim.o.wrapscan = true
 
 -- Indent options
-vim.o.tabstop = 4
-vim.o.shiftwidth = 0
-vim.o.softtabstop = 4
-vim.o.expandtab = true
-vim.o.autoindent = true
-vim.o.smartindent = true
+vim.bo.tabstop = 4
+vim.bo.shiftwidth = 0
+vim.bo.softtabstop = 4
+vim.bo.expandtab = true
+vim.bo.autoindent = true
+vim.bo.smartindent = true
 vim.o.smarttab = true
 
-_G.SetBufferInit = function()
-    local bufnr = vim.fn.bufnr()
-    vim.bo[bufnr].tabstop = 4
-    vim.bo[bufnr].shiftwidth = 0
-    vim.bo[bufnr].softtabstop = 4
-    vim.bo[bufnr].expandtab = true
-    vim.bo[bufnr].autoindent = true
-    vim.bo[bufnr].smartindent = true
+function SetBufferInit()
+  local bufnr = vim.fn.bufnr()
+  vim.bo[bufnr].tabstop = 4
+  vim.bo[bufnr].shiftwidth = 0
+  vim.bo[bufnr].softtabstop = 4
+  vim.bo[bufnr].expandtab = true
+  vim.bo[bufnr].autoindent = true
+  vim.bo[bufnr].smartindent = true
 end
 
-set_augroup('set_buf_opts', { 'au BufEnter,BufNew <buffer> lua SetBufferInit()' })
+function SetLuaFtOptions()
+  local bufnr = vim.fn.bufnr()
+  vim.bo[bufnr].tabstop = 2
+  vim.bo[bufnr].shiftwidth = 0
+  vim.bo[bufnr].softtabstop = 2
+  vim.bo[bufnr].expandtab = true
+end
+
+set_augroup('set_buf_opts', {
+  'au FileType * lua SetBufferInit()',
+  'au FileType lua lua SetLuaFtOptions()'
+})
 
 -- Line options
 vim.o.showmatch = true
 vim.o.showbreak = '+++'
-vim.o.textwidth = 120
+vim.bo.textwidth = 120
 vim.o.scrolloff = 5
 vim.wo.linebreak = true
 vim.wo.colorcolumn = '120' -- some prefer 80, but I just like to break the rules :)
 
 -- Move swapfiles and backups into cache
-vim.o.directory = os.getenv('HOME') .. '/.cache/nvim-nightly'
+vim.o.directory = vim.env.HOME .. '/.cache/nvim-nightly'
 vim.o.backup = true
-vim.o.backupdir = os.getenv('HOME') .. '/.cache/nvim-nightly'
+vim.o.backupdir = vim.env.HOME .. '/.cache/nvim-nightly'
 
 -- Enable the integrated undo features
 vim.o.undofile = true
-vim.o.undodir = os.getenv('HOME') .. '/.cache/nvim-nightly'
+vim.o.undodir = vim.env.HOME .. '/.cache/nvim-nightly'
 vim.o.undolevels = 1000
 vim.o.history = 1000
 
@@ -59,7 +72,7 @@ vim.o.lazyredraw = true
 vim.o.hidden = true
 
 -- Set spelling
-vim.o.spell = false
+vim.wo.spell = false
 
 -- For git
 vim.wo.signcolumn = 'yes'
