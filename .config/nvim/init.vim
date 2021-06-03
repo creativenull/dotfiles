@@ -22,59 +22,59 @@ let g:undodir = expand('~/.cache/nvim/undo')
 " =============================================================================
 
 function! s:toggle_conceal() abort
-    if &conceallevel == 2
-        set conceallevel=0
-        let g:vim_markdown_conceal = 0
-        let g:vim_markdown_conceal_code_blocks = 0
-    else
-        set conceallevel=2
-        let g:vim_markdown_conceal = 1
-        let g:vim_markdown_conceal_code_blocks = 1
-    endif
+  if &conceallevel == 2
+    set conceallevel=0
+    let g:vim_markdown_conceal = 0
+    let g:vim_markdown_conceal_code_blocks = 0
+  else
+    set conceallevel=2
+    let g:vim_markdown_conceal = 1
+    let g:vim_markdown_conceal_code_blocks = 1
+  endif
 endfunction
 
 function! s:options_init() abort
-    if isdirectory(g:undodir) == v:false
-        let s:cmd = printf('!mkdir -p %s', g:undodir)
-        execute s:cmd
-    endif
+  if isdirectory(g:undodir) == v:false
+    let s:cmd = printf('!mkdir -p %s', g:undodir)
+    execute s:cmd
+  endif
 endfunction
 
 function! LspStatus()
-    if exists('g:loaded_ale')
-        let l:counts = ale#statusline#Count(bufnr(''))
-        let l:all_errors = counts.error + counts.style_error
-        let l:all_non_errors = counts.total - all_errors
-        return counts.total == 0 ? 'ALE' : printf(' %d 🔴 %d 🟡 ALE', all_errors, all_non_errors)
-    endif
+  if exists('g:loaded_ale')
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = counts.error + counts.style_error
+    let l:all_non_errors = counts.total - all_errors
+    return counts.total == 0 ? 'ALE' : printf(' %d 🔴 %d 🟡 ALE', all_errors, all_non_errors)
+  endif
 
-    return ''
+  return ''
 endfunction
 
 function! RegisterLsp() abort
-    " --- Deoplete Options ---
-    call deoplete#enable()
-    call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-    call deoplete#custom#option('auto_complete_delay', 50)
-    call deoplete#custom#option('smart_case', v:true)
-    call deoplete#custom#option('ignore_case', v:true)
-    call deoplete#custom#option('max_list', 10)
+  " --- Deoplete Options ---
+  call deoplete#enable()
+  call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
+  call deoplete#custom#option('auto_complete_delay', 50)
+  call deoplete#custom#option('smart_case', v:true)
+  call deoplete#custom#option('ignore_case', v:true)
+  call deoplete#custom#option('max_list', 10)
 
-    " --- ALE Keymaps ---
-    nnoremap <silent> <F2> <cmd>ALERename<CR>
-    nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
-    nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
-    nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
-    nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
-    nnoremap <silent> <leader>le <cmd>lopen<CR>
+  " --- ALE Keymaps ---
+  nnoremap <silent> <F2> <cmd>ALERename<CR>
+  nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
+  nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
+  nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
+  nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
+  nnoremap <silent> <leader>le <cmd>lopen<CR>
 endfunction
 
 function! s:codeshot_enable() abort
-    setlocal nolist nonumber norelativenumber signcolumn=no
+  setlocal nolist nonumber norelativenumber signcolumn=no
 endfunction
 
 function! s:codeshot_disable() abort
-    setlocal list number relativenumber signcolumn=yes
+  setlocal list number relativenumber signcolumn=yes
 endfunction
 
 " =============================================================================
@@ -82,26 +82,28 @@ endfunction
 " =============================================================================
 
 augroup fzf_state
-    au!
-    au FileType fzf setlocal laststatus=0 noruler | au BufLeave <buffer> setlocal laststatus=2 ruler
+  au!
+  au FileType fzf setlocal laststatus=0 noruler | au BufLeave <buffer> setlocal laststatus=2 ruler
 augroup end
 
 augroup set_invisible_chars
-    au!
-    au FileType help setlocal nolist
-    au FileType fzf setlocal nolist
+  au!
+  au FileType help setlocal nolist
+  au FileType fzf setlocal nolist
 augroup end
 
 augroup netrw_opts
-    au!
-    au FileType netrw setl bufhidden=delete
-    au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
+  au!
+  au FileType netrw setl bufhidden=delete
+  au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
 augroup end
 
 augroup colorscheme_opts
-    au!
-    au ColorScheme * highlight default link HighlightedyankRegion Search
+  au!
+  au ColorScheme * highlight default link HighlightedyankRegion Search
 augroup end
+
+autocmd! FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
 
 " =============================================================================
 " = Plugin Options =
@@ -143,9 +145,9 @@ let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 " --- vim-startify Options ---
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
-    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']       },
-\ ]
+  \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+  \ { 'type': 'sessions',  'header': ['   Sessions']       },
+  \ ]
 
 " --- hlyank Options ---
 let g:highlightedyank_highlight_duration = 500
@@ -156,7 +158,7 @@ let g:buftabline_indicators = 1
 
 " --- lightline Options ---
 let g:lightline = {}
-let g:lightline.colorscheme = 'srcery'
+let g:lightline.colorscheme = 'tokyonight'
 let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
 let g:lightline.active = {}
 let g:lightline.active.left = [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ]
@@ -170,34 +172,35 @@ let g:lightline.component_function.lspstatus = 'LspStatus'
 " =============================================================================
 
 function! PackagerInit(opts) abort
-    packadd vim-packager
-    call packager#init(a:opts)
-    call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
+  packadd vim-packager
+  call packager#init(a:opts)
+  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
-    " Core
-    call packager#add('creativenull/projectcmd.vim')
-    call packager#add('dense-analysis/ale')
-    call packager#add('airblade/vim-gitgutter')
-    call packager#add('editorconfig/editorconfig-vim')
-    call packager#add('mattn/emmet-vim')
-    call packager#add('tpope/vim-surround')
-    call packager#add('SirVer/ultisnips')
-    call packager#add('Shougo/deoplete.nvim')
-    call packager#add('godlygeek/tabular')
-    call packager#add('Shougo/context_filetype.vim')
-    call packager#add('tyru/caw.vim')
-    call packager#add('junegunn/fzf', { 'do': './install --bin' })
-    call packager#add('junegunn/fzf.vim')
+  " Core
+  call packager#add('creativenull/projectcmd.vim')
+  call packager#add('dense-analysis/ale')
+  call packager#add('airblade/vim-gitgutter')
+  call packager#add('editorconfig/editorconfig-vim')
+  call packager#add('mattn/emmet-vim')
+  call packager#add('tpope/vim-surround')
+  call packager#add('SirVer/ultisnips')
+  call packager#add('Shougo/deoplete.nvim')
+  call packager#add('godlygeek/tabular')
+  call packager#add('Shougo/context_filetype.vim')
+  call packager#add('tyru/caw.vim')
+  call packager#add('junegunn/fzf', { 'do': './install --bin' })
+  call packager#add('junegunn/fzf.vim')
 
-    " Theme, Syntax
-    call packager#add('itchyny/lightline.vim')
-    call packager#add('ap/vim-buftabline')
-    call packager#add('itchyny/vim-gitbranch')
-    call packager#add('mhinz/vim-startify')
-    call packager#add('sheerun/vim-polyglot')
-    call packager#add('jwalton512/vim-blade')
-    call packager#add('srcery-colors/srcery-vim')
-    call packager#add('machakann/vim-highlightedyank')
+  " Theme, Syntax
+  call packager#add('itchyny/lightline.vim')
+  call packager#add('ap/vim-buftabline')
+  call packager#add('itchyny/vim-gitbranch')
+  call packager#add('mhinz/vim-startify')
+  call packager#add('sheerun/vim-polyglot')
+  call packager#add('jwalton512/vim-blade')
+  call packager#add('srcery-colors/srcery-vim')
+  call packager#add('machakann/vim-highlightedyank')
+  call packager#add('ghifarit53/tokyonight-vim')
 endfunction
 
 " Package manager bootstrapping strategy
@@ -205,12 +208,12 @@ let s:manager_path = stdpath('data') . '/site/pack/packager/opt/vim-packager'
 let s:manager_git = 'https://github.com/kristijanhusak/vim-packager.git'
 let s:manager_opts = { 'dir': stdpath('data') . '/site/pack/packager' }
 if isdirectory(s:manager_path) == v:false
-    let s:cli = printf('!git clone %s %s', s:manager_git, s:manager_path)
-    execute s:cli
+  let s:cli = printf('!git clone %s %s', s:manager_git, s:manager_path)
+  execute s:cli
 
-    " Setup the manager and install plugins
-    call PackagerInit(s:manager_opts)
-    call packager#install()
+  " Setup the manager and install plugins
+  call PackagerInit(s:manager_opts)
+  call packager#install()
 endif
 
 command! -nargs=* -bar PackagerInstall call PackagerInit(s:manager_opts) | call packager#install(<args>)
@@ -224,12 +227,12 @@ command! -bar PackagerStatus call PackagerInit(s:manager_opts) | call packager#s
 
 " --- fzf Options ---
 command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \ "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(<q-args>),
-    \ 1,
-    \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
-    \ <bang>0
-    \ )
+  \ call fzf#vim#grep(
+  \ "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(<q-args>),
+  \ 1,
+  \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
+  \ <bang>0
+  \ )
 
 " =============================================================================
 " = Theming and Looks =
@@ -237,7 +240,8 @@ command! -bang -nargs=* Rg
 
 set number
 set termguicolors
-colorscheme srcery
+let g:tokyonight_enable_italic = 1
+colorscheme tokyonight
 
 " =============================================================================
 " = Options =
@@ -304,9 +308,6 @@ set cmdheight=2
 " Show invisible characters for code
 set list
 set listchars=tab:▸\ ,trail:·,space:·
-
-" Show block cursor in all modes except on replace and command
-set guicursor=n-v-c-ci-sm-ve-i:block,r-cr-o:hor20
 
 " =============================================================================
 " = Keybindings =
