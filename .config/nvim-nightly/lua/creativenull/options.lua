@@ -1,3 +1,8 @@
+local cache_dir = vim.fn.stdpath('cache')
+if vim.fn.isdirectory(vim.fn.stdpath('cache')) == 0 then
+  vim.fn.mkdir(vim.fn.stdpath('cache'), 'p')
+end
+
 -- Completion options
 vim.opt.shortmess:append('c')
 vim.opt.completeopt = 'menuone,noinsert,noselect'
@@ -21,20 +26,19 @@ vim.opt.smarttab = true
 
 -- Line options
 vim.opt.showmatch = true
-vim.opt.showbreak = '+++'
-vim.opt.textwidth = 120
-vim.opt.scrolloff = 5
-vim.opt.linebreak = true
+vim.opt.wrap = false
+vim.opt.scrolloff = 3
 vim.opt.colorcolumn = '120'
 
 -- Move swapfiles and backups into cache
-vim.opt.directory = vim.env.HOME .. '/.cache/nvim-nightly'
+vim.opt.swapfile = true
+vim.opt.directory = cache_dir
 vim.opt.backup = true
-vim.opt.backupdir = vim.env.HOME .. '/.cache/nvim-nightly'
+vim.opt.backupdir = cache_dir
 
 -- Enable the integrated undo features
 vim.opt.undofile = true
-vim.opt.undodir = vim.env.HOME .. '/.cache/nvim-nightly'
+vim.opt.undodir = cache_dir
 vim.opt.undolevels = 10000
 vim.opt.history = 10000
 

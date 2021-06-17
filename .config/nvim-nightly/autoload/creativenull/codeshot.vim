@@ -1,7 +1,7 @@
 function! creativenull#codeshot#enable() abort
-  setlocal nolist nonumber norelativenumber signcolumn=no
+  setlocal nonumber norelativenumber signcolumn=no mouse=
 endfunction
 
 function! creativenull#codeshot#disable() abort
-  setlocal list number relativenumber signcolumn=yes
+  setlocal number relativenumber signcolumn=yes mouse=a
 endfunction

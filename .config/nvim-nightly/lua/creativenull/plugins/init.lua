@@ -1,10 +1,9 @@
-local install_path = vim.env.HOME .. '/.local/share/nvim/site/pack/packer/opt/packer.nvim'
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
 
 -- Packer.nvim bootstraping strategy
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   local plugin_repo = 'https://github.com/wbthomason/packer.nvim'
-  local cli = string.format('!git clone %s %s', plugin_repo, install_path)
-  vim.cmd(cli)
+  vim.cmd(string.format('!git clone %s %s', plugin_repo, install_path))
 end
 
 vim.cmd 'packadd packer.nvim'

@@ -1,34 +1,24 @@
 local set_augroup = require 'creativenull.utils'.set_augroup
 
--- Trim whitespace on all file
-set_augroup('trim_whitespace', { [[au BufWritePre * %s/\s\+$//e]] })
+-- Background transparency
+set_augroup('transparent_bg_group', {
+  'autocmd ColorScheme * highlight Normal guibg=NONE',
+  'autocmd ColorScheme * highlight SignColumn guibg=NONE',
+  'autocmd ColorScheme * highlight LineNr guibg=NONE guifg=#aaaaaa',
+  'autocmd ColorScheme * highlight CursorLineNr guibg=NONE',
+})
+
+-- Lua and Vim tab options
+set_augroup('lua_ft', {
+  'autocmd FileType lua setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab',
+  'autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab'
+})
+
+-- Nvim biscuits
+vim.cmd 'autocmd! ColorScheme * hi BiscuitColor guifg=#999999 gui=italic'
+
+-- Trim whitespace on all files
+vim.cmd [[autocmd! BufWritePre * %s/\s\+$//e]]
 
 -- Yank highlight
-set_augroup('yank_hl', {
-  [[au TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'Search', timeout = 500 })]]
-})
-
--- Set Transparent Backgrounds
-set_augroup('transparent_bg', {
-  'au ColorScheme * hi! Normal guibg=NONE',
-  'au ColorScheme * hi! SignColumn guibg=NONE',
-  'au ColorScheme * hi! LineNr guibg=NONE guifg=#aaaaaa',
-  'au ColorScheme * hi! CursorLineNr guibg=NONE',
-})
-
--- Hide invisible chars in help and telescope
-set_augroup('nolist_by_ft', {
-  'au FileType help setlocal nolist',
-  'au FileType TelescopePrompt setlocal nolist'
-})
-
--- nvim biscuits
-set_augroup('biscuits_hl', {
-  'au ColorScheme * hi BiscuitColor guifg=#999999 gui=italic'
-})
-
--- lua ft
-set_augroup('lua_ft', {
-  'au FileType lua setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab',
-  'au FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab'
-})
+vim.cmd [[autocmd! TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'Search', timeout = 500 })]]
