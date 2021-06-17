@@ -12,10 +12,11 @@
 " Currently, tested on a Linux machine.
 " =============================================================================
 
-let mapleader = ' '
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 let g:python_host_prog = $PYTHON_HOST_PROG
+let mapleader = ' '
 let g:undodir = expand('~/.cache/nvim/undo')
+let g:cnull#enable_transparent = v:false
 
 " =============================================================================
 " = Functions =
@@ -81,11 +82,6 @@ endfunction
 " = Auto Command Groups =
 " =============================================================================
 
-augroup fzf_state
-  au!
-  au FileType fzf setlocal laststatus=0 noruler | au BufLeave <buffer> setlocal laststatus=2 ruler
-augroup end
-
 augroup set_invisible_chars
   au!
   au FileType help setlocal nolist
@@ -98,11 +94,18 @@ augroup netrw_opts
   au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
 augroup end
 
-augroup colorscheme_opts
-  au!
-  au ColorScheme * highlight default link HighlightedyankRegion Search
-augroup end
+if g:cnull#enable_transparent == v:true
+  augroup transparent_bg
+    au!
+    au ColorScheme * highlight Normal guibg=NONE
+    au ColorScheme * highlight SignColumn guibg=NONE
+    au ColorScheme * highlight LineNr guibg=NONE guifg=#aaaaaa
+    au ColorScheme * highlight CursorLineNr guibg=NONE
+  augroup end
+endif
 
+autocmd! FileType fzf setlocal laststatus=0 noruler | autocmd! BufLeave <buffer> setlocal laststatus=2 ruler
+autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
 autocmd! FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
 
 " =============================================================================
@@ -201,6 +204,7 @@ function! PackagerInit(opts) abort
   call packager#add('srcery-colors/srcery-vim')
   call packager#add('machakann/vim-highlightedyank')
   call packager#add('ghifarit53/tokyonight-vim')
+  call packager#add('Dophin2009/neon-syntax.vim')
 endfunction
 
 " Package manager bootstrapping strategy
@@ -264,12 +268,11 @@ set softtabstop=4
 set tabstop=4
 set expandtab
 set smartindent
+set smarttab
 
 " Line options
 set showmatch
-set linebreak
-set showbreak=+++
-set textwidth=120
+set nowrap
 set colorcolumn=120
 set scrolloff=5
 
@@ -294,7 +297,7 @@ set nospell
 set signcolumn=yes
 
 " No mouse support, who uses that? They were definitely NOT in my previous commits xD
-set mouse=
+set mouse=a
 
 " Hide the `-- INSERT --` on the command line below
 set noshowmode
