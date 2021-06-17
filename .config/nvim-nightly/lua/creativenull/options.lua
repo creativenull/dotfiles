@@ -51,7 +51,7 @@ vim.opt.spell = false
 vim.opt.signcolumn = 'yes'
 
 -- No mouse support
-vim.opt.mouse = ''
+vim.opt.mouse = 'a'
 
 -- backspace behaviour
 vim.opt.backspace = 'indent,eol,start'
@@ -67,3 +67,6 @@ vim.opt.cmdheight = 2
 
 -- Auto reload file if changed outside vim, or just :e!
 vim.opt.autoread = true
+
+-- Use system clipboard
+vim.opt.clipboard = 'unnamedplus'
