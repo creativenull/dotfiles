@@ -62,20 +62,20 @@ function! RegisterLsp() abort
   call deoplete#custom#option('max_list', 10)
 
   " --- ALE Keymaps ---
-  nnoremap <silent> <F2> <cmd>ALERename<CR>
-  nnoremap <silent> <leader>ld <cmd>ALEGoToDefinition<CR>
-  nnoremap <silent> <leader>lr <cmd>ALEFindReferences<CR>
-  nnoremap <silent> <leader>lf <cmd>ALEFix<CR>
-  nnoremap <silent> <leader>lh <cmd>ALEHover<CR>
-  nnoremap <silent> <leader>le <cmd>lopen<CR>
+  nnoremap <silent> <F2> <Cmd>ALERename<CR>
+  nnoremap <silent> <leader>ld <Cmd>ALEGoToDefinition<CR>
+  nnoremap <silent> <leader>lr <Cmd>ALEFindReferences<CR>
+  nnoremap <silent> <leader>lf <Cmd>ALEFix<CR>
+  nnoremap <silent> <leader>lh <Cmd>ALEHover<CR>
+  nnoremap <silent> <leader>le <Cmd>lopen<CR>
 endfunction
 
 function! s:codeshot_enable() abort
-  setlocal nolist nonumber norelativenumber signcolumn=no
+  setlocal nolist nonumber norelativenumber signcolumn=no mouse=
 endfunction
 
 function! s:codeshot_disable() abort
-  setlocal list number relativenumber signcolumn=yes
+  setlocal list number relativenumber signcolumn=yes mouse=a
 endfunction
 
 " =============================================================================
@@ -83,24 +83,24 @@ endfunction
 " =============================================================================
 
 augroup set_invisible_chars
-  au!
-  au FileType help setlocal nolist
-  au FileType fzf setlocal nolist
+  autocmd!
+  autocmd FileType help setlocal nolist
+  autocmd FileType fzf setlocal nolist
 augroup end
 
 augroup netrw_opts
-  au!
-  au FileType netrw setl bufhidden=delete
-  au FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
+  autocmd!
+  autocmd FileType netrw setlocal bufhidden=delete
+  autocmd FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
 augroup end
 
 if g:cnull#enable_transparent == v:true
   augroup transparent_bg
-    au!
-    au ColorScheme * highlight Normal guibg=NONE
-    au ColorScheme * highlight SignColumn guibg=NONE
-    au ColorScheme * highlight LineNr guibg=NONE guifg=#aaaaaa
-    au ColorScheme * highlight CursorLineNr guibg=NONE
+    autocmd!
+    autocmd ColorScheme * highlight Normal guibg=NONE
+    autocmd ColorScheme * highlight SignColumn guibg=NONE
+    autocmd ColorScheme * highlight LineNr guibg=NONE
+    autocmd ColorScheme * highlight CursorLineNr guibg=NONE
   augroup end
 endif
 
@@ -109,7 +109,7 @@ autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
 autocmd! FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
 
 " =============================================================================
-" = Plugin Options =
+" = Plugin Config - before loading plugins =
 " =============================================================================
 
 " --- ProjectCMD Options ---
@@ -131,8 +131,8 @@ let g:user_emmet_leader_key = '<C-z>'
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
-nnoremap <C-p> <cmd>Files<CR>
-nnoremap <C-t> <cmd>Rg<CR>
+nnoremap <C-p> <Cmd>Files<CR>
+nnoremap <C-t> <Cmd>Rg<CR>
 
 " --- ALE Options ---
 let g:ale_hover_cursor = 0
@@ -170,6 +170,11 @@ let g:lightline.component_function = {}
 let g:lightline.component_function.gitbranch = 'gitbranch#name'
 let g:lightline.component_function.lspstatus = 'LspStatus'
 
+" --- nnn.vim Options ---
+let g:nnn#set_default_mappings = 0
+let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
+nmap <silent> <F3> <Cmd>NnnPicker %:p:h<CR>
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
@@ -180,7 +185,7 @@ function! PackagerInit(opts) abort
   call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
   " Core
-  call packager#add('creativenull/projectcmd.vim')
+  call packager#add('creativenull/projectcmd.vim', { 'frozen': v:true })
   call packager#add('dense-analysis/ale')
   call packager#add('airblade/vim-gitgutter')
   call packager#add('editorconfig/editorconfig-vim')
@@ -193,6 +198,7 @@ function! PackagerInit(opts) abort
   call packager#add('tyru/caw.vim')
   call packager#add('junegunn/fzf', { 'do': './install --bin' })
   call packager#add('junegunn/fzf.vim')
+  call packager#add('mcchrish/nnn.vim')
 
   " Theme, Syntax
   call packager#add('itchyny/lightline.vim')
@@ -226,7 +232,7 @@ command! -bar PackagerClean call PackagerInit(s:manager_opts) | call packager#cl
 command! -bar PackagerStatus call PackagerInit(s:manager_opts) | call packager#status()
 
 " =============================================================================
-" = Plugin Function Options =
+" = Plugin Options - after loading plugins =
 " =============================================================================
 
 " --- fzf Options ---
@@ -333,32 +339,30 @@ inoremap jk <ESC>
 tnoremap <ESC> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
-" File explorer
-noremap <F3> <cmd>Ex<CR>
 
 " Manual completion
 imap <C-Space> <C-x><C-o>
 
 " Disable highlights
-nnoremap <leader><CR> <cmd>noh<CR>
+nnoremap <leader><CR> <Cmd>noh<CR>
 
 " Buffer maps
 " ---
 " List all buffers
-nnoremap <leader>bl <cmd>buffers<CR>
+nnoremap <leader>bl <Cmd>buffers<CR>
 " Go to next buffer
-nnoremap <C-l> <cmd>bnext<CR>
+nnoremap <C-l> <Cmd>bnext<CR>
 " Go to previous buffer
-nnoremap <C-h> <cmd>bprevious<CR>
+nnoremap <C-h> <Cmd>bprevious<CR>
 " Close the current buffer, and more?
-nnoremap <leader>bd <cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
+nnoremap <leader>bd <Cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
-nnoremap <up>    <cmd>resize +2<CR>
-nnoremap <down>  <cmd>resize -2<CR>
-nnoremap <left>  <cmd>vertical resize -2<CR>
-nnoremap <right> <cmd>vertical resize +2<CR>
+nnoremap <up>    <Cmd>resize +2<CR>
+nnoremap <down>  <Cmd>resize -2<CR>
+nnoremap <left>  <Cmd>vertical resize -2<CR>
+nnoremap <right> <Cmd>vertical resize +2<CR>
 
 " Text maps
 " ---
@@ -369,13 +373,13 @@ vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
 vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Edit vimrc and gvimrc
-nnoremap <leader>ve <cmd>edit $MYVIMRC<CR>
+nnoremap <leader>ve <Cmd>edit $MYVIMRC<CR>
 
 " Source the vimrc to reflect changes
-nnoremap <leader>vs <cmd>ConfigReload<CR>
+nnoremap <leader>vs <Cmd>ConfigReload<CR>
 
 " Reload file
-nnoremap <leader>r <cmd>edit!<CR>
+nnoremap <leader>r <Cmd>edit!<CR>
 
 " =============================================================================
 " = Commands =
@@ -385,8 +389,8 @@ command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | noh | execute ':EditorConfigReload'
 command! ToggleConceal call <SID>toggle_conceal()
 
-command! Codeshot call <SID>codeshot_enable()
-command! NoCodeshot call <SID>codeshot_disable()
+command! CodeshotEnable call <SID>codeshot_enable()
+command! CodeshotDisable call <SID>codeshot_disable()
 
 " I can't release my shift key fast enough :')
 command! -nargs=* W w
