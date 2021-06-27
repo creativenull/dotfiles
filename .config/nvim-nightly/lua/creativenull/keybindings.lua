@@ -21,7 +21,7 @@ keymap('t', '<ESC>', [[<C-\><C-n>]])
 keymap('t', '<C-[>', [[<C-\><C-n>]])
 
 -- File explorer
-keymap('n', '<F3>', '<Cmd>Np<CR>')
+keymap('n', '<F3>', '<Cmd>NnnPicker %:p:h<CR>')
 
 -- Omnifunc
 keymap('i', '<C-Space>', '<C-x><C-o>')

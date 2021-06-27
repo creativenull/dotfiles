@@ -51,7 +51,7 @@ packer.startup(function(use)
   use { 'lukas-reineke/indent-blankline.nvim', branch = 'lua' }
   use 'evanleck/vim-svelte'
   use 'akinsho/nvim-bufferline.lua'
-  use { 'glepnir/galaxyline.nvim', branch = 'main' }
+  use 'glepnir/galaxyline.nvim'
   use 'folke/todo-comments.nvim'
   use 'glepnir/zephyr-nvim'
   use 'srcery-colors/srcery-vim'
