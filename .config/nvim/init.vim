@@ -1,26 +1,44 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
 " My vimrc, pre-requisites:
-" + vim-plug
+" + python
+" + nnn
 " + ripgrep
 " + Environment variables:
 "    $PYTHON3_HOST_PROG
-"    $NVIMRC_PLUGINS_DIR
-"    $NVIMRC_CONFIG_DIR
-"    $NVIMRC_PROJECTCMD_KEY
 "
-" Currently, tested on a Linux machine.
+" Currently, tested on a Linux machine
 " =============================================================================
 
+let g:mapleader = ' '
 let g:python3_host_prog = $PYTHON3_HOST_PROG
-let g:python_host_prog = $PYTHON_HOST_PROG
-let mapleader = ' '
 let g:undodir = expand('~/.cache/nvim/undo')
 let g:cnull#enable_transparent = v:false
+
+if executable('python3') == v:false || exists('$PYTHON3_HOST_PROG') == v:false
+  echoerr '`python3` not installed, please install it via your OS software manager, and set $PYTHON_HOST_PROG env'
+  finish
+endif
+
+if executable('rg') == v:false
+  echoerr '`ripgrep` not installed, please install it via your OS software manager'
+  finish
+endif
+
+if executable('nnn') == v:false
+  echoerr '`nnn` not installed, please install it via your OS software manager'
+  finish
+endif
 
 " =============================================================================
 " = Functions =
 " =============================================================================
+
+function! s:options_init() abort
+  if isdirectory(g:undodir) == v:false
+    execute printf('!mkdir -p %s', g:undodir)
+  endif
+endfunction
 
 function! s:toggle_conceal() abort
   if &conceallevel == 2
@@ -31,13 +49,6 @@ function! s:toggle_conceal() abort
     set conceallevel=2
     let g:vim_markdown_conceal = 1
     let g:vim_markdown_conceal_code_blocks = 1
-  endif
-endfunction
-
-function! s:options_init() abort
-  if isdirectory(g:undodir) == v:false
-    let s:cmd = printf('!mkdir -p %s', g:undodir)
-    execute s:cmd
   endif
 endfunction
 
@@ -62,7 +73,7 @@ function! RegisterLsp() abort
   call deoplete#custom#option('max_list', 10)
 
   " --- ALE Keymaps ---
-  nnoremap <silent> <F2> <Cmd>ALERename<CR>
+  nnoremap <silent> <F2>       <Cmd>ALERename<CR>
   nnoremap <silent> <leader>ld <Cmd>ALEGoToDefinition<CR>
   nnoremap <silent> <leader>lr <Cmd>ALEFindReferences<CR>
   nnoremap <silent> <leader>lf <Cmd>ALEFix<CR>
@@ -70,29 +81,24 @@ function! RegisterLsp() abort
   nnoremap <silent> <leader>le <Cmd>lopen<CR>
 endfunction
 
+function! RenderStatusline()
+  let s:filename = expand('%:t')
+  let s:branchname = gitbranch#name()
+  let s:lsp = LspStatus()
+  return ' ' . s:filename . ' | ' . s:branchname . ' %= %l/%L:%c ' . s:lsp . ' '
+endfunction
+
 function! s:codeshot_enable() abort
-  setlocal nolist nonumber norelativenumber signcolumn=no mouse=
+  setlocal nonumber signcolumn=no mouse=
 endfunction
 
 function! s:codeshot_disable() abort
-  setlocal list number relativenumber signcolumn=yes mouse=a
+  setlocal number signcolumn=yes mouse=a
 endfunction
 
 " =============================================================================
 " = Auto Command Groups =
 " =============================================================================
-
-augroup set_invisible_chars
-  autocmd!
-  autocmd FileType help setlocal nolist
-  autocmd FileType fzf setlocal nolist
-augroup end
-
-augroup netrw_opts
-  autocmd!
-  autocmd FileType netrw setlocal bufhidden=delete
-  autocmd FileType netrw nnoremap <buffer> <Esc> <cmd>Rex<CR>
-augroup end
 
 if g:cnull#enable_transparent == v:true
   augroup transparent_bg
@@ -103,10 +109,6 @@ if g:cnull#enable_transparent == v:true
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
   augroup end
 endif
-
-autocmd! FileType fzf setlocal laststatus=0 noruler | autocmd! BufLeave <buffer> setlocal laststatus=2 ruler
-autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
-autocmd! FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
 
 " =============================================================================
 " = Plugin Config - before loading plugins =
@@ -119,6 +121,8 @@ let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
 let g:UltiSnipsExpandTrigger = '<C-z>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+autocmd! FileType javascriptreact UltiSnipsAddFiletypes javascript_react
+autocmd! FileType typescriptreact UltiSnipsAddFiletypes typescript_react
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
@@ -131,6 +135,7 @@ let g:user_emmet_leader_key = '<C-z>'
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
+autocmd! FileType fzf setlocal laststatus=0 noruler | autocmd! BufLeave <buffer> setlocal laststatus=2 ruler
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
 
@@ -154,21 +159,22 @@ let g:startify_lists = [
 
 " --- hlyank Options ---
 let g:highlightedyank_highlight_duration = 500
+autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
 
 " --- buftabline Options ---
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
 " --- lightline Options ---
-let g:lightline = {}
-let g:lightline.colorscheme = 'tokyonight'
-let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
-let g:lightline.active = {}
-let g:lightline.active.left = [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ]
-let g:lightline.active.right = [ ['lspstatus'], ['lineinfo'], ['filetype', 'fileencoding'] ]
-let g:lightline.component_function = {}
-let g:lightline.component_function.gitbranch = 'gitbranch#name'
-let g:lightline.component_function.lspstatus = 'LspStatus'
+" let g:lightline = {}
+" let g:lightline.colorscheme = 'tokyonight'
+" let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
+" let g:lightline.active = {}
+" let g:lightline.active.left = [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ]
+" let g:lightline.active.right = [ ['lspstatus'], ['lineinfo'], ['filetype', 'fileencoding'] ]
+" let g:lightline.component_function = {}
+" let g:lightline.component_function.gitbranch = 'gitbranch#name'
+" let g:lightline.component_function.lspstatus = 'LspStatus'
 
 " --- nnn.vim Options ---
 let g:nnn#set_default_mappings = 0
@@ -189,28 +195,28 @@ function! PackagerInit(opts) abort
   call packager#add('dense-analysis/ale')
   call packager#add('airblade/vim-gitgutter')
   call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('mattn/emmet-vim')
+  call packager#add('mattn/emmet-vim', { 'type': 'opt' })
   call packager#add('tpope/vim-surround')
   call packager#add('SirVer/ultisnips')
+  call packager#add('honza/vim-snippets')
   call packager#add('Shougo/deoplete.nvim')
   call packager#add('godlygeek/tabular')
   call packager#add('Shougo/context_filetype.vim')
   call packager#add('tyru/caw.vim')
   call packager#add('junegunn/fzf', { 'do': './install --bin' })
   call packager#add('junegunn/fzf.vim')
+  call packager#add('cohama/lexima.vim')
   call packager#add('mcchrish/nnn.vim')
 
   " Theme, Syntax
-  call packager#add('itchyny/lightline.vim')
   call packager#add('ap/vim-buftabline')
   call packager#add('itchyny/vim-gitbranch')
   call packager#add('mhinz/vim-startify')
+  call packager#add('Yggdroot/indentLine')
   call packager#add('sheerun/vim-polyglot')
   call packager#add('jwalton512/vim-blade')
-  call packager#add('srcery-colors/srcery-vim')
   call packager#add('machakann/vim-highlightedyank')
   call packager#add('ghifarit53/tokyonight-vim')
-  call packager#add('Dophin2009/neon-syntax.vim')
 endfunction
 
 " Package manager bootstrapping strategy
@@ -243,6 +249,9 @@ command! -bang -nargs=* Rg
   \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
   \ <bang>0
   \ )
+
+" --- emmet Options ---
+autocmd! FileType html,javascript,javascriptreact,typescript,typescriptreact packadd emmet-vim
 
 " =============================================================================
 " = Theming and Looks =
@@ -305,38 +314,37 @@ set signcolumn=yes
 " No mouse support, who uses that? They were definitely NOT in my previous commits xD
 set mouse=a
 
-" Hide the `-- INSERT --` on the command line below
-set noshowmode
+" Show 2 lines of command output on the command line below
+set cmdheight=2
+
+" Render custom statusline
+set statusline=%!RenderStatusline()
 
 " Always show the tabline on top
 set showtabline=2
 
-" Show 2 lines of command output on the command line below
-set cmdheight=2
-
-" Show invisible characters for code
-set list
-set listchars=tab:▸\ ,trail:·,space:·
+" Use system/OS clipboard by default
+set clipboard=unnamedplus
 
 " =============================================================================
 " = Keybindings =
 " =============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
-noremap <up> <nop>
-noremap <down> <nop>
-noremap <left> <nop>
-noremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+noremap  <Up>    <Nop>
+noremap  <Down>  <Nop>
+noremap  <Left>  <Nop>
+noremap  <Right> <Nop>
+inoremap <Up>    <Nop>
+inoremap <Down>  <Nop>
+inoremap <Left>  <Nop>
+inoremap <Right> <Nop>
 
 " Map Esc, to perform quick switching between Normal and Insert mode
-inoremap jk <ESC>
+inoremap jk <Esc>
 
 " Map escape from terminal input to Normal mode
-tnoremap <ESC> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
 
@@ -344,25 +352,25 @@ tnoremap <C-[> <C-\><C-n>
 imap <C-Space> <C-x><C-o>
 
 " Disable highlights
-nnoremap <leader><CR> <Cmd>noh<CR>
+nnoremap <Leader><CR> <Cmd>noh<CR>
 
 " Buffer maps
 " ---
 " List all buffers
-nnoremap <leader>bl <Cmd>buffers<CR>
+nnoremap <Leader>bl <Cmd>buffers<CR>
 " Go to next buffer
 nnoremap <C-l> <Cmd>bnext<CR>
 " Go to previous buffer
 nnoremap <C-h> <Cmd>bprevious<CR>
 " Close the current buffer, and more?
-nnoremap <leader>bd <Cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
+nnoremap <Leader>bd <Cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
-nnoremap <up>    <Cmd>resize +2<CR>
-nnoremap <down>  <Cmd>resize -2<CR>
-nnoremap <left>  <Cmd>vertical resize -2<CR>
-nnoremap <right> <Cmd>vertical resize +2<CR>
+nnoremap <Up>    <Cmd>resize +2<CR>
+nnoremap <Down>  <Cmd>resize -2<CR>
+nnoremap <Left>  <Cmd>vertical resize -2<CR>
+nnoremap <Right> <Cmd>vertical resize +2<CR>
 
 " Text maps
 " ---
@@ -373,13 +381,13 @@ vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
 vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Edit vimrc and gvimrc
-nnoremap <leader>ve <Cmd>edit $MYVIMRC<CR>
+nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
 
 " Source the vimrc to reflect changes
-nnoremap <leader>vs <Cmd>ConfigReload<CR>
+nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 
 " Reload file
-nnoremap <leader>r <Cmd>edit!<CR>
+nnoremap <Leader>r <Cmd>edit!<CR>
 
 " =============================================================================
 " = Commands =
