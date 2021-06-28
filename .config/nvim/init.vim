@@ -102,10 +102,10 @@ endfunction
 
 function! RenderActiveStatusline() abort
   let l:branch = ''
-  if gitbranch#name() == ''
-    let l:branch = ''
-  else
-    let l:branch = '' . gitbranch#name()
+  if exists('g:loaded_gitbranch')
+    if gitbranch#name() != ''
+      let l:branch = '' . gitbranch#name()
+    endif
   endif
 
   let l:lsp = LspStatus()
