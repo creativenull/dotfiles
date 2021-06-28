@@ -52,21 +52,20 @@ function! s:toggle_conceal() abort
   endif
 endfunction
 
+function! s:codeshot_enable() abort
+  setlocal nonumber signcolumn=no mouse=
+endfunction
+
+function! s:codeshot_disable() abort
+  setlocal number signcolumn=yes mouse=a
+endfunction
+
 function! s:get_hl_color(hi, type) abort
   let l:color = synIDattr(synIDtrans(hlID(a:hi)), a:type)
   return l:color
 endfunction
 
-function! SetLspHL() abort
-  let l:bg_color = <SID>get_hl_color('StatusLine', 'bg')
-  let l:red_color = <SID>get_hl_color('Red', 'fg')
-  let l:yellow_color = <SID>get_hl_color('Yellow', 'fg')
-
-  execute printf('hi StatusLineLspRedText guifg=%s guibg=%s', l:red_color, l:bg_color)
-  execute printf('hi StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
-endfunction
-
-function! LspStatus() abort
+function! s:lsp_status() abort
   if exists('g:loaded_ale')
     let l:red_hl = '%#StatusLineLspRedText#'
     let l:yellow_hl = '%#StatusLineLspYellowText#'
@@ -74,11 +73,20 @@ function! LspStatus() abort
     let l:all_errors = counts.error + counts.style_error
     let l:all_non_errors = counts.total - all_errors
     return counts.total == 0
-      \ ? 'ALE'
-      \ : printf('%sE%d%s %sW%d%s ALE', l:red_hl, all_errors, '%*', l:yellow_hl, all_non_errors, '%*')
+          \ ? 'ALE'
+          \ : printf('%sE%d%s %sW%d%s ALE', l:red_hl, all_errors, '%*', l:yellow_hl, all_non_errors, '%*')
   endif
 
   return ''
+endfunction
+
+function! SetLspHighlight() abort
+  let l:bg_color = s:get_hl_color('StatusLine', 'bg')
+  let l:red_color = s:get_hl_color('Red', 'fg')
+  let l:yellow_color = s:get_hl_color('Yellow', 'fg')
+
+  execute printf('hi StatusLineLspRedText guifg=%s guibg=%s', l:red_color, l:bg_color)
+  execute printf('hi StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
 endfunction
 
 function! RegisterLsp() abort
@@ -108,23 +116,14 @@ function! RenderActiveStatusline() abort
     endif
   endif
 
-  let l:lsp = LspStatus()
+  let l:lsp = s:lsp_status()
   let l:fe = &fileencoding
   let l:ff = &fileformat
-  return printf(' %s | %s | %s %s %s | %s | %s | %s ',
-               \ '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
+  return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
 endfunction
 
 function! RenderInactiveStatusline() abort
   return ' %t%m%r | %y %= %l/%L:%c '
-endfunction
-
-function! s:codeshot_enable() abort
-  setlocal nonumber signcolumn=no mouse=
-endfunction
-
-function! s:codeshot_disable() abort
-  setlocal number signcolumn=yes mouse=a
 endfunction
 
 " =============================================================================
@@ -145,9 +144,8 @@ augroup statusline_render
   autocmd!
   autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusline()
   autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusline()
-  autocmd ColorScheme * call SetLspHL()
+  autocmd ColorScheme * call SetLspHighlight()
 augroup END
-
 
 " =============================================================================
 " = Plugin Config - before loading plugins =
@@ -293,7 +291,6 @@ command! -bang -nargs=* Rg
   \ <bang>0
   \ )
 
-
 " =============================================================================
 " = Theming and Looks =
 " =============================================================================
@@ -432,10 +429,10 @@ nnoremap <Leader>r <Cmd>edit!<CR>
 
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | noh | execute ':EditorConfigReload'
-command! ToggleConceal call <SID>toggle_conceal()
+command! ToggleConceal call s:toggle_conceal()
 
-command! CodeshotEnable call <SID>codeshot_enable()
-command! CodeshotDisable call <SID>codeshot_disable()
+command! CodeshotEnable call s:codeshot_enable()
+command! CodeshotDisable call s:codeshot_disable()
 
 " I can't release my shift key fast enough :')
 command! -nargs=* W w
