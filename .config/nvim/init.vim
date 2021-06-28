@@ -52,12 +52,30 @@ function! s:toggle_conceal() abort
   endif
 endfunction
 
-function! LspStatus()
+function! s:get_hl_color(hi, type) abort
+  let l:color = synIDattr(synIDtrans(hlID(a:hi)), a:type)
+  return l:color
+endfunction
+
+function! SetLspHL() abort
+  let l:bg_color = <SID>get_hl_color('StatusLine', 'bg')
+  let l:red_color = <SID>get_hl_color('Red', 'fg')
+  let l:yellow_color = <SID>get_hl_color('Yellow', 'fg')
+
+  execute printf('hi StatusLineLspRedText guifg=%s guibg=%s', l:red_color, l:bg_color)
+  execute printf('hi StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
+endfunction
+
+function! LspStatus() abort
   if exists('g:loaded_ale')
+    let l:red_hl = '%#StatusLineLspRedText#'
+    let l:yellow_hl = '%#StatusLineLspYellowText#'
     let l:counts = ale#statusline#Count(bufnr(''))
     let l:all_errors = counts.error + counts.style_error
     let l:all_non_errors = counts.total - all_errors
-    return counts.total == 0 ? 'ALE' : printf(' %d 🔴 %d 🟡 ALE', all_errors, all_non_errors)
+    return counts.total == 0
+      \ ? 'ALE'
+      \ : printf('%sE%d%s %sW%d%s ALE', l:red_hl, all_errors, '%*', l:yellow_hl, all_non_errors, '%*')
   endif
 
   return ''
@@ -79,13 +97,26 @@ function! RegisterLsp() abort
   nnoremap <silent> <leader>lf <Cmd>ALEFix<CR>
   nnoremap <silent> <leader>lh <Cmd>ALEHover<CR>
   nnoremap <silent> <leader>le <Cmd>lopen<CR>
+  imap     <silent> <C-Space>  <Plug>(ale_complete)
 endfunction
 
-function! RenderStatusline()
-  let s:filename = expand('%:t')
-  let s:branchname = gitbranch#name()
-  let s:lsp = LspStatus()
-  return ' ' . s:filename . ' | ' . s:branchname . ' %= %l/%L:%c ' . s:lsp . ' '
+function! RenderActiveStatusline() abort
+  let l:branch = ''
+  if gitbranch#name() == ''
+    let l:branch = ''
+  else
+    let l:branch = '' . gitbranch#name()
+  endif
+
+  let l:lsp = LspStatus()
+  let l:fe = &fileencoding
+  let l:ff = &fileformat
+  return printf(' %s | %s | %s %s %s | %s | %s | %s ',
+               \ '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
+endfunction
+
+function! RenderInactiveStatusline() abort
+  return ' %t%m%r | %y %= %l/%L:%c '
 endfunction
 
 function! s:codeshot_enable() abort
@@ -110,6 +141,14 @@ if g:cnull#enable_transparent == v:true
   augroup end
 endif
 
+augroup statusline_render
+  autocmd!
+  autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusline()
+  autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusline()
+  autocmd ColorScheme * call SetLspHL()
+augroup END
+
+
 " =============================================================================
 " = Plugin Config - before loading plugins =
 " =============================================================================
@@ -118,18 +157,23 @@ endif
 let g:projectcmd_key = $NVIMRC_PROJECTCMD_KEY
 
 " --- UltiSnips Options ---
-let g:UltiSnipsExpandTrigger = '<C-z>.'
+let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-autocmd! FileType javascriptreact UltiSnipsAddFiletypes javascript_react
-autocmd! FileType typescriptreact UltiSnipsAddFiletypes typescript_react
+augroup ultipsnips_extras
+  autocmd!
+  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript_react
+  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript_react
+augroup END
 
 " --- vim-polyglot Options ---
 let g:vue_pre_processors = ['typescript', 'scss']
 let g:polyglot_disabled = ['php', 'autoindent', 'sensible']
 
-" --- Emmet ---
-let g:user_emmet_leader_key = '<C-z>'
+" --- Emmet Options ---
+let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_install_global = 0
+autocmd! FileType html,javascript,javascriptreact,typescript,typescriptreact EmmetInstall
 
 " --- fzf Options ---
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
@@ -190,12 +234,12 @@ function! PackagerInit(opts) abort
   call packager#init(a:opts)
   call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
-  " Core
+  " --- Core
   call packager#add('creativenull/projectcmd.vim', { 'frozen': v:true })
   call packager#add('dense-analysis/ale')
   call packager#add('airblade/vim-gitgutter')
   call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('mattn/emmet-vim', { 'type': 'opt' })
+  call packager#add('mattn/emmet-vim')
   call packager#add('tpope/vim-surround')
   call packager#add('SirVer/ultisnips')
   call packager#add('honza/vim-snippets')
@@ -208,7 +252,7 @@ function! PackagerInit(opts) abort
   call packager#add('cohama/lexima.vim')
   call packager#add('mcchrish/nnn.vim')
 
-  " Theme, Syntax
+  " --- Theme, Syntax
   call packager#add('ap/vim-buftabline')
   call packager#add('itchyny/vim-gitbranch')
   call packager#add('mhinz/vim-startify')
@@ -219,13 +263,12 @@ function! PackagerInit(opts) abort
   call packager#add('ghifarit53/tokyonight-vim')
 endfunction
 
-" Package manager bootstrapping strategy
+" --- Package manager bootstrapping strategy
 let s:manager_path = stdpath('data') . '/site/pack/packager/opt/vim-packager'
 let s:manager_git = 'https://github.com/kristijanhusak/vim-packager.git'
 let s:manager_opts = { 'dir': stdpath('data') . '/site/pack/packager' }
 if isdirectory(s:manager_path) == v:false
-  let s:cli = printf('!git clone %s %s', s:manager_git, s:manager_path)
-  execute s:cli
+  execute printf('!git clone %s %s', s:manager_git, s:manager_path)
 
   " Setup the manager and install plugins
   call PackagerInit(s:manager_opts)
@@ -250,8 +293,6 @@ command! -bang -nargs=* Rg
   \ <bang>0
   \ )
 
-" --- emmet Options ---
-autocmd! FileType html,javascript,javascriptreact,typescript,typescriptreact packadd emmet-vim
 
 " =============================================================================
 " = Theming and Looks =
@@ -318,7 +359,7 @@ set mouse=a
 set cmdheight=2
 
 " Render custom statusline
-set statusline=%!RenderStatusline()
+set statusline=%!RenderActiveStatusline()
 
 " Always show the tabline on top
 set showtabline=2
@@ -347,10 +388,6 @@ inoremap jk <Esc>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
-
-" Manual completion
-imap <C-Space> <C-x><C-o>
-
 " Disable highlights
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
@@ -363,7 +400,7 @@ nnoremap <C-l> <Cmd>bnext<CR>
 " Go to previous buffer
 nnoremap <C-h> <Cmd>bprevious<CR>
 " Close the current buffer, and more?
-nnoremap <Leader>bd <Cmd>bp<BAR>sp<BAR>bn<BAR>bd<CR>
+nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
