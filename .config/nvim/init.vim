@@ -53,11 +53,11 @@ function! s:toggle_conceal() abort
 endfunction
 
 function! s:codeshot_enable() abort
-  setlocal nonumber signcolumn=no mouse=
+  setlocal nonumber signcolumn=no
 endfunction
 
 function! s:codeshot_disable() abort
-  setlocal number signcolumn=yes mouse=a
+  setlocal number signcolumn=yes
 endfunction
 
 function! s:get_hl_color(hi, type) abort
@@ -353,7 +353,7 @@ set nospell
 set signcolumn=yes
 
 " No mouse support, who uses that? They were definitely NOT in my previous commits xD
-set mouse=a
+set mouse=
 
 " Show 2 lines of command output on the command line below
 set cmdheight=2
