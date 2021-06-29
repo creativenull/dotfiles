@@ -203,6 +203,9 @@ let g:startify_lists = [
 let g:highlightedyank_highlight_duration = 500
 autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
 
+" --- indentLine Options ---
+let g:indentLine_char = '│'
+
 " --- buftabline Options ---
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
