@@ -16,13 +16,11 @@ fi
 
 # List files/dir
 alias ls="lsd -A"
-alias l="lsd -lA"
+alias ll="lsd -lA"
 
 # neovim
 export PYTHON3_HOST_PROG=/usr/bin/python3
 export PYTHON_HOST_PROG=/usr/bin/python2
-export NVIMRC_CONFIG_DIR=$HOME/.config/nvim
-export NVIMRC_PLUGINS_DIR=$HOME/.local/share/nvim/plugged
 
 # Global aliases
 alias v=nvim
