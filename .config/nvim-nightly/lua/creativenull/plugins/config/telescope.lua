@@ -5,17 +5,19 @@ local M = {}
 
 telescope.setup {
   defaults = {
-    prompt_position = 'top',
+    layout_config = {
+      prompt_position = 'top'
+    },
     layout_strategy = 'horizontal',
     sorting_strategy = 'ascending',
-    use_less = false
-  }
+    use_less = false,
+  },
 }
 
 M.find_files = function()
   telescope_builtin.find_files {
     find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' },
-    previewer = false
+    previewer = false,
   }
 end
 
@@ -23,7 +25,7 @@ M.find_config_files = function()
   local config_dir = vim.fn.stdpath('config')
   telescope_builtin.find_files {
     find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', config_dir },
-    previewer = false
+    previewer = false,
   }
 end
 
@@ -37,7 +39,7 @@ end
 
 M.buffers = function()
   telescope_builtin.buffers {
-    previewer = false
+    previewer = false,
   }
 end
 
