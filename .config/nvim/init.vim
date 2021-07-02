@@ -235,33 +235,35 @@ function! PackagerInit(opts) abort
   call packager#init(a:opts)
   call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
-  " --- Core
-  call packager#add('creativenull/projectcmd.vim', { 'frozen': v:true })
-  call packager#add('dense-analysis/ale')
-  call packager#add('airblade/vim-gitgutter')
-  call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('mattn/emmet-vim')
-  call packager#add('tpope/vim-surround')
-  call packager#add('SirVer/ultisnips')
-  call packager#add('honza/vim-snippets')
-  call packager#add('Shougo/deoplete.nvim')
-  call packager#add('godlygeek/tabular')
+  " --- Dependencies
   call packager#add('Shougo/context_filetype.vim')
-  call packager#add('tyru/caw.vim')
+
+  " --- Core
+  call packager#add('Shougo/deoplete.nvim')
+  call packager#add('SirVer/ultisnips')
+  call packager#add('airblade/vim-gitgutter')
+  call packager#add('cohama/lexima.vim')
+  call packager#add('dense-analysis/ale')
+  call packager#add('editorconfig/editorconfig-vim')
+  call packager#add('godlygeek/tabular')
+  call packager#add('honza/vim-snippets')
   call packager#add('junegunn/fzf', { 'do': './install --bin' })
   call packager#add('junegunn/fzf.vim')
-  call packager#add('cohama/lexima.vim')
+  call packager#add('mattn/emmet-vim')
   call packager#add('mcchrish/nnn.vim')
+  call packager#add('tpope/vim-fugitive')
+  call packager#add('tpope/vim-surround')
+  call packager#add('tyru/caw.vim')
 
   " --- Theme, Syntax
-  call packager#add('ap/vim-buftabline')
-  call packager#add('itchyny/vim-gitbranch')
-  call packager#add('mhinz/vim-startify')
   call packager#add('Yggdroot/indentLine')
-  call packager#add('sheerun/vim-polyglot')
+  call packager#add('ap/vim-buftabline')
+  call packager#add('ghifarit53/tokyonight-vim')
+  call packager#add('itchyny/vim-gitbranch')
   call packager#add('jwalton512/vim-blade')
   call packager#add('machakann/vim-highlightedyank')
-  call packager#add('ghifarit53/tokyonight-vim')
+  call packager#add('mhinz/vim-startify')
+  call packager#add('sheerun/vim-polyglot')
 endfunction
 
 " --- Package manager bootstrapping strategy
