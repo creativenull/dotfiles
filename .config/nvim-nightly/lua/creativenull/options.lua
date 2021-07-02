@@ -1,3 +1,4 @@
+-- if cache dir does not exist, then create it
 local cache_dir = vim.fn.stdpath('cache')
 if vim.fn.isdirectory(vim.fn.stdpath('cache')) == 0 then
   vim.fn.mkdir(vim.fn.stdpath('cache'), 'p')
@@ -55,7 +56,7 @@ vim.opt.spell = false
 vim.opt.signcolumn = 'yes'
 
 -- No mouse support
-vim.opt.mouse = 'a'
+vim.opt.mouse = ''
 
 -- backspace behaviour
 vim.opt.backspace = 'indent,eol,start'
