@@ -53,8 +53,9 @@ echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.bash_profile
 source ~/.bash_profile
 ```
 
-```
-# For zsh
+For ZSH:
+
+```sh
 echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.zprofile
 ```
 
