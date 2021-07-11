@@ -25,7 +25,7 @@ let g:cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
 let g:cnull.plugin.path = expand('~/.local/share/nvim/site/pack/packager/opt/vim-packager')
 let g:cnull.plugin.init_opts = { 'dir': expand('~/.local/share/nvim/site/pack/packager') }
 
-if executable('python3') == v:false || exists('$PYTHON3_HOST_PROG') == v:false
+if executable('python3') == v:false || exists('$PYTHON3_HOST_PROG') == v:false || has('python3') == v:false
   echoerr '`python3` not installed, please install it via your OS software manager, and set $PYTHON_HOST_PROG env'
   finish
 endif
@@ -46,7 +46,7 @@ endif
 
 function! s:options_init() abort
   if isdirectory(g:cnull.undodir) == v:false
-    execute printf('!mkdir -p %s', g:cnull.undodir)
+    mkdir(g:cnull.undodir, 'p')
   endif
 endfunction
 
