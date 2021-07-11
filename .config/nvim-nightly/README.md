@@ -40,7 +40,7 @@ NVIM_RPLUGIN_MANIFEST=${HOME}/.local/share/${USERSPACE}/rplugin.vim
 VIMRUNTIME=${NVIM_GIT}/runtime
 MYVIMRC=${HOME}/.config/${USERSPACE}/init.lua
 
-MYVIMRC=${MYVIMRC} NVIM_RPLUGIN_MANIFEST=${NVIM_RPLUGIN_MAINFEST} VIMRUNTIME=${VIMRUNTIME} ${NVIM_GIT}/build/bin/nvim "$@" -u ${MYVIMRC}
+MYVIMRC=${MYVIMRC} NVIM_RPLUGIN_MANIFEST=${NVIM_RPLUGIN_MANIFEST} VIMRUNTIME=${VIMRUNTIME} ${NVIM_GIT}/build/bin/nvim "$@" -u ${MYVIMRC}
 ```
 
 Add `$HOME/.local/bin` to your `$PATH` if not already in your `$PATH`:
