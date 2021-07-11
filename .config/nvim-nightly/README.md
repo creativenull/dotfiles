@@ -72,7 +72,7 @@ git clone https://github.com/creativenull/dotfiles.git $HOME/cnull-dotfiles
 ```
 
 ```sh
-cp -v $HOME/cnull-dotfiles/.config/nvim-nightly $HOME/.config/nvim-nightly
+cp -rv $HOME/cnull-dotfiles/.config/nvim-nightly $HOME/.config/nvim-nightly
 ```
 
 ## Running the nvim-nightly config
