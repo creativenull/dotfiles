@@ -1,4 +1,5 @@
 " Emmet
+packadd emmet-vim
 EmmetInstall
 
 " Ultisnips

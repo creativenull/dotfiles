@@ -18,26 +18,50 @@ let mapleader = ' '
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
 let g:cnull = {}
+let g:cnull.use_nnn = v:true
 let g:cnull.transparent = v:false
-let g:cnull.undodir = expand('~/.cache/nvim/undo')
-let g:cnull.plugin = {}
-let g:cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
-let g:cnull.plugin.path = expand('~/.local/share/nvim/site/pack/packager/opt/vim-packager')
-let g:cnull.plugin.init_opts = { 'dir': expand('~/.local/share/nvim/site/pack/packager') }
 
-if executable('python3') == v:false || exists('$PYTHON3_HOST_PROG') == v:false || has('python3') == v:false
-  echoerr '`python3` not installed, please install it via your OS software manager, and set $PYTHON_HOST_PROG env'
+function! s:make_config() abort
+  let l:std_cache = stdpath('cache')
+  let l:std_config = stdpath('config')
+  let l:std_data = stdpath('data')
+  return {
+    \ 'std_cache': std_cache,
+    \ 'std_config': std_config,
+    \ 'std_data': std_data,
+    \ 'undodir': printf('%s/undo', std_cache),
+    \ }
+endfunction
+
+function! s:make_plugin() abort
+  let l:namespace = 'packager'
+  let l:pack = 'vim-packager'
+  let l:git = 'https://github.com/kristijanhusak/vim-packager.git'
+  return {
+    \ 'git': git,
+    \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
+    \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
+    \ }
+endfunction
+
+let g:cnull.config = s:make_config()
+let g:cnull.plugin = s:make_plugin()
+
+if !executable('python3') || !exists('$PYTHON3_HOST_PROG') || !has('python3')
+  echoerr '`python3` not installed, please install it via your OS software manager, and set the $PYTHON_HOST_PROG env'
+  echoerr 'Additionally install pynvim and msgpack: `pip3 install pynvim msgpack`'
   finish
 endif
 
-if executable('rg') == v:false
+if !executable('rg')
   echoerr '`ripgrep` not installed, please install it via your OS software manager'
   finish
 endif
 
-if executable('nnn') == v:false
-  echoerr '`nnn` not installed, please install it via your OS software manager'
-  finish
+if g:cnull.use_nnn
+  if !executable('nnn') && !has('win32')
+    echom '`nnn` not installed, this is optional and can be commented and disable via g:cnull.use_nnn'
+  endif
 endif
 
 " =============================================================================
@@ -45,8 +69,8 @@ endif
 " =============================================================================
 
 function! s:options_init() abort
-  if isdirectory(g:cnull.undodir) == v:false
-    mkdir(g:cnull.undodir, 'p')
+  if !isdirectory(g:cnull.config.undodir)
+    execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
   endif
 endfunction
 
@@ -63,7 +87,7 @@ function! s:conceal_toggle() abort
 endfunction
 
 function! s:codeshot_toggle() abort
-  if &number == v:true
+  if &number
     setlocal nonumber signcolumn=no
   else
     setlocal number signcolumn=yes
@@ -87,7 +111,7 @@ endfunction
 
 function! s:get_hl_color(hi, type) abort
   let l:is_reverse = synIDattr(synIDtrans(hlID(a:hi)), 'reverse')
-  if l:is_reverse == 1
+  if l:is_reverse
     if a:type == 'bg'
       let l:color = synIDattr(synIDtrans(hlID(a:hi)), 'fg')
     elseif a:type == 'fg'
@@ -100,7 +124,7 @@ function! s:get_hl_color(hi, type) abort
   return l:color
 endfunction
 
-function! SetLspHighlight() abort
+function! g:SetLspHighlight() abort
   let l:bg_color = s:get_hl_color('StatusLine', 'bg')
   let l:red_color = '#ff4488'
   let l:yellow_color = '#eedd22'
@@ -108,7 +132,7 @@ function! SetLspHighlight() abort
   execute printf('highlight StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
 endfunction
 
-function! RegisterLsp() abort
+function! g:RegisterLsp() abort
   " Deoplete Config
   call deoplete#enable()
   call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
@@ -127,7 +151,7 @@ function! RegisterLsp() abort
   imap     <silent> <C-Space>  <Plug>(ale_complete)
 endfunction
 
-function! RenderActiveStatusline() abort
+function! g:RenderActiveStatusline() abort
   let l:branch = ''
   if exists('g:loaded_gitbranch')
     if gitbranch#name() != ''
@@ -141,7 +165,7 @@ function! RenderActiveStatusline() abort
   return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
 endfunction
 
-function! RenderInactiveStatusline() abort
+function! g:RenderInactiveStatusline() abort
   return ' %t%m%r | %y %= %l/%L:%c '
 endfunction
 
@@ -149,13 +173,14 @@ endfunction
 " = Events =
 " =============================================================================
 
-if g:cnull.transparent == v:true
+if g:cnull.transparent
   augroup transparent_events
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
     autocmd ColorScheme * highlight SignColumn guibg=NONE
     autocmd ColorScheme * highlight LineNr guibg=NONE
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
+    autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
   augroup end
 endif
 
@@ -217,10 +242,17 @@ let g:indentLine_char = '│'
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
-" nnn.vim Config
-let g:nnn#set_default_mappings = 0
-let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
-nmap <silent> <Leader>ff <Cmd>NnnPicker %:p:h<CR>
+" nnn.vim/netrw Config
+if executable('nnn')
+  let g:nnn#set_default_mappings = 0
+  let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
+  nmap <silent> <Leader>ff <Cmd>NnnPicker %:p:h<CR>
+else
+  nmap <silent> <Leader>ff <Cmd>Explore<CR>
+endif
+
+" tokyonight Config
+let g:tokyonight_syle = 'night'
 
 " =============================================================================
 " = Plugin Manager =
@@ -229,50 +261,66 @@ nmap <silent> <Leader>ff <Cmd>NnnPicker %:p:h<CR>
 function! PackagerInit(opts) abort
   packadd vim-packager
   call packager#init(a:opts)
-  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
+  call packager#add('kristijanhusak/vim-packager', {'type': 'opt'})
 
   " Dependencies
   call packager#add('Shougo/context_filetype.vim')
 
-  " Core
-  call packager#add('Shougo/deoplete.nvim')
-  call packager#add('SirVer/ultisnips')
-  call packager#add('airblade/vim-gitgutter')
-  call packager#add('cohama/lexima.vim')
+  " Core Plugins
   call packager#add('dense-analysis/ale')
+  call packager#add('creativenull/projectcmd.nvim')
+  call packager#add('cohama/lexima.vim')
   call packager#add('editorconfig/editorconfig-vim')
   call packager#add('godlygeek/tabular')
-  call packager#add('honza/vim-snippets')
-  call packager#add('junegunn/fzf', { 'do': './install --bin' })
-  call packager#add('junegunn/fzf.vim')
-  call packager#add('mattn/emmet-vim')
-  call packager#add('mcchrish/nnn.vim')
-  call packager#add('tpope/vim-fugitive')
+  call packager#add('mattn/emmet-vim', {'type': 'opt'})
   call packager#add('tpope/vim-surround')
+  call packager#add('tpope/vim-abolish')
   call packager#add('tyru/caw.vim')
+  if !has('win32')
+    call packager#add('mcchrish/nnn.vim')
+  endif
 
-  " Theme, Syntax
+  " Autocompletion
+  call packager#add('Shougo/deoplete.nvim')
+
+  " Snippets
+  call packager#add('SirVer/Ultisnips')
+  call packager#add('honza/vim-snippets')
+
+  " Fuzzy Finder
+  call packager#add('junegunn/fzf')
+  call packager#add('junegunn/fzf.vim')
+
+  " Git
+  call packager#add('tpope/vim-fugitive')
+  call packager#add('airblade/vim-gitgutter')
+  call packager#add('itchyny/vim-gitbranch')
+
+  " UI Plugins
+  call packager#add('mhinz/vim-startify')
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
-  call packager#add('ghifarit53/tokyonight-vim')
-  call packager#add('itchyny/vim-gitbranch')
   call packager#add('jwalton512/vim-blade')
   call packager#add('machakann/vim-highlightedyank')
-  call packager#add('mhinz/vim-startify')
   call packager#add('sheerun/vim-polyglot')
+
+  " Colorscheme
+  call packager#add('ghifarit53/tokyonight-vim')
+  call packager#add('mhartington/oceanic-next')
+
 endfunction
 
 " Package manager bootstrapping strategy
-if isdirectory(g:cnull.plugin.path) == v:false
+if !isdirectory(g:cnull.plugin.path)
   execute printf('!git clone %s %s', g:cnull.plugin.git, g:cnull.plugin.path)
-  call PackagerInit(g:cnull.plugin.init_opts)
+  call PackagerInit(g:cnull.plugin.opts)
   call packager#install()
 endif
 
-command! -bar -nargs=* PackagerInstall call PackagerInit(g:cnull.plugin.init_opts) | call packager#install(<args>)
-command! -bar -nargs=* PackagerUpdate call PackagerInit(g:cnull.plugin.init_opts) | call packager#update(<args>)
-command! -bar          PackagerClean call PackagerInit(g:cnull.plugin.init_opts) | call packager#clean()
-command! -bar          PackagerStatus call PackagerInit(g:cnull.plugin.init_opts) | call packager#status()
+command! -bar -nargs=* PackagerInstall call PackagerInit(g:cnull.plugin.opts) | call packager#install(<args>)
+command! -bar -nargs=* PackagerUpdate call PackagerInit(g:cnull.plugin.opts) | call packager#update(<args>)
+command! -bar PackagerClean call PackagerInit(g:cnull.plugin.opts) | call packager#clean()
+command! -bar PackagerStatus call PackagerInit(g:cnull.plugin.opts) | call packager#status()
 
 " =============================================================================
 " = Plugin Config - after loading plugins =
@@ -291,15 +339,15 @@ command! -bang -nargs=* Rg
 " = UI/Theme =
 " =============================================================================
 
-set number
 if has('termguicolors')
   set termguicolors
   set t_Co=256
   let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 endif
+
+set number
 set background=dark
-let g:tokyonight_syle = 'night'
 colorscheme tokyonight
 
 " =============================================================================
@@ -339,7 +387,7 @@ set nobackup
 set noswapfile
 set updatetime=250
 set undofile
-let &undodir=g:cnull.undodir
+let &undodir=g:cnull.config.undodir
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start
@@ -416,16 +464,16 @@ nnoremap <Leader>r <Cmd>edit!<CR>
 " = Commands =
 " =============================================================================
 
-command! Config       edit $MYVIMRC
+command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch | execute ':EditorConfigReload'
 
-command! ToggleConceal  call s:conceal_toggle()
+command! ToggleConceal call s:conceal_toggle()
 command! CodeshotToggle call s:codeshot_toggle()
 
 " I can't release my shift key fast enough :')
-command! -nargs=* W w
-command! -nargs=* Wq wq
-command! -nargs=* WQ wq
-command! -nargs=* Q q
-command! -nargs=* Qa qa
-command! -nargs=* QA qa
+command! W w
+command! Wq wq
+command! WQ wq
+command! Q q
+command! Qa qa
+command! QA qa
