@@ -133,15 +133,15 @@ function! g:SetLspHighlight() abort
 endfunction
 
 function! g:RegisterLsp() abort
-  " Deoplete Config
-  call deoplete#enable()
+  " deoplete.nvim Config - register on FileType event
   call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
   call deoplete#custom#option('auto_complete_delay', 50)
   call deoplete#custom#option('smart_case', v:true)
   call deoplete#custom#option('ignore_case', v:true)
   call deoplete#custom#option('max_list', 10)
+  call deoplete#enable()
 
-  " ALE Keymaps
+  " ALE Keymaps - register on FileType event
   nnoremap <silent> <F2>       <Cmd>ALERename<CR>
   nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
   nnoremap <silent> <Leader>lr <Cmd>ALEFindReferences<CR>
@@ -267,16 +267,16 @@ function! PackagerInit(opts) abort
   call packager#add('Shougo/context_filetype.vim')
 
   " Core Plugins
+  call packager#add('mattn/emmet-vim', {'type': 'opt'})
   call packager#add('dense-analysis/ale')
   call packager#add('creativenull/projectcmd.nvim')
   call packager#add('cohama/lexima.vim')
   call packager#add('editorconfig/editorconfig-vim')
   call packager#add('godlygeek/tabular')
-  call packager#add('mattn/emmet-vim', {'type': 'opt'})
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
   call packager#add('tyru/caw.vim')
-  if !has('win32')
+  if has('unix')
     call packager#add('mcchrish/nnn.vim')
   endif
 
