@@ -6,6 +6,7 @@ function M.setup(packager)
     -- Dependencies
     packager.add('Shougo/context_filetype.vim')
     packager.add('nvim-lua/plenary.nvim')
+    packager.add('kyazdani42/nvim-web-devicons')
 
     -- Editor Core
     packager.add('cohama/lexima.vim')
@@ -43,8 +44,7 @@ function M.setup(packager)
     -- UI
     packager.add('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
     packager.add('lukas-reineke/indent-blankline.nvim')
-    packager.add('kyazdani42/nvim-web-devicons')
-    packager.add('ap/vim-buftabline')
+    packager.add('akinsho/nvim-bufferline.lua')
     packager.add('folke/todo-comments.nvim')
     packager.add('norcalli/nvim-colorizer.lua')
 

@@ -11,6 +11,10 @@ local function indent_blankline_highlights()
     bg = 'NONE'
   end
 
+  if bg == '' then
+    bg = 'NONE'
+  end
+
   vim.cmd(string.format([[highlight IndentBlanklineFirstLine guifg=%s guibg=%s]], first, bg))
   vim.cmd(string.format([[highlight IndentBlanklineSecondLine guifg=%s guibg=%s]], second, bg))
   vim.cmd(string.format([[highlight IndentBlanklineThirdLine guifg=%s guibg=%s]], third, bg))
@@ -18,10 +22,7 @@ local function indent_blankline_highlights()
 end
 
 augroup('user_indent_blankline_events', {
-  {
-    event = 'ColorScheme',
-    exec  = indent_blankline_highlights,
-  },
+  { event = 'ColorScheme', exec = indent_blankline_highlights },
 })
 
 vim.g.indent_blankline_char = '│'

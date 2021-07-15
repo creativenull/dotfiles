@@ -1,17 +1,7 @@
 local core = require 'cnull.core'
 local nmap = core.keymap.nmap
 
-local function on_attach(client, bufnr)
-  -- Autocompletion
-  -- vim.fn['deoplete#enable']()
-  -- vim.fn['deoplete#custom#option'] {
-  --   auto_complete_delay = 50,
-  --   ignore_case = true,
-  --   max_list = 10,
-  --   smart_case = true,
-  --   sources = { ['_'] = { 'lsp', 'ultisnips' } },
-  -- }
-
+local function on_attach(_, bufnr)
   -- Keymaps
   nmap('<leader>l[', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], { bufnr = bufnr })
   nmap('<leader>l]', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], { bufnr = bufnr })
@@ -33,3 +23,24 @@ require 'cnull.lsp'.setup {
   'php',
   'typescript',
 }
+
+-- local dials = require 'diagnosticls-nvim'
+-- dials.init { on_attach = on_attach }
+-- dials.setup {
+--   javascript = {
+--     linter = require 'diagnosticls-nvim.linters.eslint',
+--     formatter = require 'diagnosticls-nvim.formatters.prettier',
+--   },
+--   javascriptreact = {
+--     linter = require 'diagnosticls-nvim.linters.eslint',
+--     formatter = require 'diagnosticls-nvim.formatters.prettier',
+--   },
+--   typescript = {
+--     linter = require 'diagnosticls-nvim.linters.eslint',
+--     formatter = require 'diagnosticls-nvim.formatters.prettier',
+--   },
+--   typescriptreact = {
+--     linter = require 'diagnosticls-nvim.linters.eslint',
+--     formatter = require 'diagnosticls-nvim.formatters.prettier',
+--   },
+-- }

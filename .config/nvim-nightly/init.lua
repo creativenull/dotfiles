@@ -13,6 +13,7 @@
 -- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 -- Runtime Path
 local rc_namespace = 'nvim-nightly'
+
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
 vim.cmd('set runtimepath-=~/.local/share/nvim/site')
@@ -57,9 +58,10 @@ core.setup {
 
   theme = {
     name = 'tokyonight',
-    transparent = false,
+    transparent = true,
     setup = function()
       vim.g.tokyonight_style = 'night'
+      vim.g.tokyonight_transparent = true
     end,
   },
 
@@ -80,12 +82,17 @@ core.setup {
       clear = true,
       event = 'TextYankPost',
       exec = function()
-        vim.highlight.on_yank { higroup = 'Search', timeout = 500 }
+        vim.highlight.on_yank {
+          higroup = 'Search',
+          timeout = 500,
+        }
       end,
     }
   end,
 
   on_after_setup = function()
+    require 'colorizer'.setup()
+    require 'bufferline'.setup {}
     require 'cnull.keymaps'
     require 'cnull.conceal'
     require 'cnull.codeshot'

@@ -1,5 +1,4 @@
 local augroup = require 'cnull.core.event'.augroup
-
 local M = {}
 
 local function register_transparent_event(theme)
@@ -7,7 +6,7 @@ local function register_transparent_event(theme)
     augroup('transparent_bg_events', {
       { event = 'ColorScheme', exec = [[highlight Normal guibg=NONE]] },
       { event = 'ColorScheme', exec = [[highlight SignColumn guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight LineNr guifg=#cccccc guibg=NONE]] },
+      { event = 'ColorScheme', exec = [[highlight LineNr guifg=#888888 guibg=NONE]] },
       { event = 'ColorScheme', exec = [[highlight CursorLineNr guibg=NONE]] },
       { event = 'ColorScheme', exec = [[highlight Terminal guibg=NONE]] },
       { event = 'ColorScheme', exec = [[highlight EndOfBuffer guibg=NONE]] },
@@ -28,13 +27,8 @@ local function set_colorscheme(theme)
   end
 
   vim.api.nvim_command('colorscheme ' .. theme.name)
-
   if vim.g.colors_name ~= theme.name then
     vim.g.colors_name = theme.name
-  end
-
-  if vim.g.loaded_colorizer then
-    require 'colorizer'.setup()
   end
 end
 

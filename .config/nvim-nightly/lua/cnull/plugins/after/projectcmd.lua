@@ -1,0 +1,1 @@
+require 'projectcmd'.setup {}

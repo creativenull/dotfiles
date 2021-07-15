@@ -12,24 +12,18 @@ if vim.fn.executable(deno_executable) == 0 then
 end
 
 local root_pattern = require 'lspconfig'.util.root_pattern
-local filetypes = { 'typescript', 'typescriptreact', 'typescript.tsx' }
+local filetypes = {'typescript', 'typescriptreact', 'typescript.tsx'}
 local node_root = vim.fn.getcwd() .. '/package.json'
 local deno_root = vim.fn.getcwd() .. '/import_map.json'
 
-local function is_node()
-  return vim.fn.filereadable(node_root) == 1
-end
-
-local function is_deno()
-  return vim.fn.filereadable(deno_root) == 1
-end
-
-if is_node() then
+local is_node = vim.fn.filereadable(node_root) == 1
+local is_deno = vim.fn.filereadable(deno_root) == 1
+if is_node then
   require 'cnull.core.lsp'.setup('tsserver', {
     filetypes = filetypes,
     root_dir = root_pattern('package.json', 'tsconfig.json'),
   })
-elseif is_deno() then
+elseif is_deno then
   require 'cnull.core.lsp'.setup('denols', {
     filetypes = filetypes,
     root_dir = root_pattern('import_map.json', '.denols'),

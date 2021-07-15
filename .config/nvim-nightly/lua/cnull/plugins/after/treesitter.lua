@@ -7,6 +7,7 @@ require 'nvim-treesitter.configs'.setup {
     'php',
     'lua',
     'vue',
+    'graphql',
   },
   highlight = { enable = true },
   indent = { enable = true },
