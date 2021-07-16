@@ -1,9 +1,8 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
 " My vimrc, pre-requisites:
-" + python
-" + nnn
-" + ripgrep
+" + python3 (globally installed)
+" + ripgrep (globally installed
 " + Environment variables:
 "    $PYTHON3_HOST_PROG
 "
@@ -18,7 +17,6 @@ let mapleader = ' '
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
 let g:cnull = {}
-let g:cnull.use_nnn = v:true
 let g:cnull.transparent = v:false
 
 function! s:make_config() abort
@@ -47,7 +45,7 @@ endfunction
 let g:cnull.config = s:make_config()
 let g:cnull.plugin = s:make_plugin()
 
-if !executable('python3') || !exists('$PYTHON3_HOST_PROG') || !has('python3')
+if !executable('python3') || !exists('$PYTHON3_HOST_PROG')
   echoerr '`python3` not installed, please install it via your OS software manager, and set the $PYTHON_HOST_PROG env'
   echoerr 'Additionally install pynvim and msgpack: `pip3 install pynvim msgpack`'
   finish
@@ -56,12 +54,6 @@ endif
 if !executable('rg')
   echoerr '`ripgrep` not installed, please install it via your OS software manager'
   finish
-endif
-
-if g:cnull.use_nnn
-  if !executable('nnn') && !has('win32')
-    echom '`nnn` not installed, this is optional and can be commented and disable via g:cnull.use_nnn'
-  endif
 endif
 
 " =============================================================================
@@ -196,7 +188,7 @@ augroup END
 " =============================================================================
 
 " UltiSnips Config
-let g:UltiSnipsExpandTrigger = '<C-q>.'
+let g:UltiSnipsExpandTrigger = '<Nop>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
@@ -204,7 +196,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:vue_pre_processors = ['typescript', 'scss']
 let g:polyglot_disabled = ['php', 'autoindent', 'sensible']
 
-" Emmet Config
+" emmet-vim Config
 let g:user_emmet_leader_key = '<C-q>'
 let g:user_emmet_install_global = 0
 
@@ -232,8 +224,10 @@ let g:startify_lists = [
 \ ]
 
 " hlyank Config
-let g:highlightedyank_highlight_duration = 500
-autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
+if !has('nvim-0.5')
+  let g:highlightedyank_highlight_duration = 500
+  autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
+endif
 
 " indentLine Config
 let g:indentLine_char = '│'
@@ -242,14 +236,8 @@ let g:indentLine_char = '│'
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
-" nnn.vim/netrw Config
-if executable('nnn')
-  let g:nnn#set_default_mappings = 0
-  let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
-  nmap <silent> <Leader>ff <Cmd>NnnPicker %:p:h<CR>
-else
-  nmap <silent> <Leader>ff <Cmd>Explore<CR>
-endif
+" defx.nvim Config
+nnoremap <silent> <Leader>ff <Cmd>Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
 
 " tokyonight Config
 let g:tokyonight_syle = 'night'
@@ -276,9 +264,7 @@ function! PackagerInit(opts) abort
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
   call packager#add('tyru/caw.vim')
-  if has('unix')
-    call packager#add('mcchrish/nnn.vim')
-  endif
+  call packager#add('Shougo/defx.nvim')
 
   " Autocompletion
   call packager#add('Shougo/deoplete.nvim')
@@ -301,13 +287,14 @@ function! PackagerInit(opts) abort
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
   call packager#add('jwalton512/vim-blade')
-  call packager#add('machakann/vim-highlightedyank')
   call packager#add('sheerun/vim-polyglot')
+  if !has('nvim-0.5')
+    call packager#add('machakann/vim-highlightedyank')
+  endif
 
   " Colorscheme
   call packager#add('ghifarit53/tokyonight-vim')
   call packager#add('mhartington/oceanic-next')
-
 endfunction
 
 " Package manager bootstrapping strategy
@@ -334,6 +321,11 @@ command! -bang -nargs=* Rg
   \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
   \ <bang>0
 \ )
+
+" projectcmd.nvim Config
+if has('nvim-0.5')
+  lua require('projectcmd').setup()
+endif
 
 " =============================================================================
 " = UI/Theme =
@@ -431,6 +423,13 @@ inoremap jk <Esc>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
+" Expand tabs
+inoremap <silent><expr> <Tab> pumvisible() ?
+      \ UltiSnips#CanExpandSnippet() ?
+      \ "<C-r>=UltiSnips#ExpandSnippet()<CR>" :
+      \ "\<C-y>" :
+      \ "\<Tab>"
+
 " Disable highlights
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
@@ -467,7 +466,7 @@ nnoremap <Leader>r <Cmd>edit!<CR>
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch | execute ':EditorConfigReload'
 
-command! ToggleConceal call s:conceal_toggle()
+command! ConcealToggle call s:conceal_toggle()
 command! CodeshotToggle call s:codeshot_toggle()
 
 " I can't release my shift key fast enough :')
