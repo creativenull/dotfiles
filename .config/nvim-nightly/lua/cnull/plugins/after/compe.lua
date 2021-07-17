@@ -33,4 +33,4 @@ vim.g.lexima_no_default_rules = true
 vim.fn['lexima#set_default_rules']()
 
 imap('<C-Space>', [[compe#complete()]], { expr = true, noremap = false })
-imap('<Tab>', [[compe#confirm(lexima#expand('<LT>CR>', 'i'))]], { expr = true, noremap = false })
+imap('<Tab>', [[compe#confirm(lexima#expand('<LT>TAB>', 'i'))]], { expr = true, noremap = false })
