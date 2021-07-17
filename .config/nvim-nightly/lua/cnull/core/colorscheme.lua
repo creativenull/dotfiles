@@ -1,6 +1,9 @@
 local augroup = require 'cnull.core.event'.augroup
 local M = {}
 
+-- Set transparent colors when on
+-- @param table theme
+-- @return nil
 local function register_transparent_event(theme)
   if theme.transparent then
     augroup('transparent_bg_events', {
@@ -18,6 +21,9 @@ local function register_transparent_event(theme)
   end
 end
 
+-- Set the colorscheme of vim
+-- @param table theme
+-- @return nil
 local function set_colorscheme(theme)
   vim.opt.number = true
   vim.opt.termguicolors = true
@@ -32,6 +38,9 @@ local function set_colorscheme(theme)
   end
 end
 
+-- Colorscheme setup for transparency and theme
+-- @param table cfg
+-- @return nil
 function M.setup(cfg)
   local theme = cfg.theme
   register_transparent_event(theme)

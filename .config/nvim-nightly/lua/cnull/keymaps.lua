@@ -41,7 +41,7 @@ nmap('<C-h>', [[<Cmd>bprevious<CR>]])
 -- Close the current buffer, and more?
 nmap('<Leader>bd', [[<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>]])
 -- Close all buffer except current
-nmap('<Leader>bb', [[<Cmd>%bd<Bar>e#<Bar>bd#<CR>]])
+nmap('<Leader>bx', [[<Cmd>%bd<Bar>e#<Bar>bd#<CR>]])
 
 -- Text maps
 -- ---

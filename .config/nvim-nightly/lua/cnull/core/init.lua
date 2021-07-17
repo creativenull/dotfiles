@@ -13,6 +13,9 @@ local M = {
   lsp = lsp,
 }
 
+-- Core setup
+-- @param table cfg
+-- @return nil
 function M.setup(cfg)
   cfg = config.init(cfg)
 

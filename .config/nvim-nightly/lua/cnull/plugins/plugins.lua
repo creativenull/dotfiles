@@ -1,5 +1,8 @@
 local M = {}
 
+-- Plugin list
+-- @param table packager
+-- @return table
 function M.setup(packager)
     packager.add('kristijanhusak/vim-packager', { type = 'opt' })
 

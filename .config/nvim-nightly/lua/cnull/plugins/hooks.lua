@@ -1,19 +1,20 @@
 local uv = vim.loop
 local M = {}
 
-local function get_fp(modpath, manager)
+-- Get the filepath of the module, given the module path and the config_dir
+-- @param string modpath
+-- @param string config_dir
+-- @return string
+local function get_fp(modpath, config_dir)
   local filepath = vim.split(modpath, '.', true)
   filepath = table.concat(filepath, '/')
-  filepath = manager.config_dir .. '/lua/' .. filepath
+  filepath = config_dir .. '/lua/' .. filepath
   return filepath
 end
 
--- Load plugin configurations/setups
--- module path must be within the config directory
--- outputted from stdpath('config')
---
+-- Load plugin configurations/setups module path must be within the config directory outputted from stdpath('config')
 -- @param string modpath
--- @return void
+-- @return nil
 local function require_plugins_from(modpath, manager)
   local filepath = get_fp(modpath, manager)
 
@@ -41,11 +42,11 @@ local function require_plugins_from(modpath, manager)
 end
 
 function M.on_before_plugins(manager)
-  require_plugins_from('cnull.plugins.before', manager)
+  require_plugins_from('cnull.plugins.before', manager.config_dir)
 end
 
 function M.on_after_plugins(manager)
-  require_plugins_from('cnull.plugins.after', manager)
+  require_plugins_from('cnull.plugins.after', manager.config_dir)
 end
 
 return M

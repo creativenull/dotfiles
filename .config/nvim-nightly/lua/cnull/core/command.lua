@@ -1,6 +1,10 @@
 local storefn = require 'cnull.core.lib.store'
 local M = {}
 
+-- Validate options
+-- @param string cmd
+-- @param string|function exec
+-- @return nil
 local function validate(cmd, exec)
   local tableorstring = type(exec) == 'function' or type(exec) == 'string'
   vim.validate {
@@ -9,6 +13,9 @@ local function validate(cmd, exec)
   }
 end
 
+-- Merge attributes with defaults
+-- @param table attrs
+-- @return table
 local function merge_attrs(attrs)
   attrs = attrs or ''
   if vim.tbl_islist(attrs) then
@@ -18,6 +25,10 @@ local function merge_attrs(attrs)
   return attrs
 end
 
+-- Set the execution of command
+-- @param string cmd
+-- @param string|function exec
+-- @return string
 local function get_exec(cmd, exec)
   local execfn = nil
   if type(exec) == 'function' then
@@ -30,7 +41,6 @@ end
 
 -- Create a :command! given a `cmd` and `exec` with optional `attrs`
 -- check :help E174.
---
 -- opts table:
 -- {
 --   cmd (string) = (required)
@@ -39,7 +49,7 @@ end
 -- }
 --
 -- @param table opts
--- @return void
+-- @return nil
 function M.command(cmd, exec, attrs)
   validate(cmd, exec)
   attrs = merge_attrs(attrs)

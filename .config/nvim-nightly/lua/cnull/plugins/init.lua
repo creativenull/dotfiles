@@ -7,6 +7,8 @@ local function packager_init(opts)
 end
 
 -- Package manager bootstrapping strategy
+-- @param table config
+-- @return table
 function M.init(config)
   local manager = {
     git = 'https://github.com/kristijanhusak/vim-packager.git',

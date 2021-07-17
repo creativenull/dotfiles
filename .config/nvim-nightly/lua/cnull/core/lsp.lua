@@ -3,16 +3,14 @@ local capabilities = nil
 local M = {}
 
 -- Set default on_attach function
---
 -- @param function fn
--- @return void
+-- @return nil
 function M.set_on_attach(fn)
   on_attach = fn
 end
 
 -- Initialize nvim-lsp settings
---
--- @return void
+-- @return nil
 function M.init()
   local pub_diagnostics = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
@@ -37,10 +35,9 @@ function M.init()
 end
 
 -- Setup lsp server, given name and nvim-lsp configuration
---
 -- @param string lspname
 -- @param table lspopts
--- @return void
+-- @return nil
 function M.setup(lspname, lspopts)
   local default_opts = {
     on_attach = on_attach,

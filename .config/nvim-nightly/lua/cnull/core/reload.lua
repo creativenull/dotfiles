@@ -1,5 +1,7 @@
 local M = {}
 
+-- Reload lua cnull packages
+-- @return nil
 function M.reload()
   for name,_ in pairs(package.loaded) do
     if name:match('^cnull') then

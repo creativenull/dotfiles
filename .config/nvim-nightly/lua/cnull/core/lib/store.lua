@@ -1,9 +1,7 @@
 local clone_fn = require 'cnull.core.lib.clone'
 local M = {}
 
--- Store the function to the relevant global store
--- and return the lua string to execute it
---
+-- Store the function to the relevant global store and return the lua string to execute it
 -- @param string key
 -- @param string source
 -- @param function fnreef

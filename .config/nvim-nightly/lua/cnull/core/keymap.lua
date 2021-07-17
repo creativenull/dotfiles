@@ -3,11 +3,9 @@ local DEFAULT_OPTS = { noremap = true, silent = true }
 local M = {}
 
 -- Validate args for mapper()
---
 -- @param string input
 -- @param string|function exec
--- @param table|nil opts
--- @return void
+-- @return nil
 local function validate(input, exec)
   local valid_strfn = type(exec) == 'string' or type(exec) == 'function'
   vim.validate {
@@ -17,7 +15,6 @@ local function validate(input, exec)
 end
 
 -- Merge opts with default keymap options
---
 -- @param table opts
 -- @return table
 local function merge_opts(opts)
@@ -30,8 +27,7 @@ local function merge_opts(opts)
   return opts
 end
 
--- Set the RHS up as a string or a function
---
+-- Set the right-hand-side as string or function
 -- @param string input
 -- @param string|function exec
 -- @return string
@@ -45,12 +41,11 @@ local function set_exec(input, exec)
 end
 
 -- Generic key mapper to map keys globally or in buffer
---
 -- @param string mode
 -- @param string input
 -- @param string|function exec
 -- @param table|nil opts
--- @return void
+-- @return nil
 local function mapper(mode, input, exec, opts)
   validate(input, exec)
   opts = merge_opts(opts)

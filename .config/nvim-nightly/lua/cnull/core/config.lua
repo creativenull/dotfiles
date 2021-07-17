@@ -4,7 +4,7 @@ local errmsg_pkg_required = 'not installed, install via OS pkg manager (required
 local errmsg_pkg_optional = 'not installed, install via OS pkg manager (optional)'
 
 -- Perform pre-requisite checks before setting nvim config
--- @return void
+-- @return nil
 local function prereq_checks()
   if vim.fn.executable('python3') == 0 or vim.env.PYTHON3_HOST_PROG == nil then
     error(string.format('%q %s', 'python3', errmsg_pkg_required))
@@ -24,9 +24,8 @@ local function prereq_checks()
 end
 
 -- Setup initial configuration for nvim config
---
 -- @param table config
--- @return void
+-- @return nil
 function M.init(config)
   prereq_checks()
 

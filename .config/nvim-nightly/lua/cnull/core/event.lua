@@ -2,7 +2,6 @@ local storefn = require 'cnull.core.lib.store'
 local M = {}
 
 -- Create an :autocmd event, see :help :autocmd for information
---
 -- opts = {
 --   event (string|table) = (required)
 --   exec (string|function) = (required)
@@ -13,7 +12,7 @@ local M = {}
 -- }
 --
 -- @param table opts
--- @return void
+-- @return nil
 function M.autocmd(opts)
   if opts.event == nil then
     error(debug.traceback('autocmd: `event` cannot be empty'))
@@ -51,10 +50,9 @@ function M.autocmd(opts)
 end
 
 -- Create an :augroup, see :help :augroup for information
---
--- @param string name - name of the group
+-- @param string name
 -- @param table autocmds - check M.autocmd() above
--- @return void
+-- @return nil
 function M.augroup(name, autocmds)
   if autocmds == nil or vim.tbl_isempty(autocmds) then
     error(debug.traceback('augroup: `autocmds` cannot be empty'))
