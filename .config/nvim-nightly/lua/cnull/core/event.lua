@@ -1,4 +1,4 @@
-local storefn = require 'cnull.core.lib.store'.storefn
+local storefn = require 'cnull.core.lib.store'
 local M = {}
 
 -- Create an :autocmd event, see :help :autocmd for information

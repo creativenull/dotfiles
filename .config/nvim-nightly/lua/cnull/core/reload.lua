@@ -10,4 +10,4 @@ function M.reload()
   dofile(vim.env.MYVIMRC)
 end
 
-return M
+return M.reload

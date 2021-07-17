@@ -40,7 +40,12 @@ local function require_plugins_from(modpath, manager)
   end
 end
 
-function M.on_before_plugins(manager) require_plugins_from('cnull.plugins.before', manager) end
-function M.on_after_plugins(manager) require_plugins_from('cnull.plugins.after', manager) end
+function M.on_before_plugins(manager)
+  require_plugins_from('cnull.plugins.before', manager)
+end
+
+function M.on_after_plugins(manager)
+  require_plugins_from('cnull.plugins.after', manager)
+end
 
 return M

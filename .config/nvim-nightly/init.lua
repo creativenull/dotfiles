@@ -4,6 +4,7 @@
 -- + python3
 -- + nnn
 -- + ripgrep
+-- + bat
 -- + Environment variables:
 --   + $PYTHON3_HOST_PROG
 --
@@ -12,8 +13,7 @@
 -- DO NOT DO THIS, check the link
 -- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 -- Runtime Path
-local rc_namespace = 'nvim-nightly'
-
+_G.rc_namespace = 'nvim-nightly'
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
 vim.cmd('set runtimepath-=~/.local/share/nvim/site')
@@ -25,10 +25,10 @@ vim.cmd('set runtimepath-=/usr/share/nvim/site/after')
 vim.cmd('set runtimepath-=/usr/local/share/nvim/site')
 vim.cmd('set runtimepath-=/usr/local/share/nvim/site/after')
 
-vim.cmd(string.format('set runtimepath+=~/.config/%s/after', rc_namespace))
-vim.cmd(string.format('set runtimepath^=~/.config/%s', rc_namespace))
-vim.cmd(string.format('set runtimepath+=~/.local/share/%s/site/after', rc_namespace))
-vim.cmd(string.format('set runtimepath^=~/.local/share/%s/site', rc_namespace))
+vim.cmd(string.format('set runtimepath+=~/.config/%s/after', _G.rc_namespace))
+vim.cmd(string.format('set runtimepath^=~/.config/%s', _G.rc_namespace))
+vim.cmd(string.format('set runtimepath+=~/.local/share/%s/site/after', _G.rc_namespace))
+vim.cmd(string.format('set runtimepath^=~/.local/share/%s/site', _G.rc_namespace))
 
 -- Pack Path
 vim.cmd('set packpath-=~/.config/nvim')
@@ -42,10 +42,10 @@ vim.cmd('set packpath-=/usr/local/share/nvim/site/after')
 vim.cmd('set packpath-=/usr/share/nvim/site')
 vim.cmd('set packpath-=/usr/share/nvim/site/after')
 
-vim.cmd(string.format('set packpath^=~/.config/%s', rc_namespace))
-vim.cmd(string.format('set packpath+=~/.config/%s/after', rc_namespace))
-vim.cmd(string.format('set packpath^=~/.local/share/%s/site', rc_namespace))
-vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', rc_namespace))
+vim.cmd(string.format('set packpath^=~/.config/%s', _G.rc_namespace))
+vim.cmd(string.format('set packpath+=~/.config/%s/after', _G.rc_namespace))
+vim.cmd(string.format('set packpath^=~/.local/share/%s/site', _G.rc_namespace))
+vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', _G.rc_namespace))
 
 -- Initialize
 local core    = require 'cnull.core'
@@ -54,6 +54,7 @@ local autocmd = core.autocmd
 local undodir = vim.fn.expand('~/.cache/nvim/undo')
 
 core.setup {
+  ns = _G.rc_namespace,
   leader = ' ',
 
   theme = {
@@ -66,10 +67,10 @@ core.setup {
   },
 
   plugins = require 'cnull.plugins'.init {
-    install_path = string.format('%s/.local/share/%s/site/pack/packager/opt/vim-packager', vim.env.HOME, rc_namespace),
-    config_dir = string.format('%s/.config/%s', vim.env.HOME, rc_namespace),
+    install_path = string.format('%s/.local/share/%s/site/pack/packager/opt/vim-packager', vim.env.HOME, _G.rc_namespace),
+    config_dir = string.format('%s/.config/%s', vim.env.HOME, _G.rc_namespace),
     init = {
-      dir = string.format('%s/.local/share/%s/site/pack/packager', vim.env.HOME, rc_namespace),
+      dir = string.format('%s/.local/share/%s/site/pack/packager', vim.env.HOME, _G.rc_namespace),
     },
   },
 

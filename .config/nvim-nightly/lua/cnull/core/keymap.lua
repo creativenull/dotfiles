@@ -1,4 +1,4 @@
-local storefn = require 'cnull.core.lib.store'.storefn
+local storefn = require 'cnull.core.lib.store'
 local DEFAULT_OPTS = { noremap = true, silent = true }
 local M = {}
 
@@ -38,7 +38,7 @@ end
 local function set_exec(input, exec)
   local execfn = nil
   if type(exec) == 'function' then
-    execfn = storefn('keymaps', input, exec)
+    execfn = '<Cmd>' .. storefn('keymaps', input, exec) .. '<CR>'
   end
   exec = execfn or exec
   return exec
@@ -70,9 +70,20 @@ local function mapper(mode, input, exec, opts)
   end
 end
 
-function M.nmap(input, exec, opts) mapper('n', input, exec, opts) end
-function M.imap(input, exec, opts) mapper('i', input, exec, opts) end
-function M.vmap(input, exec, opts) mapper('v', input, exec, opts) end
-function M.tmap(input, exec, opts) mapper('t', input, exec, opts) end
+function M.nmap(input, exec, opts)
+  mapper('n', input, exec, opts)
+end
+
+function M.imap(input, exec, opts)
+  mapper('i', input, exec, opts)
+end
+
+function M.vmap(input, exec, opts)
+  mapper('v', input, exec, opts)
+end
+
+function M.tmap(input, exec, opts)
+  mapper('t', input, exec, opts)
+end
 
 return M

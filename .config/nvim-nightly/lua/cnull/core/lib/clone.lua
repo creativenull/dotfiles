@@ -16,10 +16,4 @@ function M.clone_fn(fn)
   return cloned
 end
 
-setmetatable(M, {
-  __call = function(_, fn)
-    return M.clone_fn(fn)
-  end,
-})
-
-return M
+return M.clone_fn

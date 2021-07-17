@@ -24,23 +24,27 @@ require 'cnull.lsp'.setup {
   'typescript',
 }
 
--- local dials = require 'diagnosticls-nvim'
--- dials.init { on_attach = on_attach }
--- dials.setup {
---   javascript = {
---     linter = require 'diagnosticls-nvim.linters.eslint',
---     formatter = require 'diagnosticls-nvim.formatters.prettier',
---   },
---   javascriptreact = {
---     linter = require 'diagnosticls-nvim.linters.eslint',
---     formatter = require 'diagnosticls-nvim.formatters.prettier',
---   },
---   typescript = {
---     linter = require 'diagnosticls-nvim.linters.eslint',
---     formatter = require 'diagnosticls-nvim.formatters.prettier',
---   },
---   typescriptreact = {
---     linter = require 'diagnosticls-nvim.linters.eslint',
---     formatter = require 'diagnosticls-nvim.formatters.prettier',
---   },
--- }
+local dials = require 'diagnosticls-nvim'
+dials.init { on_attach = on_attach }
+dials.setup {
+  lua = {
+    linter = require 'diagnosticls-nvim.linters.luacheck',
+    formatter = require 'diagnosticls-nvim.formatters.lua_format'
+  },
+  -- javascript = {
+  --   linter = require 'diagnosticls-nvim.linters.eslint',
+  --   formatter = require 'diagnosticls-nvim.formatters.prettier',
+  -- },
+  -- javascriptreact = {
+  --   linter = require 'diagnosticls-nvim.linters.eslint',
+  --   formatter = require 'diagnosticls-nvim.formatters.prettier',
+  -- },
+  -- typescript = {
+  --   linter = require 'diagnosticls-nvim.linters.eslint',
+  --   formatter = require 'diagnosticls-nvim.formatters.prettier',
+  -- },
+  -- typescriptreact = {
+  --   linter = require 'diagnosticls-nvim.linters.eslint',
+  --   formatter = require 'diagnosticls-nvim.formatters.prettier',
+  -- },
+}

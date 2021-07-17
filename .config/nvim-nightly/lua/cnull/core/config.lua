@@ -1,18 +1,25 @@
 local M = {}
 
+local errmsg_pkg_required = 'not installed, install via OS pkg manager (required)'
+local errmsg_pkg_optional = 'not installed, install via OS pkg manager (optional)'
+
 -- Perform pre-requisite checks before setting nvim config
 -- @return void
 local function prereq_checks()
-  if vim.fn.executable('python3') == 0 or vim.fn.exists('$PYTHON3_HOST_PROG') == 0 then
-    error('`python3` not installed, please install it via your OS software manager, and set $PYTHON_HOST_PROG env')
+  if vim.fn.executable('python3') == 0 or vim.env.PYTHON3_HOST_PROG == nil then
+    error(string.format('%q %s', 'python3', errmsg_pkg_required))
   end
 
   if vim.fn.executable('rg') == 0 then
-    error('`ripgrep` not installed, please install it via your OS software manager')
+    error(string.format('%q %s', 'ripgrep', errmsg_pkg_required))
   end
 
   if vim.fn.executable('nnn') == 0 then
-    error('`nnn` not installed, please install it via your OS software manager')
+    error(string.format('%q %s', 'nnn', errmsg_pkg_required))
+  end
+
+  if vim.fn.executable('bat') == 0 or vim.fn.executable('batcat') == 0 then
+    vim.api.nvim_err_writeln(string.format('%q %s', 'bat', errmsg_pkg_optional))
   end
 end
 
@@ -24,6 +31,7 @@ function M.init(config)
   prereq_checks()
 
   local default_config = {
+    ns = 'nvim',
     leader = ',',
     localleader = [[\]],
     theme = {

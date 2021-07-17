@@ -14,10 +14,4 @@ function M.storefn(key, source, fnref)
   return string.format([[lua _G.CNull[%q][%d].callback()]], key, pos)
 end
 
-setmetatable(M, {
-  __call = function(_, key, source, fnref)
-    return M.storefn(key, source, fnref)
-  end,
-})
-
-return M
+return M.storefn

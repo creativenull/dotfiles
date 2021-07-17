@@ -22,6 +22,9 @@ if is_node then
   require 'cnull.core.lsp'.setup('tsserver', {
     filetypes = filetypes,
     root_dir = root_pattern('package.json', 'jsconfig.json'),
+    flags = {
+      debounce_text_changes = 500,
+    },
   })
 elseif is_deno then
   require 'cnull.core.lsp'.setup('denols', {
@@ -32,6 +35,9 @@ elseif is_deno then
       lint = true,
       unstable = true,
       importMap = deno_root,
+    },
+    flags = {
+      debounce_text_changes = 500,
     },
   })
 end

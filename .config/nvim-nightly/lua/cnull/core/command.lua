@@ -50,10 +50,4 @@ function M.command(cmd, exec, attrs)
   end
 end
 
-setmetatable(M, {
-  __call = function(_, cmd, exec, attrs)
-    return M.command(cmd, exec, attrs)
-  end,
-})
-
-return M
+return M.command

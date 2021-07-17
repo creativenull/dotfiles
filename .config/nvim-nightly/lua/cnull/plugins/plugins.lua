@@ -5,8 +5,9 @@ function M.setup(packager)
 
     -- Dependencies
     packager.add('Shougo/context_filetype.vim')
-    packager.add('nvim-lua/plenary.nvim')
     packager.add('kyazdani42/nvim-web-devicons')
+    packager.add('nvim-lua/plenary.nvim')
+    packager.add('nvim-lua/popup.nvim')
 
     -- Editor Core
     packager.add('cohama/lexima.vim')
@@ -28,8 +29,7 @@ function M.setup(packager)
     packager.add('honza/vim-snippets')
 
     -- Fuzzy finder
-    packager.add('junegunn/fzf', { ['do'] = './install --bin' })
-    packager.add('junegunn/fzf.vim')
+    packager.add('nvim-telescope/telescope.nvim')
 
     -- Git
     packager.add('tpope/vim-fugitive')

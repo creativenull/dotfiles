@@ -29,15 +29,16 @@ function M.setup(cfg)
 
   -- Plugins
   if cfg.plugins then
-    cfg.plugins()
+    cfg.plugins.setup()
   end
 
   -- Color Scheme
   colorscheme.setup(cfg)
 
   -- Reload command
+  local reloader = require 'cnull.core.reload'
   command('Config', [[edit $MYVIMRC]])
-  command('ConfigReload', require 'cnull.core.reload'.reload)
+  command('ConfigReload', reloader)
 
   -- After core setup
   if cfg.on_after_setup then
