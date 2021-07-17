@@ -76,8 +76,6 @@ core.setup {
 
   -- Events
   on_before_setup = function()
-    require 'cnull.statusline'
-
     -- Highlight text yank
     autocmd {
       clear = true,

@@ -50,6 +50,7 @@ function M.setup(packager)
     packager.add('akinsho/nvim-bufferline.lua')
     packager.add('folke/todo-comments.nvim')
     packager.add('norcalli/nvim-colorizer.lua')
+    packager.add('glepnir/galaxyline.nvim')
 
     -- Colorscheme
     packager.add('folke/tokyonight.nvim')
