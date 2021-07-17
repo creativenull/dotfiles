@@ -91,7 +91,6 @@ core.setup {
 
   on_after_setup = function()
     require 'colorizer'.setup()
-    require 'bufferline'.setup {}
     require 'cnull.keymaps'
     require 'cnull.conceal'
     require 'cnull.codeshot'
