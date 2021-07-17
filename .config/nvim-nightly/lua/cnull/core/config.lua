@@ -18,7 +18,7 @@ local function prereq_checks()
     error(string.format('%q %s', 'nnn', errmsg_pkg_required))
   end
 
-  if vim.fn.executable('bat') == 0 or vim.fn.executable('batcat') == 0 then
+  if vim.fn.executable('bat') == 0 then
     vim.api.nvim_err_writeln(string.format('%q %s', 'bat', errmsg_pkg_optional))
   end
 end
