@@ -249,10 +249,10 @@ else
 endif
 
 " search files the current pwd
-let g:cnull.defx.escapepath = escape(expand('%:p:h'), g:cnull.defx.esc)
-let g:cnull.defx.filepath = expand('%:p')
-let g:cnull.defx.exec = printf("Defx %s -search=%s", g:cnull.defx.escapepath, g:cnull.defx.filepath)
-nnoremap <silent> <Leader>ff <Cmd>execute g:cnull.defx.exec<CR>
+let g:cnull.defx.escapepath = "escape(expand('%:p:h'), ' ". g:cnull.defx.esc ."')"
+let g:cnull.defx.filepath = "expand('%:p')"
+nnoremap <silent> <Leader>ff
+      \ <Cmd>execute printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)<CR>
 
 " tokyonight-vim Config
 let g:tokyonight_syle = 'night'
