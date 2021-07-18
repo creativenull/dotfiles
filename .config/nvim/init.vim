@@ -1,5 +1,4 @@
-" Name: Arnold Chand
-" Github: https://github.com/creativenull
+" Name: Arnold Chand Github: https://github.com/creativenull
 " My vimrc, pre-requisites:
 " + python3 (globally installed)
 " + ripgrep (globally installed
@@ -36,23 +35,23 @@ function! s:make_plugin() abort
   let l:pack = 'vim-packager'
   let l:git = 'https://github.com/kristijanhusak/vim-packager.git'
   return {
-    \ 'git': git,
-    \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
-    \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
-    \ }
+        \ 'git': git,
+        \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
+        \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
+        \ }
 endfunction
 
 let g:cnull.config = s:make_config()
 let g:cnull.plugin = s:make_plugin()
 
 if !executable('python3') || !exists('$PYTHON3_HOST_PROG')
-  echoerr '`python3` not installed, please install it via your OS software manager, and set the $PYTHON_HOST_PROG env'
-  echoerr 'Additionally install pynvim and msgpack: `pip3 install pynvim msgpack`'
+  echoerr '"python3" not installed, please install it via your OS software manager, and set the $PYTHON_HOST_PROG env'
+  echoerr 'Additionally install pynvim and msgpack: "pip3 install pynvim msgpack"'
   finish
 endif
 
 if !executable('rg')
-  echoerr '`ripgrep` not installed, please install it via your OS software manager'
+  echoerr '"ripgrep" not installed, please install it via your OS software manager'
   finish
 endif
 
@@ -126,21 +125,21 @@ endfunction
 
 function! g:RegisterLsp() abort
   " deoplete.nvim Config - register on FileType event
+  call deoplete#custom#source('ale,ultisnips', 'matchers', ['matcher_full_fuzzy'])
   call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-  call deoplete#custom#option('auto_complete_delay', 50)
-  call deoplete#custom#option('smart_case', v:true)
-  call deoplete#custom#option('ignore_case', v:true)
   call deoplete#custom#option('max_list', 10)
+  call deoplete#custom#option('num_processes', 2)
   call deoplete#enable()
 
   " ALE Keymaps - register on FileType event
-  nnoremap <silent> <F2>       <Cmd>ALERename<CR>
-  nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-  nnoremap <silent> <Leader>lr <Cmd>ALEFindReferences<CR>
-  nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
-  nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-  nnoremap <silent> <Leader>le <Cmd>lopen<CR>
-  imap     <silent> <C-Space>  <Plug>(ale_complete)
+  nmap <silent> <Leader>le <Cmd>lopen<CR>
+  nmap <silent> <Leader>lo <Cmd>ALERename<CR>
+  nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+  nmap <silent> <Leader>ld <Plug>(ale_go_to_definition)
+  nmap <silent> <Leader>lr <PLug>(ale_find_references)
+  nmap <silent> <Leader>lf <Plug>(ale_fix)
+  nmap <silent> <Leader>lh <Plug>(ale_hover)
+  imap <silent> <C-Space>  <Plug>(ale_complete)
 endfunction
 
 function! g:RenderActiveStatusline() abort
@@ -191,6 +190,11 @@ augroup END
 let g:UltiSnipsExpandTrigger = '<Nop>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+inoremap <silent><expr> <Tab> pumvisible() ?
+      \ UltiSnips#CanExpandSnippet() ?
+      \ "<C-r>=UltiSnips#ExpandSnippet()<CR>" :
+      \ "\<C-y>" :
+      \ "\<Tab>"
 
 " vim-polyglot Config
 let g:vue_pre_processors = ['typescript', 'scss']
@@ -237,9 +241,20 @@ let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
 " defx.nvim Config
-nnoremap <silent> <Leader>ff <Cmd>Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
+let g:cnull.defx = {}
+if has('win32')
+  let g:cnull.defx.esc = "\\"
+else
+  let g:cnull.defx.esc = ':'
+endif
 
-" tokyonight Config
+" search files the current pwd
+let g:cnull.defx.escapepath = escape(expand('%:p:h'), g:cnull.defx.esc)
+let g:cnull.defx.filepath = expand('%:p')
+let g:cnull.defx.exec = printf("Defx %s -search=%s", g:cnull.defx.escapepath, g:cnull.defx.filepath)
+nnoremap <silent> <Leader>ff <Cmd>execute g:cnull.defx.exec<CR>
+
+" tokyonight-vim Config
 let g:tokyonight_syle = 'night'
 
 " =============================================================================
@@ -256,8 +271,8 @@ function! PackagerInit(opts) abort
 
   " Core Plugins
   call packager#add('mattn/emmet-vim', {'type': 'opt'})
+  call packager#add('creativenull/projectcmd.nvim', {'type': 'opt'})
   call packager#add('dense-analysis/ale')
-  call packager#add('creativenull/projectcmd.nvim')
   call packager#add('cohama/lexima.vim')
   call packager#add('editorconfig/editorconfig-vim')
   call packager#add('godlygeek/tabular')
@@ -324,6 +339,7 @@ command! -bang -nargs=* Rg
 
 " projectcmd.nvim Config
 if has('nvim-0.5')
+  packadd projectcmd.nvim
   lua require('projectcmd').setup()
 endif
 
@@ -423,13 +439,6 @@ inoremap jk <Esc>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
-" Expand tabs
-inoremap <silent><expr> <Tab> pumvisible() ?
-      \ UltiSnips#CanExpandSnippet() ?
-      \ "<C-r>=UltiSnips#ExpandSnippet()<CR>" :
-      \ "\<C-y>" :
-      \ "\<Tab>"
-
 " Disable highlights
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
@@ -458,6 +467,13 @@ nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 
 " Reload file
 nnoremap <Leader>r <Cmd>edit!<CR>
+
+" List all maps
+nmap <Leader>mn <Cmd>nmap<CR>
+nmap <Leader>mv <Cmd>vmap<CR>
+nmap <Leader>mi <Cmd>imap<CR>
+nmap <Leader>mt <Cmd>tmap<CR>
+nmap <Leader>mc <Cmd>cmap<CR>
 
 " =============================================================================
 " = Commands =
