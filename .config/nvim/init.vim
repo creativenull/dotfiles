@@ -142,7 +142,7 @@ function! g:RegisterLsp() abort
   imap <silent> <C-Space>  <Plug>(ale_complete)
 endfunction
 
-function! g:RenderActiveStatusline() abort
+function! g:RenderActiveStatusLine() abort
   let l:branch = ''
   if exists('g:loaded_gitbranch')
     if gitbranch#name() != ''
@@ -156,7 +156,7 @@ function! g:RenderActiveStatusline() abort
   return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
 endfunction
 
-function! g:RenderInactiveStatusline() abort
+function! g:RenderInactiveStatusLine() abort
   return ' %t%m%r | %y %= %l/%L:%c '
 endfunction
 
@@ -177,8 +177,8 @@ endif
 
 augroup statusline_events
   autocmd!
-  autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusline()
-  autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusline()
+  autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusLine()
+  autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusLine()
   autocmd ColorScheme * call SetLspHighlight()
 augroup END
 
@@ -407,7 +407,7 @@ set mouse=
 set hidden
 set signcolumn=yes
 set cmdheight=2
-set statusline=%!RenderActiveStatusline()
+set statusline=%!RenderActiveStatusLine()
 set showtabline=2
 set laststatus=2
 
