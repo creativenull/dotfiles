@@ -208,8 +208,8 @@ let g:user_emmet_install_global = 0
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
-nnoremap <C-p> <Cmd>Files<CR>
-nnoremap <C-t> <Cmd>Rg<CR>
+nnoremap <Leader>p <Cmd>Files<CR>
+nnoremap <Leader>t <Cmd>Rg<CR>
 
 " ALE Config
 let g:ale_hover_cursor = 0
