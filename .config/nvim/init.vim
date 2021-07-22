@@ -35,10 +35,10 @@ function! s:make_plugin() abort
   let l:pack = 'vim-packager'
   let l:git = 'https://github.com/kristijanhusak/vim-packager.git'
   return {
-        \ 'git': git,
-        \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
-        \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
-        \ }
+    \ 'git': git,
+    \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
+    \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
+    \ }
 endfunction
 
 let g:cnull.config = s:make_config()
@@ -190,14 +190,14 @@ endif
 " =============================================================================
 
 " UltiSnips Config
-let g:UltiSnipsExpandTrigger = '<Nop>'
+let g:UltiSnipsExpandTrigger = "\<Nop>"
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 inoremap <silent><expr> <Tab> pumvisible() ?
-      \ UltiSnips#CanExpandSnippet() ?
-      \ "<C-r>=UltiSnips#ExpandSnippet()<CR>" :
-      \ "\<C-y>" :
-      \ "\<Tab>"
+  \ UltiSnips#CanExpandSnippet() ?
+  \ "<C-r>=UltiSnips#ExpandSnippet()<CR>" :
+  \ "\<C-y>" :
+  \ "\<Tab>"
 
 " vim-polyglot Config
 let g:vue_pre_processors = ['typescript', 'scss']
@@ -255,7 +255,7 @@ endif
 let g:cnull.defx.escapepath = "escape(expand('%:p:h'), ' ". g:cnull.defx.esc ."')"
 let g:cnull.defx.filepath = "expand('%:p')"
 nnoremap <silent> <Leader>ff
-      \ <Cmd>execute printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)<CR>
+  \ <Cmd>execute printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)<CR>
 
 " tokyonight-vim Config
 let g:tokyonight_syle = 'night'
