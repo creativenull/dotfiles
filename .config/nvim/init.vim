@@ -125,10 +125,6 @@ endfunction
 
 function! g:RegisterLsp() abort
   " deoplete.nvim Config - register on FileType event
-  call deoplete#custom#source('ale,ultisnips', 'matchers', ['matcher_full_fuzzy'])
-  call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-  call deoplete#custom#option('max_list', 10)
-  call deoplete#custom#option('num_processes', 2)
   call deoplete#enable()
 
   " ALE Keymaps - register on FileType event
@@ -181,6 +177,13 @@ augroup statusline_events
   autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusLine()
   autocmd ColorScheme * call SetLspHighlight()
 augroup END
+
+if has('nvim-0.5')
+  augroup highlight_yank_events
+    autocmd!
+    autocmd TextYankPost * lua vim.highlight.yank { higroup = 'Search', timeout = 500 }
+  augroup END
+endif
 
 " =============================================================================
 " = Plugin Config - before loading plugins =
@@ -282,7 +285,7 @@ function! PackagerInit(opts) abort
   call packager#add('Shougo/defx.nvim')
 
   " Autocompletion
-  call packager#add('Shougo/deoplete.nvim')
+  call packager#add('Shougo/deoplete.nvim', {'type': 'opt'})
 
   " Snippets
   call packager#add('SirVer/Ultisnips')
@@ -307,7 +310,7 @@ function! PackagerInit(opts) abort
     call packager#add('machakann/vim-highlightedyank')
   endif
 
-  " Colorscheme
+  " Colorschemes
   call packager#add('ghifarit53/tokyonight-vim')
   call packager#add('mhartington/oceanic-next')
 endfunction
@@ -342,6 +345,15 @@ if has('nvim-0.5')
   packadd projectcmd.nvim
   lua require('projectcmd').setup()
 endif
+
+" deoplete.nvim Config
+packadd deoplete.nvim
+call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
+call deoplete#custom#option('max_list', 10)
+call deoplete#custom#option('num_processes', 2)
+call deoplete#custom#option('camel_case', v:true)
+call deoplete#custom#option('ignore_case', v:true)
+call deoplete#custom#option('smart_case', v:true)
 
 " =============================================================================
 " = UI/Theme =
