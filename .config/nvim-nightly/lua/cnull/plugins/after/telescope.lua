@@ -20,13 +20,13 @@ local function find_files()
     previewer = false,
   }
 end
-nmap('<C-p>', find_files)
+nmap('<Leader>p', find_files)
 
 -- Code finder
 local function live_grep()
   telescope_builtin.live_grep {}
 end
-nmap('<C-t>', live_grep)
+nmap('<Leader>t', live_grep)
 
 -- Config file finder
 local function find_config_files()
