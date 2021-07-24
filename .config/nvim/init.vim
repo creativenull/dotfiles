@@ -179,10 +179,7 @@ augroup statusline_events
 augroup END
 
 if has('nvim-0.5')
-  augroup highlight_yank_events
-    autocmd!
-    autocmd TextYankPost * lua vim.highlight.yank { higroup = 'Search', timeout = 500 }
-  augroup END
+  autocmd! TextYankPost * silent! lua vim.highlight.on_yank { higroup = 'Search', timeout = 500 }
 endif
 
 " =============================================================================
