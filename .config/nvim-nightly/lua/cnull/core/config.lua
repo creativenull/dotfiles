@@ -28,20 +28,22 @@ end
 -- @return nil
 function M.init(config)
   prereq_checks()
+  vim.validate { config = {config, 'table'} }
 
   local default_config = {
-    ns = 'nvim',
-    leader = ',',
-    localleader = [[\]],
+    userspace = config.userspace or 'nvim',
+    runtimepath = config.runtimepath or string.format('%s/lua', stdpath('config')),
+    leader = config.leader or ',',
+    localleader = config.localleader or [[\]],
     theme = {
-      name = 'default',
-      transparent = false,
+      name = config.theme.name or 'default',
+      transparent = config.theme.transparent or false,
     },
-    keymaps = {},
+    plugins_config = config.plugins_config or {}
   }
 
   _G.CNull = {
-    config = vim.tbl_extend('force', default_config, config),
+    config = default_config,
     events = {},
     commands = {},
     keymaps = {},

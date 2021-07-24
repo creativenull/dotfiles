@@ -1,8 +1,6 @@
-local M = {}
-
 -- Reload lua cnull packages
 -- @return nil
-function M.reload()
+local function reload()
   for name,_ in pairs(package.loaded) do
     if name:match('^cnull') then
       package.loaded[name] = nil
@@ -12,4 +10,4 @@ function M.reload()
   dofile(vim.env.MYVIMRC)
 end
 
-return M.reload
+return reload

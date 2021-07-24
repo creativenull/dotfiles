@@ -10,5 +10,5 @@ require 'nvim-treesitter.configs'.setup {
     'graphql',
   },
   highlight = { enable = true },
-  indent = { enable = true },
+  indent = { enable = false },
 }

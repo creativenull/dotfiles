@@ -13,7 +13,8 @@
 -- DO NOT DO THIS, check the link
 -- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 -- Runtime Path
-_G.init_ns = 'nvim-nightly'
+local userspace = 'nvim-nightly'
+
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
 vim.cmd('set runtimepath-=~/.local/share/nvim/site')
@@ -25,10 +26,10 @@ vim.cmd('set runtimepath-=/usr/share/nvim/site/after')
 vim.cmd('set runtimepath-=/usr/local/share/nvim/site')
 vim.cmd('set runtimepath-=/usr/local/share/nvim/site/after')
 
-vim.cmd(string.format('set runtimepath+=~/.config/%s/after', _G.init_ns))
-vim.cmd(string.format('set runtimepath^=~/.config/%s', _G.init_ns))
-vim.cmd(string.format('set runtimepath+=~/.local/share/%s/site/after', _G.init_ns))
-vim.cmd(string.format('set runtimepath^=~/.local/share/%s/site', _G.init_ns))
+vim.cmd(string.format('set runtimepath+=~/.config/%s/after', userspace))
+vim.cmd(string.format('set runtimepath^=~/.config/%s', userspace))
+vim.cmd(string.format('set runtimepath+=~/.local/share/%s/site/after', userspace))
+vim.cmd(string.format('set runtimepath^=~/.local/share/%s/site', userspace))
 
 -- Pack Path
 vim.cmd('set packpath-=~/.config/nvim')
@@ -42,40 +43,42 @@ vim.cmd('set packpath-=/usr/local/share/nvim/site/after')
 vim.cmd('set packpath-=/usr/share/nvim/site')
 vim.cmd('set packpath-=/usr/share/nvim/site/after')
 
-vim.cmd(string.format('set packpath^=~/.config/%s', _G.init_ns))
-vim.cmd(string.format('set packpath+=~/.config/%s/after', _G.init_ns))
-vim.cmd(string.format('set packpath^=~/.local/share/%s/site', _G.init_ns))
-vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', _G.init_ns))
+vim.cmd(string.format('set packpath^=~/.config/%s', userspace))
+vim.cmd(string.format('set packpath+=~/.config/%s/after', userspace))
+vim.cmd(string.format('set packpath^=~/.local/share/%s/site', userspace))
+vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', userspace))
 
 -- Initialize
-local core    = require 'cnull.core'
-local autocmd = core.autocmd
-
+local core = require 'cnull.core'
 core.setup {
-  ns = _G.init_ns,
-  leader = ' ',
+  config = {
+    userspace = userspace,
+    runtimepath = string.format('%s/.config/%s/lua', vim.env.HOME, userspace),
+    leader = ' ',
 
-  theme = {
-    name = 'tokyonight',
-    transparent = true,
-    setup = function()
-      vim.g.tokyonight_style = 'night'
-      vim.g.tokyonight_transparent = true
-    end,
-  },
+    theme = {
+      name = 'zephyr',
+      transparent = true,
+      setup = function()
+        -- vim.g.tokyonight_style = 'night'
+        -- vim.g.tokyonight_transparent = true
+      end,
+    },
 
-  plugins = require 'cnull.plugins'.init {
-    install_path = string.format('%s/.local/share/%s/site/pack/packager/opt/vim-packager', vim.env.HOME, _G.init_ns),
-    config_dir = string.format('%s/.config/%s', vim.env.HOME, _G.init_ns),
-    init = {
-      dir = string.format('%s/.local/share/%s/site/pack/packager', vim.env.HOME, _G.init_ns),
+    plugins_config = {
+      modname = 'cnull.plugins',
+      installpath = string.format('%s/.local/share/%s/site/pack/packer/opt/packer.nvim', vim.env.HOME, userspace),
+      init = {
+        package_root = string.format('%s/.local/share/%s/site/pack', vim.env.HOME, userspace),
+        compile_path = string.format('%s/.local/share/%s/packer_compiled.lua', vim.env.HOME, userspace),
+      },
     },
   },
 
   -- Events
-  on_before_setup = function()
+  before = function()
     -- Highlight text yank
-    autocmd {
+    core.autocmd {
       clear = true,
       event = 'TextYankPost',
       exec = function()
@@ -84,12 +87,12 @@ core.setup {
     }
   end,
 
-  on_after_setup = function()
+  after = function()
     require 'colorizer'.setup()
-    require 'cnull.keymaps'
-    require 'cnull.conceal'
-    require 'cnull.codeshot'
-    require 'cnull.options'
-    require 'cnull.commands'
+    require 'cnull.user.keymaps'
+    require 'cnull.user.conceal'
+    require 'cnull.user.codeshot'
+    require 'cnull.user.options'
+    require 'cnull.user.commands'
   end,
 }

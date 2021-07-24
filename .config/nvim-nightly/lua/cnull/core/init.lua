@@ -1,9 +1,11 @@
+local colorscheme = require 'cnull.core.colorscheme'
 local command = require 'cnull.core.command'
+local config = require 'cnull.core.config'
 local event = require 'cnull.core.event'
 local keymap = require 'cnull.core.keymap'
 local lsp = require 'cnull.core.lsp'
-local config = require 'cnull.core.config'
-local colorscheme = require 'cnull.core.colorscheme'
+local reload = require 'cnull.core.reload'
+local plugin = require 'cnull.core.plugin'
 
 local M = {
   augroup = event.augroup,
@@ -11,43 +13,48 @@ local M = {
   command = command,
   keymap = keymap,
   lsp = lsp,
+  reload = reload,
 }
 
 -- Core setup
 -- @param table cfg
 -- @return nil
-function M.setup(cfg)
-  cfg = config.init(cfg)
+function M.setup(opts)
+  cfg = config.init(opts.config)
 
   -- Before core setup
-  if cfg.on_before_setup then
-    cfg.on_before_setup()
+  if opts.before then
+    opts.before(cfg)
   else
-    error('core: on_before_setup() is required')
+    error('core: before() is required!')
   end
 
+  -- Leader mappings
   vim.g.mapleader = cfg.leader
   vim.g.maplocalleader = cfg.localleader
-  vim.g.python3_host_prog = vim.env.PYTHON3_HOST_PROG
+
+  -- Python3 plugins support
+  if vim.env.PYTHON3_HOST_PROG ~= nil then
+    vim.g.python3_host_prog = vim.env.PYTHON3_HOST_PROG
+  end
 
   -- Plugins
-  if cfg.plugins then
-    cfg.plugins.setup()
+  if cfg.plugins_config then
+    plugin.setup(cfg)
   end
 
   -- Color Scheme
   colorscheme.setup(cfg)
 
   -- Reload command
-  local reloader = require 'cnull.core.reload'
   command('Config', [[edit $MYVIMRC]])
-  command('ConfigReload', reloader)
+  command('ConfigReload', reload)
 
   -- After core setup
-  if cfg.on_after_setup then
-    cfg.on_after_setup()
+  if opts.after then
+    opts.after(cfg)
   else
-    error('core: on_after_setup() is required')
+    error('core: after() is required!')
   end
 end
 
