@@ -12,9 +12,9 @@
 -- =============================================================================
 -- DO NOT DO THIS, check the link
 -- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
--- Runtime Path
 local userspace = 'nvim-nightly'
 
+-- Runtime Path
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
 vim.cmd('set runtimepath-=~/.local/share/nvim/site')
