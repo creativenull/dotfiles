@@ -8,9 +8,11 @@
 " Currently, tested on a Linux machine
 " =============================================================================
 
-set nocompatible
-filetype plugin indent on
-syntax on
+if !has('nvim')
+  set nocompatible
+  filetype plugin indent on
+  syntax on
+endif
 
 let mapleader = ' '
 let g:python3_host_prog = $PYTHON3_HOST_PROG
@@ -93,14 +95,14 @@ function! s:lsp_status() abort
     let l:all_errors = counts.error + counts.style_error
     let l:all_non_errors = counts.total - all_errors
     return counts.total == 0
-      \ ? 'ALE'
-      \ : printf('%sE%d%s %sW%d%s ALE', l:red_hl, all_errors, '%*', l:yellow_hl, all_non_errors, '%*')
+      \ ? 'LSP'
+      \ : printf('%sE%d%s %sW%d%s LSP', l:red_hl, all_errors, '%*', l:yellow_hl, all_non_errors, '%*')
   endif
 
   return ''
 endfunction
 
-function! s:get_hl_color(hi, type) abort
+function! s:get_hicolor(hi, type) abort
   let l:is_reverse = synIDattr(synIDtrans(hlID(a:hi)), 'reverse')
   if l:is_reverse
     if a:type == 'bg'
@@ -115,20 +117,46 @@ function! s:get_hl_color(hi, type) abort
   return l:color
 endfunction
 
+" LSP Highlights
 function! g:SetLspHighlight() abort
-  let l:bg_color = s:get_hl_color('StatusLine', 'bg')
+  let l:bg_color = s:get_hicolor('StatusLine', 'bg')
   let l:red_color = '#ff4488'
   let l:yellow_color = '#eedd22'
   execute printf('highlight StatusLineLspRedText guifg=%s guibg=%s', l:red_color, l:bg_color)
   execute printf('highlight StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
 endfunction
 
-function! g:RegisterLsp() abort
-  " deoplete.nvim Config - register on FileType event
+" autocompletion Config
+function! g:RegisterCompletionEngine() abort
+  packadd deoplete.nvim
+  call deoplete#custom#option({
+    \ 'max_list': 10,
+    \ 'num_processes': 2,
+    \ 'ignore_case': v:true,
+    \ 'auto_complete_delay': 250,
+    \ 'min_pattern_length': 3,
+    \ 'sources': {
+      \ '_': ['buffer'],
+      \ 'javascript': ['buffer', 'ultisnips', 'ale'],
+      \ 'javascriptreact': ['buffer', 'ultisnips', 'ale'],
+    \ },
+  \ })
+  call deoplete#custom#source('ale', 'matchers', ['matcher_full_fuzzy'])
+  call deoplete#custom#source('ultisnips', 'matchers', ['matcher_full_fuzzy'])
   call deoplete#enable()
+endfunction
 
-  " ALE Keymaps - register on FileType event
-  nmap <silent> <Leader>le <Cmd>lopen<CR>
+" LSP Keymaps
+function! g:RegisterKeymaps() abort
+  " nmap <silent>       <Leader>le <Cmd>lopen<CR>
+  " nmap <silent>       <Leader>lo <Plug>(lcn-rename)
+  " nmap <silent>       <Leader>la <Plug>(lcn-code-action)
+  " nmap <silent>       <Leader>ld <Plug>(lcn-definition)
+  " nmap <silent>       <Leader>lr <PLug>(lcn-references)
+  " nmap <silent>       <Leader>lf <Plug>(lcn-format)
+  " nmap <silent>       <Leader>lh <Plug>(lcn-hover)
+  " imap <silent><expr> <C-Space> deoplete#complete()
+
   nmap <silent> <Leader>lo <Cmd>ALERename<CR>
   nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
   nmap <silent> <Leader>ld <Plug>(ale_go_to_definition)
@@ -138,6 +166,13 @@ function! g:RegisterLsp() abort
   imap <silent> <C-Space>  <Plug>(ale_complete)
 endfunction
 
+" LSP settings - registerd on FileType event
+function! g:RegisterLsp() abort
+  call g:RegisterCompletionEngine()
+  call g:RegisterKeymaps()
+endfunction
+
+" Active statusline
 function! g:RenderActiveStatusLine() abort
   let l:branch = ''
   if exists('g:loaded_gitbranch')
@@ -152,6 +187,7 @@ function! g:RenderActiveStatusLine() abort
   return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
 endfunction
 
+" Inactive statusline
 function! g:RenderInactiveStatusLine() abort
   return ' %t%m%r | %y %= %l/%L:%c '
 endfunction
@@ -187,7 +223,7 @@ endif
 " =============================================================================
 
 " UltiSnips Config
-let g:UltiSnipsExpandTrigger = "\<Nop>"
+let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 inoremap <silent><expr> <Tab> pumvisible() ?
@@ -218,7 +254,7 @@ let g:ale_echo_msg_error_str = ''
 let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
-let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
 
 " vim-startify Config
 let g:startify_change_to_dir = 0
@@ -255,7 +291,17 @@ nnoremap <silent> <Leader>ff
   \ <Cmd>execute printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)<CR>
 
 " tokyonight-vim Config
-let g:tokyonight_syle = 'night'
+let g:tokyonight_style = 'night'
+
+" LanguageClient-neovim Config
+" let g:LanguageClient_diagnosticsList = 'Location'
+" let g:LanguageClient_useVirtualText = 'No'
+" let g:LanguageClient_serverCommands = {
+"  \ 'javascript': ['typescript-language-server', '--stdio'],
+"  \ 'javascriptreact': ['typescript-language-server', '--stdio'],
+"  \ 'typescript': ['typescript-language-server', '--stdio'],
+"  \ 'typescriptreact': ['typescript-language-server', '--stdio'],
+"\ }
 
 " =============================================================================
 " = Plugin Manager =
@@ -266,31 +312,31 @@ function! PackagerInit(opts) abort
   call packager#init(a:opts)
   call packager#add('kristijanhusak/vim-packager', {'type': 'opt'})
 
-  " Dependencies
-  call packager#add('Shougo/context_filetype.vim')
-
-  " Core Plugins
+  " Core
   call packager#add('mattn/emmet-vim', {'type': 'opt'})
   call packager#add('creativenull/projectcmd.nvim', {'type': 'opt'})
-  call packager#add('dense-analysis/ale')
   call packager#add('cohama/lexima.vim')
   call packager#add('editorconfig/editorconfig-vim')
   call packager#add('godlygeek/tabular')
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
-  call packager#add('tyru/caw.vim')
+  call packager#add('tyru/caw.vim', {'requires': 'Shougo/context_filetype.vim'})
   call packager#add('Shougo/defx.nvim')
+
+  " LSP/Linter/Formatters
+  " call packager#add('autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'})
+  call packager#add('dense-analysis/ale')
 
   " Autocompletion
   call packager#add('Shougo/deoplete.nvim', {'type': 'opt'})
 
   " Snippets
-  call packager#add('SirVer/Ultisnips')
-  call packager#add('honza/vim-snippets')
+  call packager#add('SirVer/ultisnips', {'type': 'opt'})
+  call packager#add('honza/vim-snippets', {'type': 'opt'})
 
   " Fuzzy Finder
   call packager#add('junegunn/fzf')
-  call packager#add('junegunn/fzf.vim')
+  call packager#add('junegunn/fzf.vim', {'requires': 'junegunn/fzf'})
 
   " Git
   call packager#add('tpope/vim-fugitive')
@@ -343,24 +389,17 @@ if has('nvim-0.5')
   lua require('projectcmd').setup()
 endif
 
-" deoplete.nvim Config
-packadd deoplete.nvim
-call deoplete#custom#option('sources', { '_': ['ale', 'ultisnips'] })
-call deoplete#custom#option('max_list', 10)
-call deoplete#custom#option('num_processes', 2)
-call deoplete#custom#option('camel_case', v:true)
-call deoplete#custom#option('ignore_case', v:true)
-call deoplete#custom#option('smart_case', v:true)
-
 " =============================================================================
 " = UI/Theme =
 " =============================================================================
 
 if has('termguicolors')
   set termguicolors
-  set t_Co=256
-  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  if !has('nvim')
+    set t_Co=256
+    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  endif
 endif
 
 set number

@@ -3,6 +3,8 @@ packadd emmet-vim
 EmmetInstall
 
 " Ultisnips
+packadd ultisnips
+packadd vim-snippets
 UltiSnipsAddFiletypes javascript_react
 
 " ALE
