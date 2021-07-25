@@ -38,7 +38,7 @@ function M.after()
 
   -- Config file finder
   local function find_config_files()
-    local configdir = string.format('%s/.config/%s', vim.env.HOME, _G.rc_namespace)
+    local configdir = string.format('%s/.config/%s', vim.env.HOME, _G.CNull.config.userspace)
     telescope_builtin.find_files {
       find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', configdir },
       previewer = false
