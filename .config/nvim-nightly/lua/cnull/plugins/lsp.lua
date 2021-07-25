@@ -4,7 +4,6 @@ local nmap = core.keymap.nmap
 local M = {
   plugins = {
     {'neovim/nvim-lspconfig'},
-    {'glepnir/lspsaga.nvim', requires = {'neovim/nvim-lspconfig'}},
     {'creativenull/diagnosticls-nvim', requires = {'neovim/nvim-lspconfig'}},
   },
 }
@@ -12,15 +11,13 @@ local M = {
 function M.after()
   local function on_attach(_, bufnr)
     -- Keymaps
-    nmap('<leader>l[', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], { bufnr = bufnr })
-    nmap('<leader>l]', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], { bufnr = bufnr })
-    nmap('<leader>la', [[<Cmd>Lspsaga code_action<CR>]], { bufnr = bufnr })
+    nmap('<leader>la', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], { bufnr = bufnr })
     nmap('<leader>ld', [[<Cmd>lua vim.lsp.buf.definition()<CR>]], { bufnr = bufnr })
     nmap('<leader>le', [[<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>]], { bufnr = bufnr })
     nmap('<leader>lf', [[<Cmd>lua vim.lsp.buf.formatting()<CR>]], { bufnr = bufnr })
-    nmap('<leader>lh', [[<Cmd>Lspsaga hover_doc<CR>]], { bufnr = bufnr })
-    nmap('<leader>lr', [[<Cmd>Lspsaga rename<CR>]], { bufnr = bufnr })
-    nmap('<leader>lw', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], { bufnr = bufnr })
+    nmap('<leader>lh', [[<Cmd>lua vim.lsp.buf.hover()<CR>]], { bufnr = bufnr })
+    nmap('<leader>lr', [[<Cmd>lua vim.lsp.buf.rename()<CR>]], { bufnr = bufnr })
+    nmap('<leader>lw', [[<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>]], { bufnr = bufnr })
   end
 
   core.lsp.init()
@@ -49,8 +46,8 @@ function M.after()
     --   formatter = require 'diagnosticls-nvim.formatters.prettier',
     -- },
     -- typescript = {
-    --   linter = require 'diagnosticls-nvim.linters.eslint',
-    --   formatter = require 'diagnosticls-nvim.formatters.prettier',
+      -- linter = require 'diagnosticls-nvim.linters.eslint',
+      -- formatter = require 'diagnosticls-nvim.formatters.prettier',
     -- },
     -- typescriptreact = {
     --   linter = require 'diagnosticls-nvim.linters.eslint',
