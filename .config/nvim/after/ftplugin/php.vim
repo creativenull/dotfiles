@@ -1,5 +1,4 @@
 " Emmet
-packadd emmet-vim
 EmmetInstall
 
 " ALE

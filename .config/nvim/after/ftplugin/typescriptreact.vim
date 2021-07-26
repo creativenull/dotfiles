@@ -1,10 +1,7 @@
 " Emmet
-packadd emmet-vim
 EmmetInstall
 
 " Ultisnips
-packadd ultisnips
-packadd vim-snippets
 UltiSnipsAddFiletypes typescript_react
 
 " ALE

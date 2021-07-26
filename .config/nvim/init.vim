@@ -1,11 +1,10 @@
-" Name: Arnold Chand Github: https://github.com/creativenull
-" My vimrc, pre-requisites:
-" + python3 (globally installed)
-" + ripgrep (globally installed
-" + Environment variables:
-"    $PYTHON3_HOST_PROG
-"
-" Currently, tested on a Linux machine
+" Name: Arnold Chand
+" Github: https://github.com/creativenull
+" File: init.vim
+" Description: My vimrc, currently tested on a Linux machine. Requires:
+"   + python3 (globally installed)
+"   + ripgrep (globally installed
+"   + Environment variables: $PYTHON3_HOST_PROG
 " =============================================================================
 
 if !has('nvim')
@@ -29,7 +28,7 @@ function! s:make_config() abort
     \ 'std_config': std_config,
     \ 'std_data': std_data,
     \ 'undodir': printf('%s/undo', std_cache),
-    \ }
+  \ }
 endfunction
 
 function! s:make_plugin() abort
@@ -40,7 +39,7 @@ function! s:make_plugin() abort
     \ 'git': git,
     \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
     \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
-    \ }
+  \ }
 endfunction
 
 let g:cnull.config = s:make_config()
@@ -128,48 +127,42 @@ endfunction
 
 " autocompletion Config
 function! g:RegisterCompletionEngine() abort
-  packadd deoplete.nvim
+  let l:sources = ['buffer', 'ultisnips', 'ale']
   call deoplete#custom#option({
+    \ 'refresh_always': v:false,
     \ 'max_list': 10,
     \ 'num_processes': 2,
-    \ 'ignore_case': v:true,
-    \ 'auto_complete_delay': 250,
-    \ 'min_pattern_length': 3,
+    \ 'smart_case': v:true,
+    \ 'auto_complete_delay': 100,
     \ 'sources': {
       \ '_': ['buffer'],
-      \ 'javascript': ['buffer', 'ultisnips', 'ale'],
-      \ 'javascriptreact': ['buffer', 'ultisnips', 'ale'],
+      \ 'javascript': l:sources,
+      \ 'javascriptreact': l:sources,
+      \ 'php': l:sources,
+      \ 'typescript': l:sources,
+      \ 'typescriptreact': l:sources,
+      \ 'vue': l:sources,
     \ },
   \ })
-  call deoplete#custom#source('ale', 'matchers', ['matcher_full_fuzzy'])
-  call deoplete#custom#source('ultisnips', 'matchers', ['matcher_full_fuzzy'])
   call deoplete#enable()
 endfunction
 
 " LSP Keymaps
 function! g:RegisterKeymaps() abort
-  " nmap <silent>       <Leader>le <Cmd>lopen<CR>
-  " nmap <silent>       <Leader>lo <Plug>(lcn-rename)
-  " nmap <silent>       <Leader>la <Plug>(lcn-code-action)
-  " nmap <silent>       <Leader>ld <Plug>(lcn-definition)
-  " nmap <silent>       <Leader>lr <PLug>(lcn-references)
-  " nmap <silent>       <Leader>lf <Plug>(lcn-format)
-  " nmap <silent>       <Leader>lh <Plug>(lcn-hover)
-  " imap <silent><expr> <C-Space> deoplete#complete()
-
-  nmap <silent> <Leader>lo <Cmd>ALERename<CR>
-  nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-  nmap <silent> <Leader>ld <Plug>(ale_go_to_definition)
-  nmap <silent> <Leader>lr <PLug>(ale_find_references)
-  nmap <silent> <Leader>lf <Plug>(ale_fix)
-  nmap <silent> <Leader>lh <Plug>(ale_hover)
-  imap <silent> <C-Space>  <Plug>(ale_complete)
+  " ALE
+  nmap <buffer><silent> <Leader>lo <Cmd>ALERename<CR>
+  nmap <buffer><silent> <Leader>la <Cmd>ALECodeAction<CR>
+  nmap <buffer><silent> <Leader>ld <Plug>(ale_go_to_definition)
+  nmap <buffer><silent> <Leader>lr <PLug>(ale_find_references)
+  nmap <buffer><silent> <Leader>lf <Plug>(ale_fix)
+  nmap <buffer><silent> <Leader>lh <Plug>(ale_hover)
+  imap <buffer><silent> <C-Space>  <Plug>(ale_complete)
 endfunction
 
 " LSP settings - registerd on FileType event
 function! g:RegisterLsp() abort
-  call g:RegisterCompletionEngine()
-  call g:RegisterKeymaps()
+  call RegisterCompletionEngine()
+  call RegisterKeymaps()
 endfunction
 
 " Active statusline
@@ -190,6 +183,16 @@ endfunction
 " Inactive statusline
 function! g:RenderInactiveStatusLine() abort
   return ' %t%m%r | %y %= %l/%L:%c '
+endfunction
+
+" On-demand package loading
+function! g:LoadFileTypePackages() abort
+  packadd caw.vim
+  packadd editorconfig-vim
+  packadd ultisnips
+  packadd vim-snippets
+  packadd emmet-vim
+  packadd deoplete.nvim
 endfunction
 
 " =============================================================================
@@ -218,11 +221,17 @@ if has('nvim-0.5')
   autocmd! TextYankPost * silent! lua vim.highlight.on_yank { higroup = 'Search', timeout = 500 }
 endif
 
+augroup pack_events
+  autocmd!
+  autocmd FileType * call LoadFileTypePackages()
+augroup END
+
 " =============================================================================
 " = Plugin Config - before loading plugins =
 " =============================================================================
 
 " UltiSnips Config
+" ---
 let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
@@ -233,14 +242,17 @@ inoremap <silent><expr> <Tab> pumvisible() ?
   \ "\<Tab>"
 
 " vim-polyglot Config
+" ---
 let g:vue_pre_processors = ['typescript', 'scss']
 let g:polyglot_disabled = ['php', 'autoindent', 'sensible']
 
 " emmet-vim Config
+" ---
 let g:user_emmet_leader_key = '<C-q>'
 let g:user_emmet_install_global = 0
 
-" fzf Config
+" fzf.vim Config
+" ---
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
@@ -248,8 +260,9 @@ nnoremap <Leader>p <Cmd>Files<CR>
 nnoremap <Leader>t <Cmd>Rg<CR>
 
 " ALE Config
-let g:ale_hover_cursor = 0
+" ---
 let g:ale_completion_autoimport = 1
+let g:ale_hover_cursor = 0
 let g:ale_echo_msg_error_str = ''
 let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
@@ -257,6 +270,7 @@ let g:ale_linters_explicit = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
 
 " vim-startify Config
+" ---
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
   \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
@@ -264,19 +278,23 @@ let g:startify_lists = [
 \ ]
 
 " hlyank Config
+" ---
 if !has('nvim-0.5')
   let g:highlightedyank_highlight_duration = 500
   autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
 endif
 
 " indentLine Config
+" ---
 let g:indentLine_char = '│'
 
 " buftabline Config
+" ---
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
 " defx.nvim Config
+" ---
 let g:cnull.defx = {}
 if has('win32')
   let g:cnull.defx.esc = "\\"
@@ -284,24 +302,15 @@ else
   let g:cnull.defx.esc = ':'
 endif
 
-" search files the current pwd
+" Search files the current working directory
 let g:cnull.defx.escapepath = "escape(expand('%:p:h'), ' ". g:cnull.defx.esc ."')"
 let g:cnull.defx.filepath = "expand('%:p')"
 nnoremap <silent> <Leader>ff
   \ <Cmd>execute printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)<CR>
 
 " tokyonight-vim Config
+" ---
 let g:tokyonight_style = 'night'
-
-" LanguageClient-neovim Config
-" let g:LanguageClient_diagnosticsList = 'Location'
-" let g:LanguageClient_useVirtualText = 'No'
-" let g:LanguageClient_serverCommands = {
-"  \ 'javascript': ['typescript-language-server', '--stdio'],
-"  \ 'javascriptreact': ['typescript-language-server', '--stdio'],
-"  \ 'typescript': ['typescript-language-server', '--stdio'],
-"  \ 'typescriptreact': ['typescript-language-server', '--stdio'],
-"\ }
 
 " =============================================================================
 " = Plugin Manager =
@@ -313,18 +322,17 @@ function! PackagerInit(opts) abort
   call packager#add('kristijanhusak/vim-packager', {'type': 'opt'})
 
   " Core
-  call packager#add('mattn/emmet-vim', {'type': 'opt'})
-  call packager#add('creativenull/projectcmd.nvim', {'type': 'opt'})
   call packager#add('cohama/lexima.vim')
-  call packager#add('editorconfig/editorconfig-vim')
   call packager#add('godlygeek/tabular')
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
-  call packager#add('tyru/caw.vim', {'requires': 'Shougo/context_filetype.vim'})
   call packager#add('Shougo/defx.nvim')
+  call packager#add('tyru/caw.vim', {'type': 'opt', 'requires': 'Shougo/context_filetype.vim'})
+  call packager#add('editorconfig/editorconfig-vim', {'type': 'opt'})
+  call packager#add('mattn/emmet-vim', {'type': 'opt'})
+  call packager#add('creativenull/projectcmd.nvim', {'type': 'opt'})
 
-  " LSP/Linter/Formatters
-  " call packager#add('autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'})
+  " LSP/Linter/Formatter
   call packager#add('dense-analysis/ale')
 
   " Autocompletion
@@ -374,7 +382,8 @@ command! -bar PackagerStatus call PackagerInit(g:cnull.plugin.opts) | call packa
 " = Plugin Config - after loading plugins =
 " =============================================================================
 
-" fzf Config
+" fzf.vim Config
+" ---
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \ "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(<q-args>),
@@ -384,6 +393,7 @@ command! -bang -nargs=* Rg
 \ )
 
 " projectcmd.nvim Config
+" ---
 if has('nvim-0.5')
   packadd projectcmd.nvim
   lua require('projectcmd').setup()
