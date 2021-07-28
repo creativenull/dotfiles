@@ -241,10 +241,9 @@ inoremap <silent><expr> <Tab> pumvisible() ?
   \ "\<C-y>" :
   \ "\<Tab>"
 
-" vim-polyglot Config
+" vim-vue Config
 " ---
-let g:vue_pre_processors = ['typescript', 'scss']
-let g:polyglot_disabled = ['php', 'autoindent', 'sensible']
+let g:vue_pre_processors = []
 
 " emmet-vim Config
 " ---
@@ -355,8 +354,10 @@ function! PackagerInit(opts) abort
   call packager#add('mhinz/vim-startify')
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
+  call packager#add('posva/vim-vue')
+  call packager#add('neoclide/vim-jsx-improve')
+  call packager#add('peitalin/vim-jsx-typescript')
   call packager#add('jwalton512/vim-blade')
-  call packager#add('sheerun/vim-polyglot')
   if !has('nvim-0.5')
     call packager#add('machakann/vim-highlightedyank')
   endif
@@ -364,6 +365,7 @@ function! PackagerInit(opts) abort
   " Colorschemes
   call packager#add('ghifarit53/tokyonight-vim')
   call packager#add('mhartington/oceanic-next')
+  call packager#add('jacoborus/tender.vim')
 endfunction
 
 " Package manager bootstrapping strategy
