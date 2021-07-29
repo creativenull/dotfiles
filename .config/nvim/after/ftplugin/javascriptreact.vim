@@ -1,4 +1,8 @@
+" Common Packages on-demand loading
+call LoadCommonFtPackages()
+
 " Emmet
+packadd emmet-vim
 EmmetInstall
 
 " Ultisnips
@@ -9,4 +13,5 @@ let b:ale_linters = ['eslint', 'tsserver']
 let b:ale_fixers = ['prettier']
 
 " LSP
+packadd deoplete.nvim
 call RegisterLsp()

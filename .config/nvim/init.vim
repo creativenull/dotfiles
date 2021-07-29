@@ -129,11 +129,9 @@ endfunction
 function! g:RegisterCompletionEngine() abort
   let l:sources = ['buffer', 'ultisnips', 'ale']
   call deoplete#custom#option({
-    \ 'refresh_always': v:false,
     \ 'max_list': 10,
-    \ 'num_processes': 2,
     \ 'smart_case': v:true,
-    \ 'auto_complete_delay': 100,
+    \ 'auto_complete_delay': 50,
     \ 'sources': {
       \ '_': ['buffer'],
       \ 'javascript': l:sources,
@@ -185,14 +183,16 @@ function! g:RenderInactiveStatusLine() abort
   return ' %t%m%r | %y %= %l/%L:%c '
 endfunction
 
-" On-demand package loading
-function! g:LoadFileTypePackages() abort
-  packadd caw.vim
+function! g:LoadCommonFtPackages() abort
+  " Editor
   packadd editorconfig-vim
+
+  " Commenting
+  packadd caw.vim
+
+  " Snippets
   packadd ultisnips
   packadd vim-snippets
-  packadd emmet-vim
-  packadd deoplete.nvim
 endfunction
 
 " =============================================================================
@@ -220,11 +220,6 @@ augroup END
 if has('nvim-0.5')
   autocmd! TextYankPost * silent! lua vim.highlight.on_yank { higroup = 'Search', timeout = 500 }
 endif
-
-augroup pack_events
-  autocmd!
-  autocmd FileType * call LoadFileTypePackages()
-augroup END
 
 " =============================================================================
 " = Plugin Config - before loading plugins =

@@ -1,4 +1,8 @@
+" Common Packages on-demand loading
+call LoadCommonFtPackages()
+
 " Emmet
+packadd emmet-vim
 EmmetInstall
 
 " ALE
