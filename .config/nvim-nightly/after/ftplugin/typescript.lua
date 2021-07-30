@@ -1,1 +1,1 @@
-vim.cmd [[ EmmetInstall ]]
+_G.LoadCommonPackages()
