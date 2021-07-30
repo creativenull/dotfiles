@@ -14,6 +14,17 @@
 -- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 local userspace = 'nvim-nightly'
 
+-- Disable builtin plugins
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_tar = 1
+vim.g.loaded_zip = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_gzip = 1
+
 -- Runtime Path
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
@@ -47,6 +58,20 @@ vim.cmd(string.format('set packpath^=~/.config/%s', userspace))
 vim.cmd(string.format('set packpath+=~/.config/%s/after', userspace))
 vim.cmd(string.format('set packpath^=~/.local/share/%s/site', userspace))
 vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', userspace))
+
+function _G.LoadCommonPackages()
+  vim.cmd('packadd vim-abolish')
+  vim.cmd('packadd vim-surround')
+  vim.cmd('packadd kommentary')
+  vim.cmd('packadd ultisnips')
+  vim.cmd('packadd vim-snippets')
+
+  vim.cmd('packadd indent-blankline.nvim')
+  require 'cnull.plugins.ui.indent_blankline'
+
+  vim.cmd('packadd todo-comments.nvim')
+  require 'todo-comments'.setup {}
+end
 
 -- Initialize
 local core = require 'cnull.core'
