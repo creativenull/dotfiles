@@ -59,3 +59,10 @@ nmap('<Leader>vs', [[<Cmd>ConfigReload<CR>]])
 
 -- Reload file
 nmap('<Leader>r', [[<Cmd>edit!<CR>]])
+
+-- List maps
+nmap('<Leader>mn', [[<Cmd>nmap<CR>]])
+nmap('<Leader>mv', [[<Cmd>vmap<CR>]])
+nmap('<Leader>mi', [[<Cmd>imap<CR>]])
+nmap('<Leader>mt', [[<Cmd>tmap<CR>]])
+nmap('<Leader>mc', [[<Cmd>cmap<CR>]])
