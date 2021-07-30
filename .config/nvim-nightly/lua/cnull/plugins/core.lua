@@ -6,18 +6,13 @@ local M = {
     {'creativenull/projectcmd.nvim'},
     {'editorconfig/editorconfig-vim'},
     {'kevinhwang91/nvim-bqf'},
-    {'mattn/emmet-vim'},
     {'mcchrish/nnn.vim'},
-    {'tpope/vim-abolish'},
-    {'tpope/vim-surround'},
+    {'tpope/vim-abolish', opt = true},
+    {'tpope/vim-surround', opt = true},
   },
 }
 
 function M.before()
-  -- emmet-vim Config
-  vim.g.user_emmet_leader_key = '<C-q>'
-  vim.g.user_emmet_install_global = false
-
   -- lexima.vim Config
   vim.g.lexima_no_default_rules = true
 end
