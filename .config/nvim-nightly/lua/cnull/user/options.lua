@@ -47,6 +47,7 @@ vim.opt.backspace = {'indent', 'eol', 'start'}
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.ttimeoutlen = 50
 vim.opt.mouse = ''
+vim.opt.shadafile = 'NONE'
 
 -- UI
 vim.opt.hidden = true

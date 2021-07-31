@@ -59,22 +59,8 @@ vim.cmd(string.format('set packpath+=~/.config/%s/after', userspace))
 vim.cmd(string.format('set packpath^=~/.local/share/%s/site', userspace))
 vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', userspace))
 
-function _G.LoadCommonPackages()
-  vim.cmd('packadd vim-abolish')
-  vim.cmd('packadd vim-surround')
-  vim.cmd('packadd kommentary')
-  vim.cmd('packadd ultisnips')
-  vim.cmd('packadd vim-snippets')
-
-  vim.cmd('packadd indent-blankline.nvim')
-  require 'cnull.plugins.ui.indent_blankline'
-
-  vim.cmd('packadd todo-comments.nvim')
-  require 'todo-comments'.setup {}
-end
-
 -- Initialize
-local core = require 'cnull.core'
+local core = require('cnull.core')
 core.setup {
   config = {
     userspace = userspace,
@@ -113,11 +99,27 @@ core.setup {
   end,
 
   after = function()
-    require 'colorizer'.setup()
-    require 'cnull.user.keymaps'
-    require 'cnull.user.conceal'
-    require 'cnull.user.codeshot'
-    require 'cnull.user.options'
-    require 'cnull.user.commands'
+    function _G.LoadCommonPackages()
+      vim.cmd('packadd vim-abolish')
+      vim.cmd('packadd vim-surround')
+      vim.cmd('packadd kommentary')
+      vim.cmd('packadd ultisnips')
+      vim.cmd('packadd vim-snippets')
+
+      vim.cmd('packadd indent-blankline.nvim')
+      require('cnull.plugins.ui.indent_blankline')
+
+      vim.cmd('packadd todo-comments.nvim')
+      require('todo-comments').setup {}
+
+      vim.cmd('packadd nvim-colorizer.lua')
+      require('colorizer').setup()
+    end
+
+    require('cnull.user.keymaps')
+    require('cnull.user.conceal')
+    require('cnull.user.codeshot')
+    require('cnull.user.options')
+    require('cnull.user.commands')
   end,
 }

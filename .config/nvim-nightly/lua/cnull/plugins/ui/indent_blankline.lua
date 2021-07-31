@@ -1,10 +1,8 @@
-local augroup = require 'cnull.core'.augroup
-
 local function indent_blankline_highlights()
-  local bg     = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg')
-  local first  = '#BE185D'
+  local bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg')
+  local first = '#BE185D'
   local second = '#1D4ED8'
-  local third  = '#047857'
+  local third = '#047857'
   local fourth = '#B91C1C'
 
   if _G.CNull.config.theme.transparent then
@@ -21,12 +19,14 @@ local function indent_blankline_highlights()
   vim.cmd(string.format('highlight IndentBlanklineFourthLine guifg=%s guibg=%s', fourth, bg))
 end
 
-augroup('user_indent_blankline_events', {
+--[[ augroup('user_indent_blankline_events', {
   { event = 'ColorScheme', exec = indent_blankline_highlights },
-})
+}) ]]
+
+indent_blankline_highlights()
 
 vim.g.indent_blankline_char = '│'
-vim.g.indent_blankline_filetype_exclude = { 'help', 'markdown' }
+vim.g.indent_blankline_filetype_exclude = {'help', 'markdown'}
 vim.g.indent_blankline_show_first_indent_level = false
 vim.g.indent_blankline_char_highlight_list = {
   'IndentBlanklineFirstLine',
