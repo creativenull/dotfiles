@@ -37,7 +37,7 @@ function M.after()
   vim.opt.pumheight = 10
 
   imap('<C-Space>', [[compe#complete()]], { expr = true, noremap = false })
-  imap('<Tab>', [[compe#confirm(lexima#expand('<LT>TAB>', 'i'))]], { expr = true, noremap = false })
+  imap('<Tab>', [[compe#confirm('<Tab>')]], { expr = true, noremap = false })
 end
 
 return M
