@@ -1,5 +1,5 @@
 local stdpath = vim.fn.stdpath
-local getmodlist = require 'cnull.core.lib.autorequire'.getmodlist
+local getmodlist = require('cnull.core.lib.autorequire').getmodlist
 
 local M = {
   config = {
@@ -36,7 +36,7 @@ function M.trigger_after(config)
 end
 
 function M.loadplugins(config)
-  local packer = require 'packer'
+  local packer = require('packer')
   local plugin_names = {}
 
   -- Get plugin names from each file

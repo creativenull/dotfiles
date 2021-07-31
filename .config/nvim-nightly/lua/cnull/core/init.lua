@@ -1,11 +1,11 @@
-local colorscheme = require 'cnull.core.colorscheme'
-local command = require 'cnull.core.command'
-local config = require 'cnull.core.config'
-local event = require 'cnull.core.event'
-local keymap = require 'cnull.core.keymap'
-local lsp = require 'cnull.core.lsp'
-local reload = require 'cnull.core.reload'
-local plugin = require 'cnull.core.plugin'
+local colorscheme = require('cnull.core.colorscheme')
+local command = require('cnull.core.command')
+local config = require('cnull.core.config')
+local event = require('cnull.core.event')
+local keymap = require('cnull.core.keymap')
+local lsp = require('cnull.core.lsp')
+local reload = require('cnull.core.reload')
+local plugin = require('cnull.core.plugin')
 
 local M = {
   augroup = event.augroup,
@@ -20,7 +20,7 @@ local M = {
 -- @param table cfg
 -- @return nil
 function M.setup(opts)
-  cfg = config.init(opts.config)
+  local cfg = config.init(opts.config)
 
   -- Before core setup
   if opts.before then

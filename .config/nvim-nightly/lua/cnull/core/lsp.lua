@@ -12,16 +12,19 @@ end
 -- Initialize nvim-lsp settings
 -- @return nil
 function M.init()
-  local pub_diagnostics = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    {
-      underline = true,
-      virtual_text = false,
-      signs = true,
-      update_in_insert = true,
-    }
-  )
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = pub_diagnostics
+  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline = true,
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+  })
+
+  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+    width = 80,
+    border = 'single',
+    focusable = false,
+    noautocmd = true,
+  })
 
   capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -30,7 +33,7 @@ function M.init()
       'documentation',
       'detail',
       'additionalTextEdits',
-    }
+    },
   }
 end
 

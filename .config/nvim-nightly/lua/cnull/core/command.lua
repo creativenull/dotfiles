@@ -1,4 +1,4 @@
-local storefn = require 'cnull.core.lib.store'
+local storefn = require('cnull.core.lib.storefn')
 local M = {}
 
 -- Validate options

@@ -1,7 +1,5 @@
 -- https://leafo.net/guides/function-cloning-in-lua.html
-local M = {}
-
-function M.clone_fn(fn)
+local function clone_fn(fn)
   local dumped = string.dump(fn)
   local cloned = loadstring(dumped)
   local i = 1
@@ -16,4 +14,4 @@ function M.clone_fn(fn)
   return cloned
 end
 
-return M.clone_fn
+return clone_fn

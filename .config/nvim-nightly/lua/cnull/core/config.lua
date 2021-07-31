@@ -1,3 +1,4 @@
+local stdpath = vim.fn.stdpath
 local M = {}
 
 local errmsg_pkg_required = 'not installed, install via OS pkg manager (required)'

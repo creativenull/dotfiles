@@ -1,4 +1,4 @@
-local augroup = require 'cnull.core.event'.augroup
+local augroup = require('cnull.core.event').augroup
 local M = {}
 
 -- Set transparent colors when on
