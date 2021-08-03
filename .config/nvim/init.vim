@@ -324,7 +324,8 @@ function! PackagerInit(opts) abort
   call packager#add('tyru/caw.vim', {'type': 'opt', 'requires': 'Shougo/context_filetype.vim'})
   call packager#add('editorconfig/editorconfig-vim', {'type': 'opt'})
   call packager#add('mattn/emmet-vim', {'type': 'opt'})
-  call packager#add('creativenull/projectcmd.nvim', {'type': 'opt'})
+  call packager#add('vim-denops/denops.vim')
+  call packager#add('creativenull/projectlocal-vim')
 
   " LSP/Linter/Formatter
   call packager#add('dense-analysis/ale')
@@ -388,13 +389,6 @@ command! -bang -nargs=* Rg
   \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
   \ <bang>0
 \ )
-
-" projectcmd.nvim Config
-" ---
-if has('nvim-0.5')
-  packadd projectcmd.nvim
-  lua require('projectcmd').setup()
-endif
 
 " =============================================================================
 " = UI/Theme =
