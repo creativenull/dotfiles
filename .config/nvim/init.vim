@@ -7,66 +7,44 @@
 "   + Environment variables: $PYTHON3_HOST_PROG
 " =============================================================================
 
+set nocompatible
+filetype plugin indent on
+syntax on
+
 if !has('nvim')
-  set nocompatible
-  filetype plugin indent on
-  syntax on
+  echoerr "This config is only for neovim 0.4 and up!"
+  finish
 endif
 
-let mapleader = ' '
-let g:python3_host_prog = $PYTHON3_HOST_PROG
+if !executable('git')
+  echoerr '[nvim] "git" is needed!'
+  finish
+endif
 
-let g:cnull = {}
-let g:cnull.transparent = v:false
-
-function! s:make_config() abort
-  let l:std_cache = stdpath('cache')
-  let l:std_config = stdpath('config')
-  let l:std_data = stdpath('data')
-  return {
-    \ 'std_cache': std_cache,
-    \ 'std_config': std_config,
-    \ 'std_data': std_data,
-    \ 'undodir': printf('%s/undo', std_cache),
-  \ }
-endfunction
-
-function! s:make_plugin() abort
-  let l:namespace = 'packager'
-  let l:pack = 'vim-packager'
-  let l:git = 'https://github.com/kristijanhusak/vim-packager.git'
-  return {
-    \ 'git': git,
-    \ 'path': printf('%s/site/pack/%s/opt/%s', g:cnull.config.std_data, namespace, pack),
-    \ 'opts': { 'dir': printf('%s/site/pack/%s', g:cnull.config.std_data, namespace) },
-  \ }
-endfunction
-
-let g:cnull.config = s:make_config()
-let g:cnull.plugin = s:make_plugin()
-
-if !executable('python3') || !exists('$PYTHON3_HOST_PROG')
-  echoerr '"python3" not installed, please install it via your OS software manager, and set the $PYTHON_HOST_PROG env'
-  echoerr 'Additionally install pynvim and msgpack: "pip3 install pynvim msgpack"'
+if !executable('python3')
+  echoerr '[nvim] "python3" is needed!'
+  echoerr 'Additionally install pynvim and msgpack: "pip3 install --user pynvim msgpack"'
   finish
 endif
 
 if !executable('rg')
-  echoerr '"ripgrep" not installed, please install it via your OS software manager'
+  echoerr '[nvim] "ripgrep" is needed!'
   finish
 endif
+
+let g:mapleader = ' '
+let g:loaded_python_provider = 0
+let g:python3_host_prog = $PYTHON3_HOST_PROG
+
+let g:cnull = {}
+let g:cnull.transparent = v:false
+let g:cnull.config = { 'undodir': stdpath('cache') . '/undo' }
 
 " =============================================================================
 " = Functions =
 " =============================================================================
 
-function! s:options_init() abort
-  if !isdirectory(g:cnull.config.undodir)
-    execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
-  endif
-endfunction
-
-function! s:conceal_toggle() abort
+function! s:toggleConcealLevel() abort
   if &conceallevel == 2
     set conceallevel=0
     let g:vim_markdown_conceal = 0
@@ -78,7 +56,7 @@ function! s:conceal_toggle() abort
   endif
 endfunction
 
-function! s:codeshot_toggle() abort
+function! s:toggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
   else
@@ -86,7 +64,7 @@ function! s:codeshot_toggle() abort
   endif
 endfunction
 
-function! s:lsp_status() abort
+function! s:statuslineLspComponent() abort
   if exists('g:loaded_ale')
     let l:red_hl = '%#StatusLineLspRedText#'
     let l:yellow_hl = '%#StatusLineLspYellowText#'
@@ -101,7 +79,8 @@ function! s:lsp_status() abort
   return ''
 endfunction
 
-function! s:get_hicolor(hi, type) abort
+function! s:getHighlightColor(hi, type) abort
+  let l:color = ''
   let l:is_reverse = synIDattr(synIDtrans(hlID(a:hi)), 'reverse')
   if l:is_reverse
     if a:type == 'bg'
@@ -117,50 +96,12 @@ function! s:get_hicolor(hi, type) abort
 endfunction
 
 " LSP Highlights
-function! g:SetLspHighlight() abort
-  let l:bg_color = s:get_hicolor('StatusLine', 'bg')
+function! g:SetLspHighlights() abort
+  let l:bg_color = s:getHighlightColor('StatusLine', 'bg')
   let l:red_color = '#ff4488'
   let l:yellow_color = '#eedd22'
   execute printf('highlight StatusLineLspRedText guifg=%s guibg=%s', l:red_color, l:bg_color)
   execute printf('highlight StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
-endfunction
-
-" autocompletion Config
-function! g:RegisterCompletionEngine() abort
-  let l:sources = ['buffer', 'ultisnips', 'ale']
-  call deoplete#custom#option({
-    \ 'max_list': 10,
-    \ 'smart_case': v:true,
-    \ 'auto_complete_delay': 50,
-    \ 'sources': {
-      \ '_': ['buffer'],
-      \ 'javascript': l:sources,
-      \ 'javascriptreact': l:sources,
-      \ 'php': l:sources,
-      \ 'typescript': l:sources,
-      \ 'typescriptreact': l:sources,
-      \ 'vue': l:sources,
-    \ },
-  \ })
-  call deoplete#enable()
-endfunction
-
-" LSP Keymaps
-function! g:RegisterKeymaps() abort
-  " ALE
-  nmap <buffer><silent> <Leader>lo <Cmd>ALERename<CR>
-  nmap <buffer><silent> <Leader>la <Cmd>ALECodeAction<CR>
-  nmap <buffer><silent> <Leader>ld <Plug>(ale_go_to_definition)
-  nmap <buffer><silent> <Leader>lr <PLug>(ale_find_references)
-  nmap <buffer><silent> <Leader>lf <Plug>(ale_fix)
-  nmap <buffer><silent> <Leader>lh <Plug>(ale_hover)
-  imap <buffer><silent> <C-Space>  <Plug>(ale_complete)
-endfunction
-
-" LSP settings - registerd on FileType event
-function! g:RegisterLsp() abort
-  call RegisterCompletionEngine()
-  call RegisterKeymaps()
 endfunction
 
 " Active statusline
@@ -172,7 +113,7 @@ function! g:RenderActiveStatusLine() abort
     endif
   endif
 
-  let l:lsp = s:lsp_status()
+  let l:lsp = s:statuslineLspComponent()
   let l:fe = &fileencoding
   let l:ff = &fileformat
   return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
@@ -181,18 +122,6 @@ endfunction
 " Inactive statusline
 function! g:RenderInactiveStatusLine() abort
   return ' %t%m%r | %y %= %l/%L:%c '
-endfunction
-
-function! g:LoadCommonFtPackages() abort
-  " Editor
-  packadd editorconfig-vim
-
-  " Commenting
-  packadd caw.vim
-
-  " Snippets
-  packadd ultisnips
-  packadd vim-snippets
 endfunction
 
 " =============================================================================
@@ -212,17 +141,13 @@ endif
 
 augroup statusline_events
   autocmd!
-  autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusLine()
-  autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusLine()
-  autocmd ColorScheme * call SetLspHighlight()
+  autocmd WinEnter,BufEnter * setlocal statusline=%!g:RenderActiveStatusLine()
+  autocmd WinLeave,BufLeave * setlocal statusline=%!g:RenderInactiveStatusLine()
+  autocmd ColorScheme * call g:SetLspHighlights()
 augroup END
 
-if has('nvim-0.5')
-  autocmd! TextYankPost * silent! lua vim.highlight.on_yank { higroup = 'Search', timeout = 500 }
-endif
-
 " =============================================================================
-" = Plugin Config - before loading plugins =
+" = Plugin Pre-Config - before loading plugins =
 " =============================================================================
 
 " UltiSnips Config
@@ -243,7 +168,6 @@ let g:vue_pre_processors = []
 " emmet-vim Config
 " ---
 let g:user_emmet_leader_key = '<C-q>'
-let g:user_emmet_install_global = 0
 
 " fzf.vim Config
 " ---
@@ -255,6 +179,7 @@ nnoremap <Leader>t <Cmd>Rg<CR>
 
 " ALE Config
 " ---
+let g:ale_completion_enabled = 0
 let g:ale_completion_autoimport = 1
 let g:ale_hover_cursor = 0
 let g:ale_echo_msg_error_str = ''
@@ -262,21 +187,21 @@ let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
-
-" vim-startify Config
-" ---
-let g:startify_change_to_dir = 0
-let g:startify_lists = [
-  \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-  \ { 'type': 'sessions',  'header': ['   Sessions']       },
-\ ]
+nnoremap <silent> <Leader>le <Cmd>lopen<CR>
+nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
+nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
+nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
+inoremap <silent> <C-Space>  <Cmd>ALEComplete<CR>
 
 " hlyank Config
 " ---
-if !has('nvim-0.5')
-  let g:highlightedyank_highlight_duration = 500
-  autocmd! ColorScheme * highlight default link HighlightedyankRegion Search
-endif
+let g:highlightedyank_highlight_duration = 500
+augroup user_highlightedyank_events
+  autocmd!
+  autocmd ColorScheme * highlight default link HighlightedyankRegion Search
+augroup END
 
 " indentLine Config
 " ---
@@ -299,12 +224,16 @@ endif
 " Search files the current working directory
 let g:cnull.defx.escapepath = "escape(expand('%:p:h'), ' ". g:cnull.defx.esc ."')"
 let g:cnull.defx.filepath = "expand('%:p')"
-nnoremap <silent> <Leader>ff
-  \ <Cmd>execute printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)<CR>
+let g:cnull.defx.exec = printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)
+nnoremap <silent> <Leader>ff <Cmd>execute g:cnull.defx.exec<CR>
 
-" tokyonight-vim Config
+" deoplete.nvim Config
 " ---
-let g:tokyonight_style = 'night'
+let g:deoplete#enable_at_startup = 1
+
+" projectlocal-vim Config
+" ---
+let g:projectlocal = { 'debug': v:true }
 
 " =============================================================================
 " = Plugin Manager =
@@ -315,31 +244,35 @@ function! PackagerInit(opts) abort
   call packager#init(a:opts)
   call packager#add('kristijanhusak/vim-packager', {'type': 'opt'})
 
+  " Deps
+  call packager#add('Shougo/context_filetype.vim')
+  call packager#add('vim-denops/denops.vim')
+  call packager#add('dstein64/vim-startuptime')
+
   " Core
   call packager#add('cohama/lexima.vim')
   call packager#add('godlygeek/tabular')
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
-  call packager#add('Shougo/defx.nvim')
-  call packager#add('tyru/caw.vim', {'type': 'opt', 'requires': 'Shougo/context_filetype.vim'})
-  call packager#add('editorconfig/editorconfig-vim', {'type': 'opt'})
-  call packager#add('mattn/emmet-vim', {'type': 'opt'})
-  call packager#add('vim-denops/denops.vim')
+  call packager#add('tyru/caw.vim')
+  call packager#add('editorconfig/editorconfig-vim')
+  call packager#add('mattn/emmet-vim')
   call packager#add('creativenull/projectlocal-vim')
+
+  " File Explorer
+  call packager#add('Shougo/defx.nvim')
 
   " LSP/Linter/Formatter
   call packager#add('dense-analysis/ale')
-
-  " Autocompletion
   call packager#add('Shougo/deoplete.nvim', {'type': 'opt'})
 
   " Snippets
-  call packager#add('SirVer/ultisnips', {'type': 'opt'})
-  call packager#add('honza/vim-snippets', {'type': 'opt'})
+  call packager#add('SirVer/ultisnips')
+  call packager#add('honza/vim-snippets')
 
   " Fuzzy Finder
   call packager#add('junegunn/fzf')
-  call packager#add('junegunn/fzf.vim', {'requires': 'junegunn/fzf'})
+  call packager#add('junegunn/fzf.vim')
 
   " Git
   call packager#add('tpope/vim-fugitive')
@@ -347,22 +280,23 @@ function! PackagerInit(opts) abort
   call packager#add('itchyny/vim-gitbranch')
 
   " UI Plugins
-  call packager#add('mhinz/vim-startify')
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
   call packager#add('posva/vim-vue')
   call packager#add('neoclide/vim-jsx-improve')
   call packager#add('peitalin/vim-jsx-typescript')
   call packager#add('jwalton512/vim-blade')
-  if !has('nvim-0.5')
-    call packager#add('machakann/vim-highlightedyank')
-  endif
+  call packager#add('machakann/vim-highlightedyank')
 
   " Colorschemes
-  call packager#add('ghifarit53/tokyonight-vim')
-  call packager#add('mhartington/oceanic-next')
-  call packager#add('jacoborus/tender.vim')
+  call packager#add('Neur1n/neucs.vim')
 endfunction
+
+let g:cnull.plugin = {
+  \ 'git': 'https://github.com/kristijanhusak/vim-packager.git',
+  \ 'path': printf('%s/site/pack/packager/opt/vim-packager', stdpath('data')),
+  \ 'opts': { 'dir': printf('%s/site/pack/packager', stdpath('data')) },
+\ }
 
 " Package manager bootstrapping strategy
 if !isdirectory(g:cnull.plugin.path)
@@ -377,7 +311,7 @@ command! -bar PackagerClean call PackagerInit(g:cnull.plugin.opts) | call packag
 command! -bar PackagerStatus call PackagerInit(g:cnull.plugin.opts) | call packager#status()
 
 " =============================================================================
-" = Plugin Config - after loading plugins =
+" = Plugin Post-Config - after loading plugins =
 " =============================================================================
 
 " fzf.vim Config
@@ -390,28 +324,29 @@ command! -bang -nargs=* Rg
   \ <bang>0
 \ )
 
+" deoplete.nvim Config
+" ---
+augroup user_deoplete_events
+  au!
+  au FileType * packadd deoplete.nvim | call deoplete#enable()
+augroup END
+
 " =============================================================================
 " = UI/Theme =
 " =============================================================================
 
-if has('termguicolors')
-  set termguicolors
-  if !has('nvim')
-    set t_Co=256
-    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-  endif
-endif
-
+set termguicolors
 set number
 set background=dark
-colorscheme tokyonight
+colorscheme neucs
 
 " =============================================================================
 " = Options =
 " =============================================================================
 
-call s:options_init()
+if !isdirectory(g:cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
+endif
 
 " Completion
 set completeopt=menuone,noinsert,noselect
@@ -456,7 +391,7 @@ set mouse=
 set hidden
 set signcolumn=yes
 set cmdheight=2
-set statusline=%!RenderActiveStatusLine()
+set statusline=%!g:RenderActiveStatusLine()
 set showtabline=2
 set laststatus=2
 
@@ -529,10 +464,10 @@ nmap <Leader>mc <Cmd>cmap<CR>
 " =============================================================================
 
 command! Config edit $MYVIMRC
-command! ConfigReload source $MYVIMRC | nohlsearch | execute ':EditorConfigReload'
+command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ConcealToggle call s:conceal_toggle()
-command! CodeshotToggle call s:codeshot_toggle()
+command! ToggleConcealLevel call s:toggleConcealLevel()
+command! ToggleCodeshot call s:toggleCodeshot()
 
 " I can't release my shift key fast enough :')
 command! W w
