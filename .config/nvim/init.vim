@@ -227,10 +227,6 @@ let g:cnull.defx.filepath = "expand('%:p')"
 let g:cnull.defx.exec = printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)
 nnoremap <silent> <Leader>ff <Cmd>execute g:cnull.defx.exec<CR>
 
-" deoplete.nvim Config
-" ---
-let g:deoplete#enable_at_startup = 1
-
 " projectlocal-vim Config
 " ---
 let g:projectlocal = { 'debug': v:true }
@@ -290,6 +286,7 @@ function! PackagerInit(opts) abort
 
   " Colorschemes
   call packager#add('Neur1n/neucs.vim')
+  call packager#add('bluz71/vim-nightfly-guicolors')
 endfunction
 
 let g:cnull.plugin = {
@@ -338,7 +335,7 @@ augroup END
 set termguicolors
 set number
 set background=dark
-colorscheme neucs
+colorscheme nightfly
 
 " =============================================================================
 " = Options =
