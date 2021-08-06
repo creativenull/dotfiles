@@ -34,6 +34,8 @@ endif
 
 let g:mapleader = ' '
 let g:loaded_python_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
 let g:cnull = {}
@@ -66,57 +68,63 @@ endfunction
 
 function! s:statuslineLspComponent() abort
   if exists('g:loaded_ale')
-    let l:red_hl = '%#StatusLineLspRedText#'
-    let l:yellow_hl = '%#StatusLineLspYellowText#'
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = counts.error + counts.style_error
-    let l:all_non_errors = counts.total - all_errors
+    let red_hl = '%#StatusLineLspRedText#'
+    let yellow_hl = '%#StatusLineLspYellowText#'
+    let counts = ale#statusline#Count(bufnr(''))
+    let all_errors = counts.error + counts.style_error
+    let all_non_errors = counts.total - all_errors
     return counts.total == 0
       \ ? 'LSP'
-      \ : printf('%sE%d%s %sW%d%s LSP', l:red_hl, all_errors, '%*', l:yellow_hl, all_non_errors, '%*')
+      \ : printf('%sE%d%s %sW%d%s LSP', red_hl, all_errors, '%*', yellow_hl, all_non_errors, '%*')
   endif
 
   return ''
 endfunction
 
 function! s:getHighlightColor(hi, type) abort
-  let l:color = ''
-  let l:is_reverse = synIDattr(synIDtrans(hlID(a:hi)), 'reverse')
-  if l:is_reverse
-    if a:type == 'bg'
-      let l:color = synIDattr(synIDtrans(hlID(a:hi)), 'fg')
-    elseif a:type == 'fg'
-      let l:color = synIDattr(synIDtrans(hlID(a:hi)), 'bg')
+  let is_reverse = synIDattr(synIDtrans(hlID(a:hi)), 'reverse')
+  let color = ''
+
+  if !empty(is_reverse)
+    if type == 'bg'
+      let color = synIDattr(synIDtrans(hlID(a:hi)), 'fg')
+    elseif type == 'fg'
+      let color = synIDattr(synIDtrans(hlID(a:hi)), 'bg')
     endif
   else
-    let l:color = synIDattr(synIDtrans(hlID(a:hi)), a:type)
+    let color = synIDattr(synIDtrans(hlID(a:hi)), a:type)
   endif
 
-  return l:color
+  return color
 endfunction
 
 " LSP Highlights
 function! g:SetLspHighlights() abort
-  let l:bg_color = s:getHighlightColor('StatusLine', 'bg')
-  let l:red_color = '#ff4488'
-  let l:yellow_color = '#eedd22'
-  execute printf('highlight StatusLineLspRedText guifg=%s guibg=%s', l:red_color, l:bg_color)
-  execute printf('highlight StatusLineLspYellowText guifg=%s guibg=%s', l:yellow_color, l:bg_color)
+  let bg_color = s:getHighlightColor('StatusLine', 'bg')
+  if bg_color == ''
+    let bg_color = '#333333'
+  endif
+
+  let red_color = '#ff4488'
+  let yellow_color = '#eedd22'
+
+  execute printf('highlight StatusLineLspRedText guifg=%s guibg=%s', red_color, bg_color)
+  execute printf('highlight StatusLineLspYellowText guifg=%s guibg=%s', yellow_color, bg_color)
 endfunction
 
 " Active statusline
 function! g:RenderActiveStatusLine() abort
-  let l:branch = ''
+  let branch = ''
   if exists('g:loaded_gitbranch')
     if gitbranch#name() != ''
-      let l:branch = '' . gitbranch#name()
+      let branch = '' . gitbranch#name()
     endif
   endif
 
-  let l:lsp = s:statuslineLspComponent()
-  let l:fe = &fileencoding
-  let l:ff = &fileformat
-  return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', l:branch, '%y', '%=', l:ff, l:fe, '%l/%L:%c', l:lsp)
+  let lsp = s:statuslineLspComponent()
+  let fe = &fileencoding
+  let ff = &fileformat
+  return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', branch, '%y', '%=', ff, fe, '%l/%L:%c', lsp)
 endfunction
 
 " Inactive statusline
@@ -141,25 +149,25 @@ endif
 
 augroup statusline_events
   autocmd!
-  autocmd WinEnter,BufEnter * setlocal statusline=%!g:RenderActiveStatusLine()
-  autocmd WinLeave,BufLeave * setlocal statusline=%!g:RenderInactiveStatusLine()
-  autocmd ColorScheme * call g:SetLspHighlights()
+  autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusLine()
+  autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusLine()
+  autocmd ColorScheme * call SetLspHighlights()
 augroup END
 
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
 
-" UltiSnips Config
+" UltiSnips/vim-snippets Config
 " ---
 let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-inoremap <silent><expr> <Tab> pumvisible() ?
-  \ UltiSnips#CanExpandSnippet() ?
-  \ "<C-r>=UltiSnips#ExpandSnippet()<CR>" :
-  \ "\<C-y>" :
-  \ "\<Tab>"
+inoremap <silent><expr> <Tab> pumvisible()
+  \ ? UltiSnips#CanExpandSnippet()
+    \ ? "<C-r>=UltiSnips#ExpandSnippet()<CR>"
+    \ : "\<C-y>"
+  \ : "\<Tab>"
 
 " vim-vue Config
 " ---
@@ -187,13 +195,13 @@ let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
-nnoremap <silent> <Leader>le <Cmd>lopen<CR>
-nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
-nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
-nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-inoremap <silent> <C-Space>  <Cmd>ALEComplete<CR>
+nmap <silent> <Leader>le <Cmd>lopen<CR>
+nmap <silent> <Leader>lo <Cmd>ALERename<CR>
+nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+nmap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+nmap <silent> <Leader>lf <Cmd>ALEFix<CR>
+nmap <silent> <Leader>lh <Cmd>ALEHover<CR>
+imap <silent> <C-Space>  <Cmd>ALEComplete<CR>
 
 " hlyank Config
 " ---
@@ -226,10 +234,6 @@ let g:cnull.defx.escapepath = "escape(expand('%:p:h'), ' ". g:cnull.defx.esc ."'
 let g:cnull.defx.filepath = "expand('%:p')"
 let g:cnull.defx.exec = printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)
 nnoremap <silent> <Leader>ff <Cmd>execute g:cnull.defx.exec<CR>
-
-" projectlocal-vim Config
-" ---
-let g:projectlocal = { 'debug': v:true }
 
 " =============================================================================
 " = Plugin Manager =
@@ -323,9 +327,19 @@ command! -bang -nargs=* Rg
 
 " deoplete.nvim Config
 " ---
+function! g:SetupDeoplete()
+  packadd deoplete.nvim
+  call deoplete#custom#option({
+    \ 'max_list': 15,
+    \ 'num_processes': 4,
+    \ 'sources': { '_': ['ale', 'ultisnips'] },
+  \ })
+  call deoplete#enable()
+endfunction
+
 augroup user_deoplete_events
   au!
-  au FileType * packadd deoplete.nvim | call deoplete#enable()
+  au FileType * call SetupDeoplete()
 augroup END
 
 " =============================================================================
@@ -388,7 +402,7 @@ set mouse=
 set hidden
 set signcolumn=yes
 set cmdheight=2
-set statusline=%!g:RenderActiveStatusLine()
+set statusline=%!RenderActiveStatusLine()
 set showtabline=2
 set laststatus=2
 
