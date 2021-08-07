@@ -201,7 +201,6 @@ nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
 nmap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
 nmap <silent> <Leader>lf <Cmd>ALEFix<CR>
 nmap <silent> <Leader>lh <Cmd>ALEHover<CR>
-imap <silent> <C-Space>  <Cmd>ALEComplete<CR>
 
 " hlyank Config
 " ---
@@ -247,7 +246,6 @@ function! PackagerInit(opts) abort
   " Deps
   call packager#add('Shougo/context_filetype.vim')
   call packager#add('vim-denops/denops.vim')
-  call packager#add('dstein64/vim-startuptime')
 
   " Core
   call packager#add('cohama/lexima.vim')
@@ -289,8 +287,8 @@ function! PackagerInit(opts) abort
   call packager#add('machakann/vim-highlightedyank')
 
   " Colorschemes
-  call packager#add('Neur1n/neucs.vim')
   call packager#add('bluz71/vim-nightfly-guicolors')
+  call packager#add('bluz71/vim-moonfly-colors')
 endfunction
 
 let g:cnull.plugin = {
@@ -327,12 +325,15 @@ command! -bang -nargs=* Rg
 
 " deoplete.nvim Config
 " ---
+imap <silent><expr> <C-Space> deoplete#manual_complete()
+
 function! g:SetupDeoplete()
   packadd deoplete.nvim
   call deoplete#custom#option({
     \ 'max_list': 15,
     \ 'num_processes': 4,
     \ 'sources': { '_': ['ale', 'ultisnips'] },
+    \ 'nofile_complete_filetypes': ['denite-filter', 'fzf', 'defx', 'gitcommit']
   \ })
   call deoplete#enable()
 endfunction
@@ -349,7 +350,7 @@ augroup END
 set termguicolors
 set number
 set background=dark
-colorscheme nightfly
+colorscheme moonfly
 
 " =============================================================================
 " = Options =
