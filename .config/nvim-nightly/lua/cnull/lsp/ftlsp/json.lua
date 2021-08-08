@@ -4,7 +4,7 @@ if vim.fn.executable(lsp_executable) == 0 then
   return
 end
 
-require 'cnull.core.lsp'.setup('jsonls', {
+require('cnull.core.lsp').setup('jsonls', {
   commands = {
     Format = {
       function()

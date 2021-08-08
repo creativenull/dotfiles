@@ -1,7 +1,7 @@
-local nmap = require 'cnull.core.keymap'.nmap
-local vmap = require 'cnull.core.keymap'.vmap
-local tmap = require 'cnull.core.keymap'.tmap
-local imap = require 'cnull.core.keymap'.imap
+local nmap = require('cnull.core.keymap').nmap
+local vmap = require('cnull.core.keymap').vmap
+local tmap = require('cnull.core.keymap').tmap
+local imap = require('cnull.core.keymap').imap
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
 nmap('<Up>', '')

@@ -1,8 +1,11 @@
-local undodir = vim.fn.expand('~/.cache/nvim/undo')
+local expand = vim.fn.expand
+local isdirectory = vim.fn.isdirectory
+local mkdir = vim.fn.mkdir
+local undodir = expand('~/.cache/nvim/undo')
 
 local function options_init()
-  if vim.fn.isdirectory(undodir) == 0 then
-    vim.fn.mkdir(undodir, 'p')
+  if isdirectory(undodir) == 0 then
+    mkdir(undodir, 'p')
   end
 end
 

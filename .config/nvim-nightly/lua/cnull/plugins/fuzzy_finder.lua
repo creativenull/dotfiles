@@ -1,4 +1,4 @@
-local nmap = require 'cnull.core'.keymap.nmap
+local nmap = require('cnull.core').keymap.nmap
 
 local M = {
   plugins = {
@@ -7,8 +7,8 @@ local M = {
 }
 
 function M.after()
-  local telescope = require 'telescope'
-  local telescope_builtin = require 'telescope.builtin'
+  local telescope = require('telescope')
+  local telescope_builtin = require('telescope.builtin')
 
   telescope.setup {
     defaults = {

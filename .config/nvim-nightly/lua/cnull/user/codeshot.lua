@@ -1,4 +1,4 @@
-local command = require 'cnull.core.command'
+local command = require('cnull.core.command')
 
 local function codeshot_toggle()
   local nu = vim.opt.nu:get()

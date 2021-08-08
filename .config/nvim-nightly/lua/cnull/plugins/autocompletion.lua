@@ -1,4 +1,4 @@
-local imap = require 'cnull.core'.keymap.imap
+local imap = require('cnull.core').keymap.imap
 
 local M = {
   plugins = {
@@ -7,7 +7,7 @@ local M = {
 }
 
 function M.after()
-  require 'compe'.setup {
+  require('compe').setup {
     enabled = true,
     autocomplete = true,
     debug = false,

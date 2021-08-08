@@ -19,10 +19,10 @@ end
 
 function M.after()
   -- projectcmd.nvim Config
-  require 'projectcmd'.setup {}
+  -- require('projectcmd').setup {}
 
   -- nnn.vim Config
-  require 'nnn'.setup {
+  require('nnn').setup {
     set_default_mappings = false,
     layout = {
       window = {
@@ -35,7 +35,7 @@ function M.after()
   nmap('<Leader>ff', [[<Cmd>NnnPicker %:p:h<CR>]])
 
   -- pears.nvim Config
-  require 'pears'.setup()
+  require('pears').setup()
 end
 
 return M

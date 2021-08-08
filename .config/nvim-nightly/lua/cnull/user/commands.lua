@@ -1,4 +1,4 @@
-local command = require 'cnull.core.command'
+local command = require('cnull.core.command')
 
 command('ConfigPlugins', [[execute "edit ]] .. vim.env.HOME .. [[/.config/nvim-nightly/lua/cnull/plugins/plugins.lua"]])
 

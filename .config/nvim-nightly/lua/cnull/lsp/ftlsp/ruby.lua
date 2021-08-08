@@ -4,7 +4,7 @@ if vim.fn.executable(lsp_executable) == 0 then
   return
 end
 
-require 'cnull.core.lsp'.setup('solargraph', {
+require('cnull.core.lsp').setup('solargraph', {
   settings = {
     solargraph = {
       diagnostics = true

@@ -8,7 +8,7 @@ local lua_rtp = vim.split(package.path, ';')
 table.insert(lua_rtp, 'lua/?.lua')
 table.insert(lua_rtp, 'lua/?/init.lua')
 
-require 'cnull.core.lsp'.setup('sumneko_lua', {
+require('cnull.core.lsp').setup('sumneko_lua', {
   cmd = { 'luals' },
   settings = {
     Lua = {

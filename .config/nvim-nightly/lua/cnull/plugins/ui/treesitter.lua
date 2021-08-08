@@ -1,14 +1,17 @@
-require 'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   ensure_installed = {
     'css',
+    'graphql',
     'html',
     'javascript',
-    'typescript',
-    'php',
     'lua',
+    'php',
+    'typescript',
     'vue',
-    'graphql',
   },
   highlight = { enable = true },
-  indent = { enable = false },
+  indent = { enable = true },
+  refactor = {
+    highlight_definitions = { enable = true },
+  },
 }

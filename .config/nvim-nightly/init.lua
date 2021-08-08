@@ -14,17 +14,6 @@
 -- https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
 local userspace = 'nvim-nightly'
 
--- Disable builtin plugins
-vim.g.loaded_matchit = 1
-vim.g.loaded_matchparen = 1
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_tar = 1
-vim.g.loaded_zip = 1
-vim.g.loaded_zipPlugin = 1
-vim.g.loaded_gzip = 1
-
 -- Runtime Path
 vim.cmd('set runtimepath-=~/.config/nvim')
 vim.cmd('set runtimepath-=~/.config/nvim/after')
@@ -61,7 +50,7 @@ vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', userspace))
 
 -- Initialize
 local core = require('cnull.core')
-core.setup {
+core.setup({
   config = {
     userspace = userspace,
     runtimepath = string.format('%s/.config/%s/lua', vim.env.HOME, userspace),
@@ -89,13 +78,11 @@ core.setup {
   -- Events
   before = function()
     -- Highlight text yank
-    core.autocmd {
+    core.autocmd({
       clear = true,
       event = 'TextYankPost',
-      exec = function()
-        vim.highlight.on_yank { higroup = 'Search', timeout = 500 }
-      end,
-    }
+      exec = function() vim.highlight.on_yank({ higroup = 'Search', timeout = 500 }) end,
+    })
   end,
 
   after = function()
@@ -122,4 +109,4 @@ core.setup {
     require('cnull.user.options')
     require('cnull.user.commands')
   end,
-}
+})

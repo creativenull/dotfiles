@@ -4,9 +4,8 @@ if vim.fn.executable(lsp_executable) == 0 then
   return
 end
 
-local root_pattern = require 'lspconfig'.util.root_pattern
-
-require 'cnull.core.lsp'.setup('vuels', {
+local root_pattern = require('lspconfig').util.root_pattern
+require('cnull.core.lsp').setup('vuels', {
   root_dir = root_pattern('package.json', 'vue.config.js'),
   init_options = {
     config = {

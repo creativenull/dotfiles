@@ -1,4 +1,4 @@
-local command = require 'cnull.core.command'
+local command = require('cnull.core.command')
 
 local function conceal_toggle()
   local cl = vim.opt.cole:get()

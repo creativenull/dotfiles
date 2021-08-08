@@ -6,7 +6,7 @@ local M = {
 }
 
 function M.after()
-  require 'gitsigns'.setup()
+  require('gitsigns').setup()
 end
 
 return M
