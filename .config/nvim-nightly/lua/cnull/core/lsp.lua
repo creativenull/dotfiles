@@ -1,13 +1,7 @@
-local on_attach = nil
-local capabilities = nil
-local M = {}
-
--- Set default on_attach function
--- @param function fn
--- @return nil
-function M.set_on_attach(fn)
-  on_attach = fn
-end
+local M = {
+  on_attach = nil,
+  capabilities = nil,
+}
 
 -- Initialize nvim-lsp settings
 -- @return nil
@@ -23,12 +17,11 @@ function M.init()
     width = 80,
     border = 'single',
     focusable = false,
-    noautocmd = true,
   })
 
-  capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
+  M.capabilities = vim.lsp.protocol.make_client_capabilities()
+  M.capabilities.textDocument.completion.completionItem.snippetSupport = true
+  M.capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = {
       'documentation',
       'detail',
@@ -43,9 +36,10 @@ end
 -- @return nil
 function M.setup(lspname, lspopts)
   local default_opts = {
-    on_attach = on_attach,
-    capabilities = capabilities,
+    on_attach = M.on_attach,
+    capabilities = M.capabilities,
   }
+
   lspopts = vim.tbl_extend('force', default_opts, lspopts or {})
 
   local success, lspconfig = pcall(require, 'lspconfig')
