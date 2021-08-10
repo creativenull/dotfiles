@@ -4,7 +4,7 @@ local nmap = core.keymap.nmap
 local M = {
   plugins = {
     {'neovim/nvim-lspconfig'},
-    {'creativenull/diagnosticls-nvim', requires = {'neovim/nvim-lspconfig'}},
+    {'creativenull/diagnosticls-configs-nvim', requires = {'neovim/nvim-lspconfig'}},
   },
 }
 
@@ -27,28 +27,28 @@ function M.after()
 
   require('cnull.lsp').setup({'javascript', 'json', 'lua', 'php', 'typescript'})
 
-  local dls = require('diagnosticls-nvim')
+  local dls = require('diagnosticls-configs')
   dls.init({ on_attach = on_attach })
   dls.setup {
     lua = {
-      linter = require 'diagnosticls-nvim.linters.luacheck',
-      formatter = require 'diagnosticls-nvim.formatters.lua_format',
+      linter = require 'diagnosticls-configs.linters.luacheck',
+      formatter = require 'diagnosticls-configs.formatters.lua_format',
     },
     javascript = {
-      linter = require 'diagnosticls-nvim.linters.eslint',
-      formatter = require 'diagnosticls-nvim.formatters.prettier',
+      linter = require 'diagnosticls-configs.linters.eslint',
+      formatter = require 'diagnosticls-configs.formatters.prettier',
     },
     javascriptreact = {
-      linter = require 'diagnosticls-nvim.linters.eslint',
-      formatter = require 'diagnosticls-nvim.formatters.prettier',
+      linter = require 'diagnosticls-configs.linters.eslint',
+      formatter = require 'diagnosticls-configs.formatters.prettier',
     },
     typescript = {
-      linter = require 'diagnosticls-nvim.linters.eslint',
-      formatter = require 'diagnosticls-nvim.formatters.prettier',
+      linter = require 'diagnosticls-configs.linters.eslint',
+      formatter = require 'diagnosticls-configs.formatters.prettier',
     },
     typescriptreact = {
-      linter = require 'diagnosticls-nvim.linters.eslint',
-      formatter = require 'diagnosticls-nvim.formatters.prettier',
+      linter = require 'diagnosticls-configs.linters.eslint',
+      formatter = require 'diagnosticls-configs.formatters.prettier',
     },
   }
 end
