@@ -1,5 +1,9 @@
 # My nvim-nightly config
 
+> DO NOT USE THIS CONFIG
+> Check out my [nvim-config repo][nvim-config] if you want to try it out, this one is a more customized version of
+> that config.
+
 [Taken from my post on having two separate versions of neovim][post]
 
 This is my experimental nvim config, I use this to test out different lua plugins/building or a bootstrap framework
@@ -82,5 +86,6 @@ cp -rv $HOME/cnull-dotfiles/.config/nvim-nightly $HOME/.config/nvim-nightly
 Executing `nv` from any directory should start to install plugins and setup nvim from the `nvim-nightly` config
 directory.
 
+[nvim-config]: https://github.com/creativenull/nvim-config
 [nvim-prereq]: https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites
 [post]: https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
