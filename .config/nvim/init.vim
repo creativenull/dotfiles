@@ -132,6 +132,16 @@ function! g:RenderInactiveStatusLine() abort
   return ' %t%m%r | %y %= %l/%L:%c '
 endfunction
 
+function! g:LspKeymaps() abort
+  nmap <silent> <Leader>le <Cmd>lopen<CR>
+  nmap <silent> <Leader>lo <Cmd>ALERename<CR>
+  nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+  nmap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+  nmap <silent> <Leader>lf <Cmd>ALEFix<CR>
+  nmap <silent> <Leader>lh <Cmd>ALEHover<CR>
+  inoremap <silent> <C-Space> <Cmd>ALEComplete<CR>
+endfunction
+
 " =============================================================================
 " = Events =
 " =============================================================================
@@ -164,9 +174,7 @@ let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 inoremap <silent><expr> <Tab> pumvisible()
-  \ ? UltiSnips#CanExpandSnippet()
-    \ ? "<C-r>=UltiSnips#ExpandSnippet()<CR>"
-    \ : "\<C-y>"
+  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
   \ : "\<Tab>"
 
 " vim-vue Config
@@ -195,12 +203,6 @@ let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
-nmap <silent> <Leader>le <Cmd>lopen<CR>
-nmap <silent> <Leader>lo <Cmd>ALERename<CR>
-nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-nmap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-nmap <silent> <Leader>lf <Cmd>ALEFix<CR>
-nmap <silent> <Leader>lh <Cmd>ALEHover<CR>
 
 " hlyank Config
 " ---
@@ -219,20 +221,9 @@ let g:indentLine_char = '│'
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
-" defx.nvim Config
+" fern.vim Config
 " ---
-let g:cnull.defx = {}
-if has('win32')
-  let g:cnull.defx.esc = "\\"
-else
-  let g:cnull.defx.esc = ':'
-endif
-
-" Search files the current working directory
-let g:cnull.defx.escapepath = "escape(expand('%:p:h'), ' ". g:cnull.defx.esc ."')"
-let g:cnull.defx.filepath = "expand('%:p')"
-let g:cnull.defx.exec = printf("Defx `%s` -search=`%s`", g:cnull.defx.escapepath, g:cnull.defx.filepath)
-nnoremap <silent> <Leader>ff <Cmd>execute g:cnull.defx.exec<CR>
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
 " =============================================================================
 " = Plugin Manager =
@@ -246,6 +237,7 @@ function! PackagerInit(opts) abort
   " Deps
   call packager#add('Shougo/context_filetype.vim')
   call packager#add('vim-denops/denops.vim')
+  call packager#add('antoinemadec/FixCursorHold.nvim')
 
   " Core
   call packager#add('cohama/lexima.vim')
@@ -258,11 +250,11 @@ function! PackagerInit(opts) abort
   call packager#add('creativenull/projectlocal-vim')
 
   " File Explorer
-  call packager#add('Shougo/defx.nvim')
+  call packager#add('lambdalisue/fern.vim')
 
   " LSP/Linter/Formatter
   call packager#add('dense-analysis/ale')
-  call packager#add('Shougo/deoplete.nvim', {'type': 'opt'})
+  call packager#add('Shougo/deoplete.nvim')
 
   " Snippets
   call packager#add('SirVer/ultisnips')
@@ -294,7 +286,7 @@ endfunction
 let g:cnull.plugin = {
   \ 'git': 'https://github.com/kristijanhusak/vim-packager.git',
   \ 'path': printf('%s/site/pack/packager/opt/vim-packager', stdpath('data')),
-  \ 'opts': { 'dir': printf('%s/site/pack/packager', stdpath('data')) },
+  \ 'opts': {'dir': printf('%s/site/pack/packager', stdpath('data'))},
 \ }
 
 " Package manager bootstrapping strategy
@@ -325,15 +317,12 @@ command! -bang -nargs=* Rg
 
 " deoplete.nvim Config
 " ---
-imap <silent><expr> <C-Space> deoplete#manual_complete()
-
 function! g:SetupDeoplete()
   packadd deoplete.nvim
   call deoplete#custom#option({
-    \ 'max_list': 15,
-    \ 'num_processes': 4,
-    \ 'sources': { '_': ['ale', 'ultisnips'] },
-    \ 'nofile_complete_filetypes': ['denite-filter', 'fzf', 'defx', 'gitcommit']
+    \ 'sources': {'_': ['ale', 'ultisnips']},
+    \ 'num_processes': 2,
+    \ 'nofile_complete_filetypes': ['denite-filter', 'fzf', 'fern', 'gitcommit'],
   \ })
   call deoplete#enable()
 endfunction
@@ -384,6 +373,7 @@ set colorcolumn=120
 set scrolloff=5
 set lazyredraw
 set nospell
+set wildignorecase
 
 " System
 set encoding=utf-8
@@ -470,6 +460,9 @@ nmap <Leader>mv <Cmd>vmap<CR>
 nmap <Leader>mi <Cmd>imap<CR>
 nmap <Leader>mt <Cmd>tmap<CR>
 nmap <Leader>mc <Cmd>cmap<CR>
+
+" Lsp Keymaps
+call g:LspKeymaps()
 
 " =============================================================================
 " = Commands =
