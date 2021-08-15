@@ -7,16 +7,16 @@ local M = {}
 local function register_transparent_event(theme)
   if theme.transparent then
     augroup('transparent_bg_events', {
-      { event = 'ColorScheme', exec = [[highlight Normal guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight SignColumn guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight LineNr guifg=#888888 guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight CursorLineNr guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight Terminal guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight EndOfBuffer guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight FoldColumn guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight Folded guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight ToolbarLine guibg=NONE]] },
-      { event = 'ColorScheme', exec = [[highlight Comment guifg=#888888]] },
+      { event = 'ColorScheme', exec = 'highlight Normal guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight SignColumn guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight LineNr guifg=#888888 guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight CursorLineNr guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight Terminal guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight EndOfBuffer guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight FoldColumn guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight Folded guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight ToolbarLine guibg=NONE' },
+      { event = 'ColorScheme', exec = 'highlight Comment guifg=#888888' },
     })
   end
 end

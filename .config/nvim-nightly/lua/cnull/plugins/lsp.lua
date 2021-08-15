@@ -1,6 +1,3 @@
-local core = require('cnull.core')
-local nmap = core.keymap.nmap
-
 local M = {
   plugins = {
     {'neovim/nvim-lspconfig'},
@@ -9,6 +6,9 @@ local M = {
 }
 
 function M.after()
+  local corelsp = require('cnull.core.lsp')
+  local nmap = require('cnull.core.keymap').nmap
+
   local function on_attach(_, bufnr)
     local diag_opts = '{ width = 80, focusable = false, border = "single" }'
 
@@ -22,14 +22,14 @@ function M.after()
     nmap('<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics('.. diag_opts ..')<CR>', { bufnr = bufnr })
   end
 
-  core.lsp.init()
-  core.lsp.on_attach = on_attach
+  corelsp.init()
+  corelsp.on_attach = on_attach
 
   require('cnull.lsp').setup({'javascript', 'json', 'lua', 'php', 'typescript'})
 
   local dls = require('diagnosticls-configs')
   dls.init({ on_attach = on_attach })
-  dls.setup {
+  dls.setup({
     lua = {
       linter = require 'diagnosticls-configs.linters.luacheck',
       formatter = require 'diagnosticls-configs.formatters.lua_format',
@@ -50,7 +50,7 @@ function M.after()
       linter = require 'diagnosticls-configs.linters.eslint',
       formatter = require 'diagnosticls-configs.formatters.prettier',
     },
-  }
+  })
 end
 
 return M

@@ -1,9 +1,7 @@
-local nmap = require 'cnull.core'.keymap.nmap
-
 local M = {
   plugins = {
     {'steelsojka/pears.nvim'},
-    {'creativenull/projectcmd.nvim'},
+    {'creativenull/projectlocal-vim', requires = 'vim-denops/denops.vim'},
     {'editorconfig/editorconfig-vim'},
     {'kevinhwang91/nvim-bqf'},
     {'mcchrish/nnn.vim'},
@@ -12,17 +10,12 @@ local M = {
   },
 }
 
-function M.before()
-  -- lexima.vim Config
-  vim.g.lexima_no_default_rules = true
-end
-
 function M.after()
-  -- projectcmd.nvim Config
-  -- require('projectcmd').setup {}
+  local nmap = require('cnull.core.keymap').nmap
 
   -- nnn.vim Config
-  require('nnn').setup {
+  -- ---
+  require('nnn').setup({
     set_default_mappings = false,
     layout = {
       window = {
@@ -31,10 +24,11 @@ function M.after()
         highlight = 'Debug',
       },
     },
-  }
+  })
   nmap('<Leader>ff', [[<Cmd>NnnPicker %:p:h<CR>]])
 
   -- pears.nvim Config
+  -- ---
   require('pears').setup()
 end
 

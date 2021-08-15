@@ -57,11 +57,10 @@ core.setup({
     leader = ' ',
 
     theme = {
-      name = 'zephyr',
-      transparent = true,
+      name = 'moonfly',
+      transparent = false,
       setup = function()
         -- vim.g.tokyonight_style = 'night'
-        -- vim.g.tokyonight_transparent = true
       end,
     },
 
@@ -77,11 +76,15 @@ core.setup({
 
   -- Events
   before = function()
+    local autocmd = require('cnull.core.event').autocmd
+
     -- Highlight text yank
-    core.autocmd({
+    autocmd({
       clear = true,
       event = 'TextYankPost',
-      exec = function() vim.highlight.on_yank({ higroup = 'Search', timeout = 500 }) end,
+      exec = function()
+        vim.highlight.on_yank({ higroup = 'Search', timeout = 500 })
+      end,
     })
   end,
 
@@ -97,10 +100,7 @@ core.setup({
       require('cnull.plugins.ui.indent_blankline')
 
       vim.cmd('packadd todo-comments.nvim')
-      require('todo-comments').setup {}
-
-      vim.cmd('packadd nvim-colorizer.lua')
-      require('colorizer').setup()
+      require('todo-comments').setup()
     end
 
     require('cnull.user.keymaps')

@@ -1,6 +1,9 @@
-local lsp_executable = 'luals'
-if vim.fn.executable(lsp_executable) == 0 then
-  vim.api.nvim_err_writeln(string.format('lsp: %q is not installed', lsp_executable))
+local fn = vim.fn
+local api = vim.api
+
+local exec = 'luals'
+if fn.executable(exec) == 0 then
+  api.nvim_err_writeln(string.format('lsp: %q is not installed', exec))
   return
 end
 
@@ -20,11 +23,11 @@ require('cnull.core.lsp').setup('sumneko_lua', {
       },
       diagnostics = {
         -- Get the language server to recognize the `vim` global
-        globals = { 'vim' },
+        globals = {'vim'},
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file('', true),
+        library = api.nvim_get_runtime_file('', true),
       },
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {

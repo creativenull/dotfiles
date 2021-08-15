@@ -1,3 +1,4 @@
+local api = vim.api
 local storefn = require('cnull.core.lib.storefn')
 local M = {}
 
@@ -43,9 +44,9 @@ function M.autocmd(opts)
     execfn or opts.exec
   )
 
-  local success, errmsg = pcall(vim.api.nvim_command, au)
+  local success, errmsg = pcall(api.nvim_command, au)
   if not success then
-    vim.api.nvim_err_writeln(errmsg)
+    api.nvim_err_writeln(errmsg)
   end
 end
 
@@ -58,12 +59,12 @@ function M.augroup(name, autocmds)
     error(debug.traceback('augroup: `autocmds` cannot be empty'))
   end
 
-  vim.cmd('augroup ' .. name)
-  vim.cmd('autocmd!')
+  api.nvim_command('augroup ' .. name)
+  api.nvim_command('autocmd!')
   for _,exec in pairs(autocmds) do
     M.autocmd(exec)
   end
-  vim.cmd('augroup end')
+  api.nvim_command('augroup END')
 end
 
 return M

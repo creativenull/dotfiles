@@ -1,5 +1,6 @@
 local function indent_blankline_highlights()
-  local bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg')
+  local fn = vim.fn
+  local bg = fn.synIDattr(fn.synIDtrans(fn.hlID('Normal')), 'bg')
   local first = '#BE185D'
   local second = '#1D4ED8'
   local third = '#047857'
@@ -19,6 +20,7 @@ local function indent_blankline_highlights()
   vim.cmd(string.format('highlight IndentBlanklineFourthLine guifg=%s guibg=%s', fourth, bg))
 end
 
+-- Used to call it on startup, but now using 'opt' type
 --[[ augroup('user_indent_blankline_events', {
   { event = 'ColorScheme', exec = indent_blankline_highlights },
 }) ]]

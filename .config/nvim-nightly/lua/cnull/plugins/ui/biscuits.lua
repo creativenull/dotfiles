@@ -1,6 +1,6 @@
-local nmap = require('cnull.core').keymap.nmap
+local nmap = require('cnull.core.keymap').nmap
 
-require('nvim-biscuits').setup {
+require('nvim-biscuits').setup({
   default_config = {
     cursor_line_only = true,
     max_length = 32,
@@ -11,6 +11,6 @@ require('nvim-biscuits').setup {
       'CursorHoldI',
     },
   },
-}
+})
 
 nmap('<Leader>cb', function() require 'nvim-biscuits'.toggle_biscuits() end)

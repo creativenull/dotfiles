@@ -8,10 +8,15 @@ local M = {}
 -- @return nil
 local function validate(input, exec)
   local valid_strfn = type(exec) == 'string' or type(exec) == 'function'
-  vim.validate {
-    input = { input, 'string' },
-    exec = { exec, function() return valid_strfn end },
-  }
+  vim.validate({
+    input = {input, 'string'},
+    exec = {
+      exec,
+      function()
+        return valid_strfn
+      end,
+    },
+  })
 end
 
 -- Merge opts with default keymap options
@@ -34,7 +39,7 @@ end
 local function set_exec(input, exec)
   local execfn = nil
   if type(exec) == 'function' then
-    execfn = '<Cmd>' .. storefn('keymaps', input, exec) .. '<CR>'
+    execfn = string.format('<Cmd>%s<CR>', storefn('keymaps', input, exec))
   end
   exec = execfn or exec
   return exec
@@ -51,17 +56,18 @@ local function mapper(mode, input, exec, opts)
   opts = merge_opts(opts)
   exec = set_exec(input, exec)
 
-  local success, errmsg = true, ''
   if opts.bufnr then
     local bufnr = opts.bufnr
     opts.bufnr = nil
-    success, errmsg = pcall(vim.api.nvim_buf_set_keymap, bufnr, mode, input, exec, opts)
+    local success, errmsg = pcall(vim.api.nvim_buf_set_keymap, bufnr, mode, input, exec, opts)
+    if not success then
+      vim.api.nvim_err_writeln(errmsg)
+    end
   else
-    success, errmsg = pcall(vim.api.nvim_set_keymap, mode, input, exec, opts)
-  end
-
-  if not success then
-    vim.api.nvim_err_writeln(errmsg)
+    local success, errmsg = pcall(vim.api.nvim_set_keymap, mode, input, exec, opts)
+    if not success then
+      vim.api.nvim_err_writeln(errmsg)
+    end
   end
 end
 
@@ -79,6 +85,22 @@ end
 
 function M.tmap(input, exec, opts)
   mapper('t', input, exec, opts)
+end
+
+function M.cmap(input, exec, opts)
+  mapper('c', input, exec, opts)
+end
+
+function M.xmap(input, exec, opts)
+  mapper('x', input, exec, opts)
+end
+
+function M.omap(input, exec, opts)
+  mapper('o', input, exec, opts)
+end
+
+function M.smap(input, exec, opts)
+  mapper('s', input, exec, opts)
 end
 
 return M

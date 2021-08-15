@@ -48,11 +48,11 @@ local colors = {
   none = 'NONE',
 }
 
-local space_provider = function()
+local function space_provider()
   return ' '
 end
 
-local line_info_provider = function()
+local function line_info_provider()
   local bufnr = vim.fn.bufnr()
   local bufinfo = vim.fn.getbufinfo(bufnr)
   bufinfo = bufinfo[1]
@@ -62,28 +62,28 @@ local line_info_provider = function()
   return string.format('%s|%s:%s', linenum, linecount, col)
 end
 
-local lsp_error_provider = function()
+local function lsp_error_provider()
   local bufnr = vim.fn.bufnr()
   local errors = vim.lsp.diagnostic.get_count(bufnr, [[Error]])
   if errors ~= 0 then return string.format('E:%s ', errors) end
   return ''
 end
 
-local lsp_warning_provider = function()
+local function lsp_warning_provider()
   local bufnr = vim.fn.bufnr()
   local warnings = vim.lsp.diagnostic.get_count(bufnr, [[Warning]])
   if warnings ~= 0 then return string.format('W:%s ', warnings) end
   return ''
 end
 
-local lsp_text_provider = function()
+local function lsp_text_provider()
   local bufnr = vim.fn.bufnr('')
   local clients = vim.lsp.buf_get_clients(bufnr)
   if vim.tbl_isempty(clients) then return '' end
   return 'LSP'
 end
 
-local buf_exists = function()
+local function buf_exists()
   local bufname = vim.fn.expand('%:t')
   if vim.fn.empty(bufname) == 1 then return false end
   return true

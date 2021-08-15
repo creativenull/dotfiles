@@ -1,4 +1,4 @@
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
   ensure_installed = {
     'css',
     'graphql',
@@ -14,4 +14,4 @@ require('nvim-treesitter.configs').setup {
   refactor = {
     highlight_definitions = { enable = true },
   },
-}
+})

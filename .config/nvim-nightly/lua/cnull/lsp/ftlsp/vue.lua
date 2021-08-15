@@ -1,6 +1,9 @@
-local lsp_executable = 'vls'
-if vim.fn.executable(lsp_executable) == 0 then
-  vim.api.nvim_err_writeln(string.format('lsp: %q is not installed', lsp_executable))
+local fn = vim.fn
+local api = vim.api
+
+local exec = 'vls'
+if fn.executable(exec) == 0 then
+  api.nvim_err_writeln(string.format('lsp: %q is not installed', exec))
   return
 end
 

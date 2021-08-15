@@ -1,41 +1,41 @@
-local colorscheme = require('cnull.core.colorscheme')
-local command = require('cnull.core.command')
-local config = require('cnull.core.config')
-local event = require('cnull.core.event')
-local keymap = require('cnull.core.keymap')
-local lsp = require('cnull.core.lsp')
-local reload = require('cnull.core.reload')
-local plugin = require('cnull.core.plugin')
+local M = {}
 
-local M = {
-  augroup = event.augroup,
-  autocmd = event.autocmd,
-  command = command,
-  keymap = keymap,
-  lsp = lsp,
-  reload = reload,
-}
+local function set_defaults(cfg)
+  vim.g.loaded_python_provider = 0
+  vim.g.loaded_ruby_provider = 0
+  vim.g.loaded_perl_provider = 0
+
+  -- Python3 plugins support
+  if vim.env.PYTHON3_HOST_PROG ~= nil then
+    vim.g.python3_host_prog = vim.env.PYTHON3_HOST_PROG
+  end
+
+  -- Leader mappings
+  vim.g.mapleader = cfg.leader
+  vim.g.maplocalleader = cfg.localleader
+end
 
 -- Core setup
 -- @param table cfg
 -- @return nil
 function M.setup(opts)
+  local colorscheme = require('cnull.core.colorscheme')
+  local command = require('cnull.core.command')
+  local config = require('cnull.core.config')
+  local plugin = require('cnull.core.plugin')
+  local reload = require('cnull.core.reload')
+
+  -- Default config
   local cfg = config.init(opts.config)
+
+  -- Set defaults
+  set_defaults(cfg)
 
   -- Before core setup
   if opts.before then
     opts.before(cfg)
   else
     error('core: before() is required!')
-  end
-
-  -- Leader mappings
-  vim.g.mapleader = cfg.leader
-  vim.g.maplocalleader = cfg.localleader
-
-  -- Python3 plugins support
-  if vim.env.PYTHON3_HOST_PROG ~= nil then
-    vim.g.python3_host_prog = vim.env.PYTHON3_HOST_PROG
   end
 
   -- Plugins

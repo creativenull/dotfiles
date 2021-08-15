@@ -1,4 +1,5 @@
-local stdpath = vim.fn.stdpath
+local api = vim.api
+local fn = vim.fn
 local getmodlist = require('cnull.core.lib.autorequire').getmodlist
 
 local M = {
@@ -7,7 +8,7 @@ local M = {
     git = 'https://github.com/wbthomason/packer.nvim.git',
     pack = 'packer.nvim',
     selfcare = 'wbthomason/packer.nvim',
-    installpath = stdpath('data') .. '/site/packer/pack/packer/opt/packer.nvim',
+    installpath = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim',
     init = nil,
   },
   modlist = {},
@@ -35,7 +36,7 @@ function M.trigger_after(config)
   end
 end
 
-function M.loadplugins(config)
+function M.loadplugins()
   local packer = require('packer')
   local plugin_names = {}
 
@@ -47,7 +48,7 @@ function M.loadplugins(config)
         table.insert(plugin_names, plugin)
       end
     else
-      vim.api.nvim_err_writeln('plugin: "M.plugins" is required to properly load plugins')
+      api.nvim_err_writeln('plugin: "M.plugins" is required to properly load plugins')
       return
     end
   end
@@ -79,18 +80,18 @@ function M.setup(config)
 
   -- Bootstraping
   local pconfig = M.config
-  if vim.fn.isdirectory(pconfig.installpath) == 0 then
-    vim.api.nvim_command(string.format('!git clone %s %s', pconfig.git, pconfig.installpath))
+  if fn.isdirectory(pconfig.installpath) == 0 then
+    api.nvim_command(string.format('!git clone %s %s', pconfig.git, pconfig.installpath))
 
-    vim.api.nvim_command('packadd ' .. pconfig.pack)
-    M.loadplugins(config)
+    api.nvim_command('packadd ' .. pconfig.pack)
+    M.loadplugins()
 
     -- Install plugins
     installing = true
-    vim.api.nvim_command('PackerInstall')
+    api.nvim_command('PackerInstall')
   else
-    vim.api.nvim_command('packadd ' .. pconfig.pack)
-    M.loadplugins(config)
+    api.nvim_command('packadd ' .. pconfig.pack)
+    M.loadplugins()
   end
 
   -- Trigger the after() functions in each plugin file
@@ -99,7 +100,7 @@ function M.setup(config)
   end
 
   -- TODO: Register plugin template
-  vim.api.nvim_command([[iabbrev cnpl local M = {<CR>plugins = {<CR>{'plugin/name'},<CR>},<CR>}<CR><CR> function M.before()<CR>end<CR><CR> function M.after()<CR>end<CR><CR> return M]])
+  api.nvim_command([[iabbrev cnpl local M = {<CR>plugins = {<CR>{'plugin/name'},<CR>},<CR>}<CR><CR> function M.before()<CR>end<CR><CR> function M.after()<CR>end<CR><CR> return M]])
 end
 
 return M
