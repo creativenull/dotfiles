@@ -1,25 +1,22 @@
-local fn = vim.fn
-local api = vim.api
-
 local tsserver_exec = 'typescript-language-server'
-if fn.executable(tsserver_exec) == 0 then
-  api.nvim_err_writeln(string.format('lsp: %q is not installed', tsserver_exec))
+if vim.fn.executable(tsserver_exec) == 0 then
+  vim.api.nvim_err_writeln(string.format('lsp: %q is not installed', tsserver_exec))
   return
 end
 
 local deno_exec = 'deno'
-if fn.executable(deno_exec) == 0 then
-  api.nvim_err_writeln(string.format('lsp: %q is not installed`', deno_exec))
+if vim.fn.executable(deno_exec) == 0 then
+  vim.api.nvim_err_writeln(string.format('lsp: %q is not installed`', deno_exec))
   return
 end
 
 local root_pattern = require('lspconfig').util.root_pattern
 local filetypes = {'javascript', 'javascriptreact', 'javascript.jsx'}
-local node_root = fn.getcwd() .. '/package.json'
-local deno_root = fn.getcwd() .. '/import_map.json'
+local node_root = vim.fn.getcwd() .. '/package.json'
+local deno_root = vim.fn.getcwd() .. '/import_map.json'
 
-local is_node = fn.filereadable(node_root) == 1
-local is_deno = fn.filereadable(deno_root) == 1
+local is_node = vim.fn.filereadable(node_root) == 1
+local is_deno = vim.fn.filereadable(deno_root) == 1
 if is_node then
   require('cnull.core.lsp').setup('tsserver', {
     filetypes = filetypes,

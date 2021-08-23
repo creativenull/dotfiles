@@ -32,8 +32,8 @@ function M.setup(opts)
   set_defaults(cfg)
 
   -- Before core setup
-  if opts.before then
-    opts.before(cfg)
+  if opts.on_before then
+    opts.on_before(cfg)
   else
     error('core: before() is required!')
   end
@@ -51,8 +51,8 @@ function M.setup(opts)
   command('ConfigReload', reload)
 
   -- After core setup
-  if opts.after then
-    opts.after(cfg)
+  if opts.on_after then
+    opts.on_after(cfg)
   else
     error('core: after() is required!')
   end

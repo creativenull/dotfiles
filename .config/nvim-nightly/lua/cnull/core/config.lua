@@ -40,6 +40,8 @@ function M.init(config)
     theme = {
       name = config.theme.name or 'default',
       transparent = config.theme.transparent or false,
+      on_before = config.theme.on_before or nil,
+      on_after = config.theme.on_after or nil,
     },
     plugins_config = config.plugins_config or {}
   }

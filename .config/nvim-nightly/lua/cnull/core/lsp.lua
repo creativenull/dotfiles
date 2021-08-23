@@ -3,7 +3,7 @@ local M = {
   capabilities = nil,
 }
 
--- Initialize nvim-lsp settings
+-- Initialize default nvim-lsp settings
 -- @return nil
 function M.init()
   vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {

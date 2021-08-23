@@ -25,16 +25,22 @@ end
 -- @param table theme
 -- @return nil
 local function set_colorscheme(theme)
-  vim.opt.number = true
-  vim.opt.termguicolors = true
-
-  if theme.setup then
-    theme.setup()
+  -- trigger before events
+  if theme.on_before then
+    theme.on_before()
   end
 
-  vim.api.nvim_command('colorscheme ' .. theme.name)
+  vim.opt.number = true
+  vim.opt.termguicolors = true
+  vim.api.nvim_command(string.format('colorscheme %s', theme.name))
+
   if vim.g.colors_name ~= theme.name then
     vim.g.colors_name = theme.name
+  end
+
+  -- trigger after events
+  if theme.on_after then
+    theme.on_after()
   end
 end
 

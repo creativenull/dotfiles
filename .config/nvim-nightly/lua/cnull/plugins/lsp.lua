@@ -6,8 +6,8 @@ local M = {
 }
 
 function M.after()
-  local corelsp = require('cnull.core.lsp')
   local nmap = require('cnull.core.keymap').nmap
+  local corelsp = require('cnull.core.lsp')
 
   local function on_attach(_, bufnr)
     local diag_opts = '{ width = 80, focusable = false, border = "single" }'
@@ -24,32 +24,34 @@ function M.after()
 
   corelsp.init()
   corelsp.on_attach = on_attach
-
   require('cnull.lsp').setup({'javascript', 'json', 'lua', 'php', 'typescript'})
 
-  local dls = require('diagnosticls-configs')
-  dls.init({ on_attach = on_attach })
-  dls.setup({
+  local dlsconfig = require('diagnosticls-configs')
+  dlsconfig.init({ on_attach = on_attach })
+  dlsconfig.setup({
     lua = {
-      linter = require 'diagnosticls-configs.linters.luacheck',
-      formatter = require 'diagnosticls-configs.formatters.lua_format',
+      linter = require('diagnosticls-configs.linters.luacheck'),
+      formatter = require('diagnosticls-configs.formatters.lua_format'),
     },
     javascript = {
-      linter = require 'diagnosticls-configs.linters.eslint',
-      formatter = require 'diagnosticls-configs.formatters.prettier',
+      linter = require('diagnosticls-configs.linters.eslint'),
+      formatter = require('diagnosticls-configs.formatters.prettier'),
     },
     javascriptreact = {
-      linter = require 'diagnosticls-configs.linters.eslint',
-      formatter = require 'diagnosticls-configs.formatters.prettier',
+      linter = require('diagnosticls-configs.linters.eslint'),
+      formatter = require('diagnosticls-configs.formatters.prettier'),
     },
     typescript = {
-      linter = require 'diagnosticls-configs.linters.eslint',
-      formatter = require 'diagnosticls-configs.formatters.prettier',
+      linter = require('diagnosticls-configs.linters.eslint'),
+      formatter = require('diagnosticls-configs.formatters.prettier'),
     },
     typescriptreact = {
-      linter = require 'diagnosticls-configs.linters.eslint',
-      formatter = require 'diagnosticls-configs.formatters.prettier',
+      linter = require('diagnosticls-configs.linters.eslint'),
+      formatter = require('diagnosticls-configs.formatters.prettier'),
     },
+    php = {
+      linter = require('diagnosticls-configs.linters.phpcs'),
+    }
   })
 end
 

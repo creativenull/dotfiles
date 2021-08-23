@@ -13,4 +13,8 @@ require('nvim-biscuits').setup({
   },
 })
 
-nmap('<Leader>cb', function() require 'nvim-biscuits'.toggle_biscuits() end)
+local function toggle_biscuits()
+  require('nvim-biscuits').toggle_biscuits()
+end
+
+nmap('<Leader>cb', toggle_biscuits)

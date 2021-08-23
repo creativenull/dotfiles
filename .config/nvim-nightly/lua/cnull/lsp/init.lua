@@ -10,9 +10,10 @@ function M.setup(filetypes)
 
   for _,ft in pairs(filetypes) do
     local ftmod = string.format('%s.ftlsp.%s', mod, ft)
-    local success = pcall(require , ftmod)
+    local success, err = pcall(require, ftmod)
     if not success then
       vim.api.nvim_err_writeln(string.format('lsp: could not require the lsp configuration for %q filetype', ft))
+      vim.api.nvim_err_writeln(err)
     end
   end
 end

@@ -48,6 +48,23 @@ vim.cmd(string.format('set packpath+=~/.config/%s/after', userspace))
 vim.cmd(string.format('set packpath^=~/.local/share/%s/site', userspace))
 vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', userspace))
 
+-- Load packages on the filetype event in `after/ftplugin`
+function _G.LoadCommonPackages()
+  vim.cmd('packadd vim-abolish')
+  vim.cmd('packadd vim-surround')
+  vim.cmd('packadd kommentary')
+  vim.cmd('packadd ultisnips')
+  vim.cmd('packadd vim-snippets')
+
+  vim.cmd('packadd indent-blankline.nvim')
+  require('cnull.plugins.ui.indent_blankline')
+
+  vim.cmd('packadd todo-comments.nvim')
+  require('todo-comments').setup()
+
+  require('cnull.plugins.autocompletion.coq')
+end
+
 -- Initialize
 local core = require('cnull.core')
 core.setup({
@@ -86,23 +103,26 @@ core.setup({
         vim.highlight.on_yank({ higroup = 'Search', timeout = 500 })
       end,
     })
+
+    -- coq_nvim Config
+    -- ---
+    vim.g.coq_settings = {
+      ['auto_start'] = false,
+      ['keymap.recommended'] = false,
+      ['keymap.jump_to_mark'] = '<C-j>',
+      ['clients.tmux.enabled'] = false,
+      ['clients.tree_sitter.enabled'] = false,
+      ['clients.tags.enabled'] = false,
+      ['display.preview.positions'] = {
+        east = 1,
+        north = 3,
+        south = 4,
+        west = 2,
+      },
+    }
   end,
 
   after = function()
-    function _G.LoadCommonPackages()
-      vim.cmd('packadd vim-abolish')
-      vim.cmd('packadd vim-surround')
-      vim.cmd('packadd kommentary')
-      vim.cmd('packadd ultisnips')
-      vim.cmd('packadd vim-snippets')
-
-      vim.cmd('packadd indent-blankline.nvim')
-      require('cnull.plugins.ui.indent_blankline')
-
-      vim.cmd('packadd todo-comments.nvim')
-      require('todo-comments').setup()
-    end
-
     require('cnull.user.keymaps')
     require('cnull.user.conceal')
     require('cnull.user.codeshot')
