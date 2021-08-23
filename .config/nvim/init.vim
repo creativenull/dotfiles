@@ -133,12 +133,12 @@ function! g:RenderInactiveStatusLine() abort
 endfunction
 
 function! g:LspKeymaps() abort
-  nmap <silent> <Leader>le <Cmd>lopen<CR>
-  nmap <silent> <Leader>lo <Cmd>ALERename<CR>
-  nmap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-  nmap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-  nmap <silent> <Leader>lf <Cmd>ALEFix<CR>
-  nmap <silent> <Leader>lh <Cmd>ALEHover<CR>
+  nnoremap <silent> <Leader>le <Cmd>lopen<CR>
+  nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
+  nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+  nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+  nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
+  nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
   inoremap <silent> <C-Space> <Cmd>ALEComplete<CR>
 endfunction
 
@@ -234,22 +234,20 @@ function! PackagerInit(opts) abort
   call packager#init(a:opts)
   call packager#add('kristijanhusak/vim-packager', {'type': 'opt'})
 
-  " Deps
-  call packager#add('Shougo/context_filetype.vim')
-  call packager#add('vim-denops/denops.vim')
-  call packager#add('antoinemadec/FixCursorHold.nvim')
-
   " Core
   call packager#add('cohama/lexima.vim')
   call packager#add('godlygeek/tabular')
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
+  call packager#add('Shougo/context_filetype.vim')
   call packager#add('tyru/caw.vim')
   call packager#add('editorconfig/editorconfig-vim')
   call packager#add('mattn/emmet-vim')
+  call packager#add('vim-denops/denops.vim')
   call packager#add('creativenull/projectlocal-vim')
 
   " File Explorer
+  call packager#add('antoinemadec/FixCursorHold.nvim')
   call packager#add('lambdalisue/fern.vim')
 
   " LSP/Linter/Formatter
