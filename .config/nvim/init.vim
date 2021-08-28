@@ -66,72 +66,6 @@ function! s:toggleCodeshot() abort
   endif
 endfunction
 
-function! s:statuslineLspComponent() abort
-  if exists('g:loaded_ale')
-    let red_hl = '%#StatusLineLspRedText#'
-    let yellow_hl = '%#StatusLineLspYellowText#'
-    let counts = ale#statusline#Count(bufnr(''))
-    let all_errors = counts.error + counts.style_error
-    let all_non_errors = counts.total - all_errors
-    return counts.total == 0
-      \ ? 'LSP'
-      \ : printf('%sE%d%s %sW%d%s LSP', red_hl, all_errors, '%*', yellow_hl, all_non_errors, '%*')
-  endif
-
-  return ''
-endfunction
-
-function! s:getHighlightColor(hi, type) abort
-  let is_reverse = synIDattr(synIDtrans(hlID(a:hi)), 'reverse')
-  let color = ''
-
-  if !empty(is_reverse)
-    if type == 'bg'
-      let color = synIDattr(synIDtrans(hlID(a:hi)), 'fg')
-    elseif type == 'fg'
-      let color = synIDattr(synIDtrans(hlID(a:hi)), 'bg')
-    endif
-  else
-    let color = synIDattr(synIDtrans(hlID(a:hi)), a:type)
-  endif
-
-  return color
-endfunction
-
-" LSP Highlights
-function! g:SetLspHighlights() abort
-  let bg_color = s:getHighlightColor('StatusLine', 'bg')
-  if bg_color == ''
-    let bg_color = '#333333'
-  endif
-
-  let red_color = '#ff4488'
-  let yellow_color = '#eedd22'
-
-  execute printf('highlight StatusLineLspRedText guifg=%s guibg=%s', red_color, bg_color)
-  execute printf('highlight StatusLineLspYellowText guifg=%s guibg=%s', yellow_color, bg_color)
-endfunction
-
-" Active statusline
-function! g:RenderActiveStatusLine() abort
-  let branch = ''
-  if exists('g:loaded_gitbranch')
-    if gitbranch#name() != ''
-      let branch = '' . gitbranch#name()
-    endif
-  endif
-
-  let lsp = s:statuslineLspComponent()
-  let fe = &fileencoding
-  let ff = &fileformat
-  return printf(' %s | %s | %s %s %s | %s | %s | %s ', '%t%m%r', branch, '%y', '%=', ff, fe, '%l/%L:%c', lsp)
-endfunction
-
-" Inactive statusline
-function! g:RenderInactiveStatusLine() abort
-  return ' %t%m%r | %y %= %l/%L:%c '
-endfunction
-
 function! g:LspKeymaps() abort
   nnoremap <silent> <Leader>le <Cmd>lopen<CR>
   nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
@@ -157,13 +91,6 @@ if g:cnull.transparent
   augroup end
 endif
 
-augroup statusline_events
-  autocmd!
-  autocmd WinEnter,BufEnter * setlocal statusline=%!RenderActiveStatusLine()
-  autocmd WinLeave,BufLeave * setlocal statusline=%!RenderInactiveStatusLine()
-  autocmd ColorScheme * call SetLspHighlights()
-augroup END
-
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
@@ -174,7 +101,7 @@ let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 inoremap <silent><expr> <Tab> pumvisible()
-  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
+  \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
   \ : "\<Tab>"
 
 " vim-vue Config
@@ -225,6 +152,41 @@ let g:buftabline_indicators = 1
 " ---
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
+" lightline.vim Config
+" ---
+let g:lightline = {}
+let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
+let g:lightline.active = {}
+let g:lightline.active.left = [
+  \ ['mode', 'paste'],
+  \ ['gitbranch', 'readonly', 'filename', 'modified'],
+\ ]
+let g:lightline.active.right = [
+  \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
+  \ ['lineinfo'], ['filetype', 'fileencoding'],
+\ ]
+let g:lightline.component_function = {}
+let g:lightline.component_function.gitbranch = 'gitbranch#name'
+let g:lightline.component_expand = {
+  \ 'linter_checking': 'lightline#ale#checking',
+  \ 'linter_infos': 'lightline#ale#infos',
+  \ 'linter_warnings': 'lightline#ale#warnings',
+  \ 'linter_errors': 'lightline#ale#errors',
+  \ 'linter_ok': 'lightline#ale#ok',
+\ }
+let g:lightline.component_type = {
+  \ 'linter_checking': 'right',
+  \ 'linter_infos': 'right',
+  \ 'linter_warnings': 'warning',
+  \ 'linter_errors': 'error',
+  \ 'linter_ok': 'right',
+\ }
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_infos = "\uf129 "
+let g:lightline#ale#indicator_warnings = "\uf071 "
+let g:lightline#ale#indicator_errors = "\uf05e "
+let g:lightline#ale#indicator_ok = "\uf00c"
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
@@ -268,13 +230,15 @@ function! PackagerInit(opts) abort
   call packager#add('itchyny/vim-gitbranch')
 
   " UI Plugins
+  call packager#add('machakann/vim-highlightedyank')
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
+  call packager#add('itchyny/lightline.vim')
+  call packager#add('maximbaz/lightline-ale')
   call packager#add('posva/vim-vue')
   call packager#add('neoclide/vim-jsx-improve')
   call packager#add('peitalin/vim-jsx-typescript')
   call packager#add('jwalton512/vim-blade')
-  call packager#add('machakann/vim-highlightedyank')
 
   " Colorschemes
   call packager#add('bluz71/vim-nightfly-guicolors')
@@ -337,7 +301,7 @@ augroup END
 set termguicolors
 set number
 set background=dark
-colorscheme moonfly
+colorscheme nightfly
 
 " =============================================================================
 " = Options =
@@ -391,9 +355,9 @@ set mouse=
 set hidden
 set signcolumn=yes
 set cmdheight=2
-set statusline=%!RenderActiveStatusLine()
 set showtabline=2
 set laststatus=2
+set noshowmode
 
 " =============================================================================
 " = Keybindings =
