@@ -110,9 +110,6 @@ endif
 g:UltiSnipsExpandTrigger = '<C-q>.'
 g:UltiSnipsJumpForwardTrigger = '<C-j>'
 g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-inoremap <silent><expr> <Tab> pumvisible()
-  \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
-  \ : "\<Tab>"
 
 # vim-vue Config
 # ---
@@ -172,15 +169,24 @@ g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 g:ale_linters_explicit = 1
 g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
-def g:AleStatusLineComponent(): string
+def g:AleErrorStlComponent(): string
   if exists('g:loaded_ale')
     const info = ale#statusline#Count(bufnr(''))
     const errors = info.error
-    const warnings = info.warning
-    const total = errors + warnings
+    if errors > 0
+      return printf('%d', errors)
+    endif
+  endif
 
-    if total > 0
-      return printf('E:%d W:%d', errors, warnings)
+  return ''
+enddef
+
+def g:AleWarningStlComponent(): string
+  if exists('g:loaded_ale')
+    const info = ale#statusline#Count(bufnr(''))
+    const warnings = info.warning
+    if warnings > 0
+      return printf('%d', warnings)
     endif
   endif
 
@@ -194,21 +200,40 @@ nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
 # lightline.vim Config
 # ---
 g:lightline = {}
-g:lightline.component = { 'lineinfo': '%l/%L:%c'  }
-g:lightline.active = {}
-g:lightline.active.left = [
-  ['mode', 'paste'],
-  ['gitbranch', 'readonly', 'filename', 'modified'],
-]
-g:lightline.active.right = [
-  ['ale'],
-  ['lineinfo'],
-  ['filetype', 'fileencoding'],
-]
-g:lightline.component_function = {
-  gitbranch: 'gitbranch#name',
-  ale: 'AleStatusLineComponent',
+g:lightline.component = { lineinfo: '%l/%L:%c' }
+g:lightline.active = {
+  left: [
+    ['mode', 'paste'],
+    ['gitbranch', 'readonly', 'filename', 'modified'],
+  ],
+
+  right: [
+    ['ale_error_component', 'ale_warning_component'],
+    ['lineinfo'],
+    ['filetype', 'fileencoding'],
+  ],
 }
+
+g:lightline.component_function = {
+  gitbranch: 'FugitiveHead',
+}
+
+g:lightline.component_expand = {
+  ale_error_component: 'AleErrorStlComponent',
+  ale_warning_component: 'AleWarningStlComponent',
+}
+
+g:lightline.component_type = {
+  ale_error_component: 'error',
+  ale_warning_component: 'warning',
+}
+
+augroup ale_lightline_user_events
+  autocmd!
+  autocmd User ALEJobStarted call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+  autocmd User ALEFixPost call lightline#update()
+augroup END
 
 # =============================================================================
 # = Plugin Manager =
@@ -276,7 +301,7 @@ plug#end()
 
 # fzf.vim Config
 # ---
-def FzfGrepCall(qargs: string, bang: number): void
+def g:FzfGrepCall(qargs: string, bang: number): void
   const sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(qargs)
   fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), bang)
 enddef
@@ -292,6 +317,20 @@ nnoremap <silent>       <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
 nnoremap <silent>       <Leader>la <Plug>(coc-codeaction)
 nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
 inoremap <silent><expr> <C-@> coc#refresh()
+
+def g:TabCompletion(): string
+  if pumvisible()
+    if exists('g:did_coc_loaded')
+      return coc#_select_confirm()
+    else
+      return "\<C-y>"
+    endif
+  endif
+
+  return "\<Tab>"
+enddef
+
+inoremap <silent><expr> <Tab> TabCompletion()
 
 # ale Config
 # ---
