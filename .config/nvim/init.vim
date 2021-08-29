@@ -131,6 +131,30 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
 
+function! g:AleErrorStlComponent() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let errors = info.error
+    if errors > 0
+      return printf('%d', errors)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! g:AleWarningStlComponent() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let warnings = info.warning
+    if warnings > 0
+      return printf('%d', warnings)
+    endif
+  endif
+
+  return ''
+endfunction
+
 " hlyank Config
 " ---
 let g:highlightedyank_highlight_duration = 500
@@ -162,30 +186,28 @@ let g:lightline.active.left = [
   \ ['gitbranch', 'readonly', 'filename', 'modified'],
 \ ]
 let g:lightline.active.right = [
-  \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
-  \ ['lineinfo'], ['filetype', 'fileencoding'],
+  \ ['ale_error_component', 'ale_warning_component'],
+  \ ['lineinfo'],
+  \ ['filetype', 'fileencoding'],
 \ ]
+
 let g:lightline.component_function = {}
-let g:lightline.component_function.gitbranch = 'gitbranch#name'
-let g:lightline.component_expand = {
-  \ 'linter_checking': 'lightline#ale#checking',
-  \ 'linter_infos': 'lightline#ale#infos',
-  \ 'linter_warnings': 'lightline#ale#warnings',
-  \ 'linter_errors': 'lightline#ale#errors',
-  \ 'linter_ok': 'lightline#ale#ok',
-\ }
-let g:lightline.component_type = {
-  \ 'linter_checking': 'right',
-  \ 'linter_infos': 'right',
-  \ 'linter_warnings': 'warning',
-  \ 'linter_errors': 'error',
-  \ 'linter_ok': 'right',
-\ }
-let g:lightline#ale#indicator_checking = "\uf110"
-let g:lightline#ale#indicator_infos = "\uf129 "
-let g:lightline#ale#indicator_warnings = "\uf071 "
-let g:lightline#ale#indicator_errors = "\uf05e "
-let g:lightline#ale#indicator_ok = "\uf00c"
+let g:lightline.component_function.gitbranch = 'FugitiveHead'
+
+let g:lightline.component_expand = {}
+let g:lightline.component_expand.ale_error_component = 'AleErrorStlComponent'
+let g:lightline.component_expand.ale_warning_component = 'AleWarningStlComponent'
+
+let g:lightline.component_type = {}
+let g:lightline.component_type.ale_error_component = 'error'
+let g:lightline.component_type.ale_warning_component = 'warning'
+
+augroup ale_lightline_user_events
+  autocmd!
+  autocmd User ALEJobStarted call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+  autocmd User ALEFixPost call lightline#update()
+augroup END
 
 " =============================================================================
 " = Plugin Manager =
@@ -227,14 +249,12 @@ function! PackagerInit(opts) abort
   " Git
   call packager#add('tpope/vim-fugitive')
   call packager#add('airblade/vim-gitgutter')
-  call packager#add('itchyny/vim-gitbranch')
 
   " UI Plugins
   call packager#add('machakann/vim-highlightedyank')
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
   call packager#add('itchyny/lightline.vim')
-  call packager#add('maximbaz/lightline-ale')
   call packager#add('posva/vim-vue')
   call packager#add('neoclide/vim-jsx-improve')
   call packager#add('peitalin/vim-jsx-typescript')
