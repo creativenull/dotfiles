@@ -66,7 +66,7 @@ def OptionsInit(): void
   endif
 enddef
 
-def ToggleConcealLevel(): void
+def g:ToggleConcealLevel(): void
   if &conceallevel == 2
     set conceallevel=0
     g:vim_markdown_conceal = 0
@@ -78,7 +78,7 @@ def ToggleConcealLevel(): void
   endif
 enddef
 
-def ToggleCodeshot(): void
+def g:ToggleCodeshot(): void
   if &number
     setlocal nonumber signcolumn=no
   else
@@ -98,7 +98,7 @@ if g:cnull.transparent
     autocmd ColorScheme * highlight LineNr guibg=NONE
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
-  augroup end
+  augroup END
 endif
 
 # =============================================================================
@@ -131,6 +131,7 @@ nnoremap <Leader>t <Cmd>Rg<CR>
 # hlyank Config
 # ---
 g:highlightedyank_highlight_duration = 500
+
 augroup user_highlightedyank_events
   autocmd!
   autocmd ColorScheme * highlight default link HighlightedyankRegion Search
@@ -367,6 +368,7 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
+set showmatch
 
 # Editor
 set shiftwidth=4
@@ -376,15 +378,12 @@ set expandtab
 set smartindent
 set smarttab
 set autoindent
-set showmatch
 set nowrap
 set colorcolumn=120
 set scrolloff=5
-set lazyredraw
 set nospell
 
 # System
-&undodir = g:cnull.config.undodir
 set encoding=utf-8
 set nobackup
 set noswapfile
@@ -396,6 +395,8 @@ set backspace=indent,eol,start
 set clipboard=unnamedplus
 set ttimeoutlen=50
 set mouse=
+set lazyredraw
+&undodir = g:cnull.config.undodir
 
 # UI
 set hidden
@@ -438,11 +439,13 @@ tnoremap <C-[> <C-\><C-n>
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
 # List all buffers
-nnoremap <Leader>bl <Cmd>buffers<CR>
+nnoremap <Leader>bb <Cmd>buffers<CR>
 # Go to next buffer
 nnoremap <C-l> <Cmd>bnext<CR>
+nnoremap <Leader>bn <Cmd>bnext<CR>
 # Go to previous buffer
 nnoremap <C-h> <Cmd>bprevious<CR>
+nnoremap <Leader>bp <Cmd>bprevious<CR>
 # Close the current buffer, and more?
 nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
 # Close all buffer, except current
@@ -479,13 +482,5 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ConcealToggle ToggleConcealLevel()
-command! CodeshotToggle ToggleCodeshot()
-
-# I can't release my shift key fast enough :')
-command! W w
-command! Wq wq
-command! WQ wq
-command! Q q
-command! Qa qa
-command! QA qa
+command! ToggleConcealLevel ToggleConcealLevel()
+command! ToggleCodeshot ToggleCodeshot()
