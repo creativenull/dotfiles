@@ -7,7 +7,6 @@ vim9script
 #   + curl
 #   + python3
 #   + ripgrep
-#   + Environment variables: $PYTHON3_HOST_PROG
 # =============================================================================
 
 set nocompatible
@@ -35,8 +34,9 @@ if !executable('rg')
   finish
 endif
 
-g:mapleader = ' '
-g:python3_host_prog = $PYTHON3_HOST_PROG
+# =============================================================================
+# = Functions =
+# =============================================================================
 
 def MakeConfig(): dict<string>
   const std_cache: string = expand('$HOME/.cache/vim')
@@ -49,15 +49,6 @@ def MakeConfig(): dict<string>
     undodir: printf('%s/undo', std_cache),
   }
 enddef
-
-g:cnull = {
-  transparent: false,
-  config: MakeConfig(),
-}
-
-# =============================================================================
-# = Functions =
-# =============================================================================
 
 def OptionsInit(): void
   const undodir: string = g:cnull.config.undodir
@@ -85,6 +76,16 @@ def g:ToggleCodeshot(): void
     setlocal number signcolumn=yes
   endif
 enddef
+
+# =============================================================================
+# = Initialize =
+# =============================================================================
+
+g:mapleader = ' '
+g:cnull = {
+  transparent: false,
+  config: MakeConfig(),
+}
 
 # =============================================================================
 # = Events =
@@ -159,6 +160,28 @@ g:coc_global_extensions = [
   'coc-snippets',
 ]
 
+nnoremap <silent>       <Leader>ld <Plug>(coc-definition)
+nnoremap <silent>       <Leader>lf <Plug>(coc-format)
+nnoremap <silent>       <Leader>lo <Plug>(coc-rename)
+nnoremap <silent>       <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
+nnoremap <silent>       <Leader>la <Plug>(coc-codeaction)
+nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
+inoremap <silent><expr> <C-@> coc#refresh()
+
+def g:TabCompletion(): string
+  if pumvisible()
+    if exists('g:did_coc_loaded')
+      return coc#_select_confirm()
+    else
+      return "\<C-y>"
+    endif
+  endif
+
+  return "\<Tab>"
+enddef
+
+inoremap <silent><expr> <Tab> TabCompletion()
+
 # ale Config
 # ---
 g:ale_completion_enabled = 0
@@ -169,6 +192,10 @@ g:ale_echo_msg_warning_str = ''
 g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 g:ale_linters_explicit = 1
 g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+
+nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
+nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
+nnoremap <silent> <Leader>ae <Cmd>lopen<CR>
 
 def g:AleErrorStlComponent(): string
   if exists('g:loaded_ale')
@@ -309,36 +336,6 @@ enddef
 
 command! -bang -nargs=* Rg FzfGrepCall(<q-args>, <bang>0)
 
-# coc.nvim Config
-# ---
-nnoremap <silent>       <Leader>ld <Plug>(coc-definition)
-nnoremap <silent>       <Leader>lf <Plug>(coc-format)
-nnoremap <silent>       <Leader>lo <Plug>(coc-rename)
-nnoremap <silent>       <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
-nnoremap <silent>       <Leader>la <Plug>(coc-codeaction)
-nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
-inoremap <silent><expr> <C-@> coc#refresh()
-
-def g:TabCompletion(): string
-  if pumvisible()
-    if exists('g:did_coc_loaded')
-      return coc#_select_confirm()
-    else
-      return "\<C-y>"
-    endif
-  endif
-
-  return "\<Tab>"
-enddef
-
-inoremap <silent><expr> <Tab> TabCompletion()
-
-# ale Config
-# ---
-nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
-nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
-nnoremap <silent> <Leader>ae <Cmd>lopen<CR>
-
 # =============================================================================
 # = UI/Theme =
 # =============================================================================
@@ -392,7 +389,6 @@ set undofile
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start
-set clipboard=unnamedplus
 set ttimeoutlen=50
 set mouse=
 set lazyredraw
@@ -461,11 +457,11 @@ nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 nnoremap <Leader>r <Cmd>edit!<CR>
 
 # List all maps
-nmap <Leader>mn <Cmd>nmap<CR>
-nmap <Leader>mv <Cmd>vmap<CR>
-nmap <Leader>mi <Cmd>imap<CR>
-nmap <Leader>mt <Cmd>tmap<CR>
-nmap <Leader>mc <Cmd>cmap<CR>
+nnoremap <Leader>mn <Cmd>nmap<CR>
+nnoremap <Leader>mv <Cmd>vmap<CR>
+nnoremap <Leader>mi <Cmd>imap<CR>
+nnoremap <Leader>mt <Cmd>tmap<CR>
+nnoremap <Leader>mc <Cmd>cmap<CR>
 
 # Move lines up/down with alt+j/k
 set <M-j>=j
@@ -474,6 +470,10 @@ nnoremap <M-j> :m .+1<CR>==
 nnoremap <M-k> :m .-2<CR>==
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
+
+# Copy/Paste system clipboard
+nnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
 
 # =============================================================================
 # = Commands =
