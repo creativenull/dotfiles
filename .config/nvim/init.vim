@@ -32,16 +32,6 @@ if !executable('rg')
   finish
 endif
 
-let g:mapleader = ' '
-let g:loaded_python_provider = 0
-let g:loaded_ruby_provider = 0
-let g:loaded_perl_provider = 0
-let g:python3_host_prog = $PYTHON3_HOST_PROG
-
-let g:cnull = {}
-let g:cnull.transparent = v:false
-let g:cnull.config = { 'undodir': stdpath('cache') . '/undo' }
-
 " =============================================================================
 " = Functions =
 " =============================================================================
@@ -66,15 +56,19 @@ function! s:toggleCodeshot() abort
   endif
 endfunction
 
-function! g:LspKeymaps() abort
-  nnoremap <silent> <Leader>le <Cmd>lopen<CR>
-  nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
-  nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-  nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-  nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
-  nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-  inoremap <silent> <C-Space> <Cmd>ALEComplete<CR>
-endfunction
+" =============================================================================
+" = Initialize =
+" =============================================================================
+
+let g:mapleader = ' '
+let g:loaded_python_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
+let g:python3_host_prog = $PYTHON3_HOST_PROG
+
+let g:cnull = {}
+let g:cnull.transparent = v:false
+let g:cnull.config = { 'undodir': stdpath('cache') . '/undo' }
 
 " =============================================================================
 " = Events =
@@ -130,6 +124,15 @@ let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
+
+" Keymaps
+nnoremap <silent> <Leader>le <Cmd>lopen<CR>
+nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
+nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
+nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
+inoremap <silent> <C-Space> <Cmd>ALEComplete<CR>
 
 function! g:AleErrorStlComponent() abort
   if exists('g:loaded_ale')
@@ -289,29 +292,27 @@ command! -bar PackagerStatus call PackagerInit(g:cnull.plugin.opts) | call packa
 
 " fzf.vim Config
 " ---
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \ "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(<q-args>),
-  \ 1,
-  \ fzf#vim#with_preview('right:50%', 'ctrl-/'),
-  \ <bang>0
-\ )
+function! g:FzfVimGrep(qargs, bang) abort
+  let sh = "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(a:qargs)
+  call fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
+endfunction
+
+command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 
 " deoplete.nvim Config
 " ---
-function! g:SetupDeoplete()
+function! g:DeopleteEnable()
   packadd deoplete.nvim
-  call deoplete#custom#option({
-    \ 'sources': {'_': ['ale', 'ultisnips']},
-    \ 'num_processes': 2,
-    \ 'nofile_complete_filetypes': ['denite-filter', 'fzf', 'fern', 'gitcommit'],
-  \ })
+  let deoplete_opts = {}
+  let deoplete_opts.sources = { '_': ['ale', 'ultisnips'] }
+  let deoplete_opts.num_processes = 2
+  call deoplete#custom#option(deoplete_opts)
   call deoplete#enable()
 endfunction
 
 augroup user_deoplete_events
   au!
-  au FileType * call SetupDeoplete()
+  au FileType * call DeopleteEnable()
 augroup END
 
 " =============================================================================
@@ -340,6 +341,7 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
+set showmatch
 
 " Editor
 set shiftwidth=4
@@ -349,7 +351,6 @@ set expandtab
 set smartindent
 set smarttab
 set autoindent
-set showmatch
 set nowrap
 set colorcolumn=120
 set scrolloff=5
@@ -367,7 +368,6 @@ let &undodir=g:cnull.config.undodir
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start
-set clipboard=unnamedplus
 set ttimeoutlen=50
 set mouse=
 
@@ -414,8 +414,10 @@ nnoremap <Leader><CR> <Cmd>noh<CR>
 nnoremap <Leader>bl <Cmd>buffers<CR>
 " Go to next buffer
 nnoremap <C-l> <Cmd>bnext<CR>
+nnoremap <Leader>bn <Cmd>bnext<CR>
 " Go to previous buffer
 nnoremap <C-h> <Cmd>bprevious<CR>
+nnoremap <Leader>bp <Cmd>bprevious<CR>
 " Close the current buffer, and more?
 nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
 " Close all buffer, except current
@@ -437,14 +439,15 @@ nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 nnoremap <Leader>r <Cmd>edit!<CR>
 
 " List all maps
-nmap <Leader>mn <Cmd>nmap<CR>
-nmap <Leader>mv <Cmd>vmap<CR>
-nmap <Leader>mi <Cmd>imap<CR>
-nmap <Leader>mt <Cmd>tmap<CR>
-nmap <Leader>mc <Cmd>cmap<CR>
+nnoremap <Leader>mn <Cmd>nmap<CR>
+nnoremap <Leader>mv <Cmd>vmap<CR>
+nnoremap <Leader>mi <Cmd>imap<CR>
+nnoremap <Leader>mt <Cmd>tmap<CR>
+nnoremap <Leader>mc <Cmd>cmap<CR>
 
-" Lsp Keymaps
-call g:LspKeymaps()
+" Copy/Paste from clipboard
+nnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
 
 " =============================================================================
 " = Commands =
@@ -455,11 +458,3 @@ command! ConfigReload source $MYVIMRC | nohlsearch
 
 command! ToggleConcealLevel call s:toggleConcealLevel()
 command! ToggleCodeshot call s:toggleCodeshot()
-
-" I can't release my shift key fast enough :')
-command! W w
-command! Wq wq
-command! WQ wq
-command! Q q
-command! Qa qa
-command! QA qa
