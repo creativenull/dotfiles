@@ -12,23 +12,22 @@ filetype plugin indent on
 syntax on
 
 if !has('nvim')
-  echoerr "This config is only for neovim 0.4 and up!"
+  echoerr 'This config is only for neovim 0.4 and up!'
   finish
 endif
 
 if !executable('git')
-  echoerr '[nvim] "git" is needed!'
+  echoerr '[nvim] `git` is needed!'
   finish
 endif
 
 if !executable('python3')
-  echoerr '[nvim] "python3" is needed!'
-  echoerr 'Additionally install pynvim and msgpack: "pip3 install --user pynvim msgpack"'
+  echoerr '[nvim] `python3`, `python3-pynvim`, `python3-msgpack` is needed!'
   finish
 endif
 
 if !executable('rg')
-  echoerr '[nvim] "ripgrep" is needed!'
+  echoerr '[nvim] `ripgrep` is needed!'
   finish
 endif
 
@@ -95,9 +94,19 @@ endif
 let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-inoremap <silent><expr> <Tab> pumvisible()
-  \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
-  \ : "\<Tab>"
+
+function! g:TabCompletion() abort
+  if pumvisible()
+    if UltiSnips#CanExpandSnippet()
+      return "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
+    else
+      return "\<C-y>"
+    endif
+  endif
+  return "\<Tab>"
+endfunction
+
+inoremap <silent><expr> <Tab> g:TabCompletion()
 
 " vim-vue Config
 " ---
@@ -233,6 +242,7 @@ function! PackagerInit(opts) abort
   call packager#add('godlygeek/tabular')
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-abolish')
+  call packager#add('tpope/vim-repeat')
   call packager#add('Shougo/context_filetype.vim')
   call packager#add('tyru/caw.vim')
   call packager#add('editorconfig/editorconfig-vim')
@@ -275,11 +285,11 @@ function! PackagerInit(opts) abort
   call packager#add('bluz71/vim-moonfly-colors')
 endfunction
 
-let g:cnull.plugin = {
-  \ 'git': 'https://github.com/kristijanhusak/vim-packager.git',
-  \ 'path': printf('%s/site/pack/packager/opt/vim-packager', stdpath('data')),
-  \ 'opts': {'dir': printf('%s/site/pack/packager', stdpath('data'))},
-\ }
+let g:cnull.plugin = {}
+let g:cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
+let g:cnull.plugin.path = printf('%s/site/pack/packager/opt/vim-packager', stdpath('data'))
+let g:cnull.plugin.opts = {}
+let g:cnull.plugin.opts.dir = printf('%s/site/pack/packager', stdpath('data'))
 
 " Package manager bootstrapping strategy
 if !isdirectory(g:cnull.plugin.path)
@@ -329,7 +339,7 @@ augroup END
 set termguicolors
 set number
 set background=dark
-colorscheme nightfly
+colorscheme moonfly
 
 " =============================================================================
 " = Options =
