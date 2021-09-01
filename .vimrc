@@ -170,13 +170,13 @@ g:coc_global_extensions = [
   'coc-snippets',
 ]
 
-nnoremap <silent>       <Leader>ld <Plug>(coc-definition)
-nnoremap <silent>       <Leader>lf <Plug>(coc-format)
-nnoremap <silent>       <Leader>lo <Plug>(coc-rename)
+nnoremap <silent>       <Leader>ld <Cmd>call CocActionAsync('jumpDefinition')<CR>
+nnoremap <silent>       <Leader>lf <Cmd>call CocActionAsync('format')<CR>
+nnoremap <silent>       <Leader>lr <Cmd>call CocAction('rename')<CR>
 nnoremap <silent>       <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
-nnoremap <silent>       <Leader>la <Plug>(coc-codeaction)
+nnoremap <silent>       <Leader>la <Cmd>call CocActionAsync('doCodeAction')<CR>
 nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
-inoremap <silent><expr> <C-@> coc#refresh()
+inoremap <silent><expr> <C-@>      coc#refresh()
 
 def g:TabCompletion(): string
   if pumvisible()
