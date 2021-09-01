@@ -126,8 +126,8 @@ g:user_emmet_install_global = 0
 $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 $FZF_DEFAULT_OPTS = '--reverse'
 g:fzf_preview_window = []
-nnoremap <Leader>p <Cmd>Files<CR>
-nnoremap <Leader>t <Cmd>Rg<CR>
+nnoremap <C-p> <Cmd>Files<CR>
+nnoremap <C-t> <Cmd>Rg<CR>
 
 # hlyank Config
 # ---
@@ -135,7 +135,7 @@ g:highlightedyank_highlight_duration = 500
 
 augroup user_highlightedyank_events
   autocmd!
-  autocmd ColorScheme * highlight default link HighlightedyankRegion Search
+  autocmd ColorScheme * highlight default HighlightedyankRegion Search
 augroup END
 
 # indentLine Config
@@ -329,12 +329,12 @@ plug#end()
 
 # fzf.vim Config
 # ---
-def g:FzfGrepCall(qargs: string, bang: number): void
+def g:FzfVimGrep(qargs: string, bang: number): void
   const sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(qargs)
   fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), bang)
 enddef
 
-command! -bang -nargs=* Rg FzfGrepCall(<q-args>, <bang>0)
+command! -bang -nargs=* Rg FzfVimGrep(<q-args>, <bang>0)
 
 # =============================================================================
 # = UI/Theme =
@@ -359,6 +359,7 @@ OptionsInit()
 # Completion
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
+set wildmenu
 
 # Search
 set ignorecase
@@ -474,6 +475,10 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 # Copy/Paste system clipboard
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
+
+# Disable Ex-mode and command history
+noremap Q <Nop>
+noremap q: <Nop>
 
 # =============================================================================
 # = Commands =
