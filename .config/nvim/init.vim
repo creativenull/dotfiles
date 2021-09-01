@@ -68,21 +68,22 @@ let g:python3_host_prog = $PYTHON3_HOST_PROG
 
 let g:cnull = {}
 let g:cnull.transparent = v:false
-let g:cnull.config = { 'undodir': stdpath('cache') . '/undo' }
+let g:cnull.config = {}
+let g:cnull.config.undodir = stdpath('cache') . '/undo'
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
 if g:cnull.transparent
-  augroup transparent_events
+  augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
     autocmd ColorScheme * highlight SignColumn guibg=NONE
     autocmd ColorScheme * highlight LineNr guibg=NONE
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
-  augroup end
+  augroup END
 endif
 
 " =============================================================================
@@ -111,8 +112,8 @@ let g:user_emmet_leader_key = '<C-q>'
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
-nnoremap <Leader>p <Cmd>Files<CR>
-nnoremap <Leader>t <Cmd>Rg<CR>
+nnoremap <C-p> <Cmd>Files<CR>
+nnoremap <C-t> <Cmd>Rg<CR>
 
 " ALE Config
 " ---
@@ -123,7 +124,7 @@ let g:ale_echo_msg_error_str = ''
 let g:ale_echo_msg_warning_str = ''
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
-let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace']}
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 " Keymaps
 nnoremap <silent> <Leader>le <Cmd>lopen<CR>
@@ -132,7 +133,7 @@ nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
 nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
 nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
 nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-inoremap <silent> <C-Space> <Cmd>ALEComplete<CR>
+inoremap <silent> <C-Space>  <Cmd>ALEComplete<CR>
 
 function! g:AleErrorStlComponent() abort
   if exists('g:loaded_ale')
@@ -161,9 +162,10 @@ endfunction
 " hlyank Config
 " ---
 let g:highlightedyank_highlight_duration = 500
-augroup user_highlightedyank_events
+
+augroup highlightedyank_user_events
   autocmd!
-  autocmd ColorScheme * highlight default link HighlightedyankRegion Search
+  autocmd ColorScheme * highlight link HighlightedyankRegion Search
 augroup END
 
 " indentLine Config
@@ -177,7 +179,12 @@ let g:buftabline_indicators = 1
 
 " fern.vim Config
 " ---
-nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
+function! g:FernLoad() abort
+  packadd fern.vim
+  execute 'Fern . -reveal=%'
+endfunction
+
+nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
 
 " lightline.vim Config
 " ---
@@ -235,11 +242,11 @@ function! PackagerInit(opts) abort
 
   " File Explorer
   call packager#add('antoinemadec/FixCursorHold.nvim')
-  call packager#add('lambdalisue/fern.vim')
+  call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
 
   " LSP/Linter/Formatter
   call packager#add('dense-analysis/ale')
-  call packager#add('Shougo/deoplete.nvim')
+  call packager#add('Shougo/deoplete.nvim', { 'type': 'opt' })
 
   " Snippets
   call packager#add('SirVer/ultisnips')
@@ -310,7 +317,7 @@ function! g:DeopleteEnable()
   call deoplete#enable()
 endfunction
 
-augroup user_deoplete_events
+augroup deoplete_user_events
   au!
   au FileType * call DeopleteEnable()
 augroup END
@@ -448,6 +455,10 @@ nnoremap <Leader>mc <Cmd>cmap<CR>
 " Copy/Paste from clipboard
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
+
+" Disable Ex-mode and command history
+noremap Q <Nop>
+noremap q: <Nop>
 
 " =============================================================================
 " = Commands =
