@@ -15,22 +15,22 @@ syntax on
 
 # Pre-Requisites
 if !executable('git')
-  echoerr '[vim] "git" is needed!'
+  echoerr '[vim] `git` is needed!'
   finish
 endif
 
 if !executable('curl')
-  echoerr '[vim] "curl" is needed!'
+  echoerr '[vim] `curl` is needed!'
   finish
 endif
 
 if !executable('python3')
-  echoerr '[vim] "python3" is needed!'
+  echoerr '[vim] `python3` is needed!'
   finish
 endif
 
 if !executable('rg')
-  echoerr '[vim] "ripgrep" is needed!'
+  echoerr '[vim] `ripgrep` is needed!'
   finish
 endif
 
@@ -39,9 +39,19 @@ endif
 # =============================================================================
 
 def MakeConfig(): dict<string>
-  const std_cache: string = expand('$HOME/.cache/vim')
-  const std_config: string = expand('$HOME/.vim')
-  const std_data: string = expand('$HOME/.vim')
+  var std_cache: string = ''
+  var std_config: string = ''
+  var std_data: string = ''
+  if has('win32')
+    std_cache = expand('$HOME/AppData/Local/Temp/vim')
+    std_config = expand('$HOME')
+    std_data = expand('$HOME/vimfiles')
+  else
+    std_cache = expand('$HOME/.cache/vim')
+    std_config = expand('$HOME')
+    std_data = expand('$HOME/.vim')
+  endif
+
   return {
     std_cache: std_cache,
     std_config: std_config,
@@ -286,6 +296,7 @@ Plug 'godlygeek/tabular'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'vim-denops/denops.vim' | Plug 'creativenull/projectlocal-vim'
 
 # File Explorer
@@ -348,7 +359,7 @@ endif
 
 set number
 set background=dark
-colorscheme nightfly
+colorscheme moonfly
 
 # =============================================================================
 # = Options =
@@ -478,7 +489,9 @@ nnoremap <Leader>p "+p
 
 # Disable Ex-mode and command history
 noremap Q <Nop>
+nunmap Q
 noremap q: <Nop>
+nunmap q:
 
 # =============================================================================
 # = Commands =
