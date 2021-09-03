@@ -60,13 +60,6 @@ def MakeConfig(): dict<string>
   }
 enddef
 
-def OptionsInit(): void
-  const undodir: string = g:cnull.config.undodir
-  if !isdirectory(undodir)
-    printf('!mkdir -p %s', undodir)->execute('silent!')
-  endif
-enddef
-
 def g:ToggleConcealLevel(): void
   if &conceallevel == 2
     set conceallevel=0
@@ -328,7 +321,6 @@ Plug 'jwalton512/vim-blade'
 Plug 'itchyny/lightline.vim'
 
 # Colorscheme
-Plug 'mhartington/oceanic-next'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 
@@ -365,7 +357,10 @@ colorscheme moonfly
 # = Options =
 # =============================================================================
 
-OptionsInit()
+const undodir: string = g:cnull.config.undodir
+if !undodir->isdirectory()
+  printf('!mkdir -p %s', undodir)->execute('silent!')
+endif
 
 # Completion
 set completeopt=menuone,noinsert,noselect
