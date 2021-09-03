@@ -189,7 +189,10 @@ let g:buftabline_indicators = 1
 " fern.vim Config
 " ---
 function! g:FernLoad() abort
-  packadd fern.vim
+  if !exists('g:loaded_fern') && !exists('g:loaded_fix_cursorhold_nvim')
+    packadd FixCursorHold.nvim
+    packadd fern.vim
+  endif
   execute 'Fern . -reveal=%'
 endfunction
 
@@ -235,7 +238,7 @@ augroup END
 function! PackagerInit(opts) abort
   packadd vim-packager
   call packager#init(a:opts)
-  call packager#add('kristijanhusak/vim-packager', {'type': 'opt'})
+  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
 
   " Core
   call packager#add('cohama/lexima.vim')
@@ -251,7 +254,7 @@ function! PackagerInit(opts) abort
   call packager#add('creativenull/projectlocal-vim')
 
   " File Explorer
-  call packager#add('antoinemadec/FixCursorHold.nvim')
+  call packager#add('antoinemadec/FixCursorHold.nvim', { 'type': 'opt' })
   call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
 
   " LSP/Linter/Formatter
