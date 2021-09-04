@@ -293,7 +293,7 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-denops/denops.vim' | Plug 'creativenull/projectlocal-vim'
 
 # File Explorer
-Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 
 # Snippets
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
