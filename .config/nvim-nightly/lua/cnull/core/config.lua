@@ -16,8 +16,10 @@ local function prereq_checks()
     error(string.format('%q %s', 'ripgrep', errmsg_pkg_required))
   end
 
-  if fn.executable('nnn') == 0 then
-    error(string.format('%q %s', 'nnn', errmsg_pkg_required))
+  if fn.has('win32') == 0 then
+    if fn.executable('nnn') == 0 then
+      error(string.format('%q %s', 'nnn', errmsg_pkg_required))
+    end
   end
 
   if fn.executable('bat') == 0 then

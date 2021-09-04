@@ -1,10 +1,10 @@
 local function indent_blankline_highlights()
   local fn = vim.fn
   local bg = fn.synIDattr(fn.synIDtrans(fn.hlID('Normal')), 'bg')
-  local first = '#BE185D'
-  local second = '#1D4ED8'
-  local third = '#047857'
-  local fourth = '#B91C1C'
+  local first = '#aaaaaa'
+  local second = '#7F1D1D'
+  local third = '#064E3B'
+  local fourth = '#1E3A8A'
 
   if _G.CNull.config.theme.transparent then
     bg = 'NONE'

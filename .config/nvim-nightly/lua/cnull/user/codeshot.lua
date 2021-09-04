@@ -11,4 +11,4 @@ local function codeshot_toggle()
   end
 end
 
-command('CodeshotToggle', codeshot_toggle)
+command('ToggleCodeshot', codeshot_toggle)

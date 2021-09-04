@@ -1,7 +1,8 @@
-local nmap = require('cnull.core.keymap').nmap
-local vmap = require('cnull.core.keymap').vmap
-local tmap = require('cnull.core.keymap').tmap
-local imap = require('cnull.core.keymap').imap
+local keymap = require('cnull.core.keymap')
+local nmap = keymap.nmap
+local vmap = keymap.vmap
+local tmap = keymap.tmap
+local imap = keymap.imap
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
 nmap('<Up>', '')
@@ -36,8 +37,10 @@ nmap('<Leader><CR>', [[<Cmd>noh<CR>]])
 nmap('<Leader>bl', [[<Cmd>buffers<CR>]])
 -- Go to next buffer
 nmap('<C-l>', [[<Cmd>bnext<CR>]])
+nmap('<Leader>bn', [[<Cmd>bnext<CR>]])
 -- Go to previous buffer
 nmap('<C-h>', [[<Cmd>bprevious<CR>]])
+nmap('<Leader>bp', [[<Cmd>bprevious<CR>]])
 -- Close the current buffer, and more?
 nmap('<Leader>bd', [[<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>]])
 -- Close all buffer except current
@@ -66,3 +69,11 @@ nmap('<Leader>mv', [[<Cmd>vmap<CR>]])
 nmap('<Leader>mi', [[<Cmd>imap<CR>]])
 nmap('<Leader>mt', [[<Cmd>tmap<CR>]])
 nmap('<Leader>mc', [[<Cmd>cmap<CR>]])
+
+-- Copy/Paste from clipboard
+nmap('<Leader>y', [["+y]])
+nmap('<Leader>p', [["+p]])
+
+-- Disable Ex-mode and command history
+nmap('Q', '')
+nmap('q:', '')

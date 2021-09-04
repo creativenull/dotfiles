@@ -1,16 +1,12 @@
-local expand = vim.fn.expand
-local isdirectory = vim.fn.isdirectory
-local mkdir = vim.fn.mkdir
-local undodir = expand('~/.cache/nvim/undo')
+local undodir = vim.fn.stdpath('cache') .. '/undo'
 
-local function options_init()
-  if isdirectory(undodir) == 0 then
-    mkdir(undodir, 'p')
+if vim.fn.isdirectory(undodir) == 0 then
+  if vim.fn.has('win32') == 1 then
+    vim.fn.system({'mkdir', undodir})
+  else
+    vim.fn.system({'mkdir', '-p', undodir})
   end
 end
-
--- Init Bootstrap
-options_init()
 
 -- Completion options
 vim.opt.completeopt = {'menuone', 'noinsert', 'noselect'}
@@ -47,7 +43,6 @@ vim.opt.undodir = undodir
 vim.opt.undolevels = 10000
 vim.opt.history = 10000
 vim.opt.backspace = {'indent', 'eol', 'start'}
-vim.opt.clipboard = 'unnamedplus'
 vim.opt.ttimeoutlen = 50
 vim.opt.mouse = ''
 vim.opt.wildignorecase = true

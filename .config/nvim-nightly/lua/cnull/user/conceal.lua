@@ -9,4 +9,4 @@ local function conceal_toggle()
   end
 end
 
-command('ConcealToggle', conceal_toggle)
+command('ToggleConcealLevel', conceal_toggle)

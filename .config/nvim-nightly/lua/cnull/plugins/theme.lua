@@ -2,6 +2,7 @@ local M = {
   plugins = {
     {'norcalli/nvim-colorizer.lua', opt = true},
     {'bluz71/vim-moonfly-colors'},
+    {'bluz71/vim-nightfly-guicolors'},
     {'marko-cerovac/material.nvim'},
     {'EdenEast/nightfox.nvim'},
   },

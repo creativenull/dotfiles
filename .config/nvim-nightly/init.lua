@@ -51,6 +51,7 @@ vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', userspace))
 -- Load packages on the filetype event in `after/ftplugin`
 function _G.LoadCommonPackages()
   vim.cmd('packadd vim-abolish')
+  vim.cmd('packadd vim-repeat')
   vim.cmd('packadd vim-surround')
   vim.cmd('packadd kommentary')
   vim.cmd('packadd ultisnips')
@@ -61,8 +62,6 @@ function _G.LoadCommonPackages()
 
   vim.cmd('packadd todo-comments.nvim')
   require('todo-comments').setup()
-
-  require('cnull.plugins.autocompletion.coq')
 end
 
 -- Initialize
@@ -75,9 +74,11 @@ core.setup({
 
     theme = {
       name = 'moonfly',
-      transparent = false,
-      setup = function()
-        -- vim.g.tokyonight_style = 'night'
+      transparent = true,
+
+      -- Events
+      on_before = function()
+        -- vim.g.nightfox_italic_comments = true
       end,
     },
 
@@ -92,7 +93,7 @@ core.setup({
   },
 
   -- Events
-  before = function()
+  on_before = function()
     local autocmd = require('cnull.core.event').autocmd
 
     -- Highlight text yank
@@ -103,30 +104,13 @@ core.setup({
         vim.highlight.on_yank({ higroup = 'Search', timeout = 500 })
       end,
     })
-
-    -- coq_nvim Config
-    -- ---
-    vim.g.coq_settings = {
-      ['auto_start'] = false,
-      ['keymap.recommended'] = false,
-      ['keymap.jump_to_mark'] = '<C-j>',
-      ['clients.tmux.enabled'] = false,
-      ['clients.tree_sitter.enabled'] = false,
-      ['clients.tags.enabled'] = false,
-      ['display.preview.positions'] = {
-        east = 1,
-        north = 3,
-        south = 4,
-        west = 2,
-      },
-    }
   end,
 
-  after = function()
+  on_after = function()
     require('cnull.user.keymaps')
     require('cnull.user.conceal')
     require('cnull.user.codeshot')
     require('cnull.user.options')
-    require('cnull.user.commands')
+    require('cnull.user.completion')
   end,
 })
