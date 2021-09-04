@@ -1,6 +1,6 @@
 local M = {
   plugins = {
-    {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}},
+    {'lewis6991/gitsigns.nvim'},
     {'tpope/vim-fugitive'},
   },
 }

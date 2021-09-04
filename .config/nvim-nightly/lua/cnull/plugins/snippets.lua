@@ -1,6 +1,7 @@
 local M = {
   plugins = {
-    {'SirVer/ultisnips', opt = true, requires = {'honza/vim-snippets', opt = true}},
+    {'SirVer/ultisnips', opt = true},
+    {'honza/vim-snippets', opt = true},
     {'mattn/emmet-vim', opt = true},
   },
 }

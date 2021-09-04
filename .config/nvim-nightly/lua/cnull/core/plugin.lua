@@ -5,10 +5,10 @@ local getmodlist = require('cnull.core.lib.autorequire').getmodlist
 local M = {
   config = {
     modname = 'cnull.plugins',
-    git = 'https://github.com/wbthomason/packer.nvim.git',
-    pack = 'packer.nvim',
-    selfcare = 'wbthomason/packer.nvim',
-    installpath = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim',
+    git = 'https://github.com/savq/paq-nvim.git',
+    pack = 'paq-nvim',
+    selfcare = 'savq/paq-nvim',
+    installpath = fn.stdpath('data') .. '/site/pack/paqs/opt/paq-nvim',
     init = nil,
   },
   modlist = {},
@@ -37,7 +37,7 @@ function M.trigger_after(config)
 end
 
 function M.loadplugins()
-  local packer = require('packer')
+  local paq = require('paq')
   local plugin_names = {}
 
   -- Get plugin names from each file
@@ -53,21 +53,17 @@ function M.loadplugins()
     end
   end
 
-  -- Initilize packer options
-  if M.config.init then
-    packer.init(M.config.init)
+  -- Load the plugins w/ packer
+  if M.config.selfcare then
+    table.insert(plugin_names, {M.config.selfcare, opt = true})
   end
 
-  -- Load the plugins w/ packer
-  packer.startup(function(use)
-    if M.config.selfcare then
-      use { M.config.selfcare, opt = true }
-    end
-
-    for _,name in pairs(plugin_names) do
-      use(name)
-    end
-  end)
+  -- Initilize packer options
+  if M.config.init then
+    paq:setup(M.config.init)(plugin_names)
+  else
+    paq(plugin_names)
+  end
 end
 
 function M.setup(config)
@@ -88,7 +84,7 @@ function M.setup(config)
 
     -- Install plugins
     installing = true
-    api.nvim_command('PackerInstall')
+    api.nvim_command('PaqInstall')
   else
     api.nvim_command('packadd ' .. pconfig.pack)
     M.loadplugins()

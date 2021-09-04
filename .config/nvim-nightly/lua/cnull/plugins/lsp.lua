@@ -1,7 +1,7 @@
 local M = {
   plugins = {
     {'neovim/nvim-lspconfig'},
-    {'creativenull/diagnosticls-configs-nvim', requires = {'neovim/nvim-lspconfig'}},
+    {'creativenull/diagnosticls-configs-nvim'},
   },
 }
 

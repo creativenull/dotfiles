@@ -1,7 +1,8 @@
 local M = {
   plugins = {
-    {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}},
-    -- {'junegunn/fzf.vim', requires = {'junegunn/fzf', run = function() vim.fn['fzf#install']() end}},
+    {'nvim-telescope/telescope.nvim'},
+    -- {'junegunn/fzf'},
+    -- {'junegunn/fzf.vim'},
     -- {'camspiers/snap'},
   },
 }

@@ -1,5 +1,7 @@
 local M = {
   plugins = {
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-lua/popup.nvim'},
     {'steelsojka/pears.nvim'},
     {'vim-denops/denops.vim'},
     {'creativenull/projectlocal-vim'},
@@ -26,7 +28,7 @@ function M.after()
   -- nnn.vim/fern.vim Config
   -- ---
   function _G.NnnLoad()
-    if vim.g['nnn#loaded'] ~= 1 then
+    if vim.fn.exists('g:nnn#loaded') ~= 1 then
       vim.cmd('packadd nnn.vim')
       require('nnn').setup({
         set_default_mappings = false,
@@ -44,7 +46,7 @@ function M.after()
   end
 
   function _G.FernLoad()
-    if vim.g.loaded_fern ~= 1 and vim.g.loaded_fix_cursorhold_nvim ~= 1 then
+    if vim.fn.exists('g:loaded_fern') ~= 1 and vim.fn.exists('g:loaded_fix_cursorhold_nvim ') ~= 1 then
       vim.cmd('packadd FixCursorHold.nvim')
       vim.cmd('packadd fern.vim')
     end

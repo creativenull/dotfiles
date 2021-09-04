@@ -83,11 +83,9 @@ core.setup({
     },
 
     plugins_config = {
-      modname = 'cnull.plugins',
-      installpath = string.format('%s/.local/share/%s/site/pack/packer/opt/packer.nvim', vim.env.HOME, userspace),
+      installpath = string.format('%s/.local/share/%s/site/pack/paqs/opt/paq-nvim', vim.env.HOME, userspace),
       init = {
-        package_root = string.format('%s/.local/share/%s/site/pack', vim.env.HOME, userspace),
-        compile_path = string.format('%s/.local/share/%s/packer_compiled.lua', vim.env.HOME, userspace),
+        paqdir = string.format('%s/.local/share/%s/site/pack/paqs/', vim.env.HOME, userspace)
       },
     },
   },
