@@ -117,6 +117,11 @@ if cnull.transparent
   augroup END
 endif
 
+augroup highlightyank_user_events
+  autocmd!
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+augroup END
+
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
@@ -163,11 +168,6 @@ function! g:FernLoad() abort
 endfunction
 
 nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
-
-augroup fern_user_events
-  autocmd!
-  autocmd FileType fern nnoremap <buffer><nowait> q <Cmd>bd<CR>
-augroup END
 
 " =============================================================================
 " = Plugin Manager =
