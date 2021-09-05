@@ -199,6 +199,7 @@ function! PackagerInit(opts) abort
 
   " LSP/Linter/Formatter/Completion
   call packager#add('neovim/nvim-lspconfig')
+  call packager#add('creativenull/diagnosticls-configs-nvim')
   call packager#add('hrsh7th/nvim-compe')
 
   " Snippets
