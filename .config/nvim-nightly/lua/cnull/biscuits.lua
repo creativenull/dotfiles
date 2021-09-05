@@ -1,5 +1,3 @@
-local nmap = require('cnull.core.keymap').nmap
-
 require('nvim-biscuits').setup({
   default_config = {
     cursor_line_only = true,
@@ -13,8 +11,6 @@ require('nvim-biscuits').setup({
   },
 })
 
-local function toggle_biscuits()
+function _G.ToggleBiscuits()
   require('nvim-biscuits').toggle_biscuits()
 end
-
-nmap('<Leader>cb', toggle_biscuits)

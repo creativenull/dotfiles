@@ -1,4 +1,3 @@
-local nmap = require('cnull.core.keymap').nmap
 local telescope = require('telescope')
 local telescope_builtin = require('telescope.builtin')
 
@@ -11,30 +10,21 @@ telescope.setup({
   },
 })
 
--- Normal file finder
-local function find_files()
+function _G.TelescopeFindFiles()
   telescope_builtin.find_files({
     find_command = {'rg', '--files', '--iglob', '!.git', '--hidden'},
     previewer = false,
   })
 end
 
-nmap('<C-p>', find_files)
-
--- Code finder
-local function live_grep()
+function _G.TelescopeLiveGrep()
   telescope_builtin.live_grep({})
 end
 
-nmap('<C-t>', live_grep)
-
--- Config file finder
-local function find_config_files()
+function _G.TelescopeFindConfigFiles()
   local configdir = vim.fn.stdpath('config')
   telescope_builtin.find_files({
     find_command = {'rg', '--files', '--iglob', '!.git', '--hidden', configdir},
     previewer = false,
   })
 end
-
-nmap('<Leader>vf', find_config_files)

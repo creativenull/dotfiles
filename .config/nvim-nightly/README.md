@@ -1,13 +1,13 @@
 # My nvim-nightly config
 
 > DO NOT USE THIS CONFIG
-> Check out my [nvim-config repo][nvim-config] if you want to try it out, this one is a more customized version of
-> that config.
+> Check out my [original config][nvim] or [my lua config][nvim-config] if you want to check the lua version.
 
 [Taken from my post on having two separate versions of neovim][post]
 
-This is my experimental nvim config, I use this to test out different lua plugins/building or a bootstrap framework
-for a generic config.
+This is my nvim config with an aim to replace vim plugins with lua plugins (to an extent) and utilizing the builtin
+lsp client in nvim. It's a [direct translation of my original config][nvim] with some differences. If you want a pure
+lua config, check out my [nvim-config repo][nvim-config] which is a different take on structuring out a lua config.
 
 To use this you must have a separate executable from normal `nvim` and must be from a compiled nvim binary cloned from
 the neovim repository.
@@ -44,7 +44,7 @@ USERSPACE="nvim-nightly"
 NVIM_GIT=${HOME}/.builds/neovim
 NVIM_RPLUGIN_MANIFEST=${HOME}/.local/share/${USERSPACE}/rplugin.vim
 VIMRUNTIME=${NVIM_GIT}/runtime
-MYVIMRC=${HOME}/.config/${USERSPACE}/init.lua
+MYVIMRC=${HOME}/.config/${USERSPACE}/init.vim
 
 MYVIMRC=${MYVIMRC} NVIM_RPLUGIN_MANIFEST=${NVIM_RPLUGIN_MANIFEST} VIMRUNTIME=${VIMRUNTIME} ${NVIM_GIT}/build/bin/nvim "$@" -u ${MYVIMRC}
 ```
@@ -87,5 +87,6 @@ Executing `nv` from any directory should start to install plugins and setup nvim
 directory.
 
 [nvim-config]: https://github.com/creativenull/nvim-config
+[nvim]: https://github.com/creativenull/dotfiles/tree/main/.config/nvim
 [nvim-prereq]: https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites
 [post]: https://dev.to/creativenull/installing-neovim-nightly-alongside-stable-10d0
