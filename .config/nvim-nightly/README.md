@@ -1,6 +1,7 @@
 # My nvim-nightly config
 
 > DO NOT USE THIS CONFIG
+
 > Check out my [original config][nvim] or [my lua config][nvim-config] if you want to check the lua version.
 
 [Taken from my post on having two separate versions of neovim][post]
