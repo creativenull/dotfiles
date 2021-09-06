@@ -71,7 +71,7 @@ endif
 " = Functions =
 " =============================================================================
 
-function! s:toggleConcealLevel() abort
+function! g:ToggleConcealLevel() abort
   if &conceallevel == 2
     set conceallevel=0
   else
@@ -79,7 +79,7 @@ function! s:toggleConcealLevel() abort
   endif
 endfunction
 
-function! s:toggleCodeshot() abort
+function! g:ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
   else
@@ -464,5 +464,5 @@ nnoremap q: <Nop>
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ToggleConcealLevel call s:toggleConcealLevel()
-command! ToggleCodeshot call s:toggleCodeshot()
+command! ToggleConcealLevel call ToggleConcealLevel()
+command! ToggleCodeshot call ToggleCodeshot()
