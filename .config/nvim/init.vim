@@ -35,7 +35,7 @@ endif
 " = Functions =
 " =============================================================================
 
-function! s:toggleConcealLevel() abort
+function! g:ToggleConcealLevel() abort
   if &conceallevel == 2
     set conceallevel=0
     let g:vim_markdown_conceal = 0
@@ -47,7 +47,7 @@ function! s:toggleConcealLevel() abort
   endif
 endfunction
 
-function! s:toggleCodeshot() abort
+function! g:ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
   else
@@ -65,16 +65,16 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
-let g:cnull = {}
-let g:cnull.transparent = v:false
-let g:cnull.config = {}
-let g:cnull.config.undodir = stdpath('cache') . '/undo'
+let cnull = {}
+let cnull.transparent = v:false
+let cnull.config = {}
+let cnull.config.undodir = stdpath('cache') . '/undo'
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-if g:cnull.transparent
+if cnull.transparent
   augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
@@ -95,6 +95,7 @@ let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
+" Use tab to complete the popup menu item
 function! g:TabCompletion() abort
   if pumvisible()
     if UltiSnips#CanExpandSnippet()
@@ -106,7 +107,7 @@ function! g:TabCompletion() abort
   return "\<Tab>"
 endfunction
 
-inoremap <silent><expr> <Tab> g:TabCompletion()
+inoremap <silent><expr> <Tab> TabCompletion()
 
 " vim-vue Config
 " ---
@@ -115,6 +116,13 @@ let g:vue_pre_processors = []
 " emmet-vim Config
 " ---
 let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_mode = 'i'
+let g:user_emmet_install_global = 0
+
+augroup emmet_user_events
+  autocmd!
+  autocmd FileType html,php,blade,css EmmetInstall
+augroup END
 
 " fzf.vim Config
 " ---
@@ -188,11 +196,16 @@ let g:buftabline_indicators = 1
 
 " fern.vim Config
 " ---
+let g:fern#renderer = 'nerdfont'
+
 function! g:FernLoad() abort
   if !exists('g:loaded_fern') && !exists('g:loaded_fix_cursorhold_nvim')
     packadd FixCursorHold.nvim
     packadd fern.vim
+    packadd nerdfont.vim
+    packadd fern-renderer-nerdfont.vim
   endif
+
   execute 'Fern . -reveal=%'
 endfunction
 
@@ -256,6 +269,8 @@ function! PackagerInit(opts) abort
   " File Explorer
   call packager#add('antoinemadec/FixCursorHold.nvim', { 'type': 'opt' })
   call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
+  call packager#add('lambdalisue/nerdfont.vim', { 'type': 'opt' })
+  call packager#add('lambdalisue/fern-renderer-nerdfont.vim', { 'type': 'opt' })
 
   " LSP/Linter/Formatter
   call packager#add('dense-analysis/ale')
@@ -288,23 +303,23 @@ function! PackagerInit(opts) abort
   call packager#add('bluz71/vim-moonfly-colors')
 endfunction
 
-let g:cnull.plugin = {}
-let g:cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
-let g:cnull.plugin.path = printf('%s/site/pack/packager/opt/vim-packager', stdpath('data'))
-let g:cnull.plugin.opts = {}
-let g:cnull.plugin.opts.dir = printf('%s/site/pack/packager', stdpath('data'))
+let cnull.plugin = {}
+let cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
+let cnull.plugin.path = printf('%s/site/pack/packager/opt/vim-packager', stdpath('data'))
+let cnull.plugin.opts = {}
+let cnull.plugin.opts.dir = printf('%s/site/pack/packager', stdpath('data'))
 
 " Package manager bootstrapping strategy
-if !isdirectory(g:cnull.plugin.path)
-  execute printf('!git clone %s %s', g:cnull.plugin.git, g:cnull.plugin.path)
-  call PackagerInit(g:cnull.plugin.opts)
+if !isdirectory(cnull.plugin.path)
+  execute printf('!git clone %s %s', cnull.plugin.git, cnull.plugin.path)
+  call PackagerInit(cnull.plugin.opts)
   call packager#install()
 endif
 
-command! -bar -nargs=* PackagerInstall call PackagerInit(g:cnull.plugin.opts) | call packager#install(<args>)
-command! -bar -nargs=* PackagerUpdate call PackagerInit(g:cnull.plugin.opts) | call packager#update(<args>)
-command! -bar PackagerClean call PackagerInit(g:cnull.plugin.opts) | call packager#clean()
-command! -bar PackagerStatus call PackagerInit(g:cnull.plugin.opts) | call packager#status()
+command! -bar -nargs=* PackagerInstall call PackagerInit(cnull.plugin.opts) | call packager#install(<args>)
+command! -bar -nargs=* PackagerUpdate call PackagerInit(cnull.plugin.opts) | call packager#update(<args>)
+command! -bar PackagerClean call PackagerInit(cnull.plugin.opts) | call packager#clean()
+command! -bar PackagerStatus call PackagerInit(cnull.plugin.opts) | call packager#status()
 
 " =============================================================================
 " = Plugin Post-Config - after loading plugins =
@@ -323,10 +338,10 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 " ---
 function! g:DeopleteEnable()
   packadd deoplete.nvim
-  let deoplete_opts = {}
-  let deoplete_opts.sources = { '_': ['ale', 'ultisnips'] }
-  let deoplete_opts.num_processes = 2
-  call deoplete#custom#option(deoplete_opts)
+  let opts = {}
+  let opts.sources = { '_': ['ale', 'ultisnips'] }
+  let opts.num_processes = 2
+  call deoplete#custom#option(opts)
   call deoplete#enable()
 endfunction
 
@@ -348,8 +363,8 @@ colorscheme moonfly
 " = Options =
 " =============================================================================
 
-if !isdirectory(g:cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
+if !isdirectory(cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', cnull.config.undodir)
 endif
 
 " Completion
@@ -384,7 +399,7 @@ set nobackup
 set noswapfile
 set updatetime=250
 set undofile
-let &undodir=g:cnull.config.undodir
+let &undodir=cnull.config.undodir
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start
@@ -480,5 +495,5 @@ nnoremap q: <Nop>
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ToggleConcealLevel call s:toggleConcealLevel()
-command! ToggleCodeshot call s:toggleCodeshot()
+command! ToggleConcealLevel call ToggleConcealLevel()
+command! ToggleCodeshot call ToggleCodeshot()
