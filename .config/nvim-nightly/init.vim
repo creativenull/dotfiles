@@ -197,10 +197,18 @@ function! PackagerInit(opts) abort
   call packager#add('antoinemadec/FixCursorHold.nvim', { 'type': 'opt' })
   call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
 
-  " LSP/Linter/Formatter/Completion
+  " LSP/Linter/Formatter
   call packager#add('neovim/nvim-lspconfig')
   call packager#add('creativenull/diagnosticls-configs-nvim')
-  call packager#add('hrsh7th/nvim-compe')
+
+  " AutoCompletion
+  call packager#add('Shougo/ddc.vim')
+  call packager#add('Shougo/ddc-sorter_rank')
+  call packager#add('matsui54/ddc-matcher_fuzzy')
+  call packager#add('Shougo/ddc-around')
+  call packager#add('Shougo/ddc-nvim-lsp')
+  call packager#add('matsui54/ddc-ultisnips')
+  call packager#add('matsui54/ddc-nvim-lsp-doc')
 
   " Snippets
   call packager#add('SirVer/ultisnips')
@@ -256,11 +264,21 @@ lua require('nvim-autopairs').setup({})
 " nvim-compe Config
 " ---
 lua require('cnull.autocompletion')
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()"))
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+inoremap <silent><expr> <C-Space> ddc#manual_complete()
+
+function! g:LoadDdc() abort
+  if &filetype == 'TelescopePrompt'
+    call ddc#disable()
+  else
+    call ddc#enable()
+  endif
+endfunction
+
+augroup ddc_user_events
+  autocmd!
+  autocmd BufEnter,BufNew * call LoadDdc()
+augroup END
 
 " gitsigns.nvim Config
 " ---
