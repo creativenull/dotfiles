@@ -18,7 +18,7 @@ local function space_provider()
 end
 
 local function line_info_provider()
-  local bufnr = vim.fn.bufnr()
+  local bufnr = vim.api.nvim_get_current_buf()
   local bufinfo = vim.fn.getbufinfo(bufnr)
   bufinfo = bufinfo[1]
   local linecount = bufinfo.linecount
@@ -28,21 +28,21 @@ local function line_info_provider()
 end
 
 local function lsp_error_provider()
-  local bufnr = vim.fn.bufnr()
+  local bufnr = vim.api.nvim_get_current_buf()
   local errors = vim.lsp.diagnostic.get_count(bufnr, [[Error]])
   if errors ~= 0 then return string.format('E:%s ', errors) end
   return ''
 end
 
 local function lsp_warning_provider()
-  local bufnr = vim.fn.bufnr()
+  local bufnr = vim.api.nvim_get_current_buf()
   local warnings = vim.lsp.diagnostic.get_count(bufnr, [[Warning]])
   if warnings ~= 0 then return string.format('W:%s ', warnings) end
   return ''
 end
 
 local function lsp_text_provider()
-  local bufnr = vim.fn.bufnr('')
+  local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.buf_get_clients(bufnr)
   if vim.tbl_isempty(clients) then return '' end
   return 'LSP'
