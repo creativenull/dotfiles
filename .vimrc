@@ -171,19 +171,9 @@ nnoremap <silent>       <Leader>la <Cmd>call CocActionAsync('doCodeAction')<CR>
 nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
 inoremap <silent><expr> <C-@>      coc#refresh()
 
-def g:TabCompletion(): string
-  if pumvisible()
-    if exists('g:did_coc_loaded')
-      return coc#_select_confirm()
-    else
-      return "\<C-y>"
-    endif
-  endif
-
-  return "\<Tab>"
-enddef
-
-inoremap <silent><expr> <Tab> TabCompletion()
+inoremap <silent><expr> <Tab> pumvisible()
+  \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
+  \ : "\<Tab>"
 
 # ale Config
 # ---
