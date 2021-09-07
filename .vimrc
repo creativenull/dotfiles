@@ -216,6 +216,7 @@ enddef
 
 # fern.vim Config
 # ---
+g:fern#renderer = 'nerdfont'
 nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
 # lightline.vim Config
@@ -284,6 +285,8 @@ Plug 'vim-denops/denops.vim' | Plug 'creativenull/projectlocal-vim'
 
 # File Explorer
 Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
+Plug 'lambdalisue/nerdfont.vim', { 'on': 'Fern' }
+Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'on': 'Fern' }
 
 # Snippets
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
