@@ -96,18 +96,9 @@ let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " Use tab to complete the popup menu item
-function! g:TabCompletion() abort
-  if pumvisible()
-    if UltiSnips#CanExpandSnippet()
-      return "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
-    else
-      return "\<C-y>"
-    endif
-  endif
-  return "\<Tab>"
-endfunction
-
-inoremap <silent><expr> <Tab> TabCompletion()
+inoremap <silent><expr> <Tab> pumvisible()
+  \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
+  \ : "\<Tab>"
 
 " vim-vue Config
 " ---
