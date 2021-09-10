@@ -85,6 +85,11 @@ if cnull.transparent
   augroup END
 endif
 
+augroup highlightyank_user_events
+  autocmd!
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+augroup END
+
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
@@ -141,7 +146,6 @@ nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
 nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
 nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
 nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-inoremap <silent> <C-Space>  <Cmd>ALEComplete<CR>
 
 function! g:AleErrorStlComponent() abort
   if exists('g:loaded_ale')
@@ -166,15 +170,6 @@ function! g:AleWarningStlComponent() abort
 
   return ''
 endfunction
-
-" hlyank Config
-" ---
-let g:highlightedyank_highlight_duration = 500
-
-augroup highlightedyank_user_events
-  autocmd!
-  autocmd ColorScheme * highlight link HighlightedyankRegion Search
-augroup END
 
 " indentLine Config
 " ---
@@ -280,7 +275,6 @@ function! PackagerInit(opts) abort
   call packager#add('airblade/vim-gitgutter')
 
   " UI Plugins
-  call packager#add('machakann/vim-highlightedyank')
   call packager#add('Yggdroot/indentLine')
   call packager#add('ap/vim-buftabline')
   call packager#add('itchyny/lightline.vim')
@@ -329,12 +323,14 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 " ---
 function! g:DeopleteEnable()
   packadd deoplete.nvim
-  let opts = {}
-  let opts.sources = { '_': ['ale', 'ultisnips'] }
-  let opts.num_processes = 2
-  call deoplete#custom#option(opts)
+  let deoplete_opts = {}
+  let deoplete_opts.sources = { '_': ['ale', 'ultisnips', 'around', 'buffer'] }
+  let deoplete_opts.num_processes = 0
+  call deoplete#custom#option(deoplete_opts)
   call deoplete#enable()
 endfunction
+
+inoremap <silent><expr> <C-Space> deoplete#manual_complete()
 
 augroup deoplete_user_events
   au!
