@@ -98,7 +98,7 @@ let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
 let cnull = {}
-let cnull.transparent = v:false
+let cnull.transparent = v:true
 let cnull.config = {}
 let cnull.config.undodir = expand(printf('$HOME/.cache/%s/undo', userspace))
 
@@ -150,10 +150,14 @@ let g:indentLine_char = '│'
 
 " fern.vim Config
 " ---
+let g:fern#renderer = 'nerdfont'
+
 function! g:FernLoad() abort
   if !exists('g:loaded_fern') && !exists('g:loaded_fix_cursorhold_nvim')
     packadd FixCursorHold.nvim
     packadd fern.vim
+    packadd nerdfont.vim
+    packadd fern-renderer-nerdfont.vim
   endif
   execute 'Fern . -reveal=%'
 endfunction
@@ -177,6 +181,7 @@ function! PackagerInit(opts) abort
 
   " Core
   call packager#add('windwp/nvim-autopairs')
+  call packager#add('tpope/vim-abolish')
   call packager#add('tpope/vim-surround')
   call packager#add('tpope/vim-repeat')
   call packager#add('editorconfig/editorconfig-vim')
@@ -196,11 +201,15 @@ function! PackagerInit(opts) abort
 
   " AutoCompletion
   call packager#add('Shougo/ddc.vim')
+  " Sorters
   call packager#add('Shougo/ddc-sorter_rank')
+  " Matchers
   call packager#add('matsui54/ddc-matcher_fuzzy')
+  " Sources
+  call packager#add('matsui54/ddc-buffer')
   call packager#add('Shougo/ddc-around')
-  call packager#add('Shougo/ddc-nvim-lsp')
   call packager#add('matsui54/ddc-ultisnips')
+  call packager#add('Shougo/ddc-nvim-lsp')
   call packager#add('matsui54/ddc-nvim-lsp-doc')
 
   " Snippets
@@ -250,6 +259,10 @@ command! -bar PackagerStatus call PackagerInit(cnull.plugin.opts) | call package
 " = Plugin Post-Config - after loading plugins =
 " =============================================================================
 
+" nvim-lspconfig Config
+" ---
+lua require('cnull.lsp')
+
 " nvim-autopairs Config
 " ---
 lua require('nvim-autopairs').setup({})
@@ -296,10 +309,6 @@ lua require('cnull.treesitter')
 " ---
 lua require('cnull.biscuits')
 nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
-
-" nvim-lspconfig Config
-" ---
-lua require('cnull.lsp')
 
 " galaxyline.nvim Config
 " ---

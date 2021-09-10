@@ -1,18 +1,27 @@
 local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
-local keymapopts = { silent = true, noremap = true }
+local DEFAULT_KEYMAP_OPTS = { silent = true, noremap = true }
 
-local function on_attach(_, bufnr)
+local function buf_mapper(...)
+  vim.api.nvim_buf_set_keymap(...)
+end
+
+local function nmap(bufnr, lhs, rhs, opts)
+  opts = opts and vim.tbl_extend('force', DEFAULT_KEYMAP_OPTS, opts) or DEFAULT_KEYMAP_OPTS
+  buf_mapper(bufnr, 'n', lhs, rhs, opts)
+end
+
+local function on_attach(_, buf)
   local diag_opts = '{ width = 80, focusable = false, border = "single" }'
 
   -- Keymaps
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', keymapopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>', keymapopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>le', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', keymapopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>', keymapopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', keymapopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>', keymapopts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics('.. diag_opts ..')<CR>', keymapopts)
+  nmap(buf, '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>')
+  nmap(buf, '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+  nmap(buf, '<Leader>le', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
+  nmap(buf, '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>')
+  nmap(buf, '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+  nmap(buf, '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
+  nmap(buf, '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics('.. diag_opts ..')<CR>')
 end
 
 -- Initial LSP Settings
@@ -56,17 +65,12 @@ lspconfig.sumneko_lua.setup({
         version = 'LuaJIT',
         path = lua_rtp,
       },
-      diagnostics = {
-        globals = {'vim'},
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
-      },
-      telemetry = {
-        enable = false,
-      },
+      diagnostics = { globals = {'vim'} },
+      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+      telemetry = { enable = false },
     },
   },
+  root_dir = root_pattern('.luals'),
 })
 
 -- Vim LSP Server
