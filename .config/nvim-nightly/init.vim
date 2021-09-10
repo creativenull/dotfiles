@@ -187,6 +187,8 @@ function! PackagerInit(opts) abort
   " File Explorer
   call packager#add('antoinemadec/FixCursorHold.nvim', { 'type': 'opt' })
   call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
+  call packager#add('lambdalisue/nerdfont.vim', { 'type': 'opt' })
+  call packager#add('lambdalisue/fern-renderer-nerdfont.vim', { 'type': 'opt' })
 
   " LSP/Linter/Formatter
   call packager#add('neovim/nvim-lspconfig')
