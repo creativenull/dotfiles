@@ -114,6 +114,7 @@ if cnull.transparent
     autocmd ColorScheme * highlight LineNr guibg=NONE
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
+    autocmd ColorScheme * highlight FloatBorder guifg=#aaaaaa guibg=NONE
   augroup END
 endif
 
@@ -135,10 +136,6 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 inoremap <silent><expr> <Tab> pumvisible()
   \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
   \ : "\<Tab>"
-
-" vim-vue Config
-" ---
-let g:vue_pre_processors = []
 
 " emmet-vim Config
 " ---
@@ -301,6 +298,11 @@ nnoremap <C-p> <Cmd>lua TelescopeFindFiles()<CR>
 nnoremap <C-t> <Cmd>lua TelescopeLiveGrep()<CR>
 nnoremap <Leader>vf <Cmd>lua TelescopeFindConfigFiles()<CR>
 
+augroup telescope_user_events
+  autocmd!
+  autocmd ColorScheme * highlight TelescopeBorder guifg=#aaaaaa
+augroup END
+
 " nvim-treesitter Config
 " ---
 lua require('cnull.treesitter')
@@ -343,6 +345,8 @@ require('colorizer').setup({
   'typescriptreact',
 })
 EOF
+
+let g:moonflyNormalFloat = 1
 
 set number
 set background=dark
