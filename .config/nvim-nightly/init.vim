@@ -133,7 +133,7 @@ let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
-inoremap <silent><expr> <Tab> pumvisible()
+inoremap <silent> <expr> <Tab> pumvisible()
   \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
   \ : "\<Tab>"
 
@@ -160,6 +160,11 @@ function! g:FernLoad() abort
 endfunction
 
 nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
+
+" projectlocal-vim Config
+" ---
+let g:projectlocal = {}
+let g:projectlocal.projectConfig = '.vim/init.lua'
 
 " =============================================================================
 " = Plugin Manager =
@@ -260,15 +265,11 @@ command! -bar PackagerStatus call PackagerInit(cnull.plugin.opts) | call package
 " ---
 lua require('cnull.lsp')
 
-" nvim-autopairs Config
-" ---
-lua require('nvim-autopairs').setup({})
-
-" nvim-compe Config
+" ddc.vim Config
 " ---
 lua require('cnull.autocompletion')
 
-inoremap <silent><expr> <C-Space> ddc#manual_complete()
+inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
 function! g:LoadDdc() abort
   if &filetype == 'TelescopePrompt'
@@ -282,6 +283,10 @@ augroup ddc_user_events
   autocmd!
   autocmd BufEnter,BufNew * call LoadDdc()
 augroup END
+
+" nvim-autopairs Config
+" ---
+lua require('nvim-autopairs').setup({})
 
 " gitsigns.nvim Config
 " ---
@@ -322,20 +327,18 @@ lua require('cnull.statusline')
 
 set termguicolors
 
-" bufferline.lua Config
-" ---
 lua <<EOF
+-- bufferline.lua Config
+-- ---
 require('bufferline').setup({
   options = {
     show_buffer_close_icons = false,
     show_close_icon = false,
   },
 })
-EOF
 
-" nvim-colorizer.lua Config
-" ---
-lua <<EOF
+-- nvim-colorizer.lua Config
+-- ---
 require('colorizer').setup({
   'css',
   'html',
@@ -440,12 +443,13 @@ nnoremap <Leader><CR> <Cmd>noh<CR>
 
 " List all buffers
 nnoremap <Leader>bl <Cmd>buffers<CR>
-" Go to next buffer
+
 nnoremap <C-l> <Cmd>bnext<CR>
 nnoremap <Leader>bn <Cmd>bnext<CR>
-" Go to previous buffer
+
 nnoremap <C-h> <Cmd>bprevious<CR>
 nnoremap <Leader>bp <Cmd>bprevious<CR>
+
 " Close the current buffer, and more?
 nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
 " Close all buffer, except current
@@ -479,7 +483,6 @@ nnoremap <Leader>p "+p
 
 " Disable Ex-mode and command history
 nnoremap Q <Nop>
-nnoremap q: <Nop>
 
 " =============================================================================
 " = Commands =

@@ -30,7 +30,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   underline = true,
   virtual_text = false,
   signs = true,
-  update_in_insert = true,
+  update_in_insert = false,
 })
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -92,6 +92,14 @@ lspconfig.intelephense.setup({
 -- JavaScript/TypeScript LSP Server
 -- ---
 lspconfig.tsserver.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+-- DiagnosticLS Server
+-- ---
+local dlsconfig = require('diagnosticls-configs')
+dlsconfig.init({
   on_attach = on_attach,
   capabilities = capabilities,
 })
