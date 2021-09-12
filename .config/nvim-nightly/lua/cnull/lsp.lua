@@ -50,6 +50,12 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 
+-- nvim-cmp capabilities
+local success, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+if success then
+  capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+end
+
 -- Lua LSP Server
 -- --
 local lua_rtp = vim.split(package.path, ';')
