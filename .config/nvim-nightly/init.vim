@@ -202,16 +202,16 @@ function! PackagerInit(opts) abort
   call packager#add('creativenull/diagnosticls-configs-nvim')
 
   " AutoCompletion
-  " call packager#add('hrsh7th/nvim-cmp')
-  " call packager#add('hrsh7th/cmp-nvim-lsp')
-  " call packager#add('quangnguyen30192/cmp-nvim-ultisnips')
-  call packager#add('Shougo/ddc.vim')
-  call packager#add('Shougo/ddc-sorter_rank')
-  call packager#add('matsui54/ddc-matcher_fuzzy')
-  call packager#add('Shougo/ddc-around')
-  call packager#add('matsui54/ddc-ultisnips')
-  call packager#add('Shougo/ddc-nvim-lsp')
-  call packager#add('matsui54/ddc-nvim-lsp-doc')
+  call packager#add('hrsh7th/nvim-cmp')
+  call packager#add('hrsh7th/cmp-nvim-lsp')
+  call packager#add('quangnguyen30192/cmp-nvim-ultisnips')
+  " call packager#add('Shougo/ddc.vim')
+  " call packager#add('Shougo/ddc-sorter_rank')
+  " call packager#add('matsui54/ddc-matcher_fuzzy')
+  " call packager#add('Shougo/ddc-around')
+  " call packager#add('matsui54/ddc-ultisnips')
+  " call packager#add('Shougo/ddc-nvim-lsp')
+  " call packager#add('matsui54/ddc-nvim-lsp-doc')
 
   " Snippets
   call packager#add('SirVer/ultisnips')
@@ -270,8 +270,8 @@ lua require('cnull.autocompletion')
 
 augroup autocompletion_user_events
   autocmd!
-  "autocmd FileType TelescopePrompt lua require('cmp').setup.buffer({ completion = false })
-  autocmd BufEnter,BufNew * if &filetype == 'TelescopePrompt' | call ddc#disable() | else | call ddc#enable() | endif
+  autocmd FileType TelescopePrompt lua require('cmp').setup.buffer({ completion = false })
+  "autocmd BufEnter,BufNew * if &filetype == 'TelescopePrompt' | call ddc#disable() | else | call ddc#enable() | endif
 augroup END
 
 " nvim-autopairs Config
