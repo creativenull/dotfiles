@@ -25,5 +25,24 @@ ddc.patch_global('sourceOptions', {
 
 ddc.nvim_lsp_doc.enable()
 
--- Tab completion
+-- Manually trigger completion popup menu
 vim.api.nvim_set_keymap('n', '<C-Space>', 'ddc#manual_complete()', { silent = true, noremap = true, expr = true })
+
+-- Tab completion
+local function termcodes(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+function _G.user_tab_completion(default_keybind)
+  if vim.api.pumvisible() == 1 then
+    if vim.call('UltiSnips#CanExpandSnippet') == 1 then
+      return termcodes('<C-r>=UltiSnips#ExpandSnippet()<CR>')
+    else
+      return termcodes('<C-y>')
+    end
+  end
+
+  return termcodes(default_keybind)
+end
+
+vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.user_tab_completion("<Tab>")', { silent = true, noremap = true, expr = true })

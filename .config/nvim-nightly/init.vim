@@ -133,10 +133,6 @@ let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
-inoremap <silent> <expr> <Tab> pumvisible()
-  \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
-  \ : "\<Tab>"
-
 " emmet-vim Config
 " ---
 let g:user_emmet_leader_key = '<C-q>'
