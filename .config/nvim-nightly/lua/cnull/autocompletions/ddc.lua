@@ -4,7 +4,7 @@ local ddc = {
 }
 
 ddc.patch_global('autoCompleteDelay', 250)
-ddc.patch_global('sources', {'nvimlsp', 'ultisnips', 'around', 'buffer'})
+ddc.patch_global('sources', {'nvimlsp', 'ultisnips', 'around'})
 ddc.patch_global('sourceOptions', {
   ['_'] = {
     matchers = {'matcher_fuzzy'},
