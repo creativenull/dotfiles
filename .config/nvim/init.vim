@@ -473,7 +473,6 @@ nnoremap <Leader>p "+p
 
 " Disable Ex-mode and command history
 nnoremap Q <Nop>
-nnoremap q: <Nop>
 
 " =============================================================================
 " = Commands =
