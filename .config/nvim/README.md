@@ -27,6 +27,10 @@ Average Startup Time w/ file (ran 3 times)
 ---
 nvim --startuptime nvim.log init.vim
 Results: 430, 429, 432 = 430.33ms
+
+
+---
+Last ran: 2021-09-14
 ```
 
 [nightly]: https://github.com/creativenull/dotfiles/tree/main/.config/nvim-nightly
