@@ -21,12 +21,12 @@ Storage: Crucial 500GB
 Average Startup Time w/o file (ran 3 times)
 ---
 nvim --startuptime nvim.log
-    -> 169, 172, 174 = 171.67ms
+Results: 169, 172, 174 = 171.67ms
 
 Average Startup Time w/ file (ran 3 times)
 ---
 nvim --startuptime nvim.log init.vim
-    -> 430, 429, 432 = 430.33ms
+Results: 430, 429, 432 = 430.33ms
 ```
 
 [nightly]: https://github.com/creativenull/dotfiles/tree/main/.config/nvim-nightly
