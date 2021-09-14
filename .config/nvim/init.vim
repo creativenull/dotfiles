@@ -326,6 +326,7 @@ function! g:DeopleteEnable()
   let deoplete_opts = {}
   let deoplete_opts.sources = { '_': ['ale', 'ultisnips', 'around', 'buffer'] }
   let deoplete_opts.num_processes = 0
+  let deoplete_opts.auto_complete_delay = 250
   call deoplete#custom#option(deoplete_opts)
   call deoplete#enable()
 endfunction
