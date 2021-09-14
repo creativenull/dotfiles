@@ -66,7 +66,7 @@ let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
 let cnull = {}
-let cnull.transparent = v:false
+let cnull.transparent = v:true
 let cnull.config = {}
 let cnull.config.undodir = stdpath('cache') . '/undo'
 
@@ -102,7 +102,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " Use tab to complete the popup menu item
 inoremap <silent><expr> <Tab> pumvisible()
-  \ ? (UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>")
+  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
   \ : "\<Tab>"
 
 " vim-vue Config
@@ -200,11 +200,11 @@ nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
 " lightline.vim Config
 " ---
 let g:lightline = {}
-let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
+let g:lightline.component = { 'lineinfo': ' %l/%L  %c' }
 let g:lightline.active = {}
 let g:lightline.active.left = [
-  \ ['mode', 'paste'],
-  \ ['gitbranch', 'readonly', 'filename', 'modified'],
+  \ ['filename'],
+  \ ['gitbranch', 'readonly', 'modified'],
 \ ]
 let g:lightline.active.right = [
   \ ['ale_error_component', 'ale_warning_component'],
@@ -324,8 +324,8 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 function! g:DeopleteEnable()
   packadd deoplete.nvim
   let deoplete_opts = {}
-  let deoplete_opts.sources = { '_': ['ale', 'ultisnips', 'around', 'buffer'] }
-  let deoplete_opts.num_processes = 0
+  let deoplete_opts.sources = { '_': ['ale', 'ultisnips', 'around'] }
+  let deoplete_opts.num_processes = 2
   let deoplete_opts.auto_complete_delay = 250
   call deoplete#custom#option(deoplete_opts)
   call deoplete#enable()
@@ -400,7 +400,7 @@ set signcolumn=yes
 set cmdheight=2
 set showtabline=2
 set laststatus=2
-set noshowmode
+set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
 
 " =============================================================================
 " = Keybindings =
