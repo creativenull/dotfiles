@@ -26,6 +26,7 @@ end
 
 -- Initial LSP Settings
 -- --
+-- Show diagnostics only as underline
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   virtual_text = false,
@@ -33,13 +34,22 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   update_in_insert = false,
 })
 
+-- Add border to hover documentation
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
   width = 80,
   border = 'single',
 })
 
+-- Add border to signature help
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, { border = 'single' })
 
+-- Let lsputil handle code actions
+local success, codeAction = pcall(require, 'lsputil.codeAction')
+if success then
+  vim.lsp.handlers['textDocument/codeAction'] = codeAction.code_action_handler
+end
+
+-- Add support to get snippets from lsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {

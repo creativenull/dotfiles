@@ -176,6 +176,7 @@ function! PackagerInit(opts) abort
   call packager#add('vim-denops/denops.vim')
   call packager#add('kyazdani42/nvim-web-devicons')
   call packager#add('Shougo/context_filetype.vim')
+  call packager#add('RishabhRD/popfix')
 
   " Core
   call packager#add('windwp/nvim-autopairs')
@@ -195,6 +196,7 @@ function! PackagerInit(opts) abort
 
   " LSP/Linter/Formatter
   call packager#add('neovim/nvim-lspconfig')
+  call packager#add('RishabhRD/nvim-lsputils')
   call packager#add('creativenull/diagnosticls-configs-nvim')
 
   " AutoCompletion
