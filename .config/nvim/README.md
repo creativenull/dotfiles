@@ -16,7 +16,7 @@ Machine Specs
 ---
 Processor: AMD A8-5557M APU
 Memory: 12GB
-Storage: Crucial 500GB
+Storage: Crucial SSD 500GB
 
 Average Startup Time w/o file (ran 3 times)
 ---
