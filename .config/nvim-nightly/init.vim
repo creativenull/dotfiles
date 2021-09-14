@@ -394,7 +394,7 @@ set signcolumn=yes
 set cmdheight=2
 set showtabline=2
 set laststatus=2
-set noshowmode
+set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
 
 " =============================================================================
 " = Keybindings =
