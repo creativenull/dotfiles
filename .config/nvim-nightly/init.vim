@@ -225,7 +225,7 @@ function! PackagerInit(opts) abort
   call packager#add('code-biscuits/nvim-biscuits')
   call packager#add('akinsho/nvim-bufferline.lua')
   call packager#add('folke/todo-comments.nvim')
-  call packager#add('glepnir/galaxyline.nvim')
+  call packager#add('hoob3rt/lualine.nvim')
   call packager#add('norcalli/nvim-colorizer.lua')
 
   " Colorschemes
