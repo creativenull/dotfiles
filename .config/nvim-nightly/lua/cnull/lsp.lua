@@ -22,6 +22,7 @@ local function on_attach(_, buf)
   nmap(buf, '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
   nmap(buf, '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
   nmap(buf, '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics('.. diag_opts ..')<CR>')
+  nmap(buf, '<Leader>li', '<Cmd>LspInfo<CR>')
 end
 
 -- Initial LSP Settings
