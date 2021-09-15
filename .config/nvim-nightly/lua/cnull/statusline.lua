@@ -1,5 +1,7 @@
 local lualine = require('lualine')
 local custom_theme = require('lualine.themes.powerline')
+custom_theme.normal.a = {}
+custom_theme.normal.a.bg = '#047857'
 custom_theme.normal.z = {}
 custom_theme.normal.z.bg = '#444444'
 custom_theme.insert.z = {}
