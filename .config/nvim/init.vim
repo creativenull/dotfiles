@@ -82,12 +82,16 @@ if cnull.transparent
     autocmd ColorScheme * highlight LineNr guibg=NONE
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
+    autocmd ColorScheme * highlight Visual guifg=#333333 guibg=#aaaaaa
   augroup END
 endif
 
 augroup highlightyank_user_events
   autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank({
+          \ higroup = 'IncSearch',
+          \ timeout = 500,
+        \ })
 augroup END
 
 " =============================================================================
@@ -102,8 +106,10 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " Use tab to complete the popup menu item
 inoremap <silent><expr> <Tab> pumvisible()
-  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
-  \ : "\<Tab>"
+      \ ? UltiSnips#CanExpandSnippet()
+        \ ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
+        \ : "\<C-y>"
+      \ : "\<Tab>"
 
 " vim-vue Config
 " ---
@@ -199,7 +205,13 @@ nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
 
 " lightline.vim Config
 " ---
+" Adjust some colors in powerline theme
+let s:powerline = copy(g:lightline#colorscheme#powerline#palette)
+let s:powerline.normal.left = [ ['#cdcdcd', '#047857', 'bold'], ['white', 'gray4'] ]
+let g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(s:powerline)
+
 let g:lightline = {}
+let g:lightline.colorscheme = 'powerline'
 let g:lightline.component = { 'lineinfo': ' %l/%L  %c' }
 let g:lightline.active = {}
 let g:lightline.active.left = [
@@ -472,7 +484,7 @@ nnoremap <Leader>mc <Cmd>cmap<CR>
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
-" Disable Ex-mode and command history
+" Disable Ex-mode
 nnoremap Q <Nop>
 
 " =============================================================================
