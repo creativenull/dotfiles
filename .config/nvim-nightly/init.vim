@@ -1,6 +1,5 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
-" File: init.vim
 " Description: My vimrc, currently tested on a Linux machine. Requires:
 "   + python3 (globally installed)
 "   + ripgrep (globally installed
@@ -115,6 +114,7 @@ if cnull.transparent
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
     autocmd ColorScheme * highlight FloatBorder guifg=#aaaaaa guibg=NONE
+    autocmd ColorScheme * highlight Visual guifg=#333333 guibg=#aaaaaa
   augroup END
 endif
 
