@@ -11,7 +11,7 @@ ddc.patch_global('autoCompleteDelay', 250)
 ddc.patch_global('sources', {'nvimlsp', 'ultisnips', 'around'})
 ddc.patch_global('sourceOptions', {
   ['_'] = {
-    matchers = {'matcher_fuzzy'},
+    matchers = {'matcher_full_fuzzy'},
     sorters = {'sorter_rank'},
     ignoreCase = true,
   },
