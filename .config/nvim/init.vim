@@ -177,6 +177,14 @@ function! g:AleWarningStlComponent() abort
   return ''
 endfunction
 
+function! g:AleStatus()
+  if exists('g:loaded_ale')
+    return 'ALE'
+  endif
+
+  return ''
+endfunction
+
 " indentLine Config
 " ---
 let g:indentLine_char = '│'
@@ -211,6 +219,9 @@ let s:powerline.normal.left = [ ['#cdcdcd', '#047857', 'bold'], ['white', 'gray4
 let g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(s:powerline)
 
 let g:lightline = {}
+let g:lightline.separator = {}
+let g:lightline.separator.left = ''
+let g:lightline.separator.right = ''
 let g:lightline.colorscheme = 'powerline'
 let g:lightline.component = { 'lineinfo': ' %l/%L  %c' }
 let g:lightline.active = {}
@@ -219,13 +230,14 @@ let g:lightline.active.left = [
   \ ['gitbranch', 'readonly', 'modified'],
 \ ]
 let g:lightline.active.right = [
-  \ ['ale_error_component', 'ale_warning_component'],
+  \ ['ale_error_component', 'ale_warning_component', 'ale_status'],
   \ ['lineinfo'],
   \ ['filetype', 'fileencoding'],
 \ ]
 
 let g:lightline.component_function = {}
 let g:lightline.component_function.gitbranch = 'FugitiveHead'
+let g:lightline.component_function.ale_status = 'AleStatus'
 
 let g:lightline.component_expand = {}
 let g:lightline.component_expand.ale_error_component = 'AleErrorStlComponent'
