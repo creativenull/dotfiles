@@ -175,7 +175,7 @@ g:coc_global_extensions = [
 
 nnoremap <silent>       <Leader>ld <Cmd>call CocActionAsync('jumpDefinition')<CR>
 nnoremap <silent>       <Leader>lf <Cmd>call CocActionAsync('format')<CR>
-nnoremap <silent>       <Leader>lr <Cmd>call CocAction('rename')<CR>
+nnoremap <silent>       <Leader>lr <Cmd>call CocActionAsync('rename')<CR>
 nnoremap <silent>       <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
 nnoremap <silent>       <Leader>la <Cmd>call CocActionAsync('doCodeAction')<CR>
 nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
