@@ -194,6 +194,11 @@ let g:indentLine_char = '│'
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
+augroup buftabline_user_events
+  autocmd!
+  autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
+augroup END
+
 " fern.vim Config
 " ---
 let g:fern#renderer = 'nerdfont'
