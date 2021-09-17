@@ -1,7 +1,6 @@
 vim9script
 # Name: Arnold Chand
 # Github: https://github.com/creativenull
-# File: init.vim
 # Description: My vimrc, currently tested on a Linux machine. Requires:
 #   + git
 #   + curl
@@ -129,8 +128,14 @@ g:user_emmet_install_global = 0
 $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 $FZF_DEFAULT_OPTS = '--reverse'
 g:fzf_preview_window = []
+
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
+
+augroup fzf_highlight_user_events
+  autocmd!
+  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
+augroup END
 
 # hlyank Config
 # ---
@@ -172,7 +177,9 @@ nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
 inoremap <silent><expr> <C-@>      coc#refresh()
 
 inoremap <silent><expr> <Tab> pumvisible()
-  \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
+  \ ? exists('g:did_coc_loaded') 
+    \ ? coc#_select_confirm()
+    \ : "\<C-y>"
   \ : "\<Tab>"
 
 # ale Config
@@ -214,48 +221,18 @@ def g:AleWarningStlComponent(): string
   return ''
 enddef
 
+def g:AleStatus(): string
+  if exists('g:loaded_ale')
+    return 'ALE'
+  endif
+
+  return ''
+enddef
+
 # fern.vim Config
 # ---
 g:fern#renderer = 'nerdfont'
 nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
-
-# lightline.vim Config
-# ---
-g:lightline = {}
-g:lightline.component = { lineinfo: '%l/%L:%c' }
-g:lightline.active = {
-  left: [
-    ['mode', 'paste'],
-    ['gitbranch', 'readonly', 'filename', 'modified'],
-  ],
-
-  right: [
-    ['ale_error_component', 'ale_warning_component'],
-    ['lineinfo'],
-    ['filetype', 'fileencoding'],
-  ],
-}
-
-g:lightline.component_function = {
-  gitbranch: 'FugitiveHead',
-}
-
-g:lightline.component_expand = {
-  ale_error_component: 'AleErrorStlComponent',
-  ale_warning_component: 'AleWarningStlComponent',
-}
-
-g:lightline.component_type = {
-  ale_error_component: 'error',
-  ale_warning_component: 'warning',
-}
-
-augroup ale_lightline_user_events
-  autocmd!
-  autocmd User ALEJobStarted call lightline#update()
-  autocmd User ALELintPost call lightline#update()
-  autocmd User ALEFixPost call lightline#update()
-augroup END
 
 # =============================================================================
 # = Plugin Manager =
@@ -332,6 +309,56 @@ enddef
 
 command! -bang -nargs=* Rg FzfVimGrep(<q-args>, <bang>0)
 
+# lightline.vim Config
+# ---
+var powerline = copy(g:lightline#colorscheme#powerline#palette)
+powerline.normal.left = [
+  ['#cdcdcd', '#047857', 'bold'],
+  ['white', 'gray4'],
+]
+g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(powerline)
+
+g:lightline = {}
+g:lightline.separator = {
+  left: '',
+  right: '',
+}
+g:lightline.component = { lineinfo: '%l/%L:%c' }
+g:lightline.active = {
+  left: [
+    ['filename'],
+    ['gitbranch', 'readonly', 'modified'],
+  ],
+
+  right: [
+    ['ale_error_component', 'ale_warning_component', 'ale_status'],
+    ['lineinfo'],
+    ['filetype', 'fileencoding'],
+  ],
+}
+
+g:lightline.component_function = {
+  gitbranch: 'FugitiveHead',
+  ale_status: 'AleStatus',
+}
+
+g:lightline.component_expand = {
+  ale_error_component: 'AleErrorStlComponent',
+  ale_warning_component: 'AleWarningStlComponent',
+}
+
+g:lightline.component_type = {
+  ale_error_component: 'error',
+  ale_warning_component: 'warning',
+}
+
+augroup ale_lightline_user_events
+  autocmd!
+  autocmd User ALEJobStarted call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+  autocmd User ALEFixPost call lightline#update()
+augroup END
+
 # =============================================================================
 # = UI/Theme =
 # =============================================================================
@@ -401,7 +428,6 @@ set signcolumn=yes
 set cmdheight=2
 set showtabline=2
 set laststatus=2
-set noshowmode
 
 # =============================================================================
 # = Keybindings =
@@ -475,9 +501,8 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
-# Disable Ex-mode and command history
+# Disable Ex-mode
 nnoremap Q <Nop>
-nnoremap q: <Nop>
 
 # =============================================================================
 # = Commands =
