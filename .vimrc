@@ -155,6 +155,11 @@ g:indentLine_char = '│'
 g:buftabline_numbers = 2
 g:buftabline_indicators = 1
 
+augroup buftabline_user_events
+  autocmd!
+  autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
+augroup END
+
 # coc.nvim Config
 # ---
 g:coc_global_extensions = [
