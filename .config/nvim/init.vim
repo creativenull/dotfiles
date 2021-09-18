@@ -147,11 +147,12 @@ let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 " Keymaps
 nnoremap <silent> <Leader>le <Cmd>lopen<CR>
-nnoremap <silent> <Leader>lo <Cmd>ALERename<CR>
+nnoremap <silent> <Leader>lr <Cmd>ALERename<CR>
 nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
 nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
 nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
 nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
+nnoremap <silent> <Leader>li <Cmd>ALEInfo<CR>
 
 function! g:AleErrorStlComponent() abort
   if exists('g:loaded_ale')
@@ -304,6 +305,11 @@ function! g:FzfVimGrep(qargs, bang) abort
 endfunction
 
 command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
+
+augroup fzf_user_events
+  autocmd!
+  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
+augroup END
 
 " deoplete.nvim Config
 " ---
