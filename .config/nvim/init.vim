@@ -192,7 +192,6 @@ let g:indentLine_char = '│'
 
 " buftabline Config
 " ---
-let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
 augroup buftabline_user_events
