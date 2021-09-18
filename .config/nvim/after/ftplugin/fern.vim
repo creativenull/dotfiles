@@ -1,2 +1,2 @@
 " Quit fern
-nnoremap <buffer><nowait> q <Cmd>bd<CR>
+nnoremap <buffer> <nowait> q <Cmd>bd<CR>
