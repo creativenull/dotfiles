@@ -521,5 +521,6 @@ command! ToggleCodeshot call ToggleCodeshot()
 
 " Command Abbreviations
 cnoreabbrev Q q
+cnoreabbrev Qa qa
 cnoreabbrev W w
 cnoreabbrev Wq wq
