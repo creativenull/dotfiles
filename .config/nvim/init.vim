@@ -518,3 +518,8 @@ command! ConfigReload source $MYVIMRC | nohlsearch
 
 command! ToggleConcealLevel call ToggleConcealLevel()
 command! ToggleCodeshot call ToggleCodeshot()
+
+" Command Abbreviations
+cnoreabbrev Q q
+cnoreabbrev W w
+cnoreabbrev Wq wq
