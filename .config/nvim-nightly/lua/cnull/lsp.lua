@@ -100,11 +100,22 @@ lspconfig.intelephense.setup({
   capabilities = capabilities,
 })
 
--- JavaScript/TypeScript LSP Server
+-- JS/TS/Deno LSP Server
 -- ---
+local tsserver_root_dir = root_pattern('package.json')
 lspconfig.tsserver.setup({
   on_attach = on_attach,
   capabilities = capabilities,
+  root_dir = tsserver_root_dir,
+})
+
+-- Deno LSP Server
+-- ---
+local deno_root_dir = root_pattern('import_map.json')
+lspconfig.denols.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = deno_root_dir,
 })
 
 -- DiagnosticLS Server
