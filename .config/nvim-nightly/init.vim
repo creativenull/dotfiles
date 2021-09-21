@@ -6,41 +6,43 @@
 "   + Environment variables: $PYTHON3_HOST_PROG
 " =============================================================================
 
-let userspace = 'nvim-nightly'
+let g:userspace = 'nvim-nightly'
 
-" Runtime Path
-set runtimepath-=~/.config/nvim
-set runtimepath-=~/.config/nvim/after
-set runtimepath-=~/.local/share/nvim/site
-set runtimepath-=~/.local/share/nvim/site/after
-set runtimepath-=/etc/xdg/nvim
-set runtimepath-=/etc/xdg/nvim/after
-set runtimepath-=/usr/share/nvim/site
-set runtimepath-=/usr/share/nvim/site/after
-set runtimepath-=/usr/local/share/nvim/site
-set runtimepath-=/usr/local/share/nvim/site/after
+if exists('g:userspace')
+  " Runtime Path
+  set runtimepath-=~/.config/nvim
+  set runtimepath-=~/.config/nvim/after
+  set runtimepath-=~/.local/share/nvim/site
+  set runtimepath-=~/.local/share/nvim/site/after
+  set runtimepath-=/etc/xdg/nvim
+  set runtimepath-=/etc/xdg/nvim/after
+  set runtimepath-=/usr/share/nvim/site
+  set runtimepath-=/usr/share/nvim/site/after
+  set runtimepath-=/usr/local/share/nvim/site
+  set runtimepath-=/usr/local/share/nvim/site/after
 
-execute printf('set runtimepath+=~/.config/%s/after', userspace)
-execute printf('set runtimepath^=~/.config/%s', userspace)
-execute printf('set runtimepath+=~/.local/share/%s/site/after', userspace)
-execute printf('set runtimepath^=~/.local/share/%s/site', userspace)
+  execute printf('set runtimepath+=~/.config/%s/after', userspace)
+  execute printf('set runtimepath^=~/.config/%s', userspace)
+  execute printf('set runtimepath+=~/.local/share/%s/site/after', userspace)
+  execute printf('set runtimepath^=~/.local/share/%s/site', userspace)
 
-" Pack Path
-set packpath-=~/.config/nvim
-set packpath-=~/.config/nvim/after
-set packpath-=~/.local/share/nvim/site
-set packpath-=~/.local/share/nvim/site/after
-set packpath-=/etc/xdg/nvim
-set packpath-=/etc/xdg/nvim/after
-set packpath-=/usr/local/share/nvim/site
-set packpath-=/usr/local/share/nvim/site/after
-set packpath-=/usr/share/nvim/site
-set packpath-=/usr/share/nvim/site/after
+  " Pack Path
+  set packpath-=~/.config/nvim
+  set packpath-=~/.config/nvim/after
+  set packpath-=~/.local/share/nvim/site
+  set packpath-=~/.local/share/nvim/site/after
+  set packpath-=/etc/xdg/nvim
+  set packpath-=/etc/xdg/nvim/after
+  set packpath-=/usr/local/share/nvim/site
+  set packpath-=/usr/local/share/nvim/site/after
+  set packpath-=/usr/share/nvim/site
+  set packpath-=/usr/share/nvim/site/after
 
-execute printf('set packpath^=~/.config/%s', userspace)
-execute printf('set packpath+=~/.config/%s/after', userspace)
-execute printf('set packpath^=~/.local/share/%s/site', userspace)
-execute printf('set packpath+=~/.local/share/%s/site/after', userspace)
+  execute printf('set packpath^=~/.config/%s', userspace)
+  execute printf('set packpath+=~/.config/%s/after', userspace)
+  execute printf('set packpath^=~/.local/share/%s/site', userspace)
+  execute printf('set packpath+=~/.local/share/%s/site/after', userspace)
+endif
 
 set nocompatible
 filetype plugin indent on
@@ -90,16 +92,27 @@ endfunction
 " = Initialize =
 " =============================================================================
 
-let g:mapleader = ' '
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
+let mapleader = ' '
 let cnull = {}
 let cnull.transparent = v:true
 let cnull.config = {}
-let cnull.config.undodir = expand(printf('$HOME/.cache/%s/undo', userspace))
+
+if exists('g:userspace')
+  let cnull.config.data_dir = stdpath('data')
+  let cnull.config.cache_dir = stdpath('config')
+  let cnull.config.config_dir = stdpath('cache')
+  let cnull.config.undodir = cnull.config.cache_dir . '/undo'
+else
+  let cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
+  let cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
+  let cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
+  let cnull.config.undodir = cnull.config.cache_dir . '/undo'
+endif
 
 " =============================================================================
 " = Events =
@@ -123,9 +136,19 @@ augroup highlightyank_user_events
   autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
 augroup END
 
+" Default Filetype Options
+augroup filetype_option_user_events
+  autocmd!
+  autocmd FileType lua,vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
+augroup END
+
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
+
+" denops.vim Config
+" ---
+let g:denops#debug = 0
 
 " UltiSnips/vim-snippets Config
 " ---
@@ -133,9 +156,23 @@ let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
+augroup ultisnips_user_events
+  autocmd!
+  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript
+  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript
+augroup END
+
 " emmet-vim Config
 " ---
 let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_install_global = 0
+
+augroup emmet_user_events
+  autocmd!
+  autocmd FileType html,blade,javascriptreact,typescriptreact EmmetInstall
+  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript
+  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript
+augroup END
 
 " indentLine Config
 " ---
@@ -145,17 +182,17 @@ let g:indentLine_char = '│'
 " ---
 let g:fern#renderer = 'nerdfont'
 
-function! g:FernLoad() abort
-  if !exists('g:loaded_fern') && !exists('g:loaded_fix_cursorhold_nvim')
-    packadd FixCursorHold.nvim
-    packadd fern.vim
-    packadd nerdfont.vim
-    packadd fern-renderer-nerdfont.vim
-  endif
-  execute 'Fern . -reveal=%'
+function! g:FernUserKeymaps() abort
+  " Quit fern
+  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
 endfunction
 
-nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
+
+augroup fern_user_events
+  autocmd!
+  autocmd FileType fern call FernUserKeymaps()
+augroup END
 
 " projectlocal-vim Config
 " ---
@@ -166,90 +203,84 @@ let g:projectlocal.projectConfig = '.vim/init.lua'
 " = Plugin Manager =
 " =============================================================================
 
-function! PackagerInit(opts) abort
-  packadd vim-packager
-  call packager#init(a:opts)
-  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
+let cnull.config.plug = {}
+let cnull.config.plug.plugins_dir = cnull.config.data_dir . '/plugged'
+let cnull.config.plug.filepath = cnull.config.data_dir . '/site/autoload/plug.vim'
+let cnull.config.plug.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-  " Deps
-  call packager#add('nvim-lua/plenary.nvim')
-  call packager#add('vim-denops/denops.vim')
-  call packager#add('kyazdani42/nvim-web-devicons')
-  call packager#add('Shougo/context_filetype.vim')
-  call packager#add('RishabhRD/popfix')
-
-  " Core
-  call packager#add('windwp/nvim-autopairs')
-  call packager#add('tpope/vim-abolish')
-  call packager#add('tpope/vim-surround')
-  call packager#add('tpope/vim-repeat')
-  call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('creativenull/projectlocal-vim')
-  call packager#add('b3nj5m1n/kommentary')
-  call packager#add('kevinhwang91/nvim-bqf')
-
-  " File Explorer
-  call packager#add('antoinemadec/FixCursorHold.nvim', { 'type': 'opt' })
-  call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
-  call packager#add('lambdalisue/nerdfont.vim', { 'type': 'opt' })
-  call packager#add('lambdalisue/fern-renderer-nerdfont.vim', { 'type': 'opt' })
-
-  " LSP/Linter/Formatter
-  call packager#add('neovim/nvim-lspconfig')
-  call packager#add('RishabhRD/nvim-lsputils')
-  call packager#add('creativenull/diagnosticls-configs-nvim')
-
-  " AutoCompletion
-  call packager#add('Shougo/ddc.vim')
-  call packager#add('Shougo/ddc-sorter_rank')
-  call packager#add('matsui54/ddc-matcher_fuzzy')
-  call packager#add('Shougo/ddc-around')
-  call packager#add('matsui54/ddc-ultisnips')
-  call packager#add('Shougo/ddc-nvim-lsp')
-  call packager#add('matsui54/ddc-nvim-lsp-doc')
-
-  " Snippets
-  call packager#add('SirVer/ultisnips')
-  call packager#add('honza/vim-snippets')
-  call packager#add('mattn/emmet-vim')
-
-  " Fuzzy Finder
-  call packager#add('nvim-telescope/telescope.nvim')
-
-  " Git
-  call packager#add('lewis6991/gitsigns.nvim')
-
-  " UI Plugins
-  call packager#add('nvim-treesitter/nvim-treesitter')
-  call packager#add('nvim-treesitter/nvim-treesitter-refactor')
-  call packager#add('code-biscuits/nvim-biscuits')
-  call packager#add('akinsho/nvim-bufferline.lua')
-  call packager#add('folke/todo-comments.nvim')
-  call packager#add('hoob3rt/lualine.nvim')
-  call packager#add('norcalli/nvim-colorizer.lua')
-
-  " Colorschemes
-  call packager#add('bluz71/vim-nightfly-guicolors')
-  call packager#add('bluz71/vim-moonfly-colors')
-endfunction
-
-let cnull.plugin = {}
-let cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
-let cnull.plugin.path = expand(printf('$HOME/.local/share/%s/site/pack/packager/opt/vim-packager', userspace))
-let cnull.plugin.opts = {}
-let cnull.plugin.opts.dir = expand(printf('$HOME/.local/share/%s/site/pack/packager', userspace))
-
-" Package manager bootstrapping strategy
-if !isdirectory(cnull.plugin.path)
-  execute printf('!git clone %s %s', cnull.plugin.git, cnull.plugin.path)
-  call PackagerInit(cnull.plugin.opts)
-  call packager#install()
+if !filereadable(cnull.config.plug.filepath)
+  execute printf('!curl -fLo %s --create-dirs %s', cnull.config.plug.filepath, cnull.config.plug.git)
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-command! -bar -nargs=* PackagerInstall call PackagerInit(cnull.plugin.opts) | call packager#install(<args>)
-command! -bar -nargs=* PackagerUpdate call PackagerInit(cnull.plugin.opts) | call packager#update(<args>)
-command! -bar PackagerClean call PackagerInit(cnull.plugin.opts) | call packager#clean()
-command! -bar PackagerStatus call PackagerInit(cnull.plugin.opts) | call packager#status()
+call plug#begin(cnull.config.plug.plugins_dir)
+
+" Deps
+Plug 'RishabhRD/popfix'
+Plug 'Shougo/context_filetype.vim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'vim-denops/denops.vim'
+
+" Core
+Plug 'windwp/nvim-autopairs'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'creativenull/projectlocal-vim'
+Plug 'b3nj5m1n/kommentary'
+Plug 'kevinhwang91/nvim-bqf'
+
+" File Explorer
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+
+" LSP/Linter/Formatter
+Plug 'neovim/nvim-lspconfig'
+Plug 'RishabhRD/nvim-lsputils'
+Plug 'creativenull/diagnosticls-configs-nvim'
+
+" AutoCompletion
+" Plug 'Shougo/ddc.vim'
+" Plug 'Shougo/ddc-sorter_rank'
+" Plug 'matsui54/ddc-matcher_fuzzy'
+" Plug 'Shougo/ddc-around'
+" Plug 'matsui54/ddc-ultisnips'
+" Plug 'Shougo/ddc-nvim-lsp'
+" Plug 'matsui54/ddc-nvim-lsp-doc'
+
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'mattn/emmet-vim'
+
+" Fuzzy Finder
+Plug 'nvim-telescope/telescope.nvim'
+
+" Git
+Plug 'lewis6991/gitsigns.nvim'
+
+" UI Plugins
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'code-biscuits/nvim-biscuits'
+Plug 'akinsho/nvim-bufferline.lua'
+Plug 'folke/todo-comments.nvim'
+Plug 'hoob3rt/lualine.nvim'
+Plug 'norcalli/nvim-colorizer.lua'
+
+" Colorschemes
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'bluz71/vim-moonfly-colors'
+
+call plug#end()
 
 " =============================================================================
 " = Plugin Post-Config - after loading plugins =
@@ -263,9 +294,13 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
+" inoremap <silent> <expr> <Tab> v:lua.user_tab_completion('<Tab>')
+" inoremap <silent> <expr> <C-Space> ddc#manual_complete()
+
 augroup autocompletion_user_events
   autocmd!
-  autocmd BufEnter,BufNew * lua UserAutocompletionDisableByFileType()
+  autocmd FileType TelescopePrompt lua require('cmp').setup.buffer({ competion = { autocomplete = false } })
+  "autocmd BufEnter,BufNew * if &ft == 'TelescopePrompt' | ddc#disable() | else | ddc#enable() | endif
 augroup END
 
 " nvim-autopairs Config
@@ -283,14 +318,17 @@ lua require('todo-comments').setup({})
 " telescope.nvim Config
 " ---
 lua require('cnull.finder')
+
 nnoremap <C-p> <Cmd>lua TelescopeFindFiles()<CR>
 nnoremap <C-t> <Cmd>lua TelescopeLiveGrep()<CR>
 nnoremap <Leader>vf <Cmd>lua TelescopeFindConfigFiles()<CR>
 
-augroup telescope_user_events
-  autocmd!
-  autocmd ColorScheme * highlight TelescopeBorder guifg=#aaaaaa
-augroup END
+if cnull.transparent
+  augroup telescope_user_events
+    autocmd!
+    autocmd ColorScheme * highlight TelescopeBorder guifg=#aaaaaa
+  augroup END
+endif
 
 " nvim-treesitter Config
 " ---
@@ -330,6 +368,7 @@ require('colorizer').setup({
   'javascriptreact',
   'typescript',
   'typescriptreact',
+  'vim',
 })
 EOF
 
@@ -477,3 +516,9 @@ command! ConfigReload source $MYVIMRC | nohlsearch
 
 command! ToggleConcealLevel call ToggleConcealLevel()
 command! ToggleCodeshot call ToggleCodeshot()
+
+" Command Abbreviations
+cnoreabbrev Q q
+cnoreabbrev Qa qa
+cnoreabbrev W w
+cnoreabbrev Wq wq
