@@ -21,6 +21,11 @@ if !executable('git')
   finish
 endif
 
+if !executable('curl')
+  echoerr '[nvim] `curl` is needed!'
+  finish
+endif
+
 if !executable('python3')
   echoerr '[nvim] `python3`, `python3-pynvim`, `python3-msgpack` is needed!'
   finish
@@ -106,10 +111,10 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " Use tab to complete the popup menu item
 inoremap <silent><expr> <Tab> pumvisible()
-      \ ? UltiSnips#CanExpandSnippet()
-        \ ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
-        \ : "\<C-y>"
-      \ : "\<Tab>"
+  \ ? UltiSnips#CanExpandSnippet()
+    \ ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
+    \ : "\<C-y>"
+  \ : "\<Tab>"
 
 " vim-vue Config
 " ---
@@ -203,94 +208,75 @@ augroup END
 " ---
 let g:fern#renderer = 'nerdfont'
 
-function! g:FernLoad() abort
-  if !exists('g:loaded_fern') && !exists('g:loaded_fix_cursorhold_nvim')
-    packadd FixCursorHold.nvim
-    packadd fern.vim
-    packadd nerdfont.vim
-    packadd fern-renderer-nerdfont.vim
-  endif
-
-  execute 'Fern . -reveal=%'
-endfunction
-
-nnoremap <silent> <Leader>ff <Cmd>call FernLoad()<CR>
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
 
-function! PackagerInit(opts) abort
-  packadd vim-packager
-  call packager#init(a:opts)
-  call packager#add('kristijanhusak/vim-packager', { 'type': 'opt' })
+let cnull.config.plug = {}
+let cnull.config.plug.plugins_dir = stdpath('data') . '/plugged'
+let cnull.config.plug.filepath = stdpath('data') . '/site/autoload/plug.vim'
+let cnull.config.plug.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-  " Core
-  call packager#add('cohama/lexima.vim')
-  call packager#add('godlygeek/tabular')
-  call packager#add('tpope/vim-surround')
-  call packager#add('tpope/vim-abolish')
-  call packager#add('tpope/vim-repeat')
-  call packager#add('Shougo/context_filetype.vim')
-  call packager#add('tyru/caw.vim')
-  call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('mattn/emmet-vim')
-  call packager#add('vim-denops/denops.vim')
-  call packager#add('creativenull/projectlocal-vim')
-
-  " File Explorer
-  call packager#add('antoinemadec/FixCursorHold.nvim', { 'type': 'opt' })
-  call packager#add('lambdalisue/fern.vim', { 'type': 'opt' })
-  call packager#add('lambdalisue/nerdfont.vim', { 'type': 'opt' })
-  call packager#add('lambdalisue/fern-renderer-nerdfont.vim', { 'type': 'opt' })
-
-  " LSP/Linter/Formatter
-  call packager#add('dense-analysis/ale')
-  call packager#add('Shougo/deoplete.nvim', { 'type': 'opt' })
-
-  " Snippets
-  call packager#add('SirVer/ultisnips')
-  call packager#add('honza/vim-snippets')
-
-  " Fuzzy Finder
-  call packager#add('junegunn/fzf')
-  call packager#add('junegunn/fzf.vim')
-
-  " Git
-  call packager#add('tpope/vim-fugitive')
-  call packager#add('airblade/vim-gitgutter')
-
-  " UI Plugins
-  call packager#add('Yggdroot/indentLine')
-  call packager#add('ap/vim-buftabline')
-  call packager#add('itchyny/lightline.vim')
-  call packager#add('posva/vim-vue')
-  call packager#add('neoclide/vim-jsx-improve')
-  call packager#add('peitalin/vim-jsx-typescript')
-  call packager#add('jwalton512/vim-blade')
-
-  " Colorschemes
-  call packager#add('bluz71/vim-nightfly-guicolors')
-  call packager#add('bluz71/vim-moonfly-colors')
-endfunction
-
-let cnull.plugin = {}
-let cnull.plugin.git = 'https://github.com/kristijanhusak/vim-packager.git'
-let cnull.plugin.path = printf('%s/site/pack/packager/opt/vim-packager', stdpath('data'))
-let cnull.plugin.opts = {}
-let cnull.plugin.opts.dir = printf('%s/site/pack/packager', stdpath('data'))
-
-" Package manager bootstrapping strategy
-if !isdirectory(cnull.plugin.path)
-  execute printf('!git clone %s %s', cnull.plugin.git, cnull.plugin.path)
-  call PackagerInit(cnull.plugin.opts)
-  call packager#install()
+if !filereadable(cnull.config.plug.filepath)
+  execute printf('!curl -fLo %s --create-dirs %s', cnull.config.plug.filepath, cnull.config.plug.git)
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-command! -bar -nargs=* PackagerInstall call PackagerInit(cnull.plugin.opts) | call packager#install(<args>)
-command! -bar -nargs=* PackagerUpdate call PackagerInit(cnull.plugin.opts) | call packager#update(<args>)
-command! -bar PackagerClean call PackagerInit(cnull.plugin.opts) | call packager#clean()
-command! -bar PackagerStatus call PackagerInit(cnull.plugin.opts) | call packager#status()
+call plug#begin(cnull.config.plug.plugins_dir)
+
+" Deps
+Plug 'Shougo/context_filetype.vim'
+Plug 'vim-denops/denops.vim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'lambdalisue/nerdfont.vim'
+
+" Core
+Plug 'cohama/lexima.vim'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-repeat'
+Plug 'tyru/caw.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim'
+Plug 'creativenull/projectlocal-vim'
+
+" File Explorer
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+
+" LSP/Linter/Formatter
+Plug 'dense-analysis/ale'
+Plug 'Shougo/deoplete.nvim'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Fuzzy Finder
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" UI Plugins
+Plug 'Yggdroot/indentLine'
+Plug 'ap/vim-buftabline'
+Plug 'itchyny/lightline.vim'
+Plug 'posva/vim-vue'
+Plug 'neoclide/vim-jsx-improve'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'jwalton512/vim-blade'
+
+" Colorschemes
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'bluz71/vim-moonfly-colors'
+
+call plug#end()
 
 " =============================================================================
 " = Plugin Post-Config - after loading plugins =
@@ -313,7 +299,6 @@ augroup END
 " deoplete.nvim Config
 " ---
 function! g:DeopleteEnable()
-  packadd deoplete.nvim
   let deoplete_opts = {}
   let deoplete_opts.sources = { '_': ['ale', 'ultisnips', 'around'] }
   let deoplete_opts.num_processes = 2
