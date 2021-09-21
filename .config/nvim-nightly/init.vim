@@ -170,8 +170,6 @@ let g:user_emmet_install_global = 0
 augroup emmet_user_events
   autocmd!
   autocmd FileType html,blade,javascriptreact,typescriptreact EmmetInstall
-  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript
-  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript
 augroup END
 
 " indentLine Config
@@ -196,8 +194,11 @@ augroup END
 
 " projectlocal-vim Config
 " ---
-let g:projectlocal = {}
-let g:projectlocal.projectConfig = '.vim/init.lua'
+let g:projectlocal = {
+  \ 'showMessage': v:true,
+  \ 'projectConfig': '.vim/init.lua',
+  \ 'debug': v:false,
+\ }
 
 " =============================================================================
 " = Plugin Manager =
@@ -244,17 +245,13 @@ Plug 'RishabhRD/nvim-lsputils'
 Plug 'creativenull/diagnosticls-configs-nvim'
 
 " AutoCompletion
-" Plug 'Shougo/ddc.vim'
-" Plug 'Shougo/ddc-sorter_rank'
-" Plug 'matsui54/ddc-matcher_fuzzy'
-" Plug 'Shougo/ddc-around'
-" Plug 'matsui54/ddc-ultisnips'
-" Plug 'Shougo/ddc-nvim-lsp'
-" Plug 'matsui54/ddc-nvim-lsp-doc'
-
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'Shougo/ddc.vim'
+Plug 'Shougo/ddc-sorter_rank'
+Plug 'matsui54/ddc-matcher_fuzzy'
+Plug 'Shougo/ddc-around'
+Plug 'matsui54/ddc-ultisnips'
+Plug 'Shougo/ddc-nvim-lsp'
+Plug 'matsui54/ddc-nvim-lsp-doc'
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -294,14 +291,8 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
-" inoremap <silent> <expr> <Tab> v:lua.user_tab_completion('<Tab>')
-" inoremap <silent> <expr> <C-Space> ddc#manual_complete()
-
-augroup autocompletion_user_events
-  autocmd!
-  autocmd FileType TelescopePrompt lua require('cmp').setup.buffer({ competion = { autocomplete = false } })
-  "autocmd BufEnter,BufNew * if &ft == 'TelescopePrompt' | ddc#disable() | else | ddc#enable() | endif
-augroup END
+inoremap <silent> <expr> <Tab> v:lua.user_tab_completion('<Tab>')
+inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
 " nvim-autopairs Config
 " ---
@@ -342,6 +333,13 @@ nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
 " galaxyline.nvim Config
 " ---
 lua require('cnull.statusline')
+
+function! GetRTP()
+  let g:cnull_rtp_list = []
+  for runtimepath in split(&runtimepath, ',')
+    call add(g:cnull_rtp_list, denops#util#join_path(expand(runtimepath), 'denops', '*', 'main.ts'))
+  endfor
+endfunction
 
 " =============================================================================
 " = UI/Theme =

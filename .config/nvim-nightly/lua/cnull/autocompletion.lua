@@ -1,38 +1,6 @@
-local cmp = require('cmp')
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn["UltiSnips#Anon"](args.body)
-    end,
-  },
-
-  mapping = {
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
-    ['<Tab>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
-  },
-
-  -- You should specify your *installed* sources.
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'ultisnips' },
-  },
-
-  formatting = {
-    format = function(entry, item)
-      item.menu = ({
-        nvim_lsp = '[lsp]',
-        ultisnips = '[ultisnips]',
-      })[entry.source.name]
-
-      return item
-    end,
-  },
-})
-
---[[ local ddc = {
+local ddc = {
   patch_global = vim.fn['ddc#custom#patch_global'],
+  enable = vim.fn['ddc#enable'],
   nvim_lsp_doc = {
     enable = vim.fn['ddc_nvim_lsp_doc#enable'],
   },
@@ -58,7 +26,9 @@ ddc.patch_global('sourceOptions', {
   },
 })
 
+-- Enable completion
 ddc.nvim_lsp_doc.enable()
+ddc.enable()
 
 -- Tab completion
 local function termcodes(str)
@@ -75,4 +45,4 @@ function _G.user_tab_completion(default_keybind)
   end
 
   return termcodes(default_keybind)
-end ]]
+end
