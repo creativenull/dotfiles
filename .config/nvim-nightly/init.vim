@@ -103,14 +103,14 @@ let cnull.transparent = v:true
 let cnull.config = {}
 
 if exists('g:userspace')
-  let cnull.config.data_dir = stdpath('data')
-  let cnull.config.cache_dir = stdpath('config')
-  let cnull.config.config_dir = stdpath('cache')
-  let cnull.config.undodir = cnull.config.cache_dir . '/undo'
-else
   let cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
   let cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
   let cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
+  let cnull.config.undodir = cnull.config.cache_dir . '/undo'
+else
+  let cnull.config.data_dir = stdpath('data')
+  let cnull.config.cache_dir = stdpath('config')
+  let cnull.config.config_dir = stdpath('cache')
   let cnull.config.undodir = cnull.config.cache_dir . '/undo'
 endif
 
