@@ -18,6 +18,14 @@ local function line_info_component()
   return string.format(' %s/%s  %s', linenum, linecount, col)
 end
 
+local function lsp_ready_component()
+  if not vim.lsp.buf.server_ready() then
+    return ''
+  else
+    return 'LSP'
+  end
+end
+
 lualine.setup({
   options = {
     icons_enabled = true,
@@ -34,6 +42,7 @@ lualine.setup({
     lualine_x = {'encoding'},
     lualine_y = {line_info_component},
     lualine_z = {
+      lsp_ready_component,
       {
         'diagnostics',
         sources = {'nvim_lsp'},
