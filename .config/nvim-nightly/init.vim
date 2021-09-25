@@ -89,7 +89,7 @@ function! g:ToggleCodeshot() abort
 endfunction
 
 " =============================================================================
-" = Initialize =
+" = Initialize 🥧 =
 " =============================================================================
 
 let g:loaded_python_provider = 0
@@ -201,7 +201,7 @@ let g:projectlocal = {
 \ }
 
 " =============================================================================
-" = Plugin Manager =
+" = Plugin Manager 💡 =
 " =============================================================================
 
 let cnull.config.plug = {}
@@ -217,7 +217,6 @@ endif
 call plug#begin(cnull.config.plug.plugins_dir)
 
 " Deps
-Plug 'RishabhRD/popfix'
 Plug 'Shougo/context_filetype.vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
@@ -241,7 +240,6 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
 " LSP/Linter/Formatter
 Plug 'neovim/nvim-lspconfig'
-Plug 'RishabhRD/nvim-lsputils'
 Plug 'creativenull/diagnosticls-configs-nvim'
 
 " AutoCompletion
@@ -291,8 +289,23 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
-inoremap <silent> <expr> <Tab> v:lua.user_tab_completion('<Tab>')
+function! TabCompletion() abort
+  if pumvisible()
+    if UltiSnips#CanExpandSnippet()
+      return "\<C-r>=UltiSnips#ExpandSnippet()\<CR>"
+    else
+      return "\<C-y>"
+    endif
+  else
+    return "\<Tab>"
+  endif
+endfunction
+
+inoremap <silent> <expr> <Tab> TabCompletion()
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
+
+call ddc_nvim_lsp_doc#enable()
+call ddc#enable()
 
 " nvim-autopairs Config
 " ---
@@ -334,15 +347,8 @@ nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
 " ---
 lua require('cnull.statusline')
 
-function! GetRTP()
-  let g:cnull_rtp_list = []
-  for runtimepath in split(&runtimepath, ',')
-    call add(g:cnull_rtp_list, denops#util#join_path(expand(runtimepath), 'denops', '*', 'main.ts'))
-  endfor
-endfunction
-
 " =============================================================================
-" = UI/Theme =
+" = UI/Theme 🎨 =
 " =============================================================================
 
 set termguicolors
@@ -377,7 +383,7 @@ set background=dark
 colorscheme moonfly
 
 " =============================================================================
-" = Options =
+" = Options 🎯 =
 " =============================================================================
 
 if !isdirectory(cnull.config.undodir)
@@ -432,7 +438,7 @@ set laststatus=2
 set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
 
 " =============================================================================
-" = Keybindings =
+" = Keybindings 🎮 =
 " =============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
@@ -502,11 +508,11 @@ nnoremap <Leader>mc <Cmd>cmap<CR>
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
-" Disable Ex-mode and command history
+" Disable Ex-mode
 nnoremap Q <Nop>
 
 " =============================================================================
-" = Commands =
+" = Commands 💻 =
 " =============================================================================
 
 command! Config edit $MYVIMRC
@@ -515,7 +521,7 @@ command! ConfigReload source $MYVIMRC | nohlsearch
 command! ToggleConcealLevel call ToggleConcealLevel()
 command! ToggleCodeshot call ToggleCodeshot()
 
-" Command Abbreviations
+" Command Abbreviations, I can't release my shift key fast enough 😭
 cnoreabbrev Q q
 cnoreabbrev Qa qa
 cnoreabbrev W w
