@@ -89,7 +89,7 @@ function! g:ToggleCodeshot() abort
 endfunction
 
 " =============================================================================
-" = Initialize 🥧 =
+" = Initialize =
 " =============================================================================
 
 let g:loaded_python_provider = 0
@@ -201,7 +201,7 @@ let g:projectlocal = {
 \ }
 
 " =============================================================================
-" = Plugin Manager 💡 =
+" = Plugin Manager =
 " =============================================================================
 
 let cnull.config.plug = {}
@@ -348,7 +348,7 @@ nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
 lua require('cnull.statusline')
 
 " =============================================================================
-" = UI/Theme 🎨 =
+" = UI/Theme =
 " =============================================================================
 
 set termguicolors
@@ -383,7 +383,7 @@ set background=dark
 colorscheme moonfly
 
 " =============================================================================
-" = Options 🎯 =
+" = Options =
 " =============================================================================
 
 if !isdirectory(cnull.config.undodir)
@@ -438,7 +438,7 @@ set laststatus=2
 set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
 
 " =============================================================================
-" = Keybindings 🎮 =
+" = Keybindings =
 " =============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
@@ -512,7 +512,7 @@ nnoremap <Leader>p "+p
 nnoremap Q <Nop>
 
 " =============================================================================
-" = Commands 💻 =
+" = Commands =
 " =============================================================================
 
 command! Config edit $MYVIMRC
