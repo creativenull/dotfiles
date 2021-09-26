@@ -1,18 +1,17 @@
-vim9script
-# Name: Arnold Chand
-# Github: https://github.com/creativenull
-# Description: My vimrc, currently tested on a Linux machine. Requires:
-#   + git
-#   + curl
-#   + python3
-#   + ripgrep
-# =============================================================================
+" Name: Arnold Chand
+" Github: https://github.com/creativenull
+" Description: My vimrc, currently tested on a Linux machine. Requires:
+"   + git
+"   + curl
+"   + python3
+"   + ripgrep
+" =============================================================================
 
 set nocompatible
 filetype plugin indent on
 syntax on
 
-# Pre-Requisites
+" Pre-Requisites
 if !executable('git')
   echoerr '[vim] `git` is needed!'
   finish
@@ -33,33 +32,33 @@ if !executable('rg')
   finish
 endif
 
-# =============================================================================
-# = Functions =
-# =============================================================================
+" =============================================================================
+" = Functions =
+" =============================================================================
 
-def MakeConfig(): dict<string>
-  var std_cache: string = ''
-  var std_config: string = ''
-  var std_data: string = ''
+function! g:MakeConfig() abort
+  let std_cache = ''
+  let std_config = ''
+  let std_data = ''
   if has('win32')
-    std_cache = expand('$HOME/AppData/Local/Temp/vim')
-    std_config = expand('$HOME')
-    std_data = expand('$HOME/vimfiles')
+    let std_cache = expand('$HOME/AppData/Local/Temp/vim')
+    let std_config = expand('$HOME')
+    let std_data = expand('$HOME/vimfiles')
   else
-    std_cache = expand('$HOME/.cache/vim')
-    std_config = expand('$HOME')
-    std_data = expand('$HOME/.vim')
+    let std_cache = expand('$HOME/.cache/vim')
+    let std_config = expand('$HOME')
+    let std_data = expand('$HOME/.vim')
   endif
 
   return {
-    std_cache: std_cache,
-    std_config: std_config,
-    std_data: std_data,
-    undodir: printf('%s/undo', std_cache),
-  }
-enddef
+    \ 'std_cache': std_cache,
+    \ 'std_config': std_config,
+    \ 'std_data': std_data,
+    \ 'undodir': printf('%s/undo', std_cache),
+  \ }
+endfunction
 
-def g:ToggleConcealLevel(): void
+function! g:ToggleConcealLevel() abort
   if &conceallevel == 2
     set conceallevel=0
     g:vim_markdown_conceal = 0
@@ -69,29 +68,28 @@ def g:ToggleConcealLevel(): void
     g:vim_markdown_conceal = 1
     g:vim_markdown_conceal_code_blocks = 1
   endif
-enddef
+endfunction
 
-def g:ToggleCodeshot(): void
+function! g:ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
   else
     setlocal number signcolumn=yes
   endif
-enddef
+endfunction
 
-# =============================================================================
-# = Initialize =
-# =============================================================================
+" =============================================================================
+" = Initialize =
+" =============================================================================
 
-g:mapleader = ' '
-g:cnull = {
-  transparent: false,
-  config: MakeConfig(),
-}
+let mapleader = ' '
+let g:cnull = {}
+let g:cnull.transparent = v:false
+let g:cnull.config = MakeConfig()
 
-# =============================================================================
-# = Events =
-# =============================================================================
+" =============================================================================
+" = Events =
+" =============================================================================
 
 if g:cnull.transparent
   augroup transparent_events
@@ -104,30 +102,30 @@ if g:cnull.transparent
   augroup END
 endif
 
-# =============================================================================
-# = Plugin Pre-Config - before loading plugins =
-# =============================================================================
+" =============================================================================
+" = Plugin Pre-Config - before loading plugins =
+" =============================================================================
 
-# UltiSnips Config
-# ---
-g:UltiSnipsExpandTrigger = '<C-q>.'
-g:UltiSnipsJumpForwardTrigger = '<C-j>'
-g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+" UltiSnips Config
+" ---
+let g:UltiSnipsExpandTrigger = '<C-q>.'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
-# vim-vue Config
-# ---
-g:vue_pre_processors = []
+" vim-vue Config
+" ---
+let g:vue_pre_processors = []
 
-# emmet-vim Config
-# ---
-g:user_emmet_leader_key = '<C-q>'
-g:user_emmet_install_global = 0
+" emmet-vim Config
+" ---
+let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_install_global = 0
 
-# fzf.vim Config
-# ---
-$FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-$FZF_DEFAULT_OPTS = '--reverse'
-g:fzf_preview_window = []
+" fzf.vim Config
+" ---
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+let $FZF_DEFAULT_OPTS = '--reverse'
+let g:fzf_preview_window = []
 
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
@@ -137,125 +135,130 @@ augroup fzf_highlight_user_events
   autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
 augroup END
 
-# hlyank Config
-# ---
-g:highlightedyank_highlight_duration = 500
+" hlyank Config
+" ---
+let g:highlightedyank_highlight_duration = 500
 
 augroup user_highlightedyank_events
   autocmd!
   autocmd ColorScheme * highlight default HighlightedyankRegion Search
 augroup END
 
-# indentLine Config
-# ---
-g:indentLine_char = '│'
+" indentLine Config
+" ---
+let g:indentLine_char = '│'
 
-# buftabline Config
-# ---
-g:buftabline_numbers = 2
-g:buftabline_indicators = 1
+" buftabline Config
+" ---
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
 
 augroup buftabline_user_events
   autocmd!
   autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
 augroup END
 
-# coc.nvim Config
-# ---
-g:coc_global_extensions = [
-  'coc-json',
-  'coc-tsserver',
-  'coc-css',
-  'coc-html',
-  'coc-vetur',
-  'coc-phpls',
-  'coc-deno',
-  'coc-snippets',
-]
+" coc.nvim Config
+" ---
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-tsserver',
+  \ 'coc-css',
+  \ 'coc-html',
+  \ 'coc-vetur',
+  \ 'coc-phpls',
+  \ 'coc-deno',
+  \ 'coc-snippets',
+\ ]
 
-nnoremap <silent>       <Leader>ld <Cmd>call CocActionAsync('jumpDefinition')<CR>
-nnoremap <silent>       <Leader>lf <Cmd>call CocActionAsync('format')<CR>
-nnoremap <silent>       <Leader>lr <Cmd>call CocActionAsync('rename')<CR>
-nnoremap <silent>       <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
-nnoremap <silent>       <Leader>la <Cmd>call CocActionAsync('doCodeAction')<CR>
-nnoremap <silent>       <Leader>le <Cmd>CocList diagnostics<CR>
-inoremap <silent><expr> <C-@>      coc#refresh()
+nnoremap <silent>        <Leader>ld <Cmd>call CocActionAsync('jumpDefinition')<CR>
+nnoremap <silent>        <Leader>lf <Cmd>call CocActionAsync('format')<CR>
+nnoremap <silent>        <Leader>lr <Cmd>call CocActionAsync('rename')<CR>
+nnoremap <silent>        <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
+nnoremap <silent>        <Leader>la <Cmd>call CocActionAsync('codeAction')<CR>
+nnoremap <silent>        <Leader>le <Cmd>CocList diagnostics<CR>
+inoremap <silent> <expr> <C-@>      coc#refresh()
 
-inoremap <silent><expr> <Tab> pumvisible()
-  \ ? exists('g:did_coc_loaded') 
-    \ ? coc#_select_confirm()
-    \ : "\<C-y>"
+inoremap <silent> <expr> <Tab> pumvisible()
+  \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
   \ : "\<Tab>"
 
-# ale Config
-# ---
-g:ale_completion_enabled = 0
-g:ale_disable_lsp = 1
-g:ale_hover_cursor = 0
-g:ale_echo_msg_error_str = ''
-g:ale_echo_msg_warning_str = ''
-g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-g:ale_linters_explicit = 1
-g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+" ale Config
+" ---
+let g:ale_completion_enabled = 0
+let g:ale_disable_lsp = 1
+let g:ale_hover_cursor = 0
+let g:ale_echo_msg_error_str = ''
+let g:ale_echo_msg_warning_str = ''
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_linters_explicit = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
 nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
 nnoremap <silent> <Leader>ae <Cmd>lopen<CR>
 
-def g:AleErrorStlComponent(): string
+function! g:AleErrorStlComponent() abort
   if exists('g:loaded_ale')
-    const info = ale#statusline#Count(bufnr(''))
-    const errors = info.error
+    let info = ale#statusline#Count(bufnr(''))
+    let errors = info.error
     if errors > 0
       return printf('%d', errors)
     endif
   endif
 
   return ''
-enddef
+endfunction
 
-def g:AleWarningStlComponent(): string
+function! g:AleWarningStlComponent() abort
   if exists('g:loaded_ale')
-    const info = ale#statusline#Count(bufnr(''))
-    const warnings = info.warning
+    let info = ale#statusline#Count(bufnr(''))
+    let warnings = info.warning
     if warnings > 0
       return printf('%d', warnings)
     endif
   endif
 
   return ''
-enddef
+endfunction
 
-def g:AleStatus(): string
+function! g:AleStatus() abort
   if exists('g:loaded_ale')
     return 'ALE'
   endif
 
   return ''
-enddef
+endfunction
 
-# fern.vim Config
-# ---
-g:fern#renderer = 'nerdfont'
+" fern.vim Config
+" ---
+let g:fern#renderer = 'nerdfont'
+
 nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
-# =============================================================================
-# = Plugin Manager =
-# =============================================================================
+" =============================================================================
+" = Plugin Manager =
+" =============================================================================
 
-# Bootstrap
-const dataDir = ('~/.vim')->expand()
-const plugDir = dataDir .. '/autoload/plug.vim'
-const plugRemote = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-if !plugDir->filereadable()
-  printf('!curl -fLo %s --create-dirs %s', plugDir, plugRemote)->execute()
+" Bootstrap
+let s:plugin = {}
+let s:plugin.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plugin.filepath = g:cnull.config.std_data . '/autoload/plug.vim'
+let s:plugin.plugins_dir = g:cnull.config.std_data . '/plugged'
+
+if !filereadable(s:plugin.filepath)
+  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.filepath, s:plugin.git)
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-plug#begin('~/.vim/plugged')
+call plug#begin(s:plugin.plugins_dir)
 
-# Core
-Plug 'Shougo/context_filetype.vim' | Plug 'tyru/caw.vim'
+" Deps
+Plug 'Shougo/context_filetype.vim'
+Plug 'vim-denops/denops.vim'
+
+" Core
+Plug 'tyru/caw.vim'
 Plug 'cohama/lexima.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'godlygeek/tabular'
@@ -263,28 +266,28 @@ Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'vim-denops/denops.vim' | Plug 'creativenull/projectlocal-vim'
+Plug 'creativenull/projectlocal-vim'
 
-# File Explorer
+" File Explorer
 Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 Plug 'lambdalisue/nerdfont.vim', { 'on': 'Fern' }
 Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'on': 'Fern' }
 
-# Snippets
+" Snippets
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-# Git
+" Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-# Completion/LSP/Linters/Formatter
+" Auto-completion/LSP/Linters/Formatter
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'dense-analysis/ale'
 
-# Fuzzy Finder
+" Fuzzy Finder
 Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
 
-# UI
+" UI/Syntax
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-buftabline'
 Plug 'machakann/vim-highlightedyank'
@@ -295,67 +298,63 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'jwalton512/vim-blade'
 Plug 'itchyny/lightline.vim'
 
-# Colorscheme
+" Colorscheme
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 
-plug#end()
+call plug#end()
 
-# =============================================================================
-# = Plugin Post-Config - after loading plugins =
-# =============================================================================
+" =============================================================================
+" = Plugin Post-Config - after loading plugins =
+" =============================================================================
 
-# fzf.vim Config
-# ---
-def g:FzfVimGrep(qargs: string, bang: number): void
-  const sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(qargs)
-  fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), bang)
-enddef
+" fzf.vim Config
+" ---
+function! g:FzfVimGrep(qargs, bang) abort
+  let sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' . shellescape(a:qargs)
+  fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
+endfunction
 
 command! -bang -nargs=* Rg FzfVimGrep(<q-args>, <bang>0)
 
-# lightline.vim Config
-# ---
-var powerline = copy(g:lightline#colorscheme#powerline#palette)
-powerline.normal.left = [
-  ['#cdcdcd', '#047857', 'bold'],
-  ['white', 'gray4'],
-]
-g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(powerline)
+" lightline.vim Config
+" ---
+let s:powerline = copy(g:lightline#colorscheme#powerline#palette)
+let s:powerline.normal.left = [
+  \ ['#cdcdcd', '#047857', 'bold'],
+  \ ['white', 'gray4'],
+\ ]
+let g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(s:powerline)
 
-g:lightline = {}
-g:lightline.separator = {
-  left: '',
-  right: '',
-}
-g:lightline.component = { lineinfo: '%l/%L:%c' }
-g:lightline.active = {
-  left: [
-    ['filename'],
-    ['gitbranch', 'readonly', 'modified'],
-  ],
+let g:lightline = {}
+let g:lightline.separator = {
+  \ 'left': '',
+  \ 'right': '',
+\ }
+let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
+let g:lightline.active = {
+  \ 'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'], ],
+  \ 'right': [
+    \ ['ale_error_component', 'ale_warning_component', 'ale_status'],
+    \ ['lineinfo'],
+    \ ['filetype', 'fileencoding'],
+  \ ],
+\ }
 
-  right: [
-    ['ale_error_component', 'ale_warning_component', 'ale_status'],
-    ['lineinfo'],
-    ['filetype', 'fileencoding'],
-  ],
-}
+let g:lightline.component_function = {
+  \ 'gitbranch': 'FugitiveHead',
+  \ 'ale_status': 'AleStatus',
+\ }
 
-g:lightline.component_function = {
-  gitbranch: 'FugitiveHead',
-  ale_status: 'AleStatus',
-}
+let g:lightline.component_expand = {
+  \ 'ale_error_component': 'AleErrorStlComponent',
+  \ 'ale_warning_component': 'AleWarningStlComponent',
+\ }
 
-g:lightline.component_expand = {
-  ale_error_component: 'AleErrorStlComponent',
-  ale_warning_component: 'AleWarningStlComponent',
-}
-
-g:lightline.component_type = {
-  ale_error_component: 'error',
-  ale_warning_component: 'warning',
-}
+let g:lightline.component_type = {
+  \ 'ale_error_component': 'error',
+  \ 'ale_warning_component': 'warning',
+\ }
 
 augroup ale_lightline_user_events
   autocmd!
@@ -364,42 +363,41 @@ augroup ale_lightline_user_events
   autocmd User ALEFixPost call lightline#update()
 augroup END
 
-# =============================================================================
-# = UI/Theme =
-# =============================================================================
+" =============================================================================
+" = UI/Theme =
+" =============================================================================
 
 if has('termguicolors')
   set termguicolors
-  &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 set number
 set background=dark
 colorscheme moonfly
 
-# =============================================================================
-# = Options =
-# =============================================================================
+" =============================================================================
+" = Options =
+" =============================================================================
 
-const undodir: string = g:cnull.config.undodir
-if !undodir->isdirectory()
-  printf('!mkdir -p %s', undodir)->execute('silent!')
+if isdirectory(g:cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
 endif
 
-# Completion
+" Completion
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 set wildmenu
 
-# Search
+" Search
 set ignorecase
 set smartcase
 set hlsearch
 set incsearch
 set showmatch
 
-# Editor
+" Editor
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
@@ -412,7 +410,7 @@ set colorcolumn=120
 set scrolloff=5
 set nospell
 
-# System
+" System
 set encoding=utf-8
 set nobackup
 set noswapfile
@@ -424,9 +422,9 @@ set backspace=indent,eol,start
 set ttimeoutlen=50
 set mouse=
 set lazyredraw
-&undodir = g:cnull.config.undodir
+let &undodir = cnull.config.undodir
 
-# UI
+" UI
 set hidden
 set conceallevel=0
 set signcolumn=yes
@@ -434,11 +432,11 @@ set cmdheight=2
 set showtabline=2
 set laststatus=2
 
-# =============================================================================
-# = Keybindings =
-# =============================================================================
+" =============================================================================
+" = Keybindings =
+" =============================================================================
 
-# Unbind default bindings for arrow keys, trust me this is for your own good
+" Unbind default bindings for arrow keys, trust me this is for your own good
 noremap  <Up>    <Nop>
 noremap  <Down>  <Nop>
 noremap  <Left>  <Nop>
@@ -448,53 +446,53 @@ inoremap <Down>  <Nop>
 inoremap <Left>  <Nop>
 inoremap <Right> <Nop>
 
-# Resize window panes, we can use those arrow keys
-# to help use resize windows - at least we give them some purpose
+" Resize window panes, we can use those arrow keys
+" to help use resize windows - at least we give them some purpose
 nnoremap <Up>    <Cmd>resize +2<CR>
 nnoremap <Down>  <Cmd>resize -2<CR>
 nnoremap <Left>  <Cmd>vertical resize -2<CR>
 nnoremap <Right> <Cmd>vertical resize +2<CR>
 
-# Map Esc, to perform quick switching between Normal and Insert mode
+" Map Esc, to perform quick switching between Normal and Insert mode
 inoremap jk <Esc>
 
-# Map escape from terminal input to Normal mode
+" Map escape from terminal input to Normal mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
-# Disable highlights
+" Disable highlights
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
-# List all buffers
+" List all buffers
 nnoremap <Leader>bb <Cmd>buffers<CR>
-# Go to next buffer
+" Go to next buffer
 nnoremap <C-l> <Cmd>bnext<CR>
 nnoremap <Leader>bn <Cmd>bnext<CR>
-# Go to previous buffer
+" Go to previous buffer
 nnoremap <C-h> <Cmd>bprevious<CR>
 nnoremap <Leader>bp <Cmd>bprevious<CR>
-# Close the current buffer, and more?
+" Close the current buffer, and more?
 nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
-# Close all buffer, except current
+" Close all buffer, except current
 nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
 
-# Edit vimrc
+" Edit vimrc
 nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
 
-# Source the vimrc to reflect changes
+" Source the vimrc to reflect changes
 nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 
-# Reload file
+" Reload file
 nnoremap <Leader>r <Cmd>edit!<CR>
 
-# List all maps
+" List all maps
 nnoremap <Leader>mn <Cmd>nmap<CR>
 nnoremap <Leader>mv <Cmd>vmap<CR>
 nnoremap <Leader>mi <Cmd>imap<CR>
 nnoremap <Leader>mt <Cmd>tmap<CR>
 nnoremap <Leader>mc <Cmd>cmap<CR>
 
-# Move lines up/down with alt+j/k
+" Move lines up/down with alt+j/k
 set <M-j>=j
 set <M-k>=k
 nnoremap <M-j> :m .+1<CR>==
@@ -502,19 +500,25 @@ nnoremap <M-k> :m .-2<CR>==
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
-# Copy/Paste system clipboard
+" Copy/Paste system clipboard
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
-# Disable Ex-mode
+" Disable Ex-mode
 nnoremap Q <Nop>
 
-# =============================================================================
-# = Commands =
-# =============================================================================
+" =============================================================================
+" = Commands =
+" =============================================================================
 
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
 command! ToggleConcealLevel ToggleConcealLevel()
 command! ToggleCodeshot ToggleCodeshot()
+
+" Command Abbreviations
+cnoreabbrev Q q
+cnoreabbrev Qa qa
+cnoreabbrev W w
+cnoreabbrev Wq wq
