@@ -7,10 +7,6 @@
 "   + Environment variables: $PYTHON3_HOST_PROG
 " =============================================================================
 
-set nocompatible
-filetype plugin indent on
-syntax on
-
 if !has('nvim')
   echoerr 'This config is only for neovim 0.4 and up!'
   finish
@@ -70,16 +66,16 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
-let cnull = {}
-let cnull.transparent = v:true
-let cnull.config = {}
-let cnull.config.undodir = stdpath('cache') . '/undo'
+let g:cnull = {}
+let g:cnull.transparent = v:true
+let g:cnull.config = {}
+let g:cnull.config.undodir = stdpath('cache') . '/undo'
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-if cnull.transparent
+if g:cnull.transparent
   augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
@@ -93,10 +89,7 @@ endif
 
 augroup highlightyank_user_events
   autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank({
-          \ higroup = 'IncSearch',
-          \ timeout = 500,
-        \ })
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
 augroup END
 
 " =============================================================================
@@ -110,10 +103,8 @@ let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
 " Use tab to complete the popup menu item
-inoremap <silent><expr> <Tab> pumvisible()
-  \ ? UltiSnips#CanExpandSnippet()
-    \ ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>"
-    \ : "\<C-y>"
+inoremap <silent> <expr> <Tab> pumvisible()
+  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
   \ : "\<Tab>"
 
 " vim-vue Config
@@ -136,6 +127,7 @@ augroup END
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_preview_window = []
+
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
 
@@ -214,17 +206,17 @@ nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 " = Plugin Manager =
 " =============================================================================
 
-let cnull.config.plug = {}
-let cnull.config.plug.plugins_dir = stdpath('data') . '/plugged'
-let cnull.config.plug.filepath = stdpath('data') . '/site/autoload/plug.vim'
-let cnull.config.plug.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plugin = {}
+let s:plugin.url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plugin.plug_filepath = stdpath('data') . '/site/autoloade/plug.vim'
+let s:plugin.plugins_dir = stdpath('data') . '/plugged'
 
-if !filereadable(cnull.config.plug.filepath)
-  execute printf('!curl -fLo %s --create-dirs %s', cnull.config.plug.filepath, cnull.config.plug.git)
+if !filereadable(s:plugin.plug_filepath)
+  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.plug_filepath, s:plugin.url)
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin(cnull.config.plug.plugins_dir)
+call plug#begin(s:plugin.plugins_dir)
 
 " Deps
 Plug 'Shougo/context_filetype.vim'
@@ -307,7 +299,7 @@ function! g:DeopleteEnable()
   call deoplete#enable()
 endfunction
 
-inoremap <silent><expr> <C-Space> deoplete#manual_complete()
+inoremap <silent> <expr> <C-Space> deoplete#manual_complete()
 
 augroup deoplete_user_events
   au!
@@ -406,7 +398,7 @@ set nobackup
 set noswapfile
 set updatetime=250
 set undofile
-let &undodir=cnull.config.undodir
+let &undodir=g:cnull.config.undodir
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start
