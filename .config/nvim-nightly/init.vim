@@ -93,28 +93,28 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:python3_host_prog = $PYTHON3_HOST_PROG
 
-let mapleader = ' '
-let cnull = {}
-let cnull.transparent = v:true
-let cnull.config = {}
+let g:mapleader = ' '
+let g:cnull = {}
+let g:cnull.transparent = v:true
+let g:cnull.config = {}
 
 if exists('g:userspace')
-  let cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
-  let cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
-  let cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
-  let cnull.config.undodir = cnull.config.cache_dir . '/undo'
+  let g:cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
+  let g:cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
+  let g:cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
+  let g:cnull.config.undodir = g:cnull.config.cache_dir . '/undo'
 else
-  let cnull.config.data_dir = stdpath('data')
-  let cnull.config.cache_dir = stdpath('config')
-  let cnull.config.config_dir = stdpath('cache')
-  let cnull.config.undodir = cnull.config.cache_dir . '/undo'
+  let g:cnull.config.data_dir = stdpath('data')
+  let g:cnull.config.cache_dir = stdpath('config')
+  let g:cnull.config.config_dir = stdpath('cache')
+  let g:cnull.config.undodir = g:cnull.config.cache_dir . '/undo'
 endif
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-if cnull.transparent
+if g:cnull.transparent
   augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
@@ -141,10 +141,6 @@ augroup END
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
-
-" denops.vim Config
-" ---
-let g:denops#debug = 0
 
 " UltiSnips/vim-snippets Config
 " ---
@@ -200,23 +196,24 @@ let g:projectlocal = {
 " = Plugin Manager =
 " =============================================================================
 
-let cnull.config.plug = {}
-let cnull.config.plug.plugins_dir = cnull.config.data_dir . '/plugged'
-let cnull.config.plug.filepath = cnull.config.data_dir . '/site/autoload/plug.vim'
-let cnull.config.plug.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plugin = {}
+let s:plugin.url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plugin.plug_filepath = g:cnull.config.data_dir . '/site/autoload/plug.vim'
+let s:plugin.plugins_dir = g:cnull.config.data_dir . '/plugged'
 
-if !filereadable(cnull.config.plug.filepath)
-  execute printf('!curl -fLo %s --create-dirs %s', cnull.config.plug.filepath, cnull.config.plug.git)
+if !filereadable(s:plugin.plug_filepath)
+  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.plug_filepath, s:plugin.url)
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin(cnull.config.plug.plugins_dir)
+call plug#begin(s:plugin.plugins_dir)
 
 " Deps
 Plug 'Shougo/context_filetype.vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'vim-denops/denops.vim'
+Plug 'lambdalisue/nerdfont.vim'
 
 " Core
 Plug 'windwp/nvim-autopairs'
@@ -228,34 +225,30 @@ Plug 'creativenull/projectlocal-vim'
 Plug 'b3nj5m1n/kommentary'
 Plug 'kevinhwang91/nvim-bqf'
 
-" File Explorer
+" File Explorer + Addons
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/nerdfont.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
-" LSP/Linter/Formatter
+" Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/diagnosticls-configs-nvim'
 
-" AutoCompletion {{
+" AutoCompletion + Sources
 Plug 'Shougo/ddc.vim'
-" Sorters/Matchers
 Plug 'tani/ddc-fuzzy'
-" Sources
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
 Plug 'matsui54/ddc-ultisnips'
 Plug 'Shougo/ddc-nvim-lsp'
 Plug 'matsui54/ddc-nvim-lsp-doc'
-" }}
 
-" Snippets
+" Snippet Engine + Presets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'mattn/emmet-vim'
 
-" Fuzzy Finder
+" Fuzzy File/Code Finder
 Plug 'nvim-telescope/telescope.nvim'
 
 " Git
@@ -303,21 +296,8 @@ endfunction
 inoremap <silent> <expr> <Tab> TabCompletion()
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
-" Disable autocompletion for filetypes not needed
-function! DDCBufEvent() abort
-  if &filetype == 'TelescopePrompt'
-    call ddc_nvim_lsp_doc#disable()
-    call ddc#disable()
-  else
-    call ddc_nvim_lsp_doc#enable()
-    call ddc#enable()
-  endif
-endfunction
-
-augroup ddc_user_events
-  autocmd!
-  autocmd BufNew,BufEnter * call DDCBufEvent()
-augroup END
+call ddc_nvim_lsp_doc#enable()
+call ddc#enable()
 
 " nvim-autopairs Config
 " ---
@@ -339,7 +319,7 @@ nnoremap <C-p> <Cmd>lua TelescopeFindFiles()<CR>
 nnoremap <C-t> <Cmd>lua TelescopeLiveGrep()<CR>
 nnoremap <Leader>vf <Cmd>lua TelescopeFindConfigFiles()<CR>
 
-if cnull.transparent
+if g:cnull.transparent
   augroup telescope_user_events
     autocmd!
     autocmd ColorScheme * highlight TelescopeBorder guifg=#aaaaaa
@@ -356,7 +336,7 @@ lua require('cnull.biscuits')
 
 nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
 
-" galaxyline.nvim Config
+" lualine.nvim Config
 " ---
 lua require('cnull.statusline')
 
@@ -399,8 +379,8 @@ colorscheme moonfly
 " = Options =
 " =============================================================================
 
-if !isdirectory(cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', cnull.config.undodir)
+if !isdirectory(g:cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
 endif
 
 " Completion
@@ -435,7 +415,7 @@ set nobackup
 set noswapfile
 set updatetime=250
 set undofile
-let &undodir=cnull.config.undodir
+let &undodir=g:cnull.config.undodir
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start

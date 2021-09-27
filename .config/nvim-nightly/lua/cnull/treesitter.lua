@@ -7,7 +7,6 @@ require('nvim-treesitter.configs').setup({
     'lua',
     'php',
     'typescript',
-    'vim',
     'vue',
   },
   highlight = { enable = true },

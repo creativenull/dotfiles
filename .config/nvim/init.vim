@@ -254,7 +254,7 @@ Plug 'statiolake/ddc-ale'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-" Fuzzy Finder
+" Fuzzy File/Code Finder
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
@@ -316,18 +316,7 @@ call ddc#custom#patch_global({
 
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
-function! g:UserEnableDDC() abort
-  if &filetype == 'fzf'
-    call ddc#disable()
-  else
-    call ddc#enable()
-  endif
-endfunction
-
-augroup ddc_user_events
-  autocmd!
-  autocmd BufEnter,BufNew * call UserEnableDDC()
-augroup END
+call ddc#enable()
 
 " lightline.vim Config
 " ---
