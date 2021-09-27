@@ -44,10 +44,6 @@ if exists('g:userspace')
   execute printf('set packpath+=~/.local/share/%s/site/after', userspace)
 endif
 
-set nocompatible
-filetype plugin indent on
-syntax on
-
 if !has('nvim')
   echoerr 'This config is only for neovim 0.4 and up!'
   finish
@@ -242,14 +238,17 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/diagnosticls-configs-nvim'
 
-" AutoCompletion
+" AutoCompletion {{
 Plug 'Shougo/ddc.vim'
-Plug 'Shougo/ddc-sorter_rank'
-Plug 'matsui54/ddc-matcher_fuzzy'
+" Sorters/Matchers
+Plug 'tani/ddc-fuzzy'
+" Sources
 Plug 'Shougo/ddc-around'
+Plug 'matsui54/ddc-buffer'
 Plug 'matsui54/ddc-ultisnips'
 Plug 'Shougo/ddc-nvim-lsp'
 Plug 'matsui54/ddc-nvim-lsp-doc'
+" }}
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -289,7 +288,7 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
-function! TabCompletion() abort
+function! g:TabCompletion() abort
   if pumvisible()
     if UltiSnips#CanExpandSnippet()
       return "\<C-r>=UltiSnips#ExpandSnippet()\<CR>"
@@ -304,8 +303,21 @@ endfunction
 inoremap <silent> <expr> <Tab> TabCompletion()
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
-call ddc_nvim_lsp_doc#enable()
-call ddc#enable()
+" Disable autocompletion for filetypes not needed
+function! DDCBufEvent() abort
+  if &filetype == 'TelescopePrompt'
+    call ddc_nvim_lsp_doc#disable()
+    call ddc#disable()
+  else
+    call ddc_nvim_lsp_doc#enable()
+    call ddc#enable()
+  endif
+endfunction
+
+augroup ddc_user_events
+  autocmd!
+  autocmd BufNew,BufEnter * call DDCBufEvent()
+augroup END
 
 " nvim-autopairs Config
 " ---
@@ -341,6 +353,7 @@ lua require('cnull.treesitter')
 " nvim-biscuits Config
 " ---
 lua require('cnull.biscuits')
+
 nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
 
 " galaxyline.nvim Config
