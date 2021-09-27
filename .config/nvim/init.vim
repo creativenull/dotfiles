@@ -221,7 +221,6 @@ call plug#begin(s:plugin.plugins_dir)
 " Deps
 Plug 'Shougo/context_filetype.vim'
 Plug 'vim-denops/denops.vim'
-Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lambdalisue/nerdfont.vim'
 
 " Core
@@ -235,15 +234,23 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'mattn/emmet-vim'
 Plug 'creativenull/projectlocal-vim'
 
-" File Explorer
+" File Explorer + Addons
+Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
-" LSP/Linter/Formatter
+" Linters + Formatters + LSP Client
 Plug 'dense-analysis/ale'
-Plug 'Shougo/deoplete.nvim'
 
-" Snippets
+" AutoCompletion + Sources
+Plug 'Shougo/ddc.vim'
+Plug 'tani/ddc-fuzzy'
+Plug 'Shougo/ddc-around'
+Plug 'matsui54/ddc-buffer'
+Plug 'matsui54/ddc-ultisnips'
+Plug 'statiolake/ddc-ale'
+
+" Snippet Engine + Presets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -288,28 +295,39 @@ augroup fzf_user_events
   autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
 augroup END
 
-" deoplete.nvim Config
-" ---
-function! g:DeopleteEnable()
-  let deoplete_opts = {}
-  let deoplete_opts.sources = { '_': ['ale', 'ultisnips', 'around', 'buffer'] }
-  let deoplete_opts.num_processes = 2
-  let deoplete_opts.auto_complete_delay = 100
-
-  call deoplete#custom#option(deoplete_opts)
-  call deoplete#enable()
-endfunction
-
-inoremap <silent> <expr> <C-Space> deoplete#manual_complete()
-
-augroup deoplete_user_events
-  au!
-  au FileType * call DeopleteEnable()
-augroup END
-
 " ddc.vim Config
 " ---
+call ddc#custom#patch_global({
+  \ 'autoCompleteDelay': 100,
+  \ 'backspaceCompletion': v:true,
+  \ 'sources': ['ale', 'ultisnips', 'around', 'buffer'],
+  \ 'sourceOptions': {
+    \ '_': {
+      \ 'matchers': ['matcher_fuzzy'],
+      \ 'sorters': ['sorter_fuzzy'],
+      \ 'ignoreCase': v:true,
+    \ },
+    \ 'ultisnips': { 'mark': 'ultisnips' },
+    \ 'ale': { 'mark': 'ale' },
+    \ 'around': { 'mark': 'around' },
+    \ 'buffer': { 'mark': 'buffer' },
+  \ },
+\ })
 
+inoremap <silent> <expr> <C-Space> ddc#manual_complete()
+
+function! g:UserEnableDDC() abort
+  if &filetype == 'fzf'
+    call ddc#disable()
+  else
+    call ddc#enable()
+  endif
+endfunction
+
+augroup ddc_user_events
+  autocmd!
+  autocmd BufEnter,BufNew * call UserEnableDDC()
+augroup END
 
 " lightline.vim Config
 " ---
