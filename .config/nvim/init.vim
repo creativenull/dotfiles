@@ -208,7 +208,7 @@ nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
 let s:plugin = {}
 let s:plugin.url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plugin.plug_filepath = stdpath('data') . '/site/autoloade/plug.vim'
+let s:plugin.plug_filepath = stdpath('data') . '/site/autoload/plug.vim'
 let s:plugin.plugins_dir = stdpath('data') . '/plugged'
 
 if !filereadable(s:plugin.plug_filepath)
