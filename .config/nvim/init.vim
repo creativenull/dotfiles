@@ -414,6 +414,7 @@ set scrolloff=5
 set lazyredraw
 set nospell
 set wildignorecase
+set nofoldenable
 
 " System
 set encoding=utf-8
