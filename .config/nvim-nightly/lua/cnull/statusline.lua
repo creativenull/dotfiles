@@ -6,6 +6,7 @@ custom_theme.normal.z = {}
 custom_theme.normal.z.bg = '#444444'
 custom_theme.insert.z = {}
 custom_theme.insert.z.bg = custom_theme.insert.a.bg
+custom_theme.insert.z.fg = custom_theme.insert.a.fg
 
 -- Line Info Component
 local function line_info_component()
