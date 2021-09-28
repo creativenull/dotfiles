@@ -82,7 +82,7 @@ lspconfig.sumneko_lua.setup({
       telemetry = { enable = false },
     },
   },
-  root_dir = root_pattern('.luals'),
+  root_dir = root_pattern('.git'),
 })
 
 -- Vim LSP Server
@@ -90,7 +90,7 @@ lspconfig.sumneko_lua.setup({
 lspconfig.vimls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = root_pattern('.vimls'),
+  root_dir = root_pattern('.git'),
 })
 
 -- PHP LSP Server
