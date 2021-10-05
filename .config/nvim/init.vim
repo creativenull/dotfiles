@@ -23,7 +23,7 @@ if !executable('curl')
 endif
 
 if !executable('python3')
-  echoerr '[nvim] `python3`, `python3-pynvim`, `python3-msgpack` is needed!'
+  echoerr '[nvim] `python3`, `python3-pynvim` is needed!'
   finish
 endif
 
@@ -202,6 +202,10 @@ let g:fern#renderer = 'nerdfont'
 
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
+" vim-json Config
+" ---
+let g:vim_json_syntax_conceal = 0
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
@@ -270,6 +274,9 @@ Plug 'posva/vim-vue'
 Plug 'neoclide/vim-jsx-improve'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'jwalton512/vim-blade'
+Plug 'elzr/vim-json'
+Plug 'kevinoid/vim-jsonc'
+Plug 'junegunn/vader.vim'
 
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
