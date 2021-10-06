@@ -1,7 +1,6 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
-" File: init.vim
-" Description: My vimrc, currently tested on a Linux machine. Requires:
+" Description: My vimrc works with MacOS, Linux and Windows, requires
 "   + curl (globally installed)
 "   + git (globally installed)
 "   + python3 (globally installed)
