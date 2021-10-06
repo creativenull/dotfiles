@@ -2,13 +2,14 @@
 " Github: https://github.com/creativenull
 " File: init.vim
 " Description: My vimrc, currently tested on a Linux machine. Requires:
+"   + curl (globally installed)
+"   + git (globally installed)
 "   + python3 (globally installed)
 "   + ripgrep (globally installed
-"   + Environment variables: $PYTHON3_HOST_PROG
 " =============================================================================
 
-if !has('nvim')
-  echoerr 'This config is only for neovim 0.4 and up!'
+if !has('nvim') && !has('nvim-0.5')
+  echoerr 'This config is only for neovim 0.5 and up!'
   finish
 endif
 
@@ -64,7 +65,7 @@ let g:mapleader = ' '
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
-let g:python3_host_prog = $PYTHON3_HOST_PROG
+let g:python3_host_prog = exepath('python3')
 
 let g:cnull = {}
 let g:cnull.transparent = v:true
@@ -92,6 +93,11 @@ augroup highlightyank_user_events
   autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
 augroup END
 
+augroup filetype_user_events
+  autocmd!
+  autocmd FileType vim,lua setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
+augroup END
+
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
@@ -106,6 +112,12 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 inoremap <silent> <expr> <Tab> pumvisible()
   \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
   \ : "\<Tab>"
+
+augroup ultisnips_user_events
+  autocmd!
+  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript
+  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript
+augroup END
 
 " vim-vue Config
 " ---
@@ -130,6 +142,17 @@ let g:fzf_preview_window = []
 
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
+
+function! g:FzfFtSetup() abort
+  setlocal laststatus=0 noruler
+  autocmd BufLeave <buffer> setlocal laststatus=2 ruler
+endfunction
+
+augroup fzf_user_events
+  autocmd!
+  autocmd FileType fzf call FzfFtSetup()
+  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
+augroup END
 
 " ALE Config
 " ---
@@ -201,6 +224,15 @@ augroup END
 let g:fern#renderer = 'nerdfont'
 
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
+
+function! g:FernKeymaps() abort
+  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
+endfunction
+
+augroup fern_user_events
+  autocmd!
+  autocmd FileType fern call FernKeymaps()
+augroup END
 
 " vim-json Config
 " ---
@@ -296,11 +328,6 @@ function! g:FzfVimGrep(qargs, bang) abort
 endfunction
 
 command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
-
-augroup fzf_user_events
-  autocmd!
-  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
-augroup END
 
 " ddc.vim Config
 " ---
