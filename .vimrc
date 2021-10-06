@@ -102,6 +102,11 @@ if g:cnull.transparent
   augroup END
 endif
 
+augroup filetype_user_events
+  autocmd!
+  autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+augroup END
+
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
@@ -120,6 +125,12 @@ let g:vue_pre_processors = []
 " ---
 let g:user_emmet_leader_key = '<C-q>'
 let g:user_emmet_install_global = 0
+let g:user_emmet_mode = 'i'
+
+augroup emmet_user_events
+  autocmd!
+  autocmd FileType html,blade,javascriptreact,typescriptreact,vue EmmetInstall
+augroup END
 
 " fzf.vim Config
 " ---
@@ -141,7 +152,7 @@ let g:highlightedyank_highlight_duration = 500
 
 augroup user_highlightedyank_events
   autocmd!
-  autocmd ColorScheme * highlight default HighlightedyankRegion Search
+  autocmd ColorScheme * highlight! default link HighlightedyankRegion Search
 augroup END
 
 " indentLine Config
@@ -232,9 +243,19 @@ endfunction
 
 " fern.vim Config
 " ---
+let g:fern#hide_cursor = 1
 let g:fern#renderer = 'nerdfont'
 
 nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
+
+function! g:FernKeymaps() abort
+  nnoremap <buffer><nowait> q <Cmd>bd<CR>
+endfunction
+
+augroup fern_user_events
+  autocmd!
+  autocmd FileType fern call FernKeymaps()
+augroup END
 
 " =============================================================================
 " = Plugin Manager =
@@ -310,15 +331,17 @@ call plug#end()
 
 " fzf.vim Config
 " ---
-function! g:FzfVimGrep(qargs, bang) abort
+function! g:FzfVimGrepWithPreview(qargs, bang) abort
   let sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' . shellescape(a:qargs)
   fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
 endfunction
 
-command! -bang -nargs=* Rg FzfVimGrep(<q-args>, <bang>0)
+command! -bang -nargs=* Rg FzfVimGrepWithPreview(<q-args>, <bang>0)
 
 " lightline.vim Config
 " ---
+" Custom colors for powerline
+" don't like the bright green color :(
 let s:powerline = copy(g:lightline#colorscheme#powerline#palette)
 let s:powerline.normal.left = [
   \ ['#cdcdcd', '#047857', 'bold'],
