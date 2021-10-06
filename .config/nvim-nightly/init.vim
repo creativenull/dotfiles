@@ -1,9 +1,10 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
-" Description: My vimrc, currently tested on a Linux machine. Requires:
+" Description: My vimrc works with MacOS, Linux and Windows, requires
+"   + curl (globally installed)
+"   + git (globally installed)
 "   + python3 (globally installed)
 "   + ripgrep (globally installed
-"   + Environment variables: $PYTHON3_HOST_PROG
 " =============================================================================
 
 let g:userspace = 'nvim-nightly'
@@ -91,7 +92,7 @@ endfunction
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
-let g:python3_host_prog = $PYTHON3_HOST_PROG
+let g:python3_host_prog = exepath('python3')
 
 let g:mapleader = ' '
 let g:cnull = {}
@@ -170,6 +171,7 @@ let g:indentLine_char = '│'
 
 " fern.vim Config
 " ---
+let g:fern#hide_cursor = 1
 let g:fern#renderer = 'nerdfont'
 
 function! g:FernUserKeymaps() abort
@@ -344,35 +346,14 @@ lua require('cnull.statusline')
 " = UI/Theme =
 " =============================================================================
 
-set termguicolors
-
-lua <<EOF
--- bufferline.lua Config
--- ---
-require('bufferline').setup({
-  options = {
-    show_buffer_close_icons = false,
-    show_close_icon = false,
-  },
-})
-
--- nvim-colorizer.lua Config
--- ---
-require('colorizer').setup({
-  'css',
-  'html',
-  'javascript',
-  'javascriptreact',
-  'typescript',
-  'typescriptreact',
-  'vim',
-})
-EOF
-
 let g:moonflyNormalFloat = 1
 
+" ---
+set termguicolors
 set number
 set background=dark
+
+lua require('cnull.theme')
 colorscheme moonfly
 
 " =============================================================================
