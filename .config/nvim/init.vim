@@ -130,7 +130,7 @@ let g:user_emmet_install_global = 0
 
 augroup emmet_user_events
   autocmd!
-  autocmd FileType html,php,blade,css EmmetInstall
+  autocmd FileType html,php,blade,vue EmmetInstall
 augroup END
 
 " fzf.vim Config
@@ -142,14 +142,14 @@ let g:fzf_preview_window = []
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
 
-function! g:FzfFtSetup() abort
+function! g:FzfFileTypeSetup() abort
   setlocal laststatus=0 noruler
   autocmd BufLeave <buffer> setlocal laststatus=2 ruler
 endfunction
 
 augroup fzf_user_events
   autocmd!
-  autocmd FileType fzf call FzfFtSetup()
+  autocmd FileType fzf call FzfFileTypeSetup()
   autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
 augroup END
 
@@ -338,12 +338,12 @@ call ddc#custom#patch_global({
     \ '_': {
       \ 'matchers': ['matcher_fuzzy'],
       \ 'sorters': ['sorter_fuzzy'],
-      \ 'ignoreCase': v:true,
+      \ 'converters': ['converter_fuzzy'],
     \ },
-    \ 'ultisnips': { 'mark': 'ultisnips' },
-    \ 'ale': { 'mark': 'ale' },
-    \ 'around': { 'mark': 'around' },
-    \ 'buffer': { 'mark': 'buffer' },
+    \ 'ultisnips': { 'mark': 'SNIPPETS' },
+    \ 'ale': { 'mark': 'LSP' },
+    \ 'around': { 'mark': 'AROUND' },
+    \ 'buffer': { 'mark': 'BUFFER' },
   \ },
 \ })
 
