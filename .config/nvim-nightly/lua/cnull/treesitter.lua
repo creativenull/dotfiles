@@ -7,7 +7,10 @@ require('nvim-treesitter.configs').setup({
     'lua',
     'php',
     'typescript',
+    'tsx',
     'vue',
+    'go',
+    'jsdoc'
   },
   highlight = { enable = true },
   indent = { enable = true },

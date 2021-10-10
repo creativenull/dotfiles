@@ -143,18 +143,6 @@ augroup END
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
 
-" UltiSnips/vim-snippets Config
-" ---
-let g:UltiSnipsExpandTrigger = '<C-q>.'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-augroup ultisnips_user_events
-  autocmd!
-  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript
-  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript
-augroup END
-
 " emmet-vim Config
 " ---
 let g:user_emmet_leader_key = '<C-q>'
@@ -238,16 +226,20 @@ Plug 'creativenull/diagnosticls-configs-nvim'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim'
+Plug 'Shougo/pum.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
-Plug 'matsui54/ddc-ultisnips'
+Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'Shougo/ddc-nvim-lsp'
 Plug 'matsui54/ddc-nvim-lsp-doc'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-vsnip'
+" Plug 'hrsh7th/cmp-nvim-lsp'
 
 " Snippet Engine + Presets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'mattn/emmet-vim'
 
 " Fuzzy File/Code Finder
@@ -260,10 +252,11 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'code-biscuits/nvim-biscuits'
-Plug 'akinsho/nvim-bufferline.lua'
+Plug 'akinsho/bufferline.nvim'
 Plug 'folke/todo-comments.nvim'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
@@ -275,6 +268,19 @@ call plug#end()
 " = Plugin Post-Config - after loading plugins =
 " =============================================================================
 
+" pum.vim Config
+" ---
+call pum#set_option('border', 'single')
+
+inoremap <Tab>      <Cmd>call pum#map#insert_relative(+1)<CR>
+inoremap <S-Tab>    <Cmd>call pum#map#insert_relative(-1)<CR>
+inoremap <C-n>      <Cmd>call pum#map#insert_relative(+1)<CR>
+inoremap <C-p>      <Cmd>call pum#map#insert_relative(-1)<CR>
+inoremap <C-y>      <Cmd>call pum#map#confirm()<CR>
+inoremap <C-e>      <Cmd>call pum#map#cancel()<CR>
+inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
+inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
+
 " nvim-lspconfig Config
 " ---
 lua require('cnull.lsp')
@@ -283,19 +289,6 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
-function! g:TabCompletion() abort
-  if pumvisible()
-    if UltiSnips#CanExpandSnippet()
-      return "\<C-r>=UltiSnips#ExpandSnippet()\<CR>"
-    else
-      return "\<C-y>"
-    endif
-  else
-    return "\<Tab>"
-  endif
-endfunction
-
-inoremap <silent> <expr> <Tab> TabCompletion()
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
 call ddc_nvim_lsp_doc#enable()
@@ -341,6 +334,24 @@ nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
 " lualine.nvim Config
 " ---
 lua require('cnull.statusline')
+
+" indent-blankline.nvim Config
+" ---
+if g:cnull.transparent
+  augroup indent_blankline_user_events
+    autocmd!
+    autocmd ColorScheme * hi! IndentBlanklineHighlight guifg=#555555 guibg=NONE
+  augroup END
+endif
+
+lua <<EOF
+require('indent_blankline').setup({
+  char = '│',
+  buftype_exclude = {'help', 'markdown'},
+  char_highlight_list = {'IndentBlanklineHighlight'},
+  show_first_indent_level = false,
+})
+EOF
 
 " =============================================================================
 " = UI/Theme =

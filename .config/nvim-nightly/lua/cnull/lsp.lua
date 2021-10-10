@@ -22,7 +22,6 @@ local function on_attach(_, buf)
   nmap(buf, '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
   nmap(buf, '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
   nmap(buf, '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics('.. diag_opts ..')<CR>')
-  nmap(buf, '<Leader>li', '<Cmd>LspInfo<CR>')
 end
 
 -- Initial LSP Settings
@@ -60,6 +59,11 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     'additionalTextEdits',
   },
 }
+
+-- Log debug
+-- vim.lsp.set_log_level('debug')
+
+vim.api.nvim_set_keymap('n', '<Leader>li', '<Cmd>LspInfo<CR>', { noremap = true, silent = true })
 
 -- Lua LSP Server
 -- --
@@ -100,22 +104,20 @@ lspconfig.intelephense.setup({
   capabilities = capabilities,
 })
 
--- JS/TS/Deno LSP Server
+-- Nodejs LSP Server
 -- ---
-local tsserver_root_dir = root_pattern('package.json')
 lspconfig.tsserver.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = tsserver_root_dir,
+  root_dir = root_pattern('package.json'),
 })
 
 -- Deno LSP Server
 -- ---
-local deno_root_dir = root_pattern('import_map.json')
 lspconfig.denols.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = deno_root_dir,
+  root_dir = root_pattern('deno.json', 'deno.jsonc'),
 })
 
 -- DiagnosticLS Server
