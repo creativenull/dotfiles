@@ -125,7 +125,7 @@ let g:user_emmet_install_global = 0
 
 augroup emmet_user_events
   autocmd!
-  autocmd FileType html,php,blade,vue EmmetInstall
+  autocmd FileType html,php,blade,vue,javascriptreact,typescriptreact EmmetInstall
 augroup END
 
 " fzf.vim Config
@@ -327,7 +327,6 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 " ddc.vim Config
 " ---
 call ddc#custom#patch_global({
-  \ 'autoCompleteDelay': 100,
   \ 'backspaceCompletion': v:true,
   \ 'sources': ['ale', 'ultisnips', 'around', 'buffer'],
   \ 'sourceOptions': {
@@ -336,7 +335,10 @@ call ddc#custom#patch_global({
       \ 'sorters': ['sorter_fuzzy'],
       \ 'converters': ['converter_fuzzy'],
     \ },
-    \ 'ale': { 'mark': 'LSP' },
+    \ 'ale': {
+      \ 'mark': 'LSP',
+      \ 'maxCandidates': 15,
+    \ },
     \ 'ultisnips': {
       \ 'mark': 'SNIPPETS',
       \ 'maxCandidates': 5,
