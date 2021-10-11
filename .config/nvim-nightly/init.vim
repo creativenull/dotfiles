@@ -118,13 +118,13 @@ endif
 if g:cnull.transparent
   augroup transparent_user_events
     autocmd!
-    autocmd ColorScheme * highlight Normal guibg=NONE
-    autocmd ColorScheme * highlight SignColumn guibg=NONE
-    autocmd ColorScheme * highlight LineNr guibg=NONE
-    autocmd ColorScheme * highlight CursorLineNr guibg=NONE
-    autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
-    autocmd ColorScheme * highlight FloatBorder guifg=#aaaaaa guibg=NONE
-    autocmd ColorScheme * highlight Visual guifg=#333333 guibg=#aaaaaa
+    autocmd ColorScheme * highlight! Normal guibg=NONE
+    autocmd ColorScheme * highlight! SignColumn guibg=NONE
+    autocmd ColorScheme * highlight! LineNr guibg=NONE
+    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
+    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
+    autocmd ColorScheme * highlight! FloatBorder guifg=#aaaaaa guibg=NONE
+    autocmd ColorScheme * highlight! Visual guifg=#333333 guibg=#aaaaaa
   augroup END
 endif
 
@@ -150,29 +150,12 @@ let g:user_emmet_install_global = 0
 
 augroup emmet_user_events
   autocmd!
-  autocmd FileType html,blade,javascriptreact,typescriptreact EmmetInstall
+  autocmd FileType html,blade,php,vue,javascriptreact,typescriptreact EmmetInstall
 augroup END
 
 " indentLine Config
 " ---
 let g:indentLine_char = '│'
-
-" fern.vim Config
-" ---
-let g:fern#hide_cursor = 1
-let g:fern#renderer = 'nerdfont'
-
-function! g:FernUserKeymaps() abort
-  " Quit fern
-  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
-endfunction
-
-nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
-
-augroup fern_user_events
-  autocmd!
-  autocmd FileType fern call FernUserKeymaps()
-augroup END
 
 " projectlocal-vim Config
 " ---
@@ -181,6 +164,25 @@ let g:projectlocal = {
   \ 'projectConfig': '.vim/init.lua',
   \ 'debug': v:false,
 \ }
+
+" nvim-tree.lua Config
+" ---
+let g:nvim_tree_indent_markers = 1
+let g:nvim_tree_show_icons = {
+  \ 'git': 0,
+  \ 'folders': 1,
+  \ 'files': 1,
+  \ 'folder_arrows': 1,
+\ }
+
+nnoremap <silent> <Leader>ff <Cmd>NvimTreeToggle<CR>
+
+if g:cnull.transparent
+  augroup nvim_tree_user_events
+    autocmd!
+    autocmd ColorScheme * highlight! NvimTreeIndentMarker guifg=#555555 guibg=NONE
+  augroup END
+endif
 
 " =============================================================================
 " = Plugin Manager =
@@ -203,7 +205,6 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'vim-denops/denops.vim'
-Plug 'lambdalisue/nerdfont.vim'
 
 " Core
 Plug 'windwp/nvim-autopairs'
@@ -215,10 +216,8 @@ Plug 'creativenull/projectlocal-vim'
 Plug 'b3nj5m1n/kommentary'
 Plug 'kevinhwang91/nvim-bqf'
 
-" File Explorer + Addons
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+" File Explorer
+Plug 'kyazdani42/nvim-tree.lua'
 
 " Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
@@ -226,16 +225,12 @@ Plug 'creativenull/diagnosticls-configs-nvim'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim'
-Plug 'Shougo/pum.vim'
+Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'Shougo/ddc-nvim-lsp'
-Plug 'matsui54/ddc-nvim-lsp-doc'
-" Plug 'hrsh7th/nvim-cmp'
-" Plug 'hrsh7th/cmp-vsnip'
-" Plug 'hrsh7th/cmp-nvim-lsp'
 
 " Snippet Engine + Presets
 Plug 'hrsh7th/vim-vsnip'
@@ -268,18 +263,9 @@ call plug#end()
 " = Plugin Post-Config - after loading plugins =
 " =============================================================================
 
-" pum.vim Config
+" nvim-tree.lua Config
 " ---
-call pum#set_option('border', 'single')
-
-inoremap <Tab>      <Cmd>call pum#map#insert_relative(+1)<CR>
-inoremap <S-Tab>    <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-n>      <Cmd>call pum#map#insert_relative(+1)<CR>
-inoremap <C-p>      <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-y>      <Cmd>call pum#map#confirm()<CR>
-inoremap <C-e>      <Cmd>call pum#map#cancel()<CR>
-inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
-inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
+lua require('nvim-tree').setup({ view = { side = 'right' } })
 
 " nvim-lspconfig Config
 " ---
@@ -290,9 +276,6 @@ lua require('cnull.lsp')
 lua require('cnull.autocompletion')
 
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
-
-call ddc_nvim_lsp_doc#enable()
-call ddc#enable()
 
 " nvim-autopairs Config
 " ---
@@ -310,14 +293,14 @@ lua require('todo-comments').setup({})
 " ---
 lua require('cnull.finder')
 
-nnoremap <C-p> <Cmd>lua TelescopeFindFiles()<CR>
-nnoremap <C-t> <Cmd>lua TelescopeLiveGrep()<CR>
+nnoremap <C-p>      <Cmd>lua TelescopeFindFiles()<CR>
+nnoremap <C-t>      <Cmd>lua TelescopeLiveGrep()<CR>
 nnoremap <Leader>vf <Cmd>lua TelescopeFindConfigFiles()<CR>
 
 if g:cnull.transparent
   augroup telescope_user_events
     autocmd!
-    autocmd ColorScheme * highlight TelescopeBorder guifg=#aaaaaa
+    autocmd ColorScheme * highlight! TelescopeBorder guifg=#aaaaaa
   augroup END
 endif
 
@@ -340,7 +323,7 @@ lua require('cnull.statusline')
 if g:cnull.transparent
   augroup indent_blankline_user_events
     autocmd!
-    autocmd ColorScheme * hi! IndentBlanklineHighlight guifg=#555555 guibg=NONE
+    autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#555555 guibg=NONE
   augroup END
 endif
 
