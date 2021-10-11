@@ -67,7 +67,7 @@ let g:loaded_perl_provider = 0
 let g:python3_host_prog = exepath('python3')
 
 let g:cnull = {}
-let g:cnull.transparent = v:true
+let g:cnull.transparent = v:false
 let g:cnull.config = {}
 let g:cnull.config.undodir = stdpath('cache') . '/undo'
 
@@ -106,11 +106,6 @@ augroup END
 let g:UltiSnipsExpandTrigger = '<C-q>.'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
-" Use tab to complete the popup menu item
-inoremap <silent> <expr> <Tab> pumvisible()
-  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
-  \ : "\<Tab>"
 
 augroup ultisnips_user_events
   autocmd!
@@ -279,6 +274,7 @@ Plug 'dense-analysis/ale'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim'
+Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
@@ -340,15 +336,31 @@ call ddc#custom#patch_global({
       \ 'sorters': ['sorter_fuzzy'],
       \ 'converters': ['converter_fuzzy'],
     \ },
-    \ 'ultisnips': { 'mark': 'SNIPPETS' },
     \ 'ale': { 'mark': 'LSP' },
-    \ 'around': { 'mark': 'AROUND' },
-    \ 'buffer': { 'mark': 'BUFFER' },
+    \ 'ultisnips': {
+      \ 'mark': 'SNIPPETS',
+      \ 'maxCandidates': 5,
+    \ },
+    \ 'around': {
+      \ 'mark': 'AROUND',
+      \ 'maxCandidates': 5,
+    \ },
+    \ 'buffer': {
+      \ 'mark': 'BUFFER',
+      \ 'maxCandidates': 5,
+    \ },
   \ },
 \ })
 
+" Use tab to complete the popup menu item
+" w/ ultisnips integration
+inoremap <silent> <expr> <Tab> pumvisible()
+  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
+  \ : "\<Tab>"
+
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
+call popup_preview#enable()
 call ddc#enable()
 
 " lightline.vim Config
@@ -397,6 +409,8 @@ augroup END
 " =============================================================================
 " = UI/Theme =
 " =============================================================================
+
+let g:moonflyNormalFloat = 1
 
 set termguicolors
 set number
