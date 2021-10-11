@@ -1,64 +1,32 @@
 -- See :help ddc-options
-local ddc = {
-  custom = {
-    patch_global = vim.fn['ddc#custom#patch_global'],
-  },
-}
-
-ddc.custom.patch_global({
-  autoCompleteDelay = 100,
+vim.fn['ddc#custom#patch_global']({
   backspaceCompletion = true,
-  completionMenu = 'pum.vim',
   sources = {'nvim-lsp', 'vsnip', 'around', 'buffer'},
   sourceOptions = {
     ['_'] = {
       matchers = {'matcher_fuzzy'},
       sorters = {'sorter_fuzzy'},
-      converters = {'sorter_fuzzy'},
-    },
-    ['vsnip'] = {
-      mark = 'VSNIP',
+      converters = {'converter_fuzzy'},
     },
     ['nvim-lsp'] = {
       mark = 'LSP',
       forceCompletionPattern = '\\.|:|->',
+      maxCandidates = 15,
+    },
+    ['vsnip'] = {
+      mark = 'VSNIP',
+      maxCandidates = 5,
     },
     ['around'] = {
       mark = 'AROUND',
+      maxCandidates = 5,
     },
     ['buffer'] = {
       mark = 'BUFFER',
+      maxCandidates = 5,
     },
   },
 })
 
---[[ local cmp = require('cmp')
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn['vsnip#anonymous'](args.body)
-    end,
-  },
-
-  mapping = {
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
-
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'vsnip' },
-  },
-
-  formatting = {
-    format = function(entry, item)
-      item.menu = ({
-        nvim_lsp = '[LSP]',
-        vsnip = '[VSNIP]',
-      })[entry.source.name]
-
-      return item
-    end,
-  },
-}) ]]
+vim.call('popup_preview#enable')
+vim.call('ddc#enable')
