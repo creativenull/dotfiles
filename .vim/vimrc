@@ -7,7 +7,6 @@
 "   + ripgrep
 " =============================================================================
 
-set nocompatible
 filetype plugin indent on
 syntax on
 
@@ -61,12 +60,12 @@ endfunction
 function! g:ToggleConcealLevel() abort
   if &conceallevel == 2
     set conceallevel=0
-    g:vim_markdown_conceal = 0
-    g:vim_markdown_conceal_code_blocks = 0
+    let g:vim_markdown_conceal = 0
+    let g:vim_markdown_conceal_code_blocks = 0
   else
     set conceallevel=2
-    g:vim_markdown_conceal = 1
-    g:vim_markdown_conceal_code_blocks = 1
+    let g:vim_markdown_conceal = 1
+    let g:vim_markdown_conceal_code_blocks = 1
   endif
 endfunction
 
@@ -94,18 +93,13 @@ let g:cnull.config = MakeConfig()
 if g:cnull.transparent
   augroup transparent_events
     autocmd!
-    autocmd ColorScheme * highlight Normal guibg=NONE
-    autocmd ColorScheme * highlight SignColumn guibg=NONE
-    autocmd ColorScheme * highlight LineNr guibg=NONE
-    autocmd ColorScheme * highlight CursorLineNr guibg=NONE
-    autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
+    autocmd ColorScheme * highlight! Normal guibg=NONE
+    autocmd ColorScheme * highlight! SignColumn guibg=NONE
+    autocmd ColorScheme * highlight! LineNr guibg=NONE
+    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
+    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
   augroup END
 endif
-
-augroup filetype_user_events
-  autocmd!
-  autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
-augroup END
 
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
@@ -129,7 +123,7 @@ let g:user_emmet_mode = 'i'
 
 augroup emmet_user_events
   autocmd!
-  autocmd FileType html,blade,javascriptreact,typescriptreact,vue EmmetInstall
+  autocmd FileType html,blade,php,javascriptreact,typescriptreact,vue EmmetInstall
 augroup END
 
 " fzf.vim Config
@@ -143,7 +137,7 @@ nnoremap <C-t> <Cmd>Rg<CR>
 
 augroup fzf_highlight_user_events
   autocmd!
-  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
+  autocmd ColorScheme * highlight! fzfBorder guifg=#aaaaaa
 augroup END
 
 " hlyank Config
@@ -164,9 +158,10 @@ let g:indentLine_char = '│'
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
+" For moonfly theme only
 augroup buftabline_user_events
   autocmd!
-  autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
+  autocmd ColorScheme * if g:colors_name == 'moonfly' | highlight! TabLineSel guibg=#047857 guifg=#cdcdcd | endif
 augroup END
 
 " coc.nvim Config
@@ -243,25 +238,19 @@ endfunction
 
 " fern.vim Config
 " ---
-let g:fern#hide_cursor = 1
 let g:fern#renderer = 'nerdfont'
 
-nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
-function! g:FernKeymaps() abort
-  nnoremap <buffer><nowait> q <Cmd>bd<CR>
-endfunction
-
-augroup fern_user_events
-  autocmd!
-  autocmd FileType fern call FernKeymaps()
-augroup END
+" json.vim Config
+" ---
+let g:vim_json_conceal = 0
 
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
 
-" Bootstrap
+" Bootstrap - download vim-plug into autoload directory if it doesn't exist
 let s:plugin = {}
 let s:plugin.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 let s:plugin.filepath = g:cnull.config.std_data . '/autoload/plug.vim'
@@ -290,12 +279,13 @@ Plug 'tpope/vim-repeat'
 Plug 'creativenull/projectlocal-vim'
 
 " File Explorer
-Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
-Plug 'lambdalisue/nerdfont.vim', { 'on': 'Fern' }
-Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'on': 'Fern' }
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
 " Snippets
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -306,7 +296,8 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'dense-analysis/ale'
 
 " Fuzzy Finder
-Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " UI/Syntax
 Plug 'Yggdroot/indentLine'
@@ -404,7 +395,7 @@ colorscheme moonfly
 " = Options =
 " =============================================================================
 
-if isdirectory(g:cnull.config.undodir)
+if !isdirectory(g:cnull.config.undodir)
   execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
 endif
 
