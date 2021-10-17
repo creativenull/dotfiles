@@ -165,24 +165,28 @@ let g:projectlocal = {
   \ 'debug': v:false,
 \ }
 
-" nvim-tree.lua Config
+" fern.vim Config
 " ---
-let g:nvim_tree_indent_markers = 1
-let g:nvim_tree_show_icons = {
-  \ 'git': 0,
-  \ 'folders': 1,
-  \ 'files': 1,
-  \ 'folder_arrows': 1,
-\ }
+let g:fern#renderer = 'nerdfont'
+let g:fern#hide_cursor = 1
 
-nnoremap <silent> <Leader>ff <Cmd>NvimTreeToggle<CR>
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
-if g:cnull.transparent
-  augroup nvim_tree_user_events
-    autocmd!
-    autocmd ColorScheme * highlight! NvimTreeIndentMarker guifg=#555555 guibg=NONE
-  augroup END
-endif
+function! g:FernInit() abort
+  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
+
+  highlight! default link CursorLine Visual
+endfunction
+
+augroup fern_user_events
+  autocmd!
+  autocmd FileType fern call FernInit()
+augroup END
+
+" vim-json Config
+" ---
+let g:vim_json_syntax_conceal = 0
+let g:vim_json_conceal = 0
 
 " =============================================================================
 " = Plugin Manager =
@@ -205,19 +209,22 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'vim-denops/denops.vim'
+Plug 'lambdalisue/nerdfont.vim'
 
 " Core
+Plug 'creativenull/projectlocal-vim'
 Plug 'windwp/nvim-autopairs'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'creativenull/projectlocal-vim'
 Plug 'b3nj5m1n/kommentary'
 Plug 'kevinhwang91/nvim-bqf'
 
 " File Explorer
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
 " Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
@@ -256,16 +263,13 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'bluz71/vim-moonfly-colors'
+Plug 'fnune/base16-vim'
 
 call plug#end()
 
 " =============================================================================
 " = Plugin Post-Config - after loading plugins =
 " =============================================================================
-
-" nvim-tree.lua Config
-" ---
-lua require('nvim-tree').setup({ view = { side = 'right' } })
 
 " nvim-lspconfig Config
 " ---
@@ -323,7 +327,12 @@ lua require('cnull.statusline')
 if g:cnull.transparent
   augroup indent_blankline_user_events
     autocmd!
-    autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#555555 guibg=NONE
+    autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE
+  augroup END
+else
+  augroup indent_blankline_user_events
+    autocmd!
+    autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE
   augroup END
 endif
 
@@ -473,6 +482,7 @@ nnoremap <Leader>mt <Cmd>tmap<CR>
 nnoremap <Leader>mc <Cmd>cmap<CR>
 
 " Copy/Paste from clipboard
+nnoremap p "0p
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
