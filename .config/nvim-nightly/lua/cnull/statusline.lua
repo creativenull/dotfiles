@@ -47,7 +47,7 @@ lualine.setup({
       {
         'diagnostics',
         sources = {'nvim_lsp'},
-        sections = {'error', 'warning'},
+        sections = {'error', 'warn'},
       },
     },
   },
