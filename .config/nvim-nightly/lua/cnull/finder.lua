@@ -12,7 +12,7 @@ telescope.setup({
 
 function _G.TelescopeFindFiles()
   telescope_builtin.find_files({
-    find_command = {'rg', '--files', '--iglob', '!.git', '--hidden'},
+    find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' },
     previewer = false,
   })
 end
@@ -24,7 +24,7 @@ end
 function _G.TelescopeFindConfigFiles()
   local configdir = vim.fn.stdpath('config')
   telescope_builtin.find_files({
-    find_command = {'rg', '--files', '--iglob', '!.git', '--hidden', configdir},
+    find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', configdir },
     previewer = false,
   })
 end

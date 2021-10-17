@@ -9,4 +9,4 @@ require('bufferline').setup({
 
 -- nvim-colorizer.lua Config
 -- ---
-require('colorizer').setup({'css', 'html', 'javascriptreact', 'typescriptreact', 'vim'})
+require('colorizer').setup({ 'css', 'html', 'javascriptreact', 'typescriptreact', 'vim' })

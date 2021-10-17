@@ -10,7 +10,7 @@ require('nvim-treesitter.configs').setup({
     'tsx',
     'vue',
     'go',
-    'jsdoc'
+    'jsdoc',
   },
   highlight = { enable = true },
   indent = { enable = true },

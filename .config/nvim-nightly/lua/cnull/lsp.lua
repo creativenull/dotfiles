@@ -21,7 +21,7 @@ local function on_attach(_, buf)
   nmap(buf, '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>')
   nmap(buf, '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
   nmap(buf, '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
-  nmap(buf, '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics('.. diag_opts ..')<CR>')
+  nmap(buf, '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics(' .. diag_opts .. ')<CR>')
 end
 
 -- Initial LSP Settings
@@ -72,14 +72,14 @@ table.insert(lua_rtp, 'lua/?/init.lua')
 lspconfig.sumneko_lua.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = {'luals'},
+  cmd = { 'luals' },
   settings = {
     Lua = {
       runtime = {
         version = 'LuaJIT',
         path = lua_rtp,
       },
-      diagnostics = { globals = {'vim'} },
+      diagnostics = { globals = { 'vim' } },
       workspace = { library = vim.api.nvim_get_runtime_file('', true) },
       telemetry = { enable = false },
     },

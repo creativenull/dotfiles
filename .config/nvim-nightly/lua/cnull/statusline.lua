@@ -31,34 +31,34 @@ lualine.setup({
   options = {
     icons_enabled = true,
     theme = 'powerline',
-    section_separators = {'', ''},
-    disabled_filetypes = {'TelescopePrompt', 'nnn'}
+    section_separators = { '', '' },
+    disabled_filetypes = { 'TelescopePrompt', 'nnn' },
   },
 
   sections = {
-    lualine_a = {'filename'},
-    lualine_b = {'branch'},
+    lualine_a = { 'filename' },
+    lualine_b = { 'branch' },
     lualine_c = {},
 
-    lualine_x = {'encoding'},
-    lualine_y = {line_info_component},
+    lualine_x = { 'encoding' },
+    lualine_y = { line_info_component },
     lualine_z = {
       lsp_ready_component,
       {
         'diagnostics',
-        sources = {'nvim_lsp'},
-        sections = {'error', 'warn'},
+        sources = { 'nvim_lsp' },
+        sections = { 'error', 'warn' },
       },
     },
   },
 
   inactive_sections = {
-    lualine_a = {'filename'},
+    lualine_a = { 'filename' },
     lualine_b = {},
     lualine_c = {},
 
     lualine_x = {},
-    lualine_y = {line_info_component},
-    lualine_z = {'encoding'},
+    lualine_y = { line_info_component },
+    lualine_z = { 'encoding' },
   },
 })

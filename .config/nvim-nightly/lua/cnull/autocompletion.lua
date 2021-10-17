@@ -1,12 +1,12 @@
 -- See :help ddc-options
 vim.fn['ddc#custom#patch_global']({
   backspaceCompletion = true,
-  sources = {'nvim-lsp', 'vsnip', 'around', 'buffer'},
+  sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' },
   sourceOptions = {
     ['_'] = {
-      matchers = {'matcher_fuzzy'},
-      sorters = {'sorter_fuzzy'},
-      converters = {'converter_fuzzy'},
+      matchers = { 'matcher_fuzzy' },
+      sorters = { 'sorter_fuzzy' },
+      converters = { 'converter_fuzzy' },
     },
     ['nvim-lsp'] = {
       mark = 'LSP',

@@ -4,7 +4,7 @@ require('nvim-biscuits').setup({
     max_length = 32,
     min_distance = 5,
     prefix_string = ' 🔎 ',
-    on_events = {'InsertLeave', 'CursorHoldI'},
+    on_events = { 'InsertLeave', 'CursorHoldI' },
   },
 })
 
