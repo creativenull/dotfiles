@@ -61,9 +61,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 -- Log debug
--- vim.lsp.set_log_level('debug')
-
-vim.api.nvim_set_keymap('n', '<Leader>li', '<Cmd>LspInfo<CR>', { noremap = true, silent = true })
+vim.lsp.set_log_level('debug')
 
 -- Lua LSP Server
 -- --
