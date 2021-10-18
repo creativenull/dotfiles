@@ -229,6 +229,12 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 " Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/diagnosticls-configs-nvim'
+Plug '~/projects/github.com/creativenull/efmls-configs-nvim'
+
+" Snippet Engine + Presets
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'mattn/emmet-vim'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim'
@@ -238,11 +244,6 @@ Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'Shougo/ddc-nvim-lsp'
-
-" Snippet Engine + Presets
-Plug 'hrsh7th/vim-vsnip'
-Plug 'rafamadriz/friendly-snippets'
-Plug 'mattn/emmet-vim'
 
 " Fuzzy File/Code Finder
 Plug 'nvim-telescope/telescope.nvim'
