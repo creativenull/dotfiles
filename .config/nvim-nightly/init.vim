@@ -230,6 +230,7 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 " Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/diagnosticls-configs-nvim'
+Plug 'creativenull/efmls-configs-nvim'
 
 " Snippet Engine + Presets
 Plug 'hrsh7th/vim-vsnip'
