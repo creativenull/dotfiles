@@ -1,5 +1,6 @@
 -- See :help ddc-options
-vim.fn['ddc#custom#patch_global']({
+-- Global config
+vim.call('ddc#custom#patch_global', {
   backspaceCompletion = true,
   sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' },
   sourceOptions = {
@@ -28,5 +29,11 @@ vim.fn['ddc#custom#patch_global']({
   },
 })
 
+-- Different source for markdown filetype
+vim.call('ddc#custom#patch_filetype', 'markdown', {
+  sources = { 'around', 'buffer' },
+})
+
+-- Enable on startup
 vim.call('popup_preview#enable')
 vim.call('ddc#enable')
