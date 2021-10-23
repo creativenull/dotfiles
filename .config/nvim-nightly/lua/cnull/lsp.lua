@@ -120,8 +120,21 @@ lspconfig.denols.setup({
 
 -- DiagnosticLS Server
 -- ---
-local dlsconfig = require('diagnosticls-configs')
+--[[ local dlsconfig = require('diagnosticls-configs')
 dlsconfig.init({
   on_attach = on_attach,
   capabilities = capabilities,
+}) ]]
+
+--[[ local efmls = require('efmls-configs')
+efmls.init({
+  on_attach = on_attach,
+  capabilities = capabilities,
 })
+
+efmls.setup({
+  lua = {
+    linter = require('efmls-configs.linters.luacheck'),
+    formatter = require('efmls-configs.formatters.stylua'),
+  },
+}) ]]
