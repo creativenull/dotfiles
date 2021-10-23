@@ -174,6 +174,7 @@ nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
 function! g:FernInit() abort
   nnoremap <buffer> <nowait> q <Cmd>bd<CR>
+  nmap <buffer> D <Plug>(fern-action-remove)
 
   highlight! default link CursorLine Visual
 endfunction
@@ -257,7 +258,7 @@ Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'code-biscuits/nvim-biscuits'
 Plug 'akinsho/bufferline.nvim'
 Plug 'folke/todo-comments.nvim'
-Plug 'hoob3rt/lualine.nvim'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
@@ -378,6 +379,7 @@ set smartcase
 set hlsearch
 set incsearch
 set showmatch
+set path=**
 
 " Editor
 set shiftwidth=4
@@ -483,7 +485,6 @@ nnoremap <Leader>mt <Cmd>tmap<CR>
 nnoremap <Leader>mc <Cmd>cmap<CR>
 
 " Copy/Paste from clipboard
-nnoremap p "0p
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
