@@ -98,6 +98,152 @@ augroup filetype_user_events
 augroup END
 
 " =============================================================================
+" = Options =
+" =============================================================================
+
+if !isdirectory(cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', cnull.config.undodir)
+endif
+
+" Completion
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+
+" Search
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set showmatch
+set path=**
+
+" Editor
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+set smartindent
+set smarttab
+set autoindent
+set nowrap
+set colorcolumn=120
+set scrolloff=5
+set lazyredraw
+set nospell
+set wildignorecase
+set nofoldenable
+
+" System
+set encoding=utf-8
+set nobackup
+set noswapfile
+set updatetime=250
+set undofile
+let &undodir=g:cnull.config.undodir
+set undolevels=10000
+set history=10000
+set backspace=indent,eol,start
+set ttimeoutlen=50
+set mouse=
+
+" UI
+set hidden
+set signcolumn=yes
+set cmdheight=2
+set showtabline=2
+set laststatus=2
+set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
+
+" =============================================================================
+" = Keybindings =
+" =============================================================================
+
+" Unbind default bindings for arrow keys, trust me this is for your own good
+noremap  <Up>    <Nop>
+noremap  <Down>  <Nop>
+noremap  <Left>  <Nop>
+noremap  <Right> <Nop>
+inoremap <Up>    <Nop>
+inoremap <Down>  <Nop>
+inoremap <Left>  <Nop>
+inoremap <Right> <Nop>
+
+" Resize window panes, we can use those arrow keys
+" to help use resize windows - at least we give them some purpose
+nnoremap <Up>    <Cmd>resize +2<CR>
+nnoremap <Down>  <Cmd>resize -2<CR>
+nnoremap <Left>  <Cmd>vertical resize -2<CR>
+nnoremap <Right> <Cmd>vertical resize +2<CR>
+
+" Map Esc, to perform quick switching between Normal and Insert mode
+inoremap jk <Esc>
+
+" Map escape from terminal input to Normal mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-[> <C-\><C-n>
+
+" Disable highlights
+nnoremap <Leader><CR> <Cmd>noh<CR>
+
+" List all buffers
+nnoremap <Leader>bl <Cmd>buffers<CR>
+" Go to next buffer
+nnoremap <C-l> <Cmd>bnext<CR>
+nnoremap <Leader>bn <Cmd>bnext<CR>
+" Go to previous buffer
+nnoremap <C-h> <Cmd>bprevious<CR>
+nnoremap <Leader>bp <Cmd>bprevious<CR>
+" Close the current buffer, and more?
+nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
+" Close all buffer, except current
+nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
+
+" Move a line of text Alt+[j/k]
+nnoremap <M-j> mz:m+<CR>`z
+nnoremap <M-k> mz:m-2<CR>`z
+vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
+
+" Edit vimrc
+nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
+
+" Source the vimrc to reflect changes
+nnoremap <Leader>vs <Cmd>ConfigReload<CR>
+
+" Reload file
+nnoremap <Leader>r <Cmd>edit!<CR>
+
+" List all maps
+nnoremap <Leader>mn <Cmd>nmap<CR>
+nnoremap <Leader>mv <Cmd>vmap<CR>
+nnoremap <Leader>mi <Cmd>imap<CR>
+nnoremap <Leader>mt <Cmd>tmap<CR>
+nnoremap <Leader>mc <Cmd>cmap<CR>
+
+" Copy/Paste from clipboard
+nnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
+
+" Disable Ex-mode
+nnoremap Q <Nop>
+
+" =============================================================================
+" = Commands =
+" =============================================================================
+
+command! Config edit $MYVIMRC
+command! ConfigReload source $MYVIMRC | nohlsearch
+
+command! ToggleConcealLevel call ToggleConcealLevel()
+command! ToggleCodeshot call ToggleCodeshot()
+
+" Command Abbreviations
+cnoreabbrev Q q
+cnoreabbrev Qa qa
+cnoreabbrev W w
+cnoreabbrev Wq wq
+
+" =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
 
@@ -356,9 +502,9 @@ call ddc#custom#patch_global({
 
 " Use tab to complete the popup menu item
 " w/ ultisnips integration
-inoremap <silent> <expr> <Tab> pumvisible()
+inoremap <silent> <expr> <C-y> pumvisible()
   \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
-  \ : "\<Tab>"
+  \ : "\<C-y>"
 
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
@@ -418,148 +564,3 @@ set termguicolors
 set number
 set background=dark
 colorscheme moonfly
-
-" =============================================================================
-" = Options =
-" =============================================================================
-
-if !isdirectory(cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', cnull.config.undodir)
-endif
-
-" Completion
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
-
-" Search
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set showmatch
-
-" Editor
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
-set expandtab
-set smartindent
-set smarttab
-set autoindent
-set nowrap
-set colorcolumn=120
-set scrolloff=5
-set lazyredraw
-set nospell
-set wildignorecase
-set nofoldenable
-
-" System
-set encoding=utf-8
-set nobackup
-set noswapfile
-set updatetime=250
-set undofile
-let &undodir=g:cnull.config.undodir
-set undolevels=10000
-set history=10000
-set backspace=indent,eol,start
-set ttimeoutlen=50
-set mouse=
-
-" UI
-set hidden
-set signcolumn=yes
-set cmdheight=2
-set showtabline=2
-set laststatus=2
-set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
-
-" =============================================================================
-" = Keybindings =
-" =============================================================================
-
-" Unbind default bindings for arrow keys, trust me this is for your own good
-noremap  <Up>    <Nop>
-noremap  <Down>  <Nop>
-noremap  <Left>  <Nop>
-noremap  <Right> <Nop>
-inoremap <Up>    <Nop>
-inoremap <Down>  <Nop>
-inoremap <Left>  <Nop>
-inoremap <Right> <Nop>
-
-" Resize window panes, we can use those arrow keys
-" to help use resize windows - at least we give them some purpose
-nnoremap <Up>    <Cmd>resize +2<CR>
-nnoremap <Down>  <Cmd>resize -2<CR>
-nnoremap <Left>  <Cmd>vertical resize -2<CR>
-nnoremap <Right> <Cmd>vertical resize +2<CR>
-
-" Map Esc, to perform quick switching between Normal and Insert mode
-inoremap jk <Esc>
-
-" Map escape from terminal input to Normal mode
-tnoremap <Esc> <C-\><C-n>
-tnoremap <C-[> <C-\><C-n>
-
-" Disable highlights
-nnoremap <Leader><CR> <Cmd>noh<CR>
-
-" List all buffers
-nnoremap <Leader>bl <Cmd>buffers<CR>
-" Go to next buffer
-nnoremap <C-l> <Cmd>bnext<CR>
-nnoremap <Leader>bn <Cmd>bnext<CR>
-" Go to previous buffer
-nnoremap <C-h> <Cmd>bprevious<CR>
-nnoremap <Leader>bp <Cmd>bprevious<CR>
-" Close the current buffer, and more?
-nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
-" Close all buffer, except current
-nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
-
-" Move a line of text Alt+[j/k]
-nnoremap <M-j> mz:m+<CR>`z
-nnoremap <M-k> mz:m-2<CR>`z
-vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
-vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
-
-" Edit vimrc
-nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
-
-" Source the vimrc to reflect changes
-nnoremap <Leader>vs <Cmd>ConfigReload<CR>
-
-" Reload file
-nnoremap <Leader>r <Cmd>edit!<CR>
-
-" List all maps
-nnoremap <Leader>mn <Cmd>nmap<CR>
-nnoremap <Leader>mv <Cmd>vmap<CR>
-nnoremap <Leader>mi <Cmd>imap<CR>
-nnoremap <Leader>mt <Cmd>tmap<CR>
-nnoremap <Leader>mc <Cmd>cmap<CR>
-
-" Copy/Paste from clipboard
-nnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
-
-" Disable Ex-mode
-nnoremap Q <Nop>
-
-" =============================================================================
-" = Commands =
-" =============================================================================
-
-command! Config edit $MYVIMRC
-command! ConfigReload source $MYVIMRC | nohlsearch
-
-command! ToggleConcealLevel call ToggleConcealLevel()
-command! ToggleCodeshot call ToggleCodeshot()
-
-" Command Abbreviations
-cnoreabbrev Q q
-cnoreabbrev Qa qa
-cnoreabbrev W w
-cnoreabbrev Wq wq
