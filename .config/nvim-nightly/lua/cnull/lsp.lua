@@ -126,7 +126,7 @@ dlsconfig.init({
   capabilities = capabilities,
 }) ]]
 
---[[ local efmls = require('efmls-configs')
+local efmls = require('efmls-configs')
 efmls.init({
   on_attach = on_attach,
   capabilities = capabilities,
@@ -137,4 +137,4 @@ efmls.setup({
     linter = require('efmls-configs.linters.luacheck'),
     formatter = require('efmls-configs.formatters.stylua'),
   },
-}) ]]
+})
