@@ -32,6 +32,11 @@ if !executable('rg')
   finish
 endif
 
+if !executable('deno')
+  echoerr '[nvim] `deno` is needed!'
+  finish
+endif
+
 " =============================================================================
 " = Functions =
 " =============================================================================
@@ -559,6 +564,7 @@ augroup END
 " =============================================================================
 
 let g:moonflyNormalFloat = 1
+let g:moonflyItalics = 0
 
 set termguicolors
 set number
