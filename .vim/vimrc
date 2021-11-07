@@ -59,9 +59,9 @@ endfunction
 
 function! g:ToggleCodeshot() abort
   if &number
-    setlocal nonumber signcolumn=no
+    setlocal nonumber
   else
-    setlocal number signcolumn=yes
+    setlocal number
   endif
 endfunction
 
@@ -71,155 +71,13 @@ endfunction
 
 let mapleader = ' '
 let g:cnull = {}
-let g:cnull.transparent = v:false
 let g:cnull.config = MakeConfig()
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-if g:cnull.transparent
-  augroup transparent_events
-    autocmd!
-    autocmd ColorScheme * highlight! Normal guibg=NONE
-    autocmd ColorScheme * highlight! SignColumn guibg=NONE
-    autocmd ColorScheme * highlight! LineNr guibg=NONE
-    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
-    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
-  augroup END
-endif
 
-" =============================================================================
-" = Plugin Pre-Config - before loading plugins =
-" =============================================================================
-
-" vim-vue Config
-" ---
-let g:vue_pre_processors = []
-
-" emmet-vim Config
-" ---
-let g:user_emmet_leader_key = '<C-q>'
-let g:user_emmet_install_global = 0
-let g:user_emmet_mode = 'i'
-
-augroup emmet_user_events
-  autocmd!
-  autocmd FileType html,blade,php,javascriptreact,typescriptreact,vue EmmetInstall
-augroup END
-
-" hlyank Config
-" ---
-let g:highlightedyank_highlight_duration = 500
-
-augroup user_highlightedyank_events
-  autocmd!
-  autocmd ColorScheme * highlight! default link HighlightedyankRegion Search
-augroup END
-
-" buftabline Config
-" ---
-let g:buftabline_numbers = 2
-let g:buftabline_indicators = 1
-
-" fern.vim Config
-" ---
-nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
-
-" json.vim Config
-" ---
-let g:vim_json_conceal = 0
-
-" vim-mucomplete
-" ---
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 1
-let g:mucomplete#no_mappings = 1
-let g:mucomplete#chains = {}
-let g:mucomplete#chains.default = ['path', 'omni', 'keyn', 'vsnip']
-
-imap <unique> <C-@> <Plug>(MUcompleteFwd)
-
-" vim-vsnip
-" ---
-imap <expr> <C-q>. vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<NOP>'
-
-" =============================================================================
-" = Plugin Manager =
-" =============================================================================
-
-" Bootstrap - download vim-plug into autoload directory if it doesn't exist
-let s:plugin = {}
-let s:plugin.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plugin.filepath = g:cnull.config.std_data . '/autoload/plug.vim'
-let s:plugin.plugins_dir = g:cnull.config.std_data . '/plugged'
-
-if !filereadable(s:plugin.filepath)
-  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.filepath, s:plugin.git)
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-call plug#begin(s:plugin.plugins_dir)
-
-" Core
-Plug 'Shougo/context_filetype.vim'
-Plug 'tyru/caw.vim'
-Plug 'cohama/lexima.vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'godlygeek/tabular'
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-
-" Git
-Plug 'airblade/vim-gitgutter'
-
-" File Explorer
-Plug 'lambdalisue/fern.vim'
-
-" Autocompletion
-Plug 'lifepillar/vim-mucomplete'
-
-" Snippets
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'rafamadriz/friendly-snippets'
-
-" UI/Syntax
-Plug 'ap/vim-buftabline'
-Plug 'machakann/vim-highlightedyank'
-Plug 'kevinoid/vim-jsonc'
-Plug 'posva/vim-vue'
-Plug 'neoclide/vim-jsx-improve'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'jwalton512/vim-blade'
-
-" Colorscheme
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'bluz71/vim-nightfly-guicolors'
-
-call plug#end()
-
-" =============================================================================
-" = Plugin Post-Config - after loading plugins =
-" =============================================================================
-
-
-
-" =============================================================================
-" = UI/Theme =
-" =============================================================================
-
-if has('termguicolors')
-  set termguicolors
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-
-set number
-set background=dark
-colorscheme moonfly
 
 " =============================================================================
 " = Options =
@@ -233,7 +91,6 @@ endif
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 set wildmenu
-set wildignorecase
 
 " Search
 set ignorecase
@@ -243,6 +100,7 @@ set incsearch
 set showmatch
 set path=**
 set wildignore=*/node_modules/*,*/vendor/*
+set wildignorecase
 
 " Editor
 set shiftwidth=4
@@ -272,9 +130,9 @@ set lazyredraw
 let &undodir=cnull.config.undodir
 
 " UI
+set nofoldenable
 set hidden
 set conceallevel=0
-set signcolumn=yes
 set cmdheight=2
 set showtabline=2
 set laststatus=2
@@ -370,3 +228,98 @@ cnoreabbrev Q q
 cnoreabbrev Qa qa
 cnoreabbrev W w
 cnoreabbrev Wq wq
+
+" =============================================================================
+" = Plugin Pre-Config - before loading plugins =
+" =============================================================================
+
+" emmet-vim Config
+" ---
+let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_install_global = 0
+let g:user_emmet_mode = 'i'
+
+augroup emmet_user_events
+  autocmd!
+  autocmd FileType html,blade,php,javascriptreact,typescriptreact,vue EmmetInstall
+augroup END
+
+" buftabline Config
+" ---
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
+
+" fern.vim Config
+" ---
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
+
+" json.vim Config
+" ---
+let g:vim_json_conceal = 0
+
+" vim-mucomplete
+" ---
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 1
+let g:mucomplete#no_mappings = 1
+
+imap <unique> <C-@> <Plug>(MUcompleteFwd)
+
+" =============================================================================
+" = Plugin Manager =
+" =============================================================================
+
+" Bootstrap - download vim-plug into autoload directory if it doesn't exist
+let s:plugin = {}
+let s:plugin.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plugin.filepath = g:cnull.config.std_data . '/autoload/plug.vim'
+let s:plugin.plugins_dir = g:cnull.config.std_data . '/plugged'
+
+if !filereadable(s:plugin.filepath)
+  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.filepath, s:plugin.git)
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin(s:plugin.plugins_dir)
+
+" Core
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+
+" File Explorer
+Plug 'lambdalisue/fern.vim'
+
+" Autocompletion
+Plug 'lifepillar/vim-mucomplete'
+
+" UI/Syntax
+Plug 'ap/vim-buftabline'
+Plug 'kevinoid/vim-jsonc'
+Plug 'posva/vim-vue'
+Plug 'neoclide/vim-jsx-improve'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'jwalton512/vim-blade'
+
+call plug#end()
+
+" =============================================================================
+" = Plugin Post-Config - after loading plugins =
+" =============================================================================
+
+
+
+" =============================================================================
+" = UI/Theme =
+" =============================================================================
+
+if has('termguicolors')
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+set number
+set background=dark
