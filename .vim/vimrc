@@ -3,21 +3,21 @@
 " Description: My vimrc, currently tested on a Linux machine. Requires:
 "   + git
 "   + curl
+"   + python3
+"   + ripgrep
 " =============================================================================
 
 filetype plugin indent on
 syntax on
 
 " Pre-Requisites
-if !executable('git')
-  echoerr '[vim] `git` is needed!'
-  finish
-endif
-
-if !executable('curl')
-  echoerr '[vim] `curl` is needed!'
-  finish
-endif
+let s:exec_list = ['git', 'curl', 'python3', 'rg', 'node']
+for s:exec in s:exec_list
+  if !executable(s:exec)
+    echoerr printf('[vim] `%s` is needed!', s:exec)
+    finish
+  endif
+endfor
 
 " =============================================================================
 " = Functions =
@@ -29,11 +29,11 @@ function! g:MakeConfig() abort
   let std_data = ''
   if has('win32')
     let std_cache = expand('$HOME/AppData/Local/Temp/vim')
-    let std_config = expand('$HOME/vimfiles')
+    let std_config = expand('$HOME')
     let std_data = expand('$HOME/vimfiles')
   else
     let std_cache = expand('$HOME/.cache/vim')
-    let std_config = expand('$HOME/.vim')
+    let std_config = expand('$HOME')
     let std_data = expand('$HOME/.vim')
   endif
 
@@ -59,9 +59,9 @@ endfunction
 
 function! g:ToggleCodeshot() abort
   if &number
-    setlocal nonumber
+    setlocal nonumber signcolumn=no
   else
-    setlocal number
+    setlocal number signcolumn=yes
   endif
 endfunction
 
@@ -70,21 +70,31 @@ endfunction
 " =============================================================================
 
 let mapleader = ' '
-let g:cnull = {}
-let g:cnull.config = MakeConfig()
+let s:cnull = {}
+let s:cnull.transparent = v:false
+let s:cnull.config = MakeConfig()
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-
+if s:cnull.transparent
+  augroup transparent_events
+    autocmd!
+    autocmd ColorScheme * highlight! Normal guibg=NONE
+    autocmd ColorScheme * highlight! SignColumn guibg=NONE
+    autocmd ColorScheme * highlight! LineNr guibg=NONE
+    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
+    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
+  augroup END
+endif
 
 " =============================================================================
 " = Options =
 " =============================================================================
 
-if !isdirectory(g:cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
+if !isdirectory(s:cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
 endif
 
 " Completion
@@ -98,9 +108,6 @@ set smartcase
 set hlsearch
 set incsearch
 set showmatch
-set path=**
-set wildignore=*/node_modules/*,*/vendor/*
-set wildignorecase
 
 " Editor
 set shiftwidth=4
@@ -127,12 +134,13 @@ set backspace=indent,eol,start
 set ttimeoutlen=50
 set mouse=
 set lazyredraw
-let &undodir=cnull.config.undodir
+let &undodir = s:cnull.config.undodir
 
 " UI
 set nofoldenable
 set hidden
 set conceallevel=0
+set signcolumn=yes
 set cmdheight=2
 set showtabline=2
 set laststatus=2
@@ -217,21 +225,30 @@ nnoremap Q <Nop>
 " = Commands =
 " =============================================================================
 
-command! Config edit $MYVIMRC
-command! ConfigReload source $MYVIMRC | nohlsearch
-
+command! Config             edit $MYVIMRC
+command! ConfigReload       source $MYVIMRC | nohlsearch
+command! ToggleCodeshot     ToggleCodeshot()
 command! ToggleConcealLevel ToggleConcealLevel()
-command! ToggleCodeshot ToggleCodeshot()
 
 " Command Abbreviations
-cnoreabbrev Q q
+cnoreabbrev Q  q
 cnoreabbrev Qa qa
-cnoreabbrev W w
+cnoreabbrev W  w
 cnoreabbrev Wq wq
 
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
+
+" UltiSnips Config
+" ---
+let g:UltiSnipsExpandTrigger = '<C-q>.'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+" vim-vue Config
+" ---
+let g:vue_pre_processors = []
 
 " emmet-vim Config
 " ---
@@ -244,26 +261,125 @@ augroup emmet_user_events
   autocmd FileType html,blade,php,javascriptreact,typescriptreact,vue EmmetInstall
 augroup END
 
+" fzf.vim Config
+" ---
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+let $FZF_DEFAULT_OPTS = '--reverse'
+let g:fzf_preview_window = []
+
+nnoremap <C-p> <Cmd>Files<CR>
+nnoremap <C-t> <Cmd>Rg<CR>
+
+augroup fzf_highlight_user_events
+  autocmd!
+  autocmd ColorScheme * highlight! fzfBorder guifg=#aaaaaa
+augroup END
+
+" hlyank Config
+" ---
+let g:highlightedyank_highlight_duration = 500
+
+augroup user_highlightedyank_events
+  autocmd!
+  autocmd ColorScheme * highlight! default link HighlightedyankRegion Search
+augroup END
+
+" indentLine Config
+" ---
+let g:indentLine_char = '│'
+
 " buftabline Config
 " ---
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
 
+" For moonfly theme only
+augroup buftabline_user_events
+  autocmd!
+  autocmd ColorScheme * if g:colors_name == 'moonfly' | highlight! TabLineSel guibg=#047857 guifg=#cdcdcd | endif
+augroup END
+
+" coc.nvim Config
+" ---
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-tsserver',
+  \ 'coc-css',
+  \ 'coc-html',
+  \ 'coc-vetur',
+  \ 'coc-phpls',
+  \ 'coc-deno',
+  \ 'coc-snippets',
+\ ]
+
+nnoremap <silent>        <Leader>ld <Cmd>call CocActionAsync('jumpDefinition')<CR>
+nnoremap <silent>        <Leader>lf <Cmd>call CocActionAsync('format')<CR>
+nnoremap <silent>        <Leader>lr <Cmd>call CocActionAsync('rename')<CR>
+nnoremap <silent>        <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
+nnoremap <silent>        <Leader>la <Cmd>call CocActionAsync('codeAction')<CR>
+nnoremap <silent>        <Leader>le <Cmd>CocList diagnostics<CR>
+inoremap <silent> <expr> <C-@>      coc#refresh()
+
+inoremap <silent> <expr> <Tab> pumvisible()
+  \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
+  \ : "\<Tab>"
+
+" ale Config
+" ---
+let g:ale_completion_enabled = 0
+let g:ale_disable_lsp = 1
+let g:ale_hover_cursor = 0
+let g:ale_echo_msg_error_str = ''
+let g:ale_echo_msg_warning_str = ''
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_linters_explicit = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+
+nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
+nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
+nnoremap <silent> <Leader>ae <Cmd>lopen<CR>
+
+function! g:AleErrorStlComponent() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let errors = info.error
+    if errors > 0
+      return printf('%d', errors)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! g:AleWarningStlComponent() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let warnings = info.warning
+    if warnings > 0
+      return printf('%d', warnings)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! g:AleStatus() abort
+  if exists('g:loaded_ale')
+    return 'ALE'
+  endif
+
+  return ''
+endfunction
+
 " fern.vim Config
 " ---
+let g:fern#renderer = 'nerdfont'
+
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
 " json.vim Config
 " ---
 let g:vim_json_conceal = 0
-
-" vim-mucomplete
-" ---
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 1
-let g:mucomplete#no_mappings = 1
-
-imap <unique> <C-@> <Plug>(MUcompleteFwd)
 
 " =============================================================================
 " = Plugin Manager =
@@ -272,8 +388,8 @@ imap <unique> <C-@> <Plug>(MUcompleteFwd)
 " Bootstrap - download vim-plug into autoload directory if it doesn't exist
 let s:plugin = {}
 let s:plugin.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plugin.filepath = g:cnull.config.std_data . '/autoload/plug.vim'
-let s:plugin.plugins_dir = g:cnull.config.std_data . '/plugged'
+let s:plugin.filepath = s:cnull.config.std_data . '/autoload/plug.vim'
+let s:plugin.plugins_dir = s:cnull.config.std_data . '/plugged'
 
 if !filereadable(s:plugin.filepath)
   execute printf('!curl -fLo %s --create-dirs %s', s:plugin.filepath, s:plugin.git)
@@ -282,26 +398,56 @@ endif
 
 call plug#begin(s:plugin.plugins_dir)
 
+" Deps
+Plug 'Shougo/context_filetype.vim'
+Plug 'vim-denops/denops.vim'
+
 " Core
+Plug 'tyru/caw.vim'
+Plug 'cohama/lexima.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'godlygeek/tabular'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'creativenull/projectlocal-vim'
 
 " File Explorer
 Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
-" Autocompletion
-Plug 'lifepillar/vim-mucomplete'
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" Auto-completion/LSP/Linters/Formatter
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'dense-analysis/ale'
+
+" Fuzzy Finder
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " UI/Syntax
+Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-buftabline'
+Plug 'machakann/vim-highlightedyank'
 Plug 'kevinoid/vim-jsonc'
 Plug 'posva/vim-vue'
 Plug 'neoclide/vim-jsx-improve'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'jwalton512/vim-blade'
+Plug 'itchyny/lightline.vim'
+
+" Colorscheme
+Plug 'bluz71/vim-moonfly-colors'
+Plug 'bluz71/vim-nightfly-guicolors'
 
 call plug#end()
 
@@ -309,7 +455,62 @@ call plug#end()
 " = Plugin Post-Config - after loading plugins =
 " =============================================================================
 
+" fzf.vim Config
+" ---
+function! g:FzfVimGrepWithPreview(qargs, bang) abort
+  let sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' . shellescape(a:qargs)
+  fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
+endfunction
 
+command! -bang -nargs=* Rg FzfVimGrepWithPreview(<q-args>, <bang>0)
+
+" lightline.vim Config
+" ---
+" Custom colors for powerline
+" don't like the bright green color :(
+let s:powerline = copy(g:lightline#colorscheme#powerline#palette)
+let s:powerline.normal.left = [
+  \ ['#cdcdcd', '#047857', 'bold'],
+  \ ['white', 'gray4'],
+\ ]
+let g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(s:powerline)
+
+let g:lightline = {}
+let g:lightline.separator = {
+  \ 'left': '',
+  \ 'right': '',
+\ }
+let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
+let g:lightline.active = {
+  \ 'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'], ],
+  \ 'right': [
+    \ ['ale_error_component', 'ale_warning_component', 'ale_status'],
+    \ ['lineinfo'],
+    \ ['filetype', 'fileencoding'],
+  \ ],
+\ }
+
+let g:lightline.component_function = {
+  \ 'gitbranch': 'FugitiveHead',
+  \ 'ale_status': 'AleStatus',
+\ }
+
+let g:lightline.component_expand = {
+  \ 'ale_error_component': 'AleErrorStlComponent',
+  \ 'ale_warning_component': 'AleWarningStlComponent',
+\ }
+
+let g:lightline.component_type = {
+  \ 'ale_error_component': 'error',
+  \ 'ale_warning_component': 'warning',
+\ }
+
+augroup ale_lightline_user_events
+  autocmd!
+  autocmd User ALEJobStarted call lightline#update()
+  autocmd User ALELintPost call lightline#update()
+  autocmd User ALEFixPost call lightline#update()
+augroup END
 
 " =============================================================================
 " = UI/Theme =
@@ -323,3 +524,4 @@ endif
 
 set number
 set background=dark
+colorscheme moonfly
