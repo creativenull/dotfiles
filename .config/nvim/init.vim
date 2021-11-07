@@ -12,30 +12,13 @@ if !has('nvim') && !has('nvim-0.5')
   finish
 endif
 
-if !executable('git')
-  echoerr '[nvim] `git` is needed!'
-  finish
-endif
-
-if !executable('curl')
-  echoerr '[nvim] `curl` is needed!'
-  finish
-endif
-
-if !executable('python3')
-  echoerr '[nvim] `python3`, `python3-pynvim` is needed!'
-  finish
-endif
-
-if !executable('rg')
-  echoerr '[nvim] `ripgrep` is needed!'
-  finish
-endif
-
-if !executable('deno')
-  echoerr '[nvim] `deno` is needed!'
-  finish
-endif
+let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
+for s:exec in s:exec_list
+  if !executable(s:exec)
+    echoerr printf('[nvim] `%s` is needed!', s:exec)
+    finish
+  endif
+endfor
 
 " =============================================================================
 " = Functions =
