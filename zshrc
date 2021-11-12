@@ -24,8 +24,6 @@ export PYTHON_HOST_PROG=/usr/bin/python2
 
 # Global aliases
 alias v=nvim
-alias os-update="echo 'Add your sudo apt update here'"
-alias os-pkg="echo 'Add your sudo apt install here'"
 
 # Git aliases
 alias g="git"
