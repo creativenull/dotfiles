@@ -87,14 +87,6 @@ lspconfig.sumneko_lua.setup({
   root_dir = root_pattern('.git'),
 })
 
--- Vim LSP Server
--- ---
-lspconfig.vimls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = root_pattern('.git'),
-})
-
 -- PHP LSP Server
 -- ---
 lspconfig.intelephense.setup({
@@ -118,7 +110,7 @@ lspconfig.denols.setup({
   root_dir = root_pattern('deno.json', 'deno.jsonc'),
 })
 
--- DiagnosticLS Server
+-- DiagnosticLS Server - for linters and formatters
 -- ---
 --[[ local dlsconfig = require('diagnosticls-configs')
 dlsconfig.init({
@@ -126,6 +118,8 @@ dlsconfig.init({
   capabilities = capabilities,
 }) ]]
 
+-- EFM LSP Server - for linters and formatters
+-- ---
 local efmls = require('efmls-configs')
 efmls.init({
   on_attach = on_attach,
@@ -137,4 +131,11 @@ efmls.setup({
     linter = require('efmls-configs.linters.luacheck'),
     formatter = require('efmls-configs.formatters.stylua'),
   },
+})
+
+-- Pyright LSP Server - for linters and formatters
+-- ---
+lspconfig.pyright.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
 })
