@@ -151,6 +151,8 @@ set cmdheight=2
 set showtabline=2
 set laststatus=2
 set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
+set termguicolors
+set number
 
 " =============================================================================
 " = Keybindings =
@@ -376,6 +378,11 @@ augroup END
 " ---
 let g:vim_json_syntax_conceal = 0
 
+" moonfly Config
+" ---
+let g:moonflyNormalFloat = 1
+let g:moonflyItalics = 0
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
@@ -557,10 +564,4 @@ augroup END
 " = UI/Theme =
 " =============================================================================
 
-let g:moonflyNormalFloat = 1
-let g:moonflyItalics = 0
-
-set termguicolors
-set number
-set background=dark
 colorscheme moonfly
