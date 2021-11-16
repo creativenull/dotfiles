@@ -44,6 +44,10 @@ function! g:ToggleCodeshot() abort
   endif
 endfunction
 
+function! g:IndentSize(size)
+  execute printf('setlocal tabstop=%d softtabstop=%d shiftwidth=0 expandtab', a:size, a:size)
+endfunction
+
 " =============================================================================
 " = Initialize =
 " =============================================================================
@@ -82,7 +86,13 @@ augroup END
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType vim,lua setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
+  autocmd FileType vim,lua call IndentSize(2)
+  autocmd FileType scss,sass,css call IndentSize(2)
+  autocmd FileType javascript,javascriptreact call IndentSize(2)
+  autocmd FileType typescript,typescriptreact call IndentSize(2)
+  autocmd FileType json,jsonc call IndentSize(2)
+  autocmd FileType vue call IndentSize(2)
+  autocmd FileType php,blade,html call IndentSize(4)
 augroup END
 
 " =============================================================================
