@@ -472,6 +472,7 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 " ---
 call ddc#custom#patch_global({
   \ 'backspaceCompletion': v:true,
+  \ 'autoCompleteDelay': 500,
   \ 'sources': ['ale', 'ultisnips', 'around', 'buffer'],
   \ 'sourceOptions': {
     \ '_': {
