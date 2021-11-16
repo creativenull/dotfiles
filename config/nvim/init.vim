@@ -58,16 +58,16 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:python3_host_prog = exepath('python3')
 
-let g:cnull = {}
-let g:cnull.transparent = v:false
-let g:cnull.config = {}
-let g:cnull.config.undodir = stdpath('cache') . '/undo'
+let s:cnull = {}
+let s:cnull.transparent = v:false
+let s:cnull.config = {}
+let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-if g:cnull.transparent
+if s:cnull.transparent
   augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
@@ -99,8 +99,8 @@ augroup END
 " = Options =
 " =============================================================================
 
-if !isdirectory(cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', cnull.config.undodir)
+if !isdirectory(s:cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
 endif
 
 " Completion
@@ -137,7 +137,7 @@ set nobackup
 set noswapfile
 set updatetime=250
 set undofile
-let &undodir=g:cnull.config.undodir
+let &undodir=s:cnull.config.undodir
 set undolevels=10000
 set history=10000
 set backspace=indent,eol,start
