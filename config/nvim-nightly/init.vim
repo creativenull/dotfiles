@@ -8,7 +8,6 @@
 " =============================================================================
 
 let g:userspace = 'nvim-nightly'
-
 if exists('g:userspace')
   " Runtime Path
   set runtimepath-=~/.config/nvim
@@ -22,10 +21,10 @@ if exists('g:userspace')
   set runtimepath-=/usr/local/share/nvim/site
   set runtimepath-=/usr/local/share/nvim/site/after
 
-  execute printf('set runtimepath+=~/.config/%s/after', userspace)
-  execute printf('set runtimepath^=~/.config/%s', userspace)
-  execute printf('set runtimepath+=~/.local/share/%s/site/after', userspace)
-  execute printf('set runtimepath^=~/.local/share/%s/site', userspace)
+  execute printf('set runtimepath+=~/.config/%s/after', g:userspace)
+  execute printf('set runtimepath^=~/.config/%s', g:userspace)
+  execute printf('set runtimepath+=~/.local/share/%s/site/after', g:userspace)
+  execute printf('set runtimepath^=~/.local/share/%s/site', g:userspace)
 
   " Pack Path
   set packpath-=~/.config/nvim
@@ -39,31 +38,24 @@ if exists('g:userspace')
   set packpath-=/usr/share/nvim/site
   set packpath-=/usr/share/nvim/site/after
 
-  execute printf('set packpath^=~/.config/%s', userspace)
-  execute printf('set packpath+=~/.config/%s/after', userspace)
-  execute printf('set packpath^=~/.local/share/%s/site', userspace)
-  execute printf('set packpath+=~/.local/share/%s/site/after', userspace)
+  execute printf('set packpath^=~/.config/%s', g:userspace)
+  execute printf('set packpath+=~/.config/%s/after', g:userspace)
+  execute printf('set packpath^=~/.local/share/%s/site', g:userspace)
+  execute printf('set packpath+=~/.local/share/%s/site/after', g:userspace)
 endif
 
-if !has('nvim')
-  echoerr 'This config is only for neovim 0.4 and up!'
+if !has('nvim') && !has('nvim-0.6')
+  echoerr 'This config is only for neovim nightly version aka EXPERIMENTAL!'
   finish
 endif
 
-if !executable('git')
-  echoerr '[nvim] `git` is needed!'
-  finish
-endif
-
-if !executable('python3')
-  echoerr '[nvim] `python3`, `python3-pynvim`, `python3-msgpack` is needed!'
-  finish
-endif
-
-if !executable('rg')
-  echoerr '[nvim] `ripgrep` is needed!'
-  finish
-endif
+let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
+for s:exec in s:exec_list
+  if !executable(s:exec)
+    echoerr printf('[nvim] `%s` is needed!', s:exec)
+    finish
+  endif
+endfor
 
 " =============================================================================
 " = Functions =
@@ -95,27 +87,27 @@ let g:loaded_perl_provider = 0
 let g:python3_host_prog = exepath('python3')
 
 let g:mapleader = ' '
-let g:cnull = {}
-let g:cnull.transparent = v:true
-let g:cnull.config = {}
+let s:cnull = {}
+let s:cnull.transparent = v:true
+let s:cnull.config = {}
 
 if exists('g:userspace')
-  let g:cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
-  let g:cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
-  let g:cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
-  let g:cnull.config.undodir = g:cnull.config.cache_dir . '/undo'
+  let s:cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
+  let s:cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
+  let s:cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
+  let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
 else
-  let g:cnull.config.data_dir = stdpath('data')
-  let g:cnull.config.cache_dir = stdpath('config')
-  let g:cnull.config.config_dir = stdpath('cache')
-  let g:cnull.config.undodir = g:cnull.config.cache_dir . '/undo'
+  let s:cnull.config.data_dir = stdpath('data')
+  let s:cnull.config.cache_dir = stdpath('config')
+  let s:cnull.config.config_dir = stdpath('cache')
+  let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
 endif
 
 " =============================================================================
 " = Events =
 " =============================================================================
 
-if g:cnull.transparent
+if s:cnull.transparent
   augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * highlight! Normal guibg=NONE
@@ -138,6 +130,154 @@ augroup filetype_option_user_events
   autocmd!
   autocmd FileType lua,vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
 augroup END
+
+" =============================================================================
+" = Options =
+" =============================================================================
+
+if !isdirectory(s:cnull.config.undodir)
+  execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
+endif
+
+" Completion
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+
+" Search
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set showmatch
+set path=**
+
+" Editor
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+set smartindent
+set smarttab
+set autoindent
+set nowrap
+set colorcolumn=120
+set scrolloff=5
+set lazyredraw
+set nospell
+set wildignorecase
+
+" System
+set encoding=utf-8
+set nobackup
+set noswapfile
+set updatetime=250
+set undofile
+let &undodir=s:cnull.config.undodir
+set undolevels=10000
+set history=10000
+set backspace=indent,eol,start
+set ttimeoutlen=50
+set mouse=
+
+" UI
+set hidden
+set signcolumn=yes
+set cmdheight=2
+set showtabline=2
+set laststatus=2
+set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
+set termguicolors
+set number
+
+" =============================================================================
+" = Keybindings =
+" =============================================================================
+
+" Unbind default bindings for arrow keys, trust me this is for your own good
+noremap  <Up>    <Nop>
+noremap  <Down>  <Nop>
+noremap  <Left>  <Nop>
+noremap  <Right> <Nop>
+inoremap <Up>    <Nop>
+inoremap <Down>  <Nop>
+inoremap <Left>  <Nop>
+inoremap <Right> <Nop>
+
+" Resize window panes, we can use those arrow keys
+" to help use resize windows - at least we give them some purpose
+nnoremap <Up>    <Cmd>resize +2<CR>
+nnoremap <Down>  <Cmd>resize -2<CR>
+nnoremap <Left>  <Cmd>vertical resize -2<CR>
+nnoremap <Right> <Cmd>vertical resize +2<CR>
+
+" Map Esc, to perform quick switching between Normal and Insert mode
+inoremap jk <Esc>
+
+" Map escape from terminal input to Normal mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-[> <C-\><C-n>
+
+" Disable highlights
+nnoremap <Leader><CR> <Cmd>noh<CR>
+
+" List all buffers
+nnoremap <Leader>bl <Cmd>buffers<CR>
+
+nnoremap <C-l> <Cmd>bnext<CR>
+nnoremap <Leader>bn <Cmd>bnext<CR>
+
+nnoremap <C-h> <Cmd>bprevious<CR>
+nnoremap <Leader>bp <Cmd>bprevious<CR>
+
+" Close the current buffer, and more?
+nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
+" Close all buffer, except current
+nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
+
+" Move a line of text Alt+[j/k]
+nnoremap <M-j> mz:m+<CR>`z
+nnoremap <M-k> mz:m-2<CR>`z
+vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
+
+" Edit vimrc
+nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
+
+" Source the vimrc to reflect changes
+nnoremap <Leader>vs <Cmd>ConfigReload<CR>
+
+" Reload file
+nnoremap <Leader>r <Cmd>edit!<CR>
+
+" List all maps
+nnoremap <Leader>mn <Cmd>nmap<CR>
+nnoremap <Leader>mv <Cmd>vmap<CR>
+nnoremap <Leader>mi <Cmd>imap<CR>
+nnoremap <Leader>mt <Cmd>tmap<CR>
+nnoremap <Leader>mc <Cmd>cmap<CR>
+
+" Copy/Paste from clipboard
+nnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
+
+" Disable Ex-mode
+nnoremap Q <Nop>
+
+" =============================================================================
+" = Commands =
+" =============================================================================
+
+command! Config edit $MYVIMRC
+command! ConfigReload source $MYVIMRC | nohlsearch
+
+command! ToggleConcealLevel call ToggleConcealLevel()
+command! ToggleCodeshot call ToggleCodeshot()
+
+" Command Abbreviations, I can't release my shift key fast enough 😭
+cnoreabbrev Q q
+cnoreabbrev Qa qa
+cnoreabbrev W w
+cnoreabbrev Wq wq
 
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
@@ -189,14 +329,18 @@ augroup END
 let g:vim_json_syntax_conceal = 0
 let g:vim_json_conceal = 0
 
+" moonfly Config
+" ---
+let g:moonflyNormalFloat = 1
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
 
 let s:plugin = {}
 let s:plugin.url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plugin.plug_filepath = g:cnull.config.data_dir . '/site/autoload/plug.vim'
-let s:plugin.plugins_dir = g:cnull.config.data_dir . '/plugged'
+let s:plugin.plug_filepath = s:cnull.config.data_dir . '/site/autoload/plug.vim'
+let s:plugin.plugins_dir = s:cnull.config.data_dir . '/plugged'
 
 if !filereadable(s:plugin.plug_filepath)
   execute printf('!curl -fLo %s --create-dirs %s', s:plugin.plug_filepath, s:plugin.url)
@@ -303,7 +447,7 @@ nnoremap <C-p>      <Cmd>lua TelescopeFindFiles()<CR>
 nnoremap <C-t>      <Cmd>lua TelescopeLiveGrep()<CR>
 nnoremap <Leader>vf <Cmd>lua TelescopeFindConfigFiles()<CR>
 
-if g:cnull.transparent
+if s:cnull.transparent
   augroup telescope_user_events
     autocmd!
     autocmd ColorScheme * highlight! TelescopeBorder guifg=#aaaaaa
@@ -326,7 +470,7 @@ lua require('cnull.statusline')
 
 " indent-blankline.nvim Config
 " ---
-if g:cnull.transparent
+if s:cnull.transparent
   augroup indent_blankline_user_events
     autocmd!
     autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE
@@ -338,171 +482,18 @@ else
   augroup END
 endif
 
-lua <<EOF
-require('indent_blankline').setup({
-  char = '│',
-  buftype_exclude = {'help', 'markdown'},
-  char_highlight_list = {'IndentBlanklineHighlight'},
-  show_first_indent_level = false,
-})
-EOF
+lua require('cnull.indent_blankline')
+
+" bufferline.lua Config
+" ---
+lua require('cnull.bufferline')
+
+" colorizer.lua Config
+" ---
+lua require('cnull.colorizer')
 
 " =============================================================================
 " = UI/Theme =
 " =============================================================================
 
-let g:moonflyNormalFloat = 1
-
-" ---
-set termguicolors
-set number
-set background=dark
-
-lua require('cnull.theme')
 colorscheme moonfly
-
-" =============================================================================
-" = Options =
-" =============================================================================
-
-if !isdirectory(g:cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', g:cnull.config.undodir)
-endif
-
-" Completion
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
-
-" Search
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set showmatch
-set path=**
-
-" Editor
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
-set expandtab
-set smartindent
-set smarttab
-set autoindent
-set nowrap
-set colorcolumn=120
-set scrolloff=5
-set lazyredraw
-set nospell
-set wildignorecase
-
-" System
-set encoding=utf-8
-set nobackup
-set noswapfile
-set updatetime=250
-set undofile
-let &undodir=g:cnull.config.undodir
-set undolevels=10000
-set history=10000
-set backspace=indent,eol,start
-set ttimeoutlen=50
-set mouse=
-
-" UI
-set hidden
-set signcolumn=yes
-set cmdheight=2
-set showtabline=2
-set laststatus=2
-set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
-
-" =============================================================================
-" = Keybindings =
-" =============================================================================
-
-" Unbind default bindings for arrow keys, trust me this is for your own good
-noremap  <Up>    <Nop>
-noremap  <Down>  <Nop>
-noremap  <Left>  <Nop>
-noremap  <Right> <Nop>
-inoremap <Up>    <Nop>
-inoremap <Down>  <Nop>
-inoremap <Left>  <Nop>
-inoremap <Right> <Nop>
-
-" Resize window panes, we can use those arrow keys
-" to help use resize windows - at least we give them some purpose
-nnoremap <Up>    <Cmd>resize +2<CR>
-nnoremap <Down>  <Cmd>resize -2<CR>
-nnoremap <Left>  <Cmd>vertical resize -2<CR>
-nnoremap <Right> <Cmd>vertical resize +2<CR>
-
-" Map Esc, to perform quick switching between Normal and Insert mode
-inoremap jk <Esc>
-
-" Map escape from terminal input to Normal mode
-tnoremap <Esc> <C-\><C-n>
-tnoremap <C-[> <C-\><C-n>
-
-" Disable highlights
-nnoremap <Leader><CR> <Cmd>noh<CR>
-
-" List all buffers
-nnoremap <Leader>bl <Cmd>buffers<CR>
-
-nnoremap <C-l> <Cmd>bnext<CR>
-nnoremap <Leader>bn <Cmd>bnext<CR>
-
-nnoremap <C-h> <Cmd>bprevious<CR>
-nnoremap <Leader>bp <Cmd>bprevious<CR>
-
-" Close the current buffer, and more?
-nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
-" Close all buffer, except current
-nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
-
-" Move a line of text Alt+[j/k]
-nnoremap <M-j> mz:m+<CR>`z
-nnoremap <M-k> mz:m-2<CR>`z
-vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
-vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
-
-" Edit vimrc
-nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
-
-" Source the vimrc to reflect changes
-nnoremap <Leader>vs <Cmd>ConfigReload<CR>
-
-" Reload file
-nnoremap <Leader>r <Cmd>edit!<CR>
-
-" List all maps
-nnoremap <Leader>mn <Cmd>nmap<CR>
-nnoremap <Leader>mv <Cmd>vmap<CR>
-nnoremap <Leader>mi <Cmd>imap<CR>
-nnoremap <Leader>mt <Cmd>tmap<CR>
-nnoremap <Leader>mc <Cmd>cmap<CR>
-
-" Copy/Paste from clipboard
-nnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
-
-" Disable Ex-mode
-nnoremap Q <Nop>
-
-" =============================================================================
-" = Commands =
-" =============================================================================
-
-command! Config edit $MYVIMRC
-command! ConfigReload source $MYVIMRC | nohlsearch
-
-command! ToggleConcealLevel call ToggleConcealLevel()
-command! ToggleCodeshot call ToggleCodeshot()
-
-" Command Abbreviations, I can't release my shift key fast enough 😭
-cnoreabbrev Q q
-cnoreabbrev Qa qa
-cnoreabbrev W w
-cnoreabbrev Wq wq
