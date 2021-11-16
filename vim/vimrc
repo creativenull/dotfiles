@@ -137,6 +137,7 @@ set lazyredraw
 let &undodir = s:cnull.config.undodir
 
 " UI
+set number
 set nofoldenable
 set hidden
 set conceallevel=0
@@ -144,6 +145,12 @@ set signcolumn=yes
 set cmdheight=2
 set showtabline=2
 set laststatus=2
+set background=dark
+if has('termguicolors')
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
 
 " =============================================================================
 " = Keybindings =
@@ -445,6 +452,7 @@ Plug 'itchyny/lightline.vim'
 " Colorscheme
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'fnune/base16-vim'
 
 call plug#end()
 
@@ -513,12 +521,4 @@ augroup END
 " = UI/Theme =
 " =============================================================================
 
-if has('termguicolors')
-  set termguicolors
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-
-set number
-set background=dark
 colorscheme moonfly
