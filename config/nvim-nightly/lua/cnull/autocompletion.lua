@@ -2,6 +2,7 @@
 -- Global config
 vim.call('ddc#custom#patch_global', {
   backspaceCompletion = true,
+  autoCompleteDelay = 250,
   sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' },
   sourceOptions = {
     ['_'] = {
@@ -14,15 +15,15 @@ vim.call('ddc#custom#patch_global', {
       forceCompletionPattern = '\\.|:|->',
       maxCandidates = 15,
     },
-    ['vsnip'] = {
+    vsnip = {
       mark = 'VSNIP',
       maxCandidates = 5,
     },
-    ['around'] = {
+    around = {
       mark = 'AROUND',
       maxCandidates = 5,
     },
-    ['buffer'] = {
+    buffer = {
       mark = 'BUFFER',
       maxCandidates = 5,
     },

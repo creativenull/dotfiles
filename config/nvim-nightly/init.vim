@@ -496,4 +496,4 @@ lua require('cnull.colorizer')
 " = UI/Theme =
 " =============================================================================
 
-colorscheme moonfly
+colorscheme base16-horizon-terminal-dark
