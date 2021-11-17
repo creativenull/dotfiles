@@ -11,7 +11,7 @@ filetype plugin indent on
 syntax on
 
 " Pre-Requisites
-let s:exec_list = ['git', 'curl', 'python3', 'rg', 'node']
+let s:exec_list = ['git', 'curl', 'python3', 'rg', 'node', 'deno']
 for s:exec in s:exec_list
   if !executable(s:exec)
     echoerr printf('[vim] `%s` is needed!', s:exec)
@@ -376,6 +376,10 @@ nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 " json.vim Config
 " ---
 let g:vim_json_conceal = 0
+
+" vim-gitgutter Config
+" ---
+let g:gitgutter_map_keys = 0
 
 " =============================================================================
 " = Plugin Manager =
