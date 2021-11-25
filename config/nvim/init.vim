@@ -5,13 +5,27 @@
 "   + git (globally installed)
 "   + python3 (globally installed)
 "   + ripgrep (globally installed
+"
+" =============================================================================
+" = Initialize =
 " =============================================================================
 
+" User Config
+" ---
+let s:cnull = {}
+let s:cnull.leaderkey = ' '
+let s:cnull.transparent = v:false
+let s:cnull.config = {}
+let s:cnull.config.undodir = stdpath('cache') . '/undo'
+
+" Pre-checks
+" ---
 if !has('nvim') && !has('nvim-0.5')
   echoerr 'This config is only for neovim 0.5 and up!'
   finish
 endif
 
+" Ensure the following tools are installed in the system
 let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
 for s:exec in s:exec_list
   if !executable(s:exec)
@@ -20,22 +34,44 @@ for s:exec in s:exec_list
   endif
 endfor
 
+" Windows specific settings
+if has('win32')
+  if !executable('pwsh')
+    echoerr '[nvim] `pwsh` aka powershell core v6 and up is needed!'
+    finish
+  endif
+
+  set shell=pwsh
+  let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+  let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  set shellquote= shellxquote=
+endif
+
+" leader and providers settings
+let g:mapleader = s:cnull.leaderkey
+let g:loaded_python_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
+let g:python3_host_prog = exepath('python3')
+
 " =============================================================================
 " = Functions =
 " =============================================================================
 
+" Toggle conceal level of local buffer
+" which is enabled by some syntax plugin
 function! g:ToggleConcealLevel() abort
   if &conceallevel == 2
-    set conceallevel=0
-    let g:vim_markdown_conceal = 0
-    let g:vim_markdown_conceal_code_blocks = 0
+    setlocal conceallevel=0
   else
-    set conceallevel=2
-    let g:vim_markdown_conceal = 1
-    let g:vim_markdown_conceal_code_blocks = 1
+    setlocal conceallevel=2
   endif
 endfunction
 
+" Toggle the view of the editor, for taking screenshots
+" or for copying code from the editor w/o using "+ register
+" when not accessible, eg from a remote ssh
 function! g:ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
@@ -44,24 +80,15 @@ function! g:ToggleCodeshot() abort
   endif
 endfunction
 
-function! g:IndentSize(size)
-  execute printf('setlocal tabstop=%d softtabstop=%d shiftwidth=0 expandtab', a:size, a:size)
+" Indent rules given to a filetype, use spaces if needed
+function! g:IndentSize(size, use_spaces)
+  execute printf('setlocal tabstop=%d softtabstop=%d shiftwidth=0', a:size, a:size)
+  if !empty(a:use_spaces) && a:use_spaces
+    setlocal expandtab
+  else
+    setlocal noexpandtab
+  endif
 endfunction
-
-" =============================================================================
-" = Initialize =
-" =============================================================================
-
-let g:mapleader = ' '
-let g:loaded_python_provider = 0
-let g:loaded_ruby_provider = 0
-let g:loaded_perl_provider = 0
-let g:python3_host_prog = exepath('python3')
-
-let s:cnull = {}
-let s:cnull.transparent = v:false
-let s:cnull.config = {}
-let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
 " =============================================================================
 " = Events =
@@ -72,12 +99,20 @@ if s:cnull.transparent
     autocmd!
     autocmd ColorScheme * highlight Normal guibg=NONE
     autocmd ColorScheme * highlight SignColumn guibg=NONE
-    autocmd ColorScheme * highlight LineNr guibg=NONE
+    autocmd ColorScheme * highlight LineNr guibg=NONE guifg=#888888
     autocmd ColorScheme * highlight CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
-    autocmd ColorScheme * highlight Visual guifg=#333333 guibg=#aaaaaa
+
+    " Sometimes comments are too dark, affects in tranparent mode
+    autocmd ColorScheme * highlight Comment guifg=#888888
   augroup END
 endif
+
+augroup customhl_user_events
+  autocmd!
+  " Don't want any bold or underlines
+  autocmd ColorScheme * highlight Tabline gui=NONE
+augroup END
 
 augroup highlightyank_user_events
   autocmd!
@@ -86,13 +121,14 @@ augroup END
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType vim,lua call IndentSize(2)
-  autocmd FileType scss,sass,css call IndentSize(2)
-  autocmd FileType javascript,javascriptreact call IndentSize(2)
-  autocmd FileType typescript,typescriptreact call IndentSize(2)
-  autocmd FileType json,jsonc call IndentSize(2)
-  autocmd FileType vue call IndentSize(2)
-  autocmd FileType php,blade,html call IndentSize(4)
+  autocmd FileType vim,lua call IndentSize(2, v:true)
+  autocmd FileType scss,sass,css call IndentSize(2, v:true)
+  autocmd FileType javascript,javascriptreact call IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact call IndentSize(2, v:true)
+  autocmd FileType json,jsonc call IndentSize(2, v:true)
+  autocmd FileType vue call IndentSize(2, v:true)
+  autocmd FileType php,blade,html call IndentSize(4, v:true)
+  autocmd FileType markdown call IndentSize(4, v:true) | setlocal spell
 augroup END
 
 " =============================================================================
@@ -100,7 +136,11 @@ augroup END
 " =============================================================================
 
 if !isdirectory(s:cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
+  if has('win32')
+    execute printf('silent !mkdir -Recurse %s', s:cnull.config.undodir)
+  else
+    execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
+  endif
 endif
 
 " Completion
@@ -362,6 +402,7 @@ augroup END
 " fern.vim Config
 " ---
 let g:fern#renderer = 'nerdfont'
+let g:fern#hide_cursor = 1
 
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
@@ -382,6 +423,14 @@ let g:vim_json_syntax_conceal = 0
 " ---
 let g:moonflyNormalFloat = 1
 let g:moonflyItalics = 0
+
+" gruvbox Config
+" ---
+let g:gruvbox_bold = 0
+let g:gruvbox_italic = 0
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_invert_selection = 0
+let g:gruvbox_sign_column = 'bg0'
 
 " =============================================================================
 " = Plugin Manager =
@@ -425,7 +474,6 @@ Plug 'dense-analysis/ale'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim', { 'tag': 'v0.17.0' }
-Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
@@ -459,6 +507,9 @@ Plug 'junegunn/vader.vim'
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'bluz71/vim-moonfly-colors'
+Plug 'morhetz/gruvbox'
+Plug 'Mangeshrex/uwu.vim'
+Plug 'ajmwagar/vim-deus'
 
 call plug#end()
 
@@ -506,6 +557,9 @@ call ddc#custom#patch_global({
   \ },
 \ })
 
+" Markdown files
+call ddc#custom#patch_filetype('markdown', { 'sources': ['around', 'buffer'] })
+
 " Use tab to complete the popup menu item
 " w/ ultisnips integration
 inoremap <silent> <expr> <C-y> pumvisible()
@@ -514,7 +568,6 @@ inoremap <silent> <expr> <C-y> pumvisible()
 
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
-call popup_preview#enable()
 call ddc#enable()
 
 " lightline.vim Config
@@ -537,8 +590,8 @@ let g:lightline.active.left = [
 \ ]
 let g:lightline.active.right = [
   \ ['ale_error_component', 'ale_warning_component', 'ale_status'],
-  \ ['lineinfo'],
   \ ['filetype', 'fileencoding'],
+  \ ['lineinfo'],
 \ ]
 
 let g:lightline.component_function = {}
