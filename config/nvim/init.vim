@@ -261,6 +261,7 @@ nnoremap <Leader>mt <Cmd>tmap<CR>
 nnoremap <Leader>mc <Cmd>cmap<CR>
 
 " Copy/Paste from clipboard
+vnoremap <Leader>y "+y
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
@@ -402,7 +403,6 @@ augroup END
 " fern.vim Config
 " ---
 let g:fern#renderer = 'nerdfont'
-let g:fern#hide_cursor = 1
 
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
@@ -474,6 +474,7 @@ Plug 'dense-analysis/ale'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim', { 'tag': 'v0.17.0' }
+Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
@@ -510,6 +511,7 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'morhetz/gruvbox'
 Plug 'Mangeshrex/uwu.vim'
 Plug 'ajmwagar/vim-deus'
+Plug 'fnune/base16-vim'
 
 call plug#end()
 
@@ -568,6 +570,7 @@ inoremap <silent> <expr> <C-y> pumvisible()
 
 inoremap <silent> <expr> <C-Space> ddc#manual_complete()
 
+call popup_preview#enable()
 call ddc#enable()
 
 " lightline.vim Config
@@ -617,4 +620,4 @@ augroup END
 " = UI/Theme =
 " =============================================================================
 
-colorscheme moonfly
+colorscheme base16-horizon-terminal-dark
