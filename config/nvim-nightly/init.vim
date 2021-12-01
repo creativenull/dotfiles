@@ -44,7 +44,7 @@ if exists('g:userspace')
   execute printf('set packpath+=~/.local/share/%s/site/after', g:userspace)
 endif
 
-if !has('nvim') && !has('nvim-0.6')
+if !has('nvim') && !has('nvim-0.7')
   echoerr 'This config is only for neovim nightly version aka EXPERIMENTAL!'
   finish
 endif
@@ -115,8 +115,18 @@ if s:cnull.transparent
     autocmd ColorScheme * highlight! LineNr guibg=NONE
     autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
-    autocmd ColorScheme * highlight! FloatBorder guifg=#aaaaaa guibg=NONE
     autocmd ColorScheme * highlight! Visual guifg=#333333 guibg=#aaaaaa
+
+    " Transparent LSP Float Windows
+    autocmd ColorScheme * highlight! NormalFloat guibg=NONE
+    autocmd ColorScheme * highlight! ErrorFloat guibg=NONE
+    autocmd ColorScheme * highlight! WarningFloat guibg=NONE
+    autocmd ColorScheme * highlight! InfoFloat guibg=NONE
+    autocmd ColorScheme * highlight! HintFloat guibg=NONE
+    autocmd ColorScheme * highlight! FloatBorder guifg=#aaaaaa guibg=NONE
+
+    " Transparent Comments
+    autocmd ColorScheme * highlight! Comment guifg=#888888 guibg=NONE
   augroup END
 endif
 
@@ -305,25 +315,6 @@ let g:projectlocal = {
   \ 'debug': v:false,
 \ }
 
-" fern.vim Config
-" ---
-let g:fern#renderer = 'nerdfont'
-let g:fern#hide_cursor = 1
-
-nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
-
-function! g:FernInit() abort
-  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
-  nmap <buffer> D <Plug>(fern-action-remove)
-
-  highlight! default link CursorLine Visual
-endfunction
-
-augroup fern_user_events
-  autocmd!
-  autocmd FileType fern call FernInit()
-augroup END
-
 " vim-json Config
 " ---
 let g:vim_json_syntax_conceal = 0
@@ -332,6 +323,13 @@ let g:vim_json_conceal = 0
 " moonfly Config
 " ---
 let g:moonflyNormalFloat = 1
+
+" lir.nvim Config
+" ---
+augroup lir_user_events
+  autocmd!
+  autocmd ColorScheme * highlight! CursorLine guibg=#333333
+augroup END
 
 " =============================================================================
 " = Plugin Manager =
@@ -367,9 +365,7 @@ Plug 'b3nj5m1n/kommentary'
 Plug 'kevinhwang91/nvim-bqf'
 
 " File Explorer
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'tamago324/lir.nvim'
 
 " Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
@@ -487,6 +483,10 @@ lua require('cnull.indent_blankline')
 " bufferline.lua Config
 " ---
 lua require('cnull.bufferline')
+
+" lir.nvim Config
+" ---
+lua require('cnull.explorer')
 
 " colorizer.lua Config
 " ---
