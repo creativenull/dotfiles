@@ -1,27 +1,26 @@
 local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
-local DEFAULT_KEYMAP_OPTS = { silent = true, noremap = true }
-
-local function buf_mapper(...)
-  vim.api.nvim_buf_set_keymap(...)
-end
-
-local function nmap(bufnr, lhs, rhs, opts)
-  opts = opts and vim.tbl_extend('force', DEFAULT_KEYMAP_OPTS, opts) or DEFAULT_KEYMAP_OPTS
-  buf_mapper(bufnr, 'n', lhs, rhs, opts)
-end
+local DEFAULT_OPTS = { silent = true, noremap = true }
+local DEFAULT_BORDER_STYLE = 'rounded'
+local DEFAULT_BORDER_WIDTH = 80
 
 local function on_attach(_, buf)
-  local diag_opts = '{ width = 80, focusable = false, border = "single" }'
+  local diag_opts = string.format('{ width = %d, border = %q }', DEFAULT_BORDER_WIDTH, DEFAULT_BORDER_STYLE)
 
   -- Keymaps
-  nmap(buf, '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>')
-  nmap(buf, '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>')
-  nmap(buf, '<Leader>le', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
-  nmap(buf, '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>')
-  nmap(buf, '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-  nmap(buf, '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
-  nmap(buf, '<Leader>lw', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics(' .. diag_opts .. ')<CR>')
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>le', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(
+    buf,
+    'n',
+    '<Leader>lw',
+    string.format('<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics(%s)<CR>', diag_opts),
+    DEFAULT_OPTS
+  )
 end
 
 -- Initial LSP Settings
@@ -36,18 +35,14 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
 
 -- Add border to hover documentation
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-  width = 80,
-  border = 'single',
+  width = DEFAULT_BORDER_WIDTH,
+  border = DEFAULT_BORDER_STYLE,
 })
 
 -- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, { border = 'single' })
-
--- Let lsputil handle code actions
-local success, codeAction = pcall(require, 'lsputil.codeAction')
-if success then
-  vim.lsp.handlers['textDocument/codeAction'] = codeAction.code_action_handler
-end
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+  border = DEFAULT_BORDER_WIDTH,
+})
 
 -- Add support to get snippets from lsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -110,6 +105,20 @@ lspconfig.denols.setup({
   root_dir = root_pattern('deno.json', 'deno.jsonc'),
 })
 
+-- Pyright LSP Server
+-- ---
+lspconfig.pyright.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+-- Vue LSP Server
+-- ---
+lspconfig.vuels.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
 -- DiagnosticLS Server - for linters and formatters
 -- ---
 --[[ local dlsconfig = require('diagnosticls-configs')
@@ -126,16 +135,10 @@ efmls.init({
   capabilities = capabilities,
 })
 
+-- Set with creativenull/projectlocal-vim
 efmls.setup({
   lua = {
     linter = require('efmls-configs.linters.luacheck'),
     formatter = require('efmls-configs.formatters.stylua'),
   },
-})
-
--- Pyright LSP Server - for linters and formatters
--- ---
-lspconfig.pyright.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
 })
