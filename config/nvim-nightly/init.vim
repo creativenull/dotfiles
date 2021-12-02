@@ -61,19 +61,34 @@ endfor
 " = Functions =
 " =============================================================================
 
+" Toggle conceal level of local buffer
+" which is enabled by some syntax plugin
 function! g:ToggleConcealLevel() abort
   if &conceallevel == 2
-    set conceallevel=0
+    setlocal conceallevel=0
   else
-    set conceallevel=2
+    setlocal conceallevel=2
   endif
 endfunction
 
+" Toggle the view of the editor, for taking screenshots
+" or for copying code from the editor w/o using "+ register
+" when not accessible, eg from a remote ssh
 function! g:ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
   else
     setlocal number signcolumn=yes
+  endif
+endfunction
+
+" Indent rules given to a filetype, use spaces if needed
+function! g:IndentSize(size, use_spaces)
+  execute printf('setlocal tabstop=%d softtabstop=%d shiftwidth=0', a:size, a:size)
+  if !empty(a:use_spaces) && a:use_spaces
+    setlocal expandtab
+  else
+    setlocal noexpandtab
   endif
 endfunction
 
@@ -116,6 +131,7 @@ if s:cnull.transparent
     autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
     autocmd ColorScheme * highlight! Visual guifg=#333333 guibg=#aaaaaa
+    autocmd ColorScheme * highlight! ColorColumn guifg=#888888
 
     " Transparent LSP Float Windows
     autocmd ColorScheme * highlight! NormalFloat guibg=NONE
@@ -136,9 +152,16 @@ augroup highlightyank_user_events
 augroup END
 
 " Default Filetype Options
-augroup filetype_option_user_events
+augroup filetype_user_events
   autocmd!
-  autocmd FileType lua,vim setlocal tabstop=2 softtabstop=2 shiftwidth=0 expandtab
+  autocmd FileType vim,lua call IndentSize(2, v:true)
+  autocmd FileType scss,sass,css call IndentSize(2, v:true)
+  autocmd FileType javascript,javascriptreact call IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact call IndentSize(2, v:true)
+  autocmd FileType json,jsonc call IndentSize(2, v:true)
+  autocmd FileType vue call IndentSize(2, v:true)
+  autocmd FileType php,blade,html call IndentSize(4, v:true)
+  autocmd FileType markdown call IndentSize(4, v:true) | setlocal spell
 augroup END
 
 " =============================================================================
@@ -171,7 +194,7 @@ set smarttab
 set autoindent
 set nowrap
 set colorcolumn=120
-set scrolloff=5
+set scrolloff=3
 set lazyredraw
 set nospell
 set wildignorecase
@@ -259,19 +282,16 @@ nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 " Reload file
 nnoremap <Leader>r <Cmd>edit!<CR>
 
-" List all maps
-nnoremap <Leader>mn <Cmd>nmap<CR>
-nnoremap <Leader>mv <Cmd>vmap<CR>
-nnoremap <Leader>mi <Cmd>imap<CR>
-nnoremap <Leader>mt <Cmd>tmap<CR>
-nnoremap <Leader>mc <Cmd>cmap<CR>
-
 " Copy/Paste from clipboard
+vnoremap <Leader>y "+y
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
 " Disable Ex-mode
 nnoremap Q <Nop>
+
+" Utilities
+nnoremap Y y$
 
 " =============================================================================
 " = Commands =
@@ -392,7 +412,7 @@ Plug 'nvim-telescope/telescope.nvim'
 " Git
 Plug 'lewis6991/gitsigns.nvim'
 
-" UI Plugins
+" UI
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'code-biscuits/nvim-biscuits'
@@ -421,11 +441,11 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
-inoremap <silent> <expr> <C-Space> ddc#manual_complete()
+inoremap <silent> <expr> <C-Space> ddc#map#manual_complete()
 
 " nvim-autopairs Config
 " ---
-lua require('nvim-autopairs').setup({})
+lua require('nvim-autopairs').setup()
 
 " gitsigns.nvim Config
 " ---
@@ -433,14 +453,14 @@ lua require('gitsigns').setup()
 
 " todo-comments.nvim Config
 " ---
-lua require('todo-comments').setup({})
+lua require('todo-comments').setup()
 
 " telescope.nvim Config
 " ---
 lua require('cnull.finder')
 
-nnoremap <C-p>      <Cmd>lua TelescopeFindFiles()<CR>
-nnoremap <C-t>      <Cmd>lua TelescopeLiveGrep()<CR>
+nnoremap <C-p> <Cmd>lua TelescopeFindFiles()<CR>
+nnoremap <C-t> <Cmd>lua TelescopeLiveGrep()<CR>
 nnoremap <Leader>vf <Cmd>lua TelescopeFindConfigFiles()<CR>
 
 if s:cnull.transparent
@@ -458,7 +478,7 @@ lua require('cnull.treesitter')
 " ---
 lua require('cnull.biscuits')
 
-nnoremap <Leader>it <Cmd>lua ToggleBiscuits()<CR>
+nnoremap <Leader>it <Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>
 
 " lualine.nvim Config
 " ---

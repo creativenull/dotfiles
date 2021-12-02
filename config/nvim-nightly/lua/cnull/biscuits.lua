@@ -7,7 +7,3 @@ require('nvim-biscuits').setup({
     on_events = { 'InsertLeave', 'CursorHoldI' },
   },
 })
-
-function _G.ToggleBiscuits()
-  require('nvim-biscuits').toggle_biscuits()
-end
