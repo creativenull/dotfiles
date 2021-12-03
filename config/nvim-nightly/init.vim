@@ -303,6 +303,9 @@ command! ConfigReload source $MYVIMRC | nohlsearch
 command! ToggleConcealLevel call ToggleConcealLevel()
 command! ToggleCodeshot call ToggleCodeshot()
 
+command! MyTodoPersonal edit ~/todofiles/personal/README.md
+command! MyTodoWork edit ~/todofiles/work/README.md
+
 " Command Abbreviations, I can't release my shift key fast enough 😭
 cnoreabbrev Q q
 cnoreabbrev Qa qa
@@ -312,6 +315,13 @@ cnoreabbrev Wq wq
 " =============================================================================
 " = Plugin Pre-Config - before loading plugins =
 " =============================================================================
+
+" vim-vsnip Config
+" ---
+let g:vsnip_extra_mapping = v:false
+let g:vsnip_filetypes = {}
+let g:vsnip_filetypes.javascriptreact = ['javascript']
+let g:vsnip_filetypes.typescriptreact = ['typescript']
 
 " emmet-vim Config
 " ---
@@ -348,7 +358,7 @@ let g:moonflyNormalFloat = 1
 " ---
 augroup lir_user_events
   autocmd!
-  autocmd ColorScheme * highlight! CursorLine guibg=#333333
+  autocmd ColorScheme * highlight! default link CursorLine Visual
 augroup END
 
 " =============================================================================
@@ -441,7 +451,17 @@ lua require('cnull.lsp')
 " ---
 lua require('cnull.autocompletion')
 
+imap <expr> <C-y> pumvisible()
+  \ ? vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>"
+  \ : "\<C-y>"
+
 inoremap <silent> <expr> <C-Space> ddc#map#manual_complete()
+
+" Snippets
+imap <expr> <C-j> vsnip#jumpable(1)   ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"
+smap <expr> <C-j> vsnip#jumpable(1)   ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"
+imap <expr> <C-k> vsnip#jumpable(-1)  ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"
+smap <expr> <C-k> vsnip#jumpable(-1)  ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"
 
 " nvim-autopairs Config
 " ---

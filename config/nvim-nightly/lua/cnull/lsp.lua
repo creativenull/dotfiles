@@ -56,7 +56,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 -- Log debug
-vim.lsp.set_log_level('debug')
+-- vim.lsp.set_log_level('debug')
 
 -- Lua LSP Server
 -- --
@@ -68,6 +68,7 @@ lspconfig.sumneko_lua.setup({
   on_attach = on_attach,
   capabilities = capabilities,
   cmd = { 'luals' },
+  root_dir = root_pattern('.git'),
   settings = {
     Lua = {
       runtime = {
@@ -79,7 +80,6 @@ lspconfig.sumneko_lua.setup({
       telemetry = { enable = false },
     },
   },
-  root_dir = root_pattern('.git'),
 })
 
 -- PHP LSP Server
@@ -121,24 +121,23 @@ lspconfig.vuels.setup({
 
 -- DiagnosticLS Server - for linters and formatters
 -- ---
---[[ local dlsconfig = require('diagnosticls-configs')
-dlsconfig.init({
+local dls = require('diagnosticls-configs')
+dls.init({
   on_attach = on_attach,
   capabilities = capabilities,
-}) ]]
+})
 
 -- EFM LSP Server - for linters and formatters
 -- ---
-local efmls = require('efmls-configs')
+--[[ local efmls = require('efmls-configs')
 efmls.init({
   on_attach = on_attach,
   capabilities = capabilities,
 })
 
--- Set with creativenull/projectlocal-vim
 efmls.setup({
   lua = {
     linter = require('efmls-configs.linters.luacheck'),
     formatter = require('efmls-configs.formatters.stylua'),
   },
-})
+}) ]]
