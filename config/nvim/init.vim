@@ -14,7 +14,7 @@
 " ---
 let s:cnull = {}
 let s:cnull.leaderkey = ' '
-let s:cnull.transparent = v:false
+let s:cnull.transparent = v:true
 let s:cnull.config = {}
 let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
@@ -165,7 +165,7 @@ set smarttab
 set autoindent
 set nowrap
 set colorcolumn=120
-set scrolloff=5
+set scrolloff=3
 set lazyredraw
 set nospell
 set wildignorecase
@@ -268,6 +268,9 @@ nnoremap <Leader>p "+p
 " Disable Ex-mode
 nnoremap Q <Nop>
 
+" Utilities
+nnoremap Y y$
+
 " =============================================================================
 " = Commands =
 " =============================================================================
@@ -278,7 +281,10 @@ command! ConfigReload source $MYVIMRC | nohlsearch
 command! ToggleConcealLevel call ToggleConcealLevel()
 command! ToggleCodeshot call ToggleCodeshot()
 
-" Command Abbreviations
+command! MyTodoPersonal edit ~/todofiles/personal/README.md
+command! MyTodoWork edit ~/todofiles/work/README.md
+
+" Command Abbreviations, I can't release my shift key fast enough 😭
 cnoreabbrev Q q
 cnoreabbrev Qa qa
 cnoreabbrev W w
@@ -414,6 +420,7 @@ endfunction
 augroup fern_user_events
   autocmd!
   autocmd FileType fern call FernKeymaps()
+  autocmd ColorScheme * highlight! default link CursorLine Visual
 augroup END
 
 " vim-json Config
@@ -474,7 +481,7 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'dense-analysis/ale'
 
 " AutoCompletion + Sources
-Plug 'Shougo/ddc.vim', { 'tag': 'v0.17.0' }
+Plug 'Shougo/ddc.vim', { 'tag': 'v0.18.0' }
 Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
@@ -540,12 +547,11 @@ call ddc#custom#patch_global({
       \ 'converters': ['converter_fuzzy'],
     \ },
     \ 'ale': {
-      \ 'mark': 'LSP',
-      \ 'maxCandidates': 15,
+      \ 'mark': 'ALE',
+      \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
     \ },
     \ 'ultisnips': {
       \ 'mark': 'SNIPPETS',
-      \ 'maxCandidates': 5,
     \ },
     \ 'around': {
       \ 'mark': 'AROUND',
@@ -563,11 +569,11 @@ call ddc#custom#patch_filetype('markdown', { 'sources': ['around', 'buffer'] })
 
 " Use tab to complete the popup menu item
 " w/ ultisnips integration
-inoremap <silent> <expr> <C-y> pumvisible()
-  \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
-  \ : "\<C-y>"
+inoremap <expr> <C-y> pumvisible()
+ \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
+ \ : "\<C-y>"
 
-inoremap <silent> <expr> <C-Space> ddc#manual_complete()
+inoremap <expr> <C-Space> ddc#map#manual_complete()
 
 call popup_preview#enable()
 call ddc#enable()
