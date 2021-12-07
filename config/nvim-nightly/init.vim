@@ -4,7 +4,8 @@
 "   + curl (globally installed)
 "   + git (globally installed)
 "   + python3 (globally installed)
-"   + ripgrep (globally installed
+"   + ripgrep (globally installed)
+"   + deno (globally installed)
 " =============================================================================
 
 let g:userspace = 'nvim-nightly'
@@ -58,6 +59,33 @@ for s:exec in s:exec_list
 endfor
 
 " =============================================================================
+" = Initialize =
+" =============================================================================
+
+let g:loaded_python_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
+let g:python3_host_prog = exepath('python3')
+
+let g:mapleader = ' '
+let s:cnull = {}
+let s:cnull.transparent = v:true
+let s:cnull.config = {}
+
+if exists('g:userspace')
+  let s:cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
+  let s:cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
+  let s:cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
+  let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
+else
+  let s:cnull.config.data_dir = stdpath('data')
+  let s:cnull.config.cache_dir = stdpath('config')
+  let s:cnull.config.config_dir = stdpath('cache')
+  let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
+endif
+
+
+" =============================================================================
 " = Functions =
 " =============================================================================
 
@@ -93,32 +121,6 @@ function! g:IndentSize(size, use_spaces)
 endfunction
 
 " =============================================================================
-" = Initialize =
-" =============================================================================
-
-let g:loaded_python_provider = 0
-let g:loaded_ruby_provider = 0
-let g:loaded_perl_provider = 0
-let g:python3_host_prog = exepath('python3')
-
-let g:mapleader = ' '
-let s:cnull = {}
-let s:cnull.transparent = v:true
-let s:cnull.config = {}
-
-if exists('g:userspace')
-  let s:cnull.config.data_dir = expand(printf('$HOME/.local/share/%s', userspace))
-  let s:cnull.config.cache_dir = expand(printf('$HOME/.cache/%s', userspace))
-  let s:cnull.config.config_dir = expand(printf('$HOME/.config/%s', userspace))
-  let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
-else
-  let s:cnull.config.data_dir = stdpath('data')
-  let s:cnull.config.cache_dir = stdpath('config')
-  let s:cnull.config.config_dir = stdpath('cache')
-  let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
-endif
-
-" =============================================================================
 " = Events =
 " =============================================================================
 
@@ -131,7 +133,7 @@ if s:cnull.transparent
     autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
     autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
     autocmd ColorScheme * highlight! Visual guifg=#333333 guibg=#aaaaaa
-    autocmd ColorScheme * highlight! ColorColumn guifg=#888888
+    autocmd ColorScheme * highlight! ColorColumn guibg=#888888
 
     " Transparent LSP Float Windows
     autocmd ColorScheme * highlight! NormalFloat guibg=NONE
@@ -391,7 +393,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'b3nj5m1n/kommentary'
+Plug 'numToStr/Comment.nvim'
 Plug 'kevinhwang91/nvim-bqf'
 
 " File Explorer
@@ -400,7 +402,9 @@ Plug 'tamago324/lir.nvim'
 " Linters + Formatters + LSP Client
 Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/diagnosticls-configs-nvim'
+" Plug '~/projects/github.com/creativenull/diagnosticls-configs-nvim'
 Plug 'creativenull/efmls-configs-nvim'
+" Plug '~/projects/github.com/creativenull/efmls-configs-nvim'
 
 " Snippet Engine + Presets
 Plug 'hrsh7th/vim-vsnip'
@@ -442,6 +446,10 @@ call plug#end()
 " =============================================================================
 " = Plugin Post-Config - after loading plugins =
 " =============================================================================
+
+" Comment.nvim Config
+" ---
+lua require('Comment').setup()
 
 " nvim-lspconfig Config
 " ---
