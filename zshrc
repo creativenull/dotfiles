@@ -17,7 +17,7 @@ fi
 # System
 alias ls="lsd -A"
 alias ll="lsd -lA"
-alias mkdir="mkdir -p"
+alias mkdir="mkdir -pv"
 
 # Vim
 export PYTHON3_HOST_PROG=/usr/bin/python3
