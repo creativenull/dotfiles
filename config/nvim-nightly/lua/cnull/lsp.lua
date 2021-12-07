@@ -40,13 +40,16 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 })
 
 -- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-  border = DEFAULT_BORDER_WIDTH,
-})
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.signatureHelp,
+  { border = DEFAULT_BORDER_WIDTH }
+)
 
 -- Add support to get snippets from lsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.preselectSupport = true
+capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
     'documentation',
@@ -129,15 +132,15 @@ dls.init({
 
 -- EFM LSP Server - for linters and formatters
 -- ---
---[[ local efmls = require('efmls-configs')
-efmls.init({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
-
-efmls.setup({
-  lua = {
-    linter = require('efmls-configs.linters.luacheck'),
-    formatter = require('efmls-configs.formatters.stylua'),
-  },
-}) ]]
+-- local efmls = require('efmls-configs')
+-- efmls.init({
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+-- })
+--
+-- efmls.setup({
+--   lua = {
+--     linter = require('efmls-configs.linters.luacheck'),
+--     formatter = require('efmls-configs.formatters.stylua'),
+--   },
+-- })
