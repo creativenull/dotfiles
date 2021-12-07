@@ -440,6 +440,14 @@ let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_invert_selection = 0
 let g:gruvbox_sign_column = 'bg0'
 
+" projectlocal-vim
+" ---
+let g:projectlocal = {
+  \ 'showMessage': v:true,
+  \ 'projectConfig': '.vim/init.vim',
+  \ 'debug': v:false,
+\ }
+
 " =============================================================================
 " = Plugin Manager =
 " =============================================================================
