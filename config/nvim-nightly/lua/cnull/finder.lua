@@ -22,7 +22,13 @@ function _G.TelescopeLiveGrep()
 end
 
 function _G.TelescopeFindConfigFiles()
-  local configdir = vim.fn.stdpath('config')
+  local configdir = ''
+  if vim.g.userspace ~= nil then
+    configdir = vim.fn.expand('$HOME/.config/' .. vim.g.userspace)
+  else
+    configdir = vim.fn.stdpath('config')
+  end
+
   telescope_builtin.find_files({
     find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden', configdir },
     previewer = false,
