@@ -489,7 +489,7 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'dense-analysis/ale'
 
 " AutoCompletion + Sources
-Plug 'Shougo/ddc.vim', { 'tag': 'v0.18.0' }
+Plug 'Shougo/ddc.vim', { 'tag': 'v1.0.0' }
 Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
