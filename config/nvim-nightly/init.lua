@@ -1,0 +1,604 @@
+-- Name: Arnold Chand
+-- Github: https://github.com/creativenull
+-- Description: My vimrc works with MacOS, Linux and Windows, requires
+--   + curl (globally installed)
+--   + git (globally installed)
+--   + python3 (globally installed)
+--   + ripgrep (globally installed)
+--   + deno (globally installed)
+-- =============================================================================
+
+vim.g.userspace = 'nvim-nightly'
+if vim.fn.exists('g:userspace') then
+  -- Runtime Path
+  vim.cmd([[ set runtimepath-=~/.config/nvim ]])
+  vim.cmd([[ set runtimepath-=~/.config/nvim/after ]])
+  vim.cmd([[ set runtimepath-=~/.local/share/nvim/site ]])
+  vim.cmd([[ set runtimepath-=~/.local/share/nvim/site/after ]])
+  vim.cmd([[ set runtimepath-=/etc/xdg/nvim ]])
+  vim.cmd([[ set runtimepath-=/etc/xdg/nvim/after ]])
+  vim.cmd([[ set runtimepath-=/usr/share/nvim/site ]])
+  vim.cmd([[ set runtimepath-=/usr/share/nvim/site/after ]])
+  vim.cmd([[ set runtimepath-=/usr/local/share/nvim/site ]])
+  vim.cmd([[ set runtimepath-=/usr/local/share/nvim/site/after ]])
+
+  vim.cmd(string.format('set runtimepath+=~/.config/%s/after', vim.g.userspace))
+  vim.cmd(string.format('set runtimepath^=~/.config/%s', vim.g.userspace))
+  vim.cmd(string.format('set runtimepath+=~/.local/share/%s/site/after', vim.g.userspace))
+  vim.cmd(string.format('set runtimepath^=~/.local/share/%s/site', vim.g.userspace))
+
+  -- Pack Path
+  vim.cmd([[ set packpath-=~/.config/nvim ]])
+  vim.cmd([[ set packpath-=~/.config/nvim/after ]])
+  vim.cmd([[ set packpath-=~/.local/share/nvim/site ]])
+  vim.cmd([[ set packpath-=~/.local/share/nvim/site/after ]])
+  vim.cmd([[ set packpath-=/etc/xdg/nvim ]])
+  vim.cmd([[ set packpath-=/etc/xdg/nvim/after ]])
+  vim.cmd([[ set packpath-=/usr/local/share/nvim/site ]])
+  vim.cmd([[ set packpath-=/usr/local/share/nvim/site/after ]])
+  vim.cmd([[ set packpath-=/usr/share/nvim/site ]])
+  vim.cmd([[ set packpath-=/usr/share/nvim/site/after ]])
+
+  vim.cmd(string.format('set packpath^=~/.config/%s', vim.g.userspace))
+  vim.cmd(string.format('set packpath+=~/.config/%s/after', vim.g.userspace))
+  vim.cmd(string.format('set packpath^=~/.local/share/%s/site', vim.g.userspace))
+  vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', vim.g.userspace))
+end
+
+if vim.fn.has('nvim') == 0 and vim.fn.has('nvim-0.7') == 0 then
+  vim.api.nvim_err_writeln('This config is only for neovim nightly version aka EXPERIMENTAL!')
+  return
+end
+
+local exec_list = { 'git', 'curl', 'python3', 'rg', 'deno' }
+for _, exec in pairs(exec_list) do
+  if vim.fn.executable(exec) == 0 then
+    local errmsg = string.format('[nvim] `%s` is needed!', exec)
+    vim.api.nvim_err_writeln(errmsg)
+    return
+  end
+end
+
+-- =============================================================================
+-- = Initialize =
+-- =============================================================================
+
+vim.g.loaded_python_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.python3_host_prog = vim.fn.exepath('python3')
+
+vim.g.mapleader = ' '
+local cnull = {
+  transparent = true,
+  config = {
+    config_dir = '',
+    data_dir = '',
+    cache_dir = '',
+    undodir = '',
+  },
+}
+
+if vim.fn.exists('g:userspace') == 1 then
+  cnull.config.data_dir = vim.fn.expand(string.format('$HOME/.local/share/%s', vim.g.userspace))
+  cnull.config.cache_dir = vim.fn.expand(string.format('$HOME/.cache/%s', vim.g.userspace))
+  cnull.config.config_dir = vim.fn.expand(string.format('$HOME/.config/%s', vim.g.userspace))
+  cnull.config.undodir = cnull.config.cache_dir .. '/undo'
+else
+  cnull.config.data_dir = vim.fn.stdpath('data')
+  cnull.config.cache_dir = vim.fn.stdpath('config')
+  cnull.config.config_dir = vim.fn.stdpath('cache')
+  cnull.config.undodir = cnull.config.cache_dir .. '/undo'
+end
+
+-- =============================================================================
+-- = Functions =
+-- =============================================================================
+
+---Toggle conceal level of local buffer
+---which is enabled by some syntax plugin
+function _G.ToggleConcealLevel()
+  local win = vim.api.nvim_get_current_win()
+  if vim.wo[win].conceallevel == 2 then
+    vim.wo[win].conceallevel = 0
+  else
+    vim.wo[win].conceallevel = 2
+  end
+end
+
+---Toggle the view of the editor, for taking screenshots
+---or for copying code from the editor w/o using "+ register
+---when not accessible, eg from a remote ssh
+function _G.ToggleCodeshot()
+  local win = vim.api.nvim_get_current_win()
+  if vim.wo[win].number then
+    vim.wo[win].number = false
+    vim.wo[win].signcolumn = 'no'
+  else
+    vim.wo[win].number = true
+    vim.wo[win].signcolumn = 'yes'
+  end
+end
+
+-- Indent rules given to a filetype, use spaces if needed
+---@param size number
+---@param use_spaces boolean
+function _G.IndentSize(size, use_spaces)
+  local buf = vim.api.nvim_get_current_buf()
+  vim.bo[buf].tabstop = size
+  vim.bo[buf].softtabstop = size
+  vim.bo[buf].shiftwidth = size
+
+  if use_spaces ~= nil then
+    vim.bo[buf].expandtab = true
+  else
+    vim.bo[buf].expandtab = false
+  end
+end
+
+---Create an augroup
+---@param name string
+---@param autocmds table
+function _G.Augroup(name, autocmds)
+  vim.cmd('augroup ' .. name)
+  vim.cmd('autocmd!')
+  for _, autocmd in pairs(autocmds) do
+    vim.cmd(autocmd)
+  end
+  vim.cmd('augroup END')
+end
+
+-- =============================================================================
+-- = Events (AUG) =
+-- =============================================================================
+
+if cnull.transparent then
+  Augroup('transparent_user_events', {
+    'autocmd ColorScheme * highlight! Normal guibg=NONE',
+    'autocmd ColorScheme * highlight! SignColumn guibg=NONE',
+    'autocmd ColorScheme * highlight! LineNr guibg=NONE',
+    'autocmd ColorScheme * highlight! CursorLineNr guibg=NONE',
+    'autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE',
+    'autocmd ColorScheme * highlight! Visual guifg=#333333 guibg=#aaaaaa',
+    'autocmd ColorScheme * highlight! ColorColumn guibg=#888888',
+
+    -- Transparent LSP Float Windows
+    'autocmd ColorScheme * highlight! NormalFloat guibg=NONE',
+    'autocmd ColorScheme * highlight! ErrorFloat guibg=NONE',
+    'autocmd ColorScheme * highlight! WarningFloat guibg=NONE',
+    'autocmd ColorScheme * highlight! InfoFloat guibg=NONE',
+    'autocmd ColorScheme * highlight! HintFloat guibg=NONE',
+    'autocmd ColorScheme * highlight! FloatBorder guifg=#aaaaaa guibg=NONE',
+
+    -- Transparent Comments
+    'autocmd ColorScheme * highlight! Comment guifg=#888888 guibg=NONE',
+  })
+end
+
+Augroup('highlightyank_user_events', {
+  'autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })',
+})
+
+-- Default Filetype Options
+Augroup('filetype_user_events', {
+  'autocmd FileType vim,lua lua IndentSize(2, true)',
+  'autocmd FileType scss,sass,css lua IndentSize(2, true)',
+  'autocmd FileType javascript,javascriptreact lua IndentSize(2, true)',
+  'autocmd FileType typescript,typescriptreact lua IndentSize(2, true)',
+  'autocmd FileType json,jsonc lua IndentSize(2, true)',
+  'autocmd FileType vue lua IndentSize(2, true)',
+  'autocmd FileType php,blade,html lua IndentSize(4, true)',
+  'autocmd FileType markdown setlocal spell | lua IndentSize(4, true)',
+})
+
+-- =============================================================================
+-- = Options (OPT) =
+-- =============================================================================
+
+if vim.fn.isdirectory(cnull.config.undodir) == 0 then
+  vim.cmd(string.format('silent !mkdir -p %s', cnull.config.undodir))
+end
+
+-- Completion
+vim.opt.completeopt = 'menuone,noinsert,noselect'
+vim.opt.shortmess:append('c')
+
+-- Search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.showmatch = true
+vim.opt.path = '**'
+
+-- Editor
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.smarttab = true
+vim.opt.autoindent = true
+vim.opt.wrap = false
+vim.opt.colorcolumn = '120'
+vim.opt.scrolloff = 3
+vim.opt.lazyredraw = true
+vim.opt.spell = false
+vim.opt.wildignorecase = true
+
+-- System
+vim.opt.encoding = 'utf-8'
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.updatetime = 250
+vim.opt.undofile = true
+vim.opt.undodir = cnull.config.undodir
+vim.opt.undolevels = 10000
+vim.opt.history = 10000
+vim.opt.backspace = 'indent,eol,start'
+vim.opt.ttimeoutlen = 50
+vim.opt.mouse = ''
+
+-- UI
+vim.opt.hidden = true
+vim.opt.signcolumn = 'yes'
+vim.opt.cmdheight = 2
+vim.opt.showtabline = 2
+vim.opt.laststatus = 2
+vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20'
+vim.opt.termguicolors = true
+vim.opt.number = true
+
+-- =============================================================================
+-- = Keybindings (KEY) =
+-- =============================================================================
+local DEFAULT_KEYMAP_OPTS = { noremap = true, silent = true }
+
+-- Unbind default bindings for arrow keys, trust me this is for your own good
+vim.api.nvim_set_keymap('', '<Up>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('', '<Down>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('', '<Left>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('', '<Right>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('i', '<Up>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('i', '<Down>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('i', '<Left>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('i', '<Right>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+
+-- Resize window panes, we can use those arrow keys
+-- to help use resize windows - at least we give them some purpose
+vim.api.nvim_set_keymap('n', '<Up>', [[<Cmd>resize +2<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Down>', [[<Cmd>resize -2<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Left>', [[<Cmd>vertical resize -2<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Right>', [[<Cmd>vertical resize +2<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- Map Esc, to perform quick switching between Normal and Insert mode
+vim.api.nvim_set_keymap('i', 'jk', [[<Esc>]], DEFAULT_KEYMAP_OPTS)
+
+-- Map escape from terminal input to Normal mode
+vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('t', '<C-[>', [[<C-\><C-n>]], DEFAULT_KEYMAP_OPTS)
+
+-- Disable highlights
+vim.api.nvim_set_keymap('n', '<Leader><CR>', [[<Cmd>noh<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- List all buffers
+vim.api.nvim_set_keymap('n', '<Leader>bl', [[<Cmd>buffers<CR>]], DEFAULT_KEYMAP_OPTS)
+
+vim.api.nvim_set_keymap('n', '<C-l>', [[<Cmd>bnext<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Leader>bn', [[<Cmd>bnext<CR>]], DEFAULT_KEYMAP_OPTS)
+
+vim.api.nvim_set_keymap('n', '<C-h>', [[<Cmd>bprevious<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Leader>bp', [[<Cmd>bprevious<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- Close the current buffer, and more?
+vim.api.nvim_set_keymap('n', '<Leader>bd', [[<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>]], DEFAULT_KEYMAP_OPTS)
+-- Close all buffer, except current
+vim.api.nvim_set_keymap('n', '<Leader>bx', [[<Cmd>%bd<Bar>e#<Bar>bd#<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- Move a line of text Alt+[j/k]
+vim.api.nvim_set_keymap('n', '<M-j>', [[mz:m+<CR>`z]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<M-k>', [[mz:m-2<CR>`z]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]], DEFAULT_KEYMAP_OPTS)
+
+-- Edit vimrc
+vim.api.nvim_set_keymap('n', '<Leader>ve', [[<Cmd>edit $MYVIMRC<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- Source the vimrc to reflect changes
+vim.api.nvim_set_keymap('n', '<Leader>vs', [[<Cmd>ConfigReload<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- Reload file
+vim.api.nvim_set_keymap('n', '<Leader>r', [[<Cmd>edit!<CR>]], DEFAULT_KEYMAP_OPTS)
+
+-- Copy/Paste from clipboard
+vim.api.nvim_set_keymap('v', '<Leader>y', [["+y]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Leader>y', [["+y]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Leader>p', [["+p]], DEFAULT_KEYMAP_OPTS)
+
+-- Disable Ex-mode
+vim.api.nvim_set_keymap('n', 'Q', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+
+-- Utilities
+vim.api.nvim_set_keymap('n', 'Y', [[y$]], DEFAULT_KEYMAP_OPTS)
+
+-- =============================================================================
+-- = Commands (CMD) =
+-- =============================================================================
+
+vim.cmd([[ command! Config edit $MYVIMRC ]])
+vim.cmd([[ command! ConfigReload source $MYVIMRC | nohlsearch ]])
+
+vim.cmd([[ command! ToggleConcealLevel lua ToggleConcealLevel() ]])
+vim.cmd([[ command! ToggleCodeshot lua ToggleCodeshot() ]])
+
+vim.cmd([[ command! MyTodoPersonal edit ~/todofiles/personal/README.md ]])
+vim.cmd([[ command! MyTodoWork edit ~/todofiles/work/README.md ]])
+
+-- Command Abbreviations, I can't release my shift key fast enough 😭
+vim.cmd([[ cnoreabbrev Q q ]])
+vim.cmd([[ cnoreabbrev Qa qa ]])
+vim.cmd([[ cnoreabbrev W w ]])
+vim.cmd([[ cnoreabbrev Wq wq ]])
+
+-- =============================================================================
+-- = Plugin Pre-Config - before loading plugins (PRE) =
+-- =============================================================================
+
+-- vim-vsnip Config
+-- ---
+vim.g.vsnip_extra_mapping = false
+vim.g.vsnip_filetypes = {
+  javascriptreact = { 'javascript' },
+  typescriptreact = { 'typescript' },
+}
+
+-- emmet-vim Config
+-- ---
+vim.g.user_emmet_leader_key = '<C-q>'
+vim.g.user_emmet_install_global = 0
+
+Augroup('emmet_user_events', {
+  'autocmd FileType html,blade,php,vue,javascriptreact,typescriptreact EmmetInstall',
+})
+
+-- indentLine Config
+-- ---
+vim.g.indentLine_char = '│'
+
+-- projectlocal-vim Config
+-- ---
+vim.g.projectlocal = {
+  showMessage = true,
+  projectConfig = '.vim/init.lua',
+  debug = false,
+}
+
+-- vim-json Config
+-- ---
+vim.g.vim_json_syntax_conceal = 0
+vim.g.vim_json_conceal = 0
+
+-- moonfly Config
+-- ---
+vim.g.moonflyNormalFloat = 1
+
+-- lir.nvim Config
+-- ---
+Augroup('lir_user_events', {
+  'autocmd ColorScheme * highlight! default link CursorLine Visual',
+})
+
+-- =============================================================================
+-- = Plugin Manager (PLUG) =
+-- =============================================================================
+
+local install_path = cnull.config.data_dir .. '/site/pack/packer/start/packer.nvim'
+local packer_firsttime = false
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  local git = 'https://github.com/wbthomason/packer.nvim'
+  vim.fn.system({ 'git', 'clone', '--depth', '1', git, install_path })
+  packer_firsttime = true
+end
+
+local packer = require('packer')
+packer.init({
+  package_root = cnull.config.data_dir .. '/site/pack',
+  compile_path = cnull.config.data_dir .. '/site/plugin/packer_compiled.lua',
+})
+
+packer.startup(function(use)
+  -- Self-maintenance
+  use('wbthomason/packer.nvim')
+
+  -- Deps
+  use('Shougo/context_filetype.vim')
+  use('kyazdani42/nvim-web-devicons')
+  use('nvim-lua/plenary.nvim')
+  use('vim-denops/denops.vim')
+  use('lambdalisue/nerdfont.vim')
+
+  -- Core
+  use('creativenull/projectlocal-vim')
+  use('windwp/nvim-autopairs')
+  use('tpope/vim-abolish')
+  use('tpope/vim-surround')
+  use('tpope/vim-repeat')
+  use('editorconfig/editorconfig-vim')
+  use('numToStr/Comment.nvim')
+  use('kevinhwang91/nvim-bqf')
+
+  -- File Explorer
+  use('tamago324/lir.nvim')
+
+  -- Linters + Formatters + LSP Client
+  use('neovim/nvim-lspconfig')
+  use('creativenull/diagnosticls-configs-nvim')
+  -- use '~/projects/github.com/creativenull/diagnosticls-configs-nvim'
+  use('creativenull/efmls-configs-nvim')
+  -- use '~/projects/github.com/creativenull/efmls-configs-nvim'
+
+  -- Snippet Engine + Presets
+  use('hrsh7th/vim-vsnip')
+  use('rafamadriz/friendly-snippets')
+  use('mattn/emmet-vim')
+
+  -- AutoCompletion + Sources
+  use('Shougo/ddc.vim')
+  use('matsui54/denops-popup-preview.vim')
+  use('tani/ddc-fuzzy')
+  use('Shougo/ddc-around')
+  use('matsui54/ddc-buffer')
+  use('hrsh7th/vim-vsnip-integ')
+  use('Shougo/ddc-nvim-lsp')
+
+  -- Fuzzy File/Code Finder
+  use('nvim-telescope/telescope.nvim')
+
+  -- Git
+  use('lewis6991/gitsigns.nvim')
+
+  -- UI
+  use('nvim-treesitter/nvim-treesitter')
+  use('nvim-treesitter/nvim-treesitter-refactor')
+  use('code-biscuits/nvim-biscuits')
+  use('akinsho/bufferline.nvim')
+  use('folke/todo-comments.nvim')
+  use('nvim-lualine/lualine.nvim')
+  use('norcalli/nvim-colorizer.lua')
+  use('lukas-reineke/indent-blankline.nvim')
+
+  -- Colorschemes
+  use('bluz71/vim-nightfly-guicolors')
+  use('bluz71/vim-moonfly-colors')
+  use('fnune/base16-vim')
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_firsttime then
+    packer.sync()
+  end
+end)
+
+-- =============================================================================
+-- = Plugin Post-Config - after loading plugins (POST) =
+-- =============================================================================
+
+-- Comment.nvim Config
+-- ---
+require('Comment').setup()
+
+-- nvim-lspconfig Config
+-- ---
+require('cnull.lsp')
+
+-- ddc.vim Config
+-- ---
+require('cnull.autocompletion')
+
+vim.api.nvim_set_keymap(
+  'i',
+  '<C-y>',
+  [[pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"]],
+  { silent = true, expr = true }
+)
+
+vim.api.nvim_set_keymap('i', '<C-Space>', [[ddc#map#manual_complete()]], {
+  silent = true,
+  expr = true,
+  noremap = true,
+})
+
+-- Snippets
+vim.api.nvim_set_keymap('i', '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
+  silent = true,
+  expr = true,
+})
+vim.api.nvim_set_keymap('s', '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
+  silent = true,
+  expr = true,
+})
+vim.api.nvim_set_keymap('i', '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
+  silent = true,
+  expr = true,
+})
+vim.api.nvim_set_keymap('s', '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
+  silent = true,
+  expr = true,
+})
+
+-- nvim-autopairs Config
+-- ---
+require('nvim-autopairs').setup()
+
+-- gitsigns.nvim Config
+-- ---
+require('gitsigns').setup()
+
+-- todo-comments.nvim Config
+-- ---
+require('todo-comments').setup()
+
+-- telescope.nvim Config
+-- ---
+require('cnull.finder')
+
+vim.api.nvim_set_keymap('n', '<C-p>', [[<Cmd>lua TelescopeFindFiles()<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.api.nvim_set_keymap('n', '<Leader>vf', [[<Cmd>lua TelescopeFindConfigFiles()<CR>]], DEFAULT_KEYMAP_OPTS)
+
+if cnull.transparent then
+  Augroup('augroup telescope_user_events', {
+    'autocmd ColorScheme * highlight! TelescopeBorder guifg=#aaaaaa',
+  })
+end
+
+-- nvim-treesitter Config
+-- ---
+require('cnull.treesitter')
+
+-- nvim-biscuits Config
+-- ---
+require('cnull.biscuits')
+
+vim.api.nvim_set_keymap(
+  'n',
+  '<Leader>it',
+  [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]],
+  DEFAULT_KEYMAP_OPTS
+)
+
+-- lualine.nvim Config
+-- ---
+require('cnull.statusline')
+
+-- indent-blankline.nvim Config
+-- ---
+if cnull.transparent then
+  Augroup('augroup indent_blankline_user_events', {
+    'autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE',
+  })
+else
+  Augroup('augroup indent_blankline_user_events', {
+    'autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE',
+  })
+end
+
+require('cnull.indent_blankline')
+
+-- bufferline.lua Config
+-- ---
+require('cnull.bufferline')
+
+-- lir.nvim Config
+-- ---
+require('cnull.explorer')
+
+-- colorizer.lua Config
+-- ---
+require('cnull.colorizer')
+
+-- =============================================================================
+-- = UI/Theme =
+-- =============================================================================
+
+vim.cmd([[ colorscheme base16-horizon-terminal-dark ]])
