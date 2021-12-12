@@ -8,25 +8,25 @@ local function on_attach(_, buf)
   local diag_opts = string.format('{ width = %d, border = %q }', DEFAULT_BORDER_WIDTH, DEFAULT_BORDER_STYLE)
 
   -- Keymaps
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', DEFAULT_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>', DEFAULT_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>le', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', DEFAULT_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>', DEFAULT_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', DEFAULT_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>', DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', [[<Cmd>lua vim.lsp.buf.definition()<CR>]], DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lf', [[<Cmd>lua vim.lsp.buf.formatting()<CR>]], DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lh', [[<Cmd>lua vim.lsp.buf.hover()<CR>]], DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lr', [[<Cmd>lua vim.lsp.buf.rename()<CR>]], DEFAULT_OPTS)
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>le', [[<Cmd>lua vim.diagnostic.setloclist()<CR>]], DEFAULT_OPTS)
   vim.api.nvim_buf_set_keymap(
     buf,
     'n',
     '<Leader>lw',
-    string.format('<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics(%s)<CR>', diag_opts),
+    string.format([[<Cmd>lua vim.diagnostic.open_float(%s)<CR>]], diag_opts),
     DEFAULT_OPTS
   )
 end
 
 -- Initial LSP Settings
 -- --
--- Show diagnostics only as underline
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+-- Gloabally change diagnostic behavior
+vim.diagnostic.config({
   underline = true,
   virtual_text = false,
   signs = true,
@@ -40,10 +40,9 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 })
 
 -- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signatureHelp,
-  { border = DEFAULT_BORDER_WIDTH }
-)
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+  border = DEFAULT_BORDER_WIDTH,
+})
 
 -- Add support to get snippets from lsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
