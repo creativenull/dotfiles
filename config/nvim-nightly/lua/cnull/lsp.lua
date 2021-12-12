@@ -128,7 +128,9 @@ local dls = require('diagnosticls-configs')
 dls.init({
   on_attach = on_attach,
   capabilities = capabilities,
+  default_config = true,
 })
+dls.setup()
 
 -- EFM LSP Server - for linters and formatters
 -- ---
@@ -137,7 +139,6 @@ dls.init({
 --   on_attach = on_attach,
 --   capabilities = capabilities,
 -- })
---
 -- efmls.setup({
 --   lua = {
 --     linter = require('efmls-configs.linters.luacheck'),
