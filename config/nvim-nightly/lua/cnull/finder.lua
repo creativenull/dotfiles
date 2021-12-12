@@ -22,7 +22,7 @@ function _G.TelescopeLiveGrep()
 end
 
 function _G.TelescopeFindConfigFiles()
-  local configdir = ''
+  local configdir
   if vim.g.userspace ~= nil then
     configdir = vim.fn.expand('$HOME/.config/' .. vim.g.userspace)
   else
