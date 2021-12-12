@@ -84,7 +84,6 @@ else
   let s:cnull.config.undodir = s:cnull.config.cache_dir . '/undo'
 endif
 
-
 " =============================================================================
 " = Functions =
 " =============================================================================
@@ -121,7 +120,7 @@ function! g:IndentSize(size, use_spaces)
 endfunction
 
 " =============================================================================
-" = Events =
+" = Events (AUG) =
 " =============================================================================
 
 if s:cnull.transparent
@@ -167,7 +166,7 @@ augroup filetype_user_events
 augroup END
 
 " =============================================================================
-" = Options =
+" = Options (OPT) =
 " =============================================================================
 
 if !isdirectory(s:cnull.config.undodir)
@@ -225,7 +224,7 @@ set termguicolors
 set number
 
 " =============================================================================
-" = Keybindings =
+" = Keybindings (KEY) =
 " =============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
@@ -296,7 +295,7 @@ nnoremap Q <Nop>
 nnoremap Y y$
 
 " =============================================================================
-" = Commands =
+" = Commands (CMD) =
 " =============================================================================
 
 command! Config edit $MYVIMRC
@@ -315,7 +314,7 @@ cnoreabbrev W w
 cnoreabbrev Wq wq
 
 " =============================================================================
-" = Plugin Pre-Config - before loading plugins =
+" = Plugin Pre-Config - before loading plugins (PRE) =
 " =============================================================================
 
 " vim-vsnip Config
@@ -364,7 +363,7 @@ augroup lir_user_events
 augroup END
 
 " =============================================================================
-" = Plugin Manager =
+" = Plugin Manager (PLUG) =
 " =============================================================================
 
 let s:plugin = {}
@@ -444,7 +443,7 @@ Plug 'fnune/base16-vim'
 call plug#end()
 
 " =============================================================================
-" = Plugin Post-Config - after loading plugins =
+" = Plugin Post-Config - after loading plugins (POST) =
 " =============================================================================
 
 " Comment.nvim Config
