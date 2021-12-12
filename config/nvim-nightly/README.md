@@ -45,7 +45,7 @@ USERSPACE="nvim-nightly"
 NVIM_GIT=${HOME}/.builds/neovim
 NVIM_RPLUGIN_MANIFEST=${HOME}/.local/share/${USERSPACE}/rplugin.vim
 VIMRUNTIME=${NVIM_GIT}/runtime
-MYVIMRC=${HOME}/.config/${USERSPACE}/init.vim
+MYVIMRC=${HOME}/.config/${USERSPACE}/init.lua
 
 MYVIMRC=${MYVIMRC} NVIM_RPLUGIN_MANIFEST=${NVIM_RPLUGIN_MANIFEST} VIMRUNTIME=${VIMRUNTIME} ${NVIM_GIT}/build/bin/nvim "$@" -u ${MYVIMRC}
 ```
