@@ -9,7 +9,7 @@
 -- =============================================================================
 
 vim.g.userspace = 'nvim-nightly'
-if vim.fn.exists('g:userspace') then
+if vim.g.userspace then
   -- Runtime Path
   vim.cmd([[ set runtimepath-=~/.config/nvim ]])
   vim.cmd([[ set runtimepath-=~/.config/nvim/after ]])
@@ -53,7 +53,7 @@ end
 local exec_list = { 'git', 'curl', 'python3', 'rg', 'deno' }
 for _, exec in pairs(exec_list) do
   if vim.fn.executable(exec) == 0 then
-    local errmsg = string.format('[nvim] `%s` is needed!', exec)
+    local errmsg = string.format('[nvim] %q is needed!', exec)
     vim.api.nvim_err_writeln(errmsg)
     return
   end
@@ -79,17 +79,17 @@ local cnull = {
   },
 }
 
-if vim.fn.exists('g:userspace') == 1 then
-  cnull.config.data_dir = vim.fn.expand(string.format('$HOME/.local/share/%s', vim.g.userspace))
-  cnull.config.cache_dir = vim.fn.expand(string.format('$HOME/.cache/%s', vim.g.userspace))
-  cnull.config.config_dir = vim.fn.expand(string.format('$HOME/.config/%s', vim.g.userspace))
-  cnull.config.undodir = cnull.config.cache_dir .. '/undo'
+if vim.g.userspace then
+  cnull.config.data_dir = string.format('%s/.local/share/%s', vim.env.HOME, vim.g.userspace)
+  cnull.config.cache_dir = string.format('%s/.cache/%s', vim.env.HOME, vim.g.userspace)
+  cnull.config.config_dir = string.format('%s/.config/%s', vim.env.HOME, vim.g.userspace)
 else
   cnull.config.data_dir = vim.fn.stdpath('data')
   cnull.config.cache_dir = vim.fn.stdpath('config')
   cnull.config.config_dir = vim.fn.stdpath('cache')
-  cnull.config.undodir = cnull.config.cache_dir .. '/undo'
 end
+
+cnull.config.undodir = string.format('%s/undodir', cnull.config.cache_dir)
 
 -- =============================================================================
 -- = Functions =
@@ -129,7 +129,7 @@ function _G.IndentSize(size, use_spaces)
   vim.bo[buf].softtabstop = size
   vim.bo[buf].shiftwidth = size
 
-  if use_spaces ~= nil then
+  if use_spaces then
     vim.bo[buf].expandtab = true
   else
     vim.bo[buf].expandtab = false
@@ -175,6 +175,10 @@ if cnull.transparent then
   })
 end
 
+Augroup('listchars_user_events', {
+  'autocmd ColorScheme * highlight! NonText gui=NONE'
+})
+
 Augroup('highlightyank_user_events', {
   'autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })',
 })
@@ -200,7 +204,7 @@ if vim.fn.isdirectory(cnull.config.undodir) == 0 then
 end
 
 -- Completion
-vim.opt.completeopt = 'menuone,noinsert,noselect'
+vim.opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
 vim.opt.shortmess:append('c')
 
 -- Search
@@ -235,7 +239,7 @@ vim.opt.undofile = true
 vim.opt.undodir = cnull.config.undodir
 vim.opt.undolevels = 10000
 vim.opt.history = 10000
-vim.opt.backspace = 'indent,eol,start'
+vim.opt.backspace = { 'indent', 'eol', 'start' }
 vim.opt.ttimeoutlen = 50
 vim.opt.mouse = ''
 
@@ -245,9 +249,11 @@ vim.opt.signcolumn = 'yes'
 vim.opt.cmdheight = 2
 vim.opt.showtabline = 2
 vim.opt.laststatus = 2
-vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20'
+vim.opt.guicursor = { 'n-v-c-sm:block', 'i-ci-ve:block', 'r-cr-o:hor20' }
 vim.opt.termguicolors = true
 vim.opt.number = true
+vim.opt.listchars = { eol = '⤶' }
+vim.opt.list = true
 
 -- =============================================================================
 -- = Keybindings (KEY) =
@@ -432,10 +438,10 @@ packer.startup(function(use)
 
   -- Linters + Formatters + LSP Client
   use('neovim/nvim-lspconfig')
-  use('creativenull/diagnosticls-configs-nvim')
-  -- use '~/projects/github.com/creativenull/diagnosticls-configs-nvim'
+  -- use('creativenull/diagnosticls-configs-nvim')
+  -- use('~/projects/github.com/creativenull/diagnosticls-configs-nvim')
   use('creativenull/efmls-configs-nvim')
-  -- use '~/projects/github.com/creativenull/efmls-configs-nvim'
+  -- use('~/projects/github.com/creativenull/efmls-configs-nvim')
 
   -- Snippet Engine + Presets
   use('hrsh7th/vim-vsnip')
