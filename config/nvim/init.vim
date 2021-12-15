@@ -193,8 +193,6 @@ set laststatus=2
 set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
 set termguicolors
 set number
-set listchars=eol:⤶
-set list
 
 " =============================================================================
 " = Keybindings (KEY) =
