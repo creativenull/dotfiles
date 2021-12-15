@@ -37,7 +37,7 @@ endfor
 " Windows specific settings
 if has('win32')
   if !executable('pwsh')
-    echoerr '[nvim] `pwsh` aka powershell core v6 and up is needed!'
+    echoerr '[nvim] PowerShell Core 6 and up is needed!'
     finish
   endif
 
@@ -296,17 +296,18 @@ cnoreabbrev Wq wq
 " = Plugin Pre-Config - before loading plugins (PRE) =
 " =============================================================================
 
-" UltiSnips/vim-snippets Config
+" vim-vsnip Config
 " ---
-let g:UltiSnipsExpandTrigger = '<C-q>.'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+let g:vsnip_extra_mapping = v:false
+let g:vsnip_filetypes = {
+  \ 'javascriptreact': ['javascript'],
+  \ 'typescriptreact': ['typescript'],
+\ }
 
-augroup ultisnips_user_events
-  autocmd!
-  autocmd FileType javascriptreact UltiSnipsAddFiletypes javascript
-  autocmd FileType typescriptreact UltiSnipsAddFiletypes typescript
-augroup END
+imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+imap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
+smap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
 
 " vim-vue Config
 " ---
@@ -496,12 +497,12 @@ Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
-Plug 'matsui54/ddc-ultisnips'
 Plug 'statiolake/ddc-ale'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 " Snippet Engine + Presets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
 
 " Fuzzy File/Code Finder
 Plug 'junegunn/fzf'
@@ -549,7 +550,7 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 " ddc.vim Config
 " ---
 call ddc#custom#patch_global({
-  \ 'sources': ['ale', 'ultisnips', 'around', 'buffer'],
+  \ 'sources': ['ale', 'vsnip', 'around', 'buffer'],
   \ 'sourceOptions': {
     \ '_': {
       \ 'matchers': ['matcher_fuzzy'],
@@ -557,11 +558,13 @@ call ddc#custom#patch_global({
       \ 'converters': ['converter_fuzzy'],
     \ },
     \ 'ale': {
-      \ 'mark': 'ALE',
+      \ 'mark': 'LSP',
       \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+      \ 'maxCandidates': 10,
     \ },
-    \ 'ultisnips': {
-      \ 'mark': 'SNIPPETS',
+    \ 'vsnip': {
+      \ 'mark': 'SNIPPET',
+      \ 'maxCandidates': 10,
     \ },
     \ 'around': {
       \ 'mark': 'AROUND',
@@ -578,10 +581,10 @@ call ddc#custom#patch_global({
 call ddc#custom#patch_filetype('markdown', { 'sources': ['around', 'buffer'] })
 
 " Use tab to complete the popup menu item
-" w/ ultisnips integration
+" w/ vsnip integration
 inoremap <expr> <C-y> pumvisible()
- \ ? UltiSnips#CanExpandSnippet() ? "\<C-r>=UltiSnips#ExpandSnippet()<CR>" : "\<C-y>"
- \ : "\<C-y>"
+\ ? ( vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>" )
+\ : "\<C-y>"
 
 inoremap <expr> <C-Space> ddc#map#manual_complete()
 
