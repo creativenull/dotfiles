@@ -1,6 +1,8 @@
 # Oh my zsh configs
 export ZSH=$HOME/.oh-my-zsh
 
+plugins=(artisan composer)
+
 ZSH_THEME="robbyrussell"
 
 source $ZSH/oh-my-zsh.sh
