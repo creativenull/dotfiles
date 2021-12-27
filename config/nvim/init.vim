@@ -97,14 +97,19 @@ endfunction
 if s:cnull.transparent
   augroup transparent_user_events
     autocmd!
-    autocmd ColorScheme * highlight Normal guibg=NONE
-    autocmd ColorScheme * highlight SignColumn guibg=NONE
-    autocmd ColorScheme * highlight LineNr guibg=NONE guifg=#888888
-    autocmd ColorScheme * highlight CursorLineNr guibg=NONE
-    autocmd ColorScheme * highlight EndOfBuffer guibg=NONE
+    autocmd ColorScheme * highlight! Normal guibg=NONE
+    autocmd ColorScheme * highlight! SignColumn guibg=NONE
+    autocmd ColorScheme * highlight! LineNr guibg=NONE guifg=#888888
+    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
+    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
+    autocmd ColorScheme * highlight! Visual guibg=#555555
 
     " Sometimes comments are too dark, affects in tranparent mode
-    autocmd ColorScheme * highlight Comment guifg=#888888
+    autocmd ColorScheme * highlight! Comment guifg=#888888
+
+    " Tabline
+    autocmd ColorScheme * highlight! TabLineFill guibg=NONE
+    autocmd ColorScheme * highlight! TabLine guibg=NONE
   augroup END
 endif
 
@@ -148,51 +153,52 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " Search
-set ignorecase
-set smartcase
 set hlsearch
+set ignorecase
 set incsearch
-set showmatch
 set path=**
+set showmatch
+set smartcase
 
 " Editor
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+set autoindent
+set colorcolumn=120
 set expandtab
+set iskeyword+=-
+set lazyredraw
+set nofoldenable
+set nospell
+set nowrap
+set scrolloff=3
+set shiftwidth=4
 set smartindent
 set smarttab
-set autoindent
-set nowrap
-set colorcolumn=120
-set scrolloff=3
-set lazyredraw
-set nospell
+set softtabstop=4
+set tabstop=4
 set wildignorecase
-set nofoldenable
 
 " System
+let &undodir=s:cnull.config.undodir
+set backspace=indent,eol,start
 set encoding=utf-8
+set history=10000
+set mouse=
 set nobackup
 set noswapfile
-set updatetime=250
-set undofile
-let &undodir=s:cnull.config.undodir
-set undolevels=10000
-set history=10000
-set backspace=indent,eol,start
 set ttimeoutlen=50
-set mouse=
+set undofile
+set undolevels=10000
+set updatetime=250
 
 " UI
-set hidden
-set signcolumn=yes
 set cmdheight=2
-set showtabline=2
-set laststatus=2
 set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
-set termguicolors
+set hidden
+set laststatus=2
 set number
+set showtabline=2
+set signcolumn=yes
+set termguicolors
 
 " =============================================================================
 " = Keybindings (KEY) =
@@ -490,7 +496,7 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'dense-analysis/ale'
 
 " AutoCompletion + Sources
-Plug 'Shougo/ddc.vim', { 'tag': 'v1.0.0' }
+Plug 'Shougo/ddc.vim', { 'tag': 'v1.2.0' }
 Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-around'
