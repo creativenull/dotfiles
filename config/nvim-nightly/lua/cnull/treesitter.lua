@@ -11,6 +11,7 @@ require('nvim-treesitter.configs').setup({
     'tsx',
     'typescript',
     'vue',
+    'haskell',
   },
   highlight = { enable = true },
   indent = { enable = false },
