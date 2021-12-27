@@ -123,24 +123,23 @@ lspconfig.vuels.setup({
 
 -- DiagnosticLS Server - for linters and formatters
 -- ---
-local dls = require('diagnosticls-configs')
-dls.init({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  default_config = true,
-})
-dls.setup()
+-- local dls = require('diagnosticls-configs')
+-- dls.init({
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   default_config = true,
+-- })
+-- dls.setup()
 
 -- EFM LSP Server - for linters and formatters
 -- ---
--- local efmls = require('efmls-configs')
--- efmls.init({
---   on_attach = on_attach,
---   capabilities = capabilities,
--- })
--- efmls.setup({
---   lua = {
---     linter = require('efmls-configs.linters.luacheck'),
---     formatter = require('efmls-configs.formatters.stylua'),
---   },
--- })
+local efmls = require('efmls-configs')
+efmls.init({
+  -- default_config = true,
+  on_attach = on_attach,
+  capabilities = capabilities,
+  init_options = {
+    documentFormatting = true,
+  },
+})
+-- efmls.setup()
