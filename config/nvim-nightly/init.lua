@@ -175,10 +175,6 @@ if cnull.transparent then
   })
 end
 
-Augroup('listchars_user_events', {
-  'autocmd ColorScheme * highlight! NonText gui=NONE'
-})
-
 Augroup('highlightyank_user_events', {
   'autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })',
 })
@@ -252,8 +248,6 @@ vim.opt.laststatus = 2
 vim.opt.guicursor = { 'n-v-c-sm:block', 'i-ci-ve:block', 'r-cr-o:hor20' }
 vim.opt.termguicolors = true
 vim.opt.number = true
-vim.opt.listchars = { eol = '⤶' }
-vim.opt.list = true
 
 -- =============================================================================
 -- = Keybindings (KEY) =
@@ -449,7 +443,7 @@ packer.startup(function(use)
   use('mattn/emmet-vim')
 
   -- AutoCompletion + Sources
-  use('Shougo/ddc.vim')
+  use({ 'Shougo/ddc.vim', tag = 'v1.0.0' })
   use('matsui54/denops-popup-preview.vim')
   use('tani/ddc-fuzzy')
   use('Shougo/ddc-around')
