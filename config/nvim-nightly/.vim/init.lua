@@ -1,10 +1,10 @@
 -- Powered by projectlocal-vim
 -- https://github.com/creativenull/projectlocal-vim
-local ok, dls = pcall(require, 'diagnosticls-configs')
+local ok, efm = pcall(require, 'efmls-configs')
 if ok then
-  local luacheck = require('diagnosticls-configs.linters.luacheck')
-  local stylua = require('diagnosticls-configs.formatters.stylua')
-  dls.setup({
+  local luacheck = require('efmls-configs.linters.luacheck')
+  local stylua = require('efmls-configs.formatters.stylua')
+  efm.setup({
     lua = {
       formatter = stylua,
       linter = luacheck,
