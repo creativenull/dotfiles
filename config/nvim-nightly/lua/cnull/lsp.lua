@@ -7,6 +7,8 @@ local DEFAULT_BORDER_WIDTH = 80
 local function on_attach(_, buf)
   local diag_opts = string.format('{ width = %d, border = %q }', DEFAULT_BORDER_WIDTH, DEFAULT_BORDER_STYLE)
 
+  vim.api.nvim_buf_set_option(buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
   -- Keymaps
   vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], DEFAULT_OPTS)
   vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', [[<Cmd>lua vim.lsp.buf.definition()<CR>]], DEFAULT_OPTS)
@@ -135,11 +137,9 @@ lspconfig.vuels.setup({
 -- ---
 local efmls = require('efmls-configs')
 efmls.init({
-  -- default_config = true,
   on_attach = on_attach,
   capabilities = capabilities,
   init_options = {
     documentFormatting = true,
   },
 })
--- efmls.setup()
