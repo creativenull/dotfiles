@@ -11,16 +11,16 @@
 vim.g.userspace = 'nvim-nightly'
 if vim.g.userspace then
   -- Runtime Path
-  vim.cmd([[ set runtimepath-=~/.config/nvim ]])
-  vim.cmd([[ set runtimepath-=~/.config/nvim/after ]])
-  vim.cmd([[ set runtimepath-=~/.local/share/nvim/site ]])
-  vim.cmd([[ set runtimepath-=~/.local/share/nvim/site/after ]])
-  vim.cmd([[ set runtimepath-=/etc/xdg/nvim ]])
-  vim.cmd([[ set runtimepath-=/etc/xdg/nvim/after ]])
-  vim.cmd([[ set runtimepath-=/usr/share/nvim/site ]])
-  vim.cmd([[ set runtimepath-=/usr/share/nvim/site/after ]])
-  vim.cmd([[ set runtimepath-=/usr/local/share/nvim/site ]])
-  vim.cmd([[ set runtimepath-=/usr/local/share/nvim/site/after ]])
+  vim.cmd('set runtimepath-=~/.config/nvim')
+  vim.cmd('set runtimepath-=~/.config/nvim/after')
+  vim.cmd('set runtimepath-=~/.local/share/nvim/site')
+  vim.cmd('set runtimepath-=~/.local/share/nvim/site/after')
+  vim.cmd('set runtimepath-=/etc/xdg/nvim')
+  vim.cmd('set runtimepath-=/etc/xdg/nvim/after')
+  vim.cmd('set runtimepath-=/usr/share/nvim/site')
+  vim.cmd('set runtimepath-=/usr/share/nvim/site/after')
+  vim.cmd('set runtimepath-=/usr/local/share/nvim/site')
+  vim.cmd('set runtimepath-=/usr/local/share/nvim/site/after')
 
   vim.cmd(string.format('set runtimepath+=~/.config/%s/after', vim.g.userspace))
   vim.cmd(string.format('set runtimepath^=~/.config/%s', vim.g.userspace))
@@ -28,16 +28,16 @@ if vim.g.userspace then
   vim.cmd(string.format('set runtimepath^=~/.local/share/%s/site', vim.g.userspace))
 
   -- Pack Path
-  vim.cmd([[ set packpath-=~/.config/nvim ]])
-  vim.cmd([[ set packpath-=~/.config/nvim/after ]])
-  vim.cmd([[ set packpath-=~/.local/share/nvim/site ]])
-  vim.cmd([[ set packpath-=~/.local/share/nvim/site/after ]])
-  vim.cmd([[ set packpath-=/etc/xdg/nvim ]])
-  vim.cmd([[ set packpath-=/etc/xdg/nvim/after ]])
-  vim.cmd([[ set packpath-=/usr/local/share/nvim/site ]])
-  vim.cmd([[ set packpath-=/usr/local/share/nvim/site/after ]])
-  vim.cmd([[ set packpath-=/usr/share/nvim/site ]])
-  vim.cmd([[ set packpath-=/usr/share/nvim/site/after ]])
+  vim.cmd('set packpath-=~/.config/nvim')
+  vim.cmd('set packpath-=~/.config/nvim/after')
+  vim.cmd('set packpath-=~/.local/share/nvim/site')
+  vim.cmd('set packpath-=~/.local/share/nvim/site/after')
+  vim.cmd('set packpath-=/etc/xdg/nvim')
+  vim.cmd('set packpath-=/etc/xdg/nvim/after')
+  vim.cmd('set packpath-=/usr/local/share/nvim/site')
+  vim.cmd('set packpath-=/usr/local/share/nvim/site/after')
+  vim.cmd('set packpath-=/usr/share/nvim/site')
+  vim.cmd('set packpath-=/usr/share/nvim/site/after')
 
   vim.cmd(string.format('set packpath^=~/.config/%s', vim.g.userspace))
   vim.cmd(string.format('set packpath+=~/.config/%s/after', vim.g.userspace))
@@ -325,20 +325,20 @@ vim.api.nvim_set_keymap('n', 'Y', [[y$]], DEFAULT_KEYMAP_OPTS)
 -- = Commands (CMD) =
 -- =============================================================================
 
-vim.cmd([[ command! Config edit $MYVIMRC ]])
-vim.cmd([[ command! ConfigReload source $MYVIMRC | nohlsearch ]])
+vim.cmd('command! Config edit $MYVIMRC')
+vim.cmd('command! ConfigReload source $MYVIMRC | nohlsearch')
 
-vim.cmd([[ command! ToggleConcealLevel lua ToggleConcealLevel() ]])
-vim.cmd([[ command! ToggleCodeshot lua ToggleCodeshot() ]])
+vim.cmd('command! ToggleConcealLevel lua ToggleConcealLevel()')
+vim.cmd('command! ToggleCodeshot lua ToggleCodeshot()')
 
-vim.cmd([[ command! MyTodoPersonal edit ~/todofiles/personal/README.md ]])
-vim.cmd([[ command! MyTodoWork edit ~/todofiles/work/README.md ]])
+vim.cmd('command! MyTodoPersonal edit ~/todofiles/personal/README.md')
+vim.cmd('command! MyTodoWork edit ~/todofiles/work/README.md')
 
 -- Command Abbreviations, I can't release my shift key fast enough 😭
-vim.cmd([[ cnoreabbrev Q q ]])
-vim.cmd([[ cnoreabbrev Qa qa ]])
-vim.cmd([[ cnoreabbrev W w ]])
-vim.cmd([[ cnoreabbrev Wq wq ]])
+vim.cmd('cnoreabbrev Q q')
+vim.cmd('cnoreabbrev Qa qa')
+vim.cmd('cnoreabbrev W w')
+vim.cmd('cnoreabbrev Wq wq')
 
 -- =============================================================================
 -- = Plugin Pre-Config - before loading plugins (PRE) =
@@ -601,4 +601,4 @@ require('cnull.colorizer')
 -- = UI/Theme =
 -- =============================================================================
 
-vim.cmd([[ colorscheme base16-horizon-terminal-dark ]])
+vim.cmd('colorscheme base16-horizon-terminal-dark')
