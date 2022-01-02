@@ -37,7 +37,7 @@ endfor
 " Windows specific settings
 if has('win32')
   if !executable('pwsh')
-    echoerr '[nvim] PowerShell Core 6 and up is needed!'
+    echoerr '[nvim] PowerShell Core >= v6 is needed!'
     finish
   endif
 
@@ -50,10 +50,10 @@ endif
 
 " leader and providers settings
 let g:mapleader = s:cnull.leaderkey
+let g:python3_host_prog = exepath('python3')
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
-let g:python3_host_prog = exepath('python3')
 
 " =============================================================================
 " = Functions =
@@ -205,20 +205,20 @@ set termguicolors
 " =============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
-noremap  <Up>    <Nop>
-noremap  <Down>  <Nop>
-noremap  <Left>  <Nop>
+noremap  <Up> <Nop>
+noremap  <Down> <Nop>
+noremap  <Left> <Nop>
 noremap  <Right> <Nop>
-inoremap <Up>    <Nop>
-inoremap <Down>  <Nop>
-inoremap <Left>  <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
 inoremap <Right> <Nop>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
-nnoremap <Up>    <Cmd>resize +2<CR>
-nnoremap <Down>  <Cmd>resize -2<CR>
-nnoremap <Left>  <Cmd>vertical resize -2<CR>
+nnoremap <Up> <Cmd>resize +2<CR>
+nnoremap <Down> <Cmd>resize -2<CR>
+nnoremap <Left> <Cmd>vertical resize -2<CR>
 nnoremap <Right> <Cmd>vertical resize +2<CR>
 
 " Map Esc, to perform quick switching between Normal and Insert mode
@@ -308,10 +308,10 @@ let g:vsnip_filetypes = {
   \ 'typescriptreact': ['typescript'],
 \ }
 
-imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
-smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
-imap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
-smap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
+imap <expr> <C-j> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+smap <expr> <C-j> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+imap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+smap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 
 " vim-vue Config
 " ---
@@ -367,38 +367,6 @@ nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
 nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
 nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
 nnoremap <silent> <Leader>li <Cmd>ALEInfo<CR>
-
-function! g:AleErrorStlComponent() abort
-  if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let errors = info.error
-    if errors > 0
-      return printf('%d', errors)
-    endif
-  endif
-
-  return ''
-endfunction
-
-function! g:AleWarningStlComponent() abort
-  if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let warnings = info.warning
-    if warnings > 0
-      return printf('%d', warnings)
-    endif
-  endif
-
-  return ''
-endfunction
-
-function! g:AleStatus()
-  if exists('g:loaded_ale')
-    return 'ALE'
-  endif
-
-  return ''
-endfunction
 
 " indentLine Config
 " ---
@@ -581,14 +549,11 @@ call ddc#custom#patch_global({
   \ },
 \ })
 
-" Markdown files
+" Markdown FileType completion sources
 call ddc#custom#patch_filetype('markdown', { 'sources': ['around', 'buffer'] })
 
-" Use tab to complete the popup menu item
-" w/ vsnip integration
-inoremap <expr> <C-y> pumvisible()
-\ ? ( vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>" )
-\ : "\<C-y>"
+" Use tab to complete the popup menu item w/ vsnip integration
+inoremap <expr> <C-y> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"
 
 inoremap <expr> <C-Space> ddc#map#manual_complete()
 
@@ -597,6 +562,38 @@ call ddc#enable()
 
 " lightline.vim Config
 " ---
+function! g:AleErrorStlComponent() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let errors = info.error
+    if errors > 0
+      return printf('%d', errors)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! g:AleWarningStlComponent() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let warnings = info.warning
+    if warnings > 0
+      return printf('%d', warnings)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! g:AleStatus()
+  if exists('g:loaded_ale')
+    return 'ALE'
+  endif
+
+  return ''
+endfunction
+
 " Adjust some colors in powerline theme
 let s:powerline = copy(g:lightline#colorscheme#powerline#palette)
 let s:powerline.normal.left = [ ['#cdcdcd', '#047857', 'bold'], ['white', 'gray4'] ]
