@@ -159,8 +159,7 @@ if cnull.transparent then
     'autocmd ColorScheme * highlight! LineNr guibg=NONE',
     'autocmd ColorScheme * highlight! CursorLineNr guibg=NONE',
     'autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE',
-    'autocmd ColorScheme * highlight! Visual guifg=#333333 guibg=#aaaaaa',
-    'autocmd ColorScheme * highlight! ColorColumn guibg=#888888',
+    'autocmd ColorScheme * highlight! ColorColumn guibg=#444444',
 
     -- Transparent LSP Float Windows
     'autocmd ColorScheme * highlight! NormalFloat guibg=NONE',
