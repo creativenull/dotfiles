@@ -71,7 +71,7 @@ endfunction
 
 let mapleader = ' '
 let s:cnull = {}
-let s:cnull.transparent = v:false
+let s:cnull.transparent = v:true
 let s:cnull.config = MakeConfig()
 
 " =============================================================================
