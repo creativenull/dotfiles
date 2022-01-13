@@ -509,21 +509,15 @@ keymap.set('i', '<C-Space>', [[ddc#map#manual_complete()]], {
 })
 
 -- Snippets
-keymap.set('i', '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
-  silent = true,
+keymap.set({'i', 's'}, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
   expr = true,
+  replace_keycodes = true,
+  remap = true
 })
-keymap.set('s', '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
-  silent = true,
+keymap.set({'i', 's'}, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
   expr = true,
-})
-keymap.set('i', '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
-  silent = true,
-  expr = true,
-})
-keymap.set('s', '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
-  silent = true,
-  expr = true,
+  replace_keycodes = true,
+  remap = true
 })
 
 -- nvim-autopairs Config
