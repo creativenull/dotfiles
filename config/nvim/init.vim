@@ -14,7 +14,7 @@
 " ---
 let s:cnull = {}
 let s:cnull.leaderkey = ' '
-let s:cnull.transparent = v:false
+let s:cnull.transparent = v:true
 let s:cnull.config = {}
 let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
