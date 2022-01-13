@@ -75,8 +75,10 @@ endfunction
 function! g:ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
+    execute ':IndentLinesDisable'
   else
     setlocal number signcolumn=yes
+    execute ':IndentLinesEnable'
   endif
 endfunction
 
@@ -499,7 +501,7 @@ Plug 'junegunn/vader.vim'
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'bluz71/vim-moonfly-colors'
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'Mangeshrex/uwu.vim'
 Plug 'ajmwagar/vim-deus'
 Plug 'fnune/base16-vim'
