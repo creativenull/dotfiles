@@ -638,7 +638,7 @@ augroup ale_lightline_user_events
 augroup END
 
 " =============================================================================
-" = UI/Theme =
+" = Colorscheme =
 " =============================================================================
 
 colorscheme base16-horizon-terminal-dark
