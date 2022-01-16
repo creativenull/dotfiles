@@ -91,6 +91,48 @@ end
 
 cnull.config.undodir = string.format('%s/undodir', cnull.config.cache_dir)
 
+-- Custom vim functions
+local vim = vim
+
+vim.autocmd = {}
+
+---Create an auto command
+---@param event string
+---@param pattern string
+---@param command string
+---@param opts table
+---@return nil
+vim.autocmd.set = function(event, pattern, command, opts)
+  opts = opts or { once = nil, nested = nil }
+  local once = opts.once and '++once' or ''
+  local nested = opts.nested and '++nested' or ''
+  vim.cmd(string.format('autocmd %s %s %s %s %s', event, pattern, once, nested, command))
+end
+
+---Delete an auto command
+---@param event string
+---@return nil
+vim.autocmd.del = function(event)
+  vim.cmd('autocmd! ' .. event)
+end
+
+vim.augroup = {}
+
+---Create an auto group command that takes
+---a vim.autocmd.set values as a table
+---@param name string
+---@param autocmds table
+---@return nil
+vim.augroup.set = function(name, autocmds)
+  vim.cmd('augroup ' .. name)
+  vim.cmd('autocmd!')
+  for _, au in pairs(autocmds) do
+    -- vim.cmd(au)
+    vim.autocmd.set(au[1], au[2], au[3], au[4])
+  end
+  vim.cmd('augroup END')
+end
+
 -- =============================================================================
 -- = Functions =
 -- =============================================================================
@@ -136,58 +178,46 @@ function _G.IndentSize(size, use_spaces)
   end
 end
 
----Create an augroup
----@param name string
----@param autocmds table
-function _G.Augroup(name, autocmds)
-  vim.cmd('augroup ' .. name)
-  vim.cmd('autocmd!')
-  for _, autocmd in pairs(autocmds) do
-    vim.cmd(autocmd)
-  end
-  vim.cmd('augroup END')
-end
-
 -- =============================================================================
 -- = Events (AUG) =
 -- =============================================================================
 
 if cnull.transparent then
-  Augroup('transparent_user_events', {
-    'autocmd ColorScheme * highlight! Normal guibg=NONE',
-    'autocmd ColorScheme * highlight! SignColumn guibg=NONE',
-    'autocmd ColorScheme * highlight! LineNr guibg=NONE',
-    'autocmd ColorScheme * highlight! CursorLineNr guibg=NONE',
-    'autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE',
-    'autocmd ColorScheme * highlight! ColorColumn guibg=#444444',
+  vim.augroup.set('transparent_user_events', {
+    { 'ColorScheme', '*', 'highlight! Normal guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! SignColumn guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! LineNr guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! CursorLineNr guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! EndOfBuffer guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! ColorColumn guibg=#444444' },
 
     -- Transparent LSP Float Windows
-    'autocmd ColorScheme * highlight! NormalFloat guibg=NONE',
-    'autocmd ColorScheme * highlight! ErrorFloat guibg=NONE',
-    'autocmd ColorScheme * highlight! WarningFloat guibg=NONE',
-    'autocmd ColorScheme * highlight! InfoFloat guibg=NONE',
-    'autocmd ColorScheme * highlight! HintFloat guibg=NONE',
-    'autocmd ColorScheme * highlight! FloatBorder guifg=#aaaaaa guibg=NONE',
+    { 'ColorScheme', '*', 'highlight! NormalFloat guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! ErrorFloat guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! WarningFloat guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! InfoFloat guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! HintFloat guibg=NONE' },
+    { 'ColorScheme', '*', 'highlight! FloatBorder guifg=#aaaaaa guibg=NONE' },
 
     -- Transparent Comments
-    'autocmd ColorScheme * highlight! Comment guifg=#888888 guibg=NONE',
+    { 'ColorScheme', '*', 'highlight! Comment guifg=#888888 guibg=NONE' },
   })
 end
 
-Augroup('highlightyank_user_events', {
-  'autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })',
+vim.augroup.set('highlightyank_user_events', {
+  { 'TextYankPost', '*', 'silent! lua vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })' },
 })
 
 -- Default Filetype Options
-Augroup('filetype_user_events', {
-  'autocmd FileType vim,lua lua IndentSize(2, true)',
-  'autocmd FileType scss,sass,css lua IndentSize(2, true)',
-  'autocmd FileType javascript,javascriptreact lua IndentSize(2, true)',
-  'autocmd FileType typescript,typescriptreact lua IndentSize(2, true)',
-  'autocmd FileType json,jsonc lua IndentSize(2, true)',
-  'autocmd FileType vue lua IndentSize(2, true)',
-  'autocmd FileType php,blade,html lua IndentSize(4, true)',
-  'autocmd FileType markdown setlocal spell | lua IndentSize(4, true)',
+vim.augroup.set('filetype_user_events', {
+  { 'FileType', 'vim,lua', 'lua IndentSize(2, true)' },
+  { 'FileType', 'scss,sass,css', 'lua IndentSize(2, true)' },
+  { 'FileType', 'javascript,javascriptreact', 'lua IndentSize(2, true)' },
+  { 'FileType', 'typescript,typescriptreact', 'lua IndentSize(2, true)' },
+  { 'FileType', 'json,jsonc', 'lua IndentSize(2, true)' },
+  { 'FileType', 'vue', 'lua IndentSize(2, true)' },
+  { 'FileType', 'php,blade,html', 'lua IndentSize(4, true)' },
+  { 'FileType', 'markdown', 'setlocal spell | lua IndentSize(4, true)' },
 })
 
 -- =============================================================================
@@ -357,8 +387,8 @@ vim.g.vsnip_filetypes = {
 vim.g.user_emmet_leader_key = '<C-q>'
 vim.g.user_emmet_install_global = 0
 
-Augroup('emmet_user_events', {
-  'autocmd FileType html,blade,php,vue,javascriptreact,typescriptreact EmmetInstall',
+vim.augroup.set('emmet_user_events', {
+  { 'FileType', 'html,blade,php,vue,javascriptreact,typescriptreact', 'EmmetInstall' },
 })
 
 -- indentLine Config
@@ -384,8 +414,8 @@ vim.g.moonflyNormalFloat = 1
 
 -- lir.nvim Config
 -- ---
-Augroup('lir_user_events', {
-  'autocmd ColorScheme * highlight! default link CursorLine Visual',
+vim.augroup.set('lir_user_events', {
+  { 'ColorScheme', '*', 'highlight! default link CursorLine Visual' },
 })
 
 -- =============================================================================
@@ -541,8 +571,8 @@ keymap.set('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], DEFAULT_KEYMAP_OP
 keymap.set('n', '<Leader>vf', [[<Cmd>lua TelescopeFindConfigFiles()<CR>]], DEFAULT_KEYMAP_OPTS)
 
 if cnull.transparent then
-  Augroup('augroup telescope_user_events', {
-    'autocmd ColorScheme * highlight! TelescopeBorder guifg=#aaaaaa',
+  vim.augroup.set('augroup telescope_user_events', {
+    { 'ColorScheme', '*', 'highlight! TelescopeBorder guifg=#aaaaaa' },
   })
 end
 
@@ -568,12 +598,12 @@ require('cnull.statusline')
 -- indent-blankline.nvim Config
 -- ---
 if cnull.transparent then
-  Augroup('augroup indent_blankline_user_events', {
-    'autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE',
+  vim.augroup.set('augroup indent_blankline_user_events', {
+    { 'ColorScheme', '*', 'highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE' },
   })
 else
-  Augroup('augroup indent_blankline_user_events', {
-    'autocmd ColorScheme * highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE',
+  vim.augroup.set('augroup indent_blankline_user_events', {
+    { 'ColorScheme', '*', 'highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE' },
   })
 end
 
