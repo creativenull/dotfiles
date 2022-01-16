@@ -281,75 +281,74 @@ vim.opt.number = true
 -- =============================================================================
 -- = Keybindings (KEY) =
 -- =============================================================================
-local keymap = vim.keymap
-local DEFAULT_KEYMAP_OPTS = { noremap = true, silent = true }
+local keymap_opts = { noremap = true, silent = true }
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
-keymap.set('', '<Up>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('', '<Down>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('', '<Left>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('', '<Right>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('i', '<Up>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('i', '<Down>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('i', '<Left>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('i', '<Right>', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('', '<Up>', [[<Nop>]], keymap_opts)
+vim.keymap.set('', '<Down>', [[<Nop>]], keymap_opts)
+vim.keymap.set('', '<Left>', [[<Nop>]], keymap_opts)
+vim.keymap.set('', '<Right>', [[<Nop>]], keymap_opts)
+vim.keymap.set('i', '<Up>', [[<Nop>]], keymap_opts)
+vim.keymap.set('i', '<Down>', [[<Nop>]], keymap_opts)
+vim.keymap.set('i', '<Left>', [[<Nop>]], keymap_opts)
+vim.keymap.set('i', '<Right>', [[<Nop>]], keymap_opts)
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
-keymap.set('n', '<Up>', [[<Cmd>resize +2<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Down>', [[<Cmd>resize -2<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Left>', [[<Cmd>vertical resize -2<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Right>', [[<Cmd>vertical resize +2<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Up>', [[<Cmd>resize +2<CR>]], keymap_opts)
+vim.keymap.set('n', '<Down>', [[<Cmd>resize -2<CR>]], keymap_opts)
+vim.keymap.set('n', '<Left>', [[<Cmd>vertical resize -2<CR>]], keymap_opts)
+vim.keymap.set('n', '<Right>', [[<Cmd>vertical resize +2<CR>]], keymap_opts)
 
 -- Map Esc, to perform quick switching between Normal and Insert mode
-keymap.set('i', 'jk', [[<Esc>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('i', 'jk', [[<Esc>]], keymap_opts)
 
 -- Map escape from terminal input to Normal mode
-keymap.set('t', '<Esc>', [[<C-\><C-n>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('t', '<C-[>', [[<C-\><C-n>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], keymap_opts)
+vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]], keymap_opts)
 
 -- Disable highlights
-keymap.set('n', '<Leader><CR>', [[<Cmd>noh<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader><CR>', [[<Cmd>noh<CR>]], keymap_opts)
 
 -- List all buffers
-keymap.set('n', '<Leader>bl', [[<Cmd>buffers<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader>bl', [[<Cmd>buffers<CR>]], keymap_opts)
 
-keymap.set('n', '<C-l>', [[<Cmd>bnext<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Leader>bn', [[<Cmd>bnext<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<C-l>', [[<Cmd>bnext<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>bn', [[<Cmd>bnext<CR>]], keymap_opts)
 
-keymap.set('n', '<C-h>', [[<Cmd>bprevious<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Leader>bp', [[<Cmd>bprevious<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<C-h>', [[<Cmd>bprevious<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>bp', [[<Cmd>bprevious<CR>]], keymap_opts)
 
 -- Close the current buffer, and more?
-keymap.set('n', '<Leader>bd', [[<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader>bd', [[<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>]], keymap_opts)
 -- Close all buffer, except current
-keymap.set('n', '<Leader>bx', [[<Cmd>%bd<Bar>e#<Bar>bd#<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader>bx', [[<Cmd>%bd<Bar>e#<Bar>bd#<CR>]], keymap_opts)
 
 -- Move a line of text Alt+[j/k]
-keymap.set('n', '<M-j>', [[mz:m+<CR>`z]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<M-k>', [[mz:m-2<CR>`z]], DEFAULT_KEYMAP_OPTS)
-keymap.set('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]], DEFAULT_KEYMAP_OPTS)
-keymap.set('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<M-j>', [[mz:m+<CR>`z]], keymap_opts)
+vim.keymap.set('n', '<M-k>', [[mz:m-2<CR>`z]], keymap_opts)
+vim.keymap.set('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]], keymap_opts)
+vim.keymap.set('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]], keymap_opts)
 
 -- Edit vimrc
-keymap.set('n', '<Leader>ve', [[<Cmd>edit $MYVIMRC<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader>ve', [[<Cmd>edit $MYVIMRC<CR>]], keymap_opts)
 
 -- Source the vimrc to reflect changes
-keymap.set('n', '<Leader>vs', [[<Cmd>ConfigReload<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader>vs', [[<Cmd>ConfigReload<CR>]], keymap_opts)
 
 -- Reload file
-keymap.set('n', '<Leader>r', [[<Cmd>edit!<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<Leader>r', [[<Cmd>edit!<CR>]], keymap_opts)
 
 -- Copy/Paste from clipboard
-keymap.set('v', '<Leader>y', [["+y]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Leader>y', [["+y]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Leader>p', [["+p]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('v', '<Leader>y', [["+y]], keymap_opts)
+vim.keymap.set('n', '<Leader>y', [["+y]], keymap_opts)
+vim.keymap.set('n', '<Leader>p', [["+p]], keymap_opts)
 
 -- Disable Ex-mode
-keymap.set('n', 'Q', [[<Nop>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', 'Q', [[<Nop>]], keymap_opts)
 
 -- Utilities
-keymap.set('n', 'Y', [[y$]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', 'Y', [[y$]], keymap_opts)
 
 -- =============================================================================
 -- = Commands (CMD) =
@@ -525,26 +524,26 @@ require('cnull.lsp')
 -- ---
 require('cnull.autocompletion')
 
-keymap.set(
+vim.keymap.set(
   'i',
   '<C-y>',
   [[pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"]],
   { silent = true, expr = true }
 )
 
-keymap.set('i', '<C-Space>', [[ddc#map#manual_complete()]], {
+vim.keymap.set('i', '<C-Space>', [[ddc#map#manual_complete()]], {
   silent = true,
   expr = true,
   noremap = true,
 })
 
 -- Snippets
-keymap.set({'i', 's'}, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
+vim.keymap.set({'i', 's'}, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
   expr = true,
   replace_keycodes = true,
   remap = true
 })
-keymap.set({'i', 's'}, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
+vim.keymap.set({'i', 's'}, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
   expr = true,
   replace_keycodes = true,
   remap = true
@@ -566,9 +565,9 @@ require('todo-comments').setup()
 -- ---
 require('cnull.finder')
 
-keymap.set('n', '<C-p>', [[<Cmd>lua TelescopeFindFiles()<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], DEFAULT_KEYMAP_OPTS)
-keymap.set('n', '<Leader>vf', [[<Cmd>lua TelescopeFindConfigFiles()<CR>]], DEFAULT_KEYMAP_OPTS)
+vim.keymap.set('n', '<C-p>', [[<Cmd>lua TelescopeFindFiles()<CR>]], keymap_opts)
+vim.keymap.set('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>vf', [[<Cmd>lua TelescopeFindConfigFiles()<CR>]], keymap_opts)
 
 if cnull.transparent then
   vim.augroup.set('augroup telescope_user_events', {
@@ -584,11 +583,11 @@ require('cnull.treesitter')
 -- ---
 require('cnull.biscuits')
 
-keymap.set(
+vim.keymap.set(
   'n',
   '<Leader>it',
   [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]],
-  DEFAULT_KEYMAP_OPTS
+  keymap_opts
 )
 
 -- lualine.nvim Config
