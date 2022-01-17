@@ -37,12 +37,20 @@ endfor
 " Windows specific settings
 if has('win32')
   if !executable('pwsh')
-    echoerr '[nvim] PowerShell Core >= v6 is needed!'
+    echoerr '[nvim] PowerShell Core >= v6 is required!'
     finish
   endif
 
   set shell=pwsh
-  let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+  let s:shcmd_flag = [
+    \ '-NoLogo',
+    \ '-NoProfile',
+    \ '-ExecutionPolicy',
+    \ 'RemoteSigned',
+    \ '-Command',
+    \ '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
+  \ ]
+  let &shellcmdflag = join(s:shcmd_flag, ' ')
   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   set shellquote= shellxquote=
