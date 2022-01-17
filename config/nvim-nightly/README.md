@@ -72,14 +72,17 @@ source ~/.zprofile
 
 ## Copy config to local machine
 
-Clone this repo and copy `nvim-nightly` directory to the user config:
+Clone this repo and copy (or link with `ln -s`) `nvim-nightly` directory to the user config:
 
 ```sh
 git clone https://github.com/creativenull/dotfiles.git $HOME/cnull-dotfiles
 ```
 
 ```sh
-cp -rv $HOME/cnull-dotfiles/.config/nvim-nightly $HOME/.config/nvim-nightly
+cp -rv $HOME/cnull-dotfiles/config/nvim-nightly $HOME/.config/nvim-nightly
+
+# Or link
+# ln -s $HOME/cnull-dotfiles/config/nvim-nightly $HOME/.config/nvim-nightly
 ```
 
 ## Running the nvim-nightly config
