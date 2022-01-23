@@ -360,6 +360,7 @@ augroup END
 
 " ALE Config
 " ---
+let g:ale_disable_lsp = 1
 let g:ale_completion_enabled = 0
 let g:ale_completion_autoimport = 1
 let g:ale_hover_cursor = 0
@@ -370,13 +371,13 @@ let g:ale_linters_explicit = 1
 let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 " Keymaps
-nnoremap <silent> <Leader>le <Cmd>lopen<CR>
-nnoremap <silent> <Leader>lr <Cmd>ALERename<CR>
-nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
-nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-nnoremap <silent> <Leader>li <Cmd>ALEInfo<CR>
+" nnoremap <silent> <Leader>le <Cmd>lopen<CR>
+" nnoremap <silent> <Leader>lr <Cmd>ALERename<CR>
+" nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+" nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+" nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
+" nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
+" nnoremap <silent> <Leader>li <Cmd>ALEInfo<CR>
 
 " indentLine Config
 " ---
@@ -470,16 +471,20 @@ Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
-" Linters + Formatters + LSP Client
+" Linters + Formatters
 Plug 'dense-analysis/ale'
+
+" Builtin LSP Configs
+Plug 'neovim/nvim-lspconfig'
+Plug 'creativenull/nvim-ale-diagnostic'
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim', { 'tag': 'v1.2.0' }
 Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
+Plug 'Shougo/ddc-nvim-lsp'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
-Plug 'statiolake/ddc-ale'
 Plug 'hrsh7th/vim-vsnip-integ'
 
 " Snippet Engine + Presets
@@ -520,6 +525,10 @@ call plug#end()
 " = Plugin Post-Config - after loading plugins (POST) =
 " =============================================================================
 
+" nvim-lspconfig Config
+" ---
+lua require('cnull.lsp')
+
 " fzf.vim Config
 " ---
 function! g:FzfVimGrep(qargs, bang) abort
@@ -532,14 +541,14 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 " ddc.vim Config
 " ---
 call ddc#custom#patch_global({
-  \ 'sources': ['ale', 'vsnip', 'around', 'buffer'],
+  \ 'sources': ['nvim-lsp', 'vsnip', 'around', 'buffer'],
   \ 'sourceOptions': {
     \ '_': {
       \ 'matchers': ['matcher_fuzzy'],
       \ 'sorters': ['sorter_fuzzy'],
       \ 'converters': ['converter_fuzzy'],
     \ },
-    \ 'ale': {
+    \ 'nvim-lsp': {
       \ 'mark': 'LSP',
       \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
       \ 'maxCandidates': 10,
