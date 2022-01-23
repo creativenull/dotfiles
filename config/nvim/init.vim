@@ -120,6 +120,10 @@ if s:cnull.transparent
     " Tabline
     autocmd ColorScheme * highlight! TabLineFill guibg=NONE
     autocmd ColorScheme * highlight! TabLine guibg=NONE
+
+    " Float Border
+    autocmd ColorScheme * highlight! NormalFloat guibg=NONE
+    autocmd ColorScheme * highlight! FloatBorder guibg=NONE guifg=#eeeeee
   augroup END
 endif
 
