@@ -124,6 +124,9 @@ if s:cnull.transparent
     " Float Border
     autocmd ColorScheme * highlight! NormalFloat guibg=NONE
     autocmd ColorScheme * highlight! FloatBorder guibg=NONE guifg=#eeeeee
+
+    " Vertical Line
+    autocmd ColorScheme * highlight! ColorColumn guibg=#999999
   augroup END
 endif
 
@@ -375,13 +378,8 @@ let g:ale_linters_explicit = 1
 let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 " Keymaps
-" nnoremap <silent> <Leader>le <Cmd>lopen<CR>
-" nnoremap <silent> <Leader>lr <Cmd>ALERename<CR>
-" nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
-" nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
-" nnoremap <silent> <Leader>lf <Cmd>ALEFix<CR>
-" nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
-" nnoremap <silent> <Leader>li <Cmd>ALEInfo<CR>
+nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
+nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
 
 " indentLine Config
 " ---
