@@ -9,7 +9,8 @@ local function on_attach(_, buf)
 
   vim.api.nvim_buf_set_option(buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Keymaps
+  -- LSP Keymaps
+  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>li', [[<Cmd>LspInfo<CR>]], keymap_opts)
   vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], keymap_opts)
   vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', [[<Cmd>lua vim.lsp.buf.definition()<CR>]], keymap_opts)
   vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lf', [[<Cmd>lua vim.lsp.buf.formatting()<CR>]], keymap_opts)
@@ -62,11 +63,11 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 
--- local pl_lsp = require('projectlocal.lsp')
--- pl_lsp.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
--- })
+local projectlocal = require('projectlocal.lsp')
+projectlocal.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
 
 -- Log debug
 -- vim.lsp.set_log_level('debug')
