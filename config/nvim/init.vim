@@ -432,7 +432,7 @@ let g:gruvbox_sign_column = 'bg0'
 " ---
 let g:projectlocal = {
   \ 'showMessage': v:true,
-  \ 'projectConfig': '.vim/init.vim',
+  \ 'projectConfig': '.vim/init.json',
   \ 'debug': v:false,
 \ }
 
