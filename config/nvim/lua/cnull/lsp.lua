@@ -1,30 +1,27 @@
+local keymap = require('cnull.shared.keymap').keymap
+local buf_keymap = require('cnull.shared.keymap').buf_keymap
 local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
 local DEFAULT_BORDER_STYLE = 'rounded'
 local DEFAULT_BORDER_WIDTH = 80
 
 local function on_attach(_, buf)
-  local keymap_opts = { silent = true, noremap = true }
   local diag_opts = string.format('{ width = %d, border = %q }', DEFAULT_BORDER_WIDTH, DEFAULT_BORDER_STYLE)
 
   vim.api.nvim_buf_set_option(buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- LSP Keymaps
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>li', [[<Cmd>LspInfo<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', [[<Cmd>lua vim.lsp.buf.definition()<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lf', [[<Cmd>lua vim.lsp.buf.formatting()<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lh', [[<Cmd>lua vim.lsp.buf.hover()<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lr', [[<Cmd>lua vim.lsp.buf.rename()<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>le', [[<Cmd>lua vim.diagnostic.setloclist()<CR>]], keymap_opts)
-  vim.api.nvim_buf_set_keymap(
-    buf,
-    'n',
-    '<Leader>lw',
-    string.format([[<Cmd>lua vim.diagnostic.open_float(%s)<CR>]], diag_opts),
-    keymap_opts
-  )
+  buf_keymap.set(buf, 'n', '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>le', '<Cmd>lua vim.diagnostic.setloclist()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>lw', string.format('<Cmd>lua vim.diagnostic.open_float(%s)<CR>', diag_opts))
 end
+
+-- Generic LSP check
+keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
 
 -- ALE integration
 require('nvim-ale-diagnostic')
@@ -74,27 +71,27 @@ projectlocal.setup({
 
 -- Lua LSP Server
 -- --
--- local lua_rtp = vim.split(package.path, ';')
--- table.insert(lua_rtp, 'lua/?.lua')
--- table.insert(lua_rtp, 'lua/?/init.lua')
---
--- lspconfig.sumneko_lua.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   cmd = { 'luals' },
---   root_dir = root_pattern('.git'),
---   settings = {
---     Lua = {
---       runtime = {
---         version = 'LuaJIT',
---         path = lua_rtp,
---       },
---       diagnostics = { globals = { 'vim' } },
---       workspace = { library = vim.api.nvim_get_runtime_file('', true) },
---       telemetry = { enable = false },
---     },
---   },
--- })
+local lua_rtp = vim.split(package.path, ';')
+table.insert(lua_rtp, 'lua/?.lua')
+table.insert(lua_rtp, 'lua/?/init.lua')
+
+lspconfig.sumneko_lua.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { 'luals' },
+  root_dir = root_pattern('.git'),
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        path = lua_rtp,
+      },
+      diagnostics = { globals = { 'vim' } },
+      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+      telemetry = { enable = false },
+    },
+  },
+})
 
 -- PHP LSP Server
 -- ---
