@@ -36,7 +36,7 @@ M.augroup.set = function(name, autocmds)
   vim.cmd('autocmd!')
 
   for _, au in pairs(autocmds) do
-    vim.autocmd.set(au[1], au[2], au[3])
+    M.autocmd.set(au[1], au[2], au[3])
   end
 
   vim.cmd('augroup END')
