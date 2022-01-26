@@ -23,9 +23,6 @@ end
 -- Generic LSP check
 keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
 
--- ALE integration
-require('nvim-ale-diagnostic')
-
 -- Initial LSP Settings
 -- --
 -- Gloabally change diagnostic behavior
