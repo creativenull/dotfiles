@@ -127,6 +127,12 @@ if s:cnull.transparent
 
     " Vertical Line
     autocmd ColorScheme * highlight! ColorColumn guibg=#999999
+
+    " LSP Diagnostics
+    autocmd ColorScheme * highlight! ErrorFloat guibg=NONE
+    autocmd ColorScheme * highlight! WarningFloat guibg=NONE
+    autocmd ColorScheme * highlight! InfoFloat guibg=NONE
+    autocmd ColorScheme * highlight! HintFloat guibg=NONE
   augroup END
 endif
 
