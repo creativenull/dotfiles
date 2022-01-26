@@ -484,7 +484,7 @@ Plug 'dense-analysis/ale'
 
 " Builtin LSP Configs
 Plug 'neovim/nvim-lspconfig'
-Plug 'creativenull/nvim-ale-diagnostic'
+Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 
 " AutoCompletion + Sources
 Plug 'Shougo/ddc.vim', { 'tag': 'v1.2.0' }
