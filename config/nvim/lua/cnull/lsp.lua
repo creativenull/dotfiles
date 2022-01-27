@@ -2,12 +2,13 @@ local keymap = require('cnull.shared.keymap').keymap
 local buf_keymap = require('cnull.shared.keymap').buf_keymap
 local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
-local DEFAULT_BORDER_STYLE = 'rounded'
-local DEFAULT_BORDER_WIDTH = 80
+local BORDER_STYLE = 'rounded'
+local BORDER_WIDTH = 80
 
 local function on_attach(_, buf)
-  local diag_opts = string.format('{ width = %d, border = %q }', DEFAULT_BORDER_WIDTH, DEFAULT_BORDER_STYLE)
+  local diag_opts = string.format('{ width = %d, border = %q }', BORDER_WIDTH, BORDER_STYLE)
 
+  -- Omnifunc backup
   vim.api.nvim_buf_set_option(buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- LSP Keymaps
@@ -35,13 +36,13 @@ vim.diagnostic.config({
 
 -- Add border to hover documentation
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-  width = DEFAULT_BORDER_WIDTH,
-  border = DEFAULT_BORDER_STYLE,
+  width = BORDER_WIDTH,
+  border = BORDER_STYLE,
 })
 
 -- Add border to signature help
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-  border = DEFAULT_BORDER_WIDTH,
+  border = BORDER_WIDTH,
 })
 
 -- Add support to get snippets from lsp
