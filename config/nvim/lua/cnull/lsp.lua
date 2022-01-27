@@ -29,7 +29,7 @@ keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
 vim.diagnostic.config({
   underline = false,
   virtual_text = false,
-  signs = true,
+  signs = false,
   update_in_insert = false,
 })
 
