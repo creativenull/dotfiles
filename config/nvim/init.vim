@@ -517,17 +517,28 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
+" JS/TS
+Plug 'pangloss/vim-javascript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'heavenshell/vim-jsdoc', { 'do': 'make install' }
+
+" Vue
+Plug 'posva/vim-vue'
+
+" PHP
+Plug 'jwalton512/vim-blade'
+
+" JSON/JSONC
+Plug 'elzr/vim-json'
+Plug 'kevinoid/vim-jsonc'
+
+" Vader
+Plug 'junegunn/vader.vim'
+
 " UI Plugins
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-buftabline'
 Plug 'itchyny/lightline.vim'
-Plug 'posva/vim-vue'
-Plug 'pangloss/vim-javascript'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'jwalton512/vim-blade'
-Plug 'elzr/vim-json'
-Plug 'kevinoid/vim-jsonc'
-Plug 'junegunn/vader.vim'
 
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
