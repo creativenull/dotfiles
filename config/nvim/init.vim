@@ -395,7 +395,11 @@ nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
 
 " indentLine Config
 " ---
+let g:indentLine_fileTypeExclude = ['help', 'fzf']
 let g:indentLine_char = '│'
+if s:cnull.transparent
+  let g:indentLine_color_gui = '#555555'
+endif
 
 " buftabline Config
 " ---
