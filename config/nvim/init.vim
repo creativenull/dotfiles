@@ -431,7 +431,7 @@ let g:vim_json_syntax_conceal = 0
 " ---
 let g:projectlocal = {
   \ 'showMessage': v:true,
-  \ 'projectConfig': '.vim/init.json',
+  \ 'projectConfig': '.nvimrc.json',
   \ 'debug': v:false,
 \ }
 
