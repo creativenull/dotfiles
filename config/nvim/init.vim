@@ -141,7 +141,7 @@ augroup customhl_user_events
   " Don't want any bold or underlines
   autocmd ColorScheme * highlight Tabline gui=NONE
   " Different color when confirming selected substitution `:s`
-  autocmd ColorScheme * highlight! IncSearch guibg=#0997ea
+  autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103da5 guifg=#eeeeee
 augroup END
 
 augroup highlightyank_user_events
