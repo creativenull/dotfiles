@@ -18,7 +18,12 @@ local function on_attach(_, buf)
   buf_keymap.set(buf, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
   buf_keymap.set(buf, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
   buf_keymap.set(buf, 'n', '<Leader>le', '<Cmd>lua vim.diagnostic.setloclist()<CR>')
-  buf_keymap.set(buf, 'n', '<Leader>lw', string.format('<Cmd>lua vim.diagnostic.open_float(%s)<CR>', diag_opts))
+  buf_keymap.set(
+    buf,
+    'n',
+    '<Leader>lw',
+    string.format('<Cmd>lua vim.diagnostic.open_float(%d, %s)<CR>', buf, diag_opts)
+  )
 end
 
 -- Generic LSP check
