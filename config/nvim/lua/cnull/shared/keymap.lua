@@ -1,4 +1,4 @@
-local err = require('cnull.shared.err')
+local err = require('cnull.shared.handlers.err')
 local DEFAULT_KEYMAP_OPTS = { silent = true, noremap = true }
 local M = {
   keymap = {},
