@@ -427,19 +427,6 @@ augroup END
 " ---
 let g:vim_json_syntax_conceal = 0
 
-" moonfly Config
-" ---
-let g:moonflyNormalFloat = 1
-let g:moonflyItalics = 0
-
-" gruvbox Config
-" ---
-let g:gruvbox_bold = 0
-let g:gruvbox_italic = 0
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_invert_selection = 0
-let g:gruvbox_sign_column = 'bg0'
-
 " projectlocal-vim
 " ---
 let g:projectlocal = {
@@ -544,9 +531,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'gruvbox-community/gruvbox'
-Plug 'Mangeshrex/uwu.vim'
-Plug 'ajmwagar/vim-deus'
 Plug 'fnune/base16-vim'
+Plug 'rigellute/rigel'
 
 call plug#end()
 
@@ -687,4 +673,17 @@ augroup END
 " = Colorscheme =
 " =============================================================================
 
-colorscheme base16-horizon-terminal-dark
+" moonfly Config
+" ---
+let g:moonflyNormalFloat = 1
+let g:moonflyItalics = 0
+
+" gruvbox Config
+" ---
+let g:gruvbox_bold = 0
+let g:gruvbox_italic = 0
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_invert_selection = 0
+let g:gruvbox_sign_column = 'bg0'
+
+colorscheme moonfly
