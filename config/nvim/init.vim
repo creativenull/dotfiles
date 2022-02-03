@@ -431,14 +431,6 @@ augroup END
 " ---
 let g:vim_json_syntax_conceal = 0
 
-" projectlocal-vim
-" ---
-let g:projectlocal = {
-  \ 'showMessage': v:true,
-  \ 'projectConfig': '.nvimrc.json',
-  \ 'debug': v:false,
-\ }
-
 " vim-javascript Config
 " ---
 let g:javascript_plugin_jsdoc = 1
