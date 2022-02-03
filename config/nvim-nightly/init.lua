@@ -93,7 +93,6 @@ cnull.config.undodir = string.format('%s/undodir', cnull.config.cache_dir)
 
 -- Custom vim functions
 local vim = vim
-
 vim.autocmd = {}
 
 ---Create an auto command
@@ -461,10 +460,8 @@ packer.startup(function(use)
 
   -- Linters + Formatters + LSP Client
   use('neovim/nvim-lspconfig')
-  -- use('creativenull/diagnosticls-configs-nvim')
-  -- use('~/projects/github.com/creativenull/diagnosticls-configs-nvim')
+  use('creativenull/diagnosticls-configs-nvim')
   use('creativenull/efmls-configs-nvim')
-  -- use('~/projects/github.com/creativenull/efmls-configs-nvim')
 
   -- Snippet Engine + Presets
   use('hrsh7th/vim-vsnip')
