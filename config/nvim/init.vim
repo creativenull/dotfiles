@@ -1,10 +1,11 @@
 " Name: Arnold Chand
 " Github: https://github.com/creativenull
-" Description: My vimrc works with MacOS, Linux and Windows, requires
-"   + curl (globally installed)
-"   + git (globally installed)
-"   + python3 (globally installed)
-"   + ripgrep (globally installed
+" Description: My vimrc works with MacOS, Linux and Windows.
+" Requires:
+"   + curl
+"   + git
+"   + python3
+"   + ripgrep
 "
 " =============================================================================
 " = Initialize =
