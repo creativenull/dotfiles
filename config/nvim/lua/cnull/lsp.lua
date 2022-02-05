@@ -47,7 +47,7 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 
 -- Add border to signature help
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-  border = BORDER_WIDTH,
+  border = BORDER_STYLE,
 })
 
 -- Add support to get snippets from lsp
