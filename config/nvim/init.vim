@@ -478,7 +478,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 
 " AutoCompletion + Sources
-Plug 'Shougo/ddc.vim', { 'tag': 'v1.2.0' }
+Plug 'Shougo/ddc.vim', { 'tag': 'v1.3.0' }
 Plug 'matsui54/denops-popup-preview.vim'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-nvim-lsp'
