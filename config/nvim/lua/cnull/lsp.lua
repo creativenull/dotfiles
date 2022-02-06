@@ -17,6 +17,7 @@ local function on_attach(_, buf)
   buf_keymap.set(buf, 'n', '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>')
   buf_keymap.set(buf, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
   buf_keymap.set(buf, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
+  buf_keymap.set(buf, 'n', '<Leader>ls', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
   buf_keymap.set(buf, 'n', '<Leader>le', '<Cmd>lua vim.diagnostic.setloclist()<CR>')
   buf_keymap.set(
     buf,
@@ -26,11 +27,34 @@ local function on_attach(_, buf)
   )
 end
 
--- Generic LSP check
-keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
+-- Add support to get snippets from lsp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.preselectSupport = true
+capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  },
+}
 
--- Initial LSP Settings
--- --
+local function register_lsp(server, opts)
+  local user_config = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+
+  if opts == nil then
+    opts = user_config
+  else
+    opts = vim.tbl_extend('force', user_config, opts)
+  end
+
+  lspconfig[server].setup(opts)
+end
+
 -- Gloabally change diagnostic behavior
 vim.diagnostic.config({
   underline = false,
@@ -46,41 +70,30 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 })
 
 -- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
   border = BORDER_STYLE,
 })
 
--- Add support to get snippets from lsp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
+-- Check registered LSP info
+keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
 
+-- Log debug
+-- vim.lsp.set_log_level('debug')
+
+-- projectlocal-vim Config
+-- ---
 local projectlocal = require('projectlocal.lsp')
 projectlocal.setup({
   on_attach = on_attach,
   capabilities = capabilities,
 })
 
--- Log debug
--- vim.lsp.set_log_level('debug')
-
--- Lua LSP Server
+-- Lua Language Server
 -- --
 local lua_rtp = vim.split(package.path, ';')
 table.insert(lua_rtp, 'lua/?.lua')
 table.insert(lua_rtp, 'lua/?/init.lua')
-
-lspconfig.sumneko_lua.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
+register_lsp('sumneko_lua', {
   cmd = { 'luals' },
   root_dir = root_pattern('.git'),
   settings = {
@@ -96,60 +109,6 @@ lspconfig.sumneko_lua.setup({
   },
 })
 
--- PHP LSP Server
+-- Vim Language Server
 -- ---
--- lspconfig.intelephense.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
--- })
-
--- Nodejs LSP Server
--- ---
--- lspconfig.tsserver.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   root_dir = root_pattern('package.json'),
--- })
-
--- Deno LSP Server
--- ---
--- lspconfig.denols.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   root_dir = root_pattern('deno.json', 'deno.jsonc'),
--- })
-
--- Pyright LSP Server
--- ---
--- lspconfig.pyright.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
--- })
-
--- Vue LSP Server
--- ---
--- lspconfig.vuels.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
--- })
-
--- DiagnosticLS Server - for linters and formatters
--- ---
--- local dls = require('diagnosticls-configs')
--- dls.init({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   default_config = true,
--- })
--- dls.setup()
-
--- EFM LSP Server - for linters and formatters
--- ---
--- local efmls = require('efmls-configs')
--- efmls.init({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   init_options = {
---     documentFormatting = true,
---   },
--- })
+register_lsp('vimls')
