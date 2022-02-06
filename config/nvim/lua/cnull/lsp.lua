@@ -4,7 +4,7 @@ local BORDER_STYLE = 'rounded'
 local BORDER_WIDTH = 80
 
 local function on_attach(_, bufnr)
-  local diag_opts = string.format('{ width = %d, border = %q }', BORDER_WIDTH, BORDER_STYLE)
+  local diag_opts = string.format('{ width = %d, border = %q, bufnr = %d }', BORDER_WIDTH, BORDER_STYLE, bufnr)
 
   -- Omnifunc backup
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -21,7 +21,7 @@ local function on_attach(_, bufnr)
     bufnr,
     'n',
     '<Leader>lw',
-    string.format('<Cmd>lua vim.diagnostic.open_float(%d, %s)<CR>', bufnr, diag_opts)
+    string.format('<Cmd>lua vim.diagnostic.open_float(%s)<CR>', diag_opts)
   )
 end
 
