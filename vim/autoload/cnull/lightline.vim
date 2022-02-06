@@ -1,6 +1,6 @@
 function! cnull#lightline#setup() abort
   let g:lightline = {}
-  let g:lightline.colorscheme = 'moonfly'
+  let g:lightline.colorscheme = 'default'
   let g:lightline.component = { 'lineinfo': '%l/%L:%c' }
 
   let g:lightline.separator = {
