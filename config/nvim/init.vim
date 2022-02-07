@@ -640,8 +640,10 @@ inoremap <expr> <C-y> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand
 
 inoremap <expr> <C-Space> ddc#map#manual_complete()
 
-call popup_preview#enable()
-call ddc#enable()
+augroup ddc_user_events
+  autocmd!
+  autocmd VimEnter * call popup_preview#enable() | call ddc#enable()
+augroup END
 
 " lightline.vim Config
 " ---
