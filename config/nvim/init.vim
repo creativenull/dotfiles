@@ -599,6 +599,39 @@ call ddc#custom#patch_global({
   \ },
 \ })
 
+" LSP kind labels - from lspkind-nvim
+call ddc#custom#patch_global('sourceParams', {
+  \ 'nvim-lsp': {
+    \ 'kindLabels': {
+      \ 'Class': 'ﴯ Class',
+      \ 'Color': ' Color',
+      \ 'Constant': ' Const',
+      \ 'Constructor': ' Constructor',
+      \ 'Enum': ' Enum',
+      \ 'EnumMember': ' Enum',
+      \ 'Event': ' Event',
+      \ 'Field': 'ﰠ Field',
+      \ 'File': ' File',
+      \ 'Folder': ' Folder',
+      \ 'Function': ' Function',
+      \ 'Interface': ' Interface',
+      \ 'Keyword': ' Key',
+      \ 'Method': ' Method',
+      \ 'Module': ' Module',
+      \ 'Operator': ' Operator',
+      \ 'Property': 'ﰠ Property',
+      \ 'Reference': ' Reference',
+      \ 'Snippet': ' Snippet',
+      \ 'Struct': 'פּ Struct',
+      \ 'Text': ' Text',
+      \ 'TypeParameter': '',
+      \ 'Unit': '塞 Unit',
+      \ 'Value': ' Value',
+      \ 'Variable': ' Variable',
+    \ },
+  \ },
+\ })
+
 " Markdown FileType completion sources
 call ddc#custom#patch_filetype('markdown', { 'sources': ['around', 'buffer'] })
 
