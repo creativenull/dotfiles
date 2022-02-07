@@ -401,12 +401,12 @@ endif
 
 " buftabline Config
 " ---
-let g:buftabline_indicators = 1
-
-augroup buftabline_user_events
-  autocmd!
-  autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
-augroup END
+" let g:buftabline_indicators = 1
+" 
+" augroup buftabline_user_events
+"   autocmd!
+"   autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
+" augroup END
 
 " fern.vim Config
 " ---
@@ -518,8 +518,8 @@ Plug 'junegunn/vader.vim'
 
 " UI Plugins
 Plug 'Yggdroot/indentLine'
-Plug 'ap/vim-buftabline'
 Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
@@ -624,6 +624,15 @@ endfunction
 
 let g:lightline = {}
 let g:lightline.colorscheme = 'wombat'
+
+let g:lightline.enable = {}
+let g:lightline.enable.statusline = 1
+let g:lightline.enable.tabline = 1
+
+let g:lightline.tabline = {}
+let g:lightline.tabline.left = [ ['buffers'] ]
+let g:lightline.tabline.right = [ ['filetype'] ]
+
 let g:lightline.component = { 'lineinfo': ' %l/%L  %c' }
 
 let g:lightline.separator = {}
@@ -645,10 +654,12 @@ let g:lightline.component_function.ale_status = 'AleStatus'
 let g:lightline.component_expand = {}
 let g:lightline.component_expand.ale_err = 'AleErrComponent'
 let g:lightline.component_expand.ale_warn = 'AleWarnComponent'
+let g:lightline.component_expand.buffers = 'lightline#bufferline#buffers'
 
 let g:lightline.component_type = {}
 let g:lightline.component_type.ale_err = 'error'
 let g:lightline.component_type.ale_warn = 'warning'
+let g:lightline.component_type.buffers = 'tabsel'
 
 augroup ale_lightline_user_events
   autocmd!
@@ -656,6 +667,10 @@ augroup ale_lightline_user_events
   autocmd User ALELintPost call lightline#update()
   autocmd User ALEFixPost call lightline#update()
 augroup END
+
+" lightline-bufferline Config
+" ---
+let g:lightline#bufferline#enable_nerdfont = 1
 
 " =============================================================================
 " = Colorscheme =
