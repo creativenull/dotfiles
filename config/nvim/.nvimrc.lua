@@ -4,11 +4,14 @@ local projectlocal = require('projectlocal.lsp')
 local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
 
+-- ALE Config
+vim.g.ale_linters = { lua = { 'luacheck' } }
+vim.g.ale_fixers = { lua = { 'stylua' } }
+
+-- Lua LSP
 local lua_rtp = vim.split(package.path, ';')
 table.insert(lua_rtp, 'lua/?.lua')
 table.insert(lua_rtp, 'lua/?/init.lua')
-
--- Lua LSP
 lspconfig.sumneko_lua.setup(projectlocal.get_config({
   root_dir = root_pattern('.git'),
   settings = {
