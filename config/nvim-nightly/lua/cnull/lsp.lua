@@ -90,7 +90,6 @@ table.insert(lua_rtp, 'lua/?/init.lua')
 lspconfig.sumneko_lua.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = { 'luals' },
   root_dir = root_pattern('.git'),
   settings = {
     Lua = {
