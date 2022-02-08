@@ -680,7 +680,7 @@ function! g:AleStatus()
 endfunction
 
 let g:lightline = {}
-let g:lightline.colorscheme = 'wombat'
+let g:lightline.colorscheme = 'tailwind_cnull'
 
 let g:lightline.enable = {}
 let g:lightline.enable.statusline = 1
