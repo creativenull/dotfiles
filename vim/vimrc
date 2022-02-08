@@ -467,8 +467,8 @@ Plug 'junegunn/vader.vim'
 
 " UI Plugins
 Plug 'Yggdroot/indentLine'
-Plug 'ap/vim-buftabline'
 Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
