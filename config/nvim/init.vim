@@ -361,8 +361,8 @@ nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
 
 function! g:FzfFileTypeSetup() abort
-  setlocal laststatus=0 noruler
-  autocmd BufLeave <buffer> setlocal laststatus=2 ruler
+  setlocal noruler
+  autocmd BufLeave <buffer> setlocal ruler
 endfunction
 
 augroup fzf_user_events
