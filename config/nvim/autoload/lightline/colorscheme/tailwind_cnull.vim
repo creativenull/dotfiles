@@ -29,7 +29,7 @@ let s:error = '#881337'
 let s:warn = '#fdba74'
 
 " Defaults
-let s:middle_section = [ ['NONE', 'NONE'] ]
+let s:middle_section = [ ['NONE', s:bg_dark] ]
 let s:right_section = reverse([ [s:text_light, s:darkgray], [s:text_light, s:gray], [s:text_light, s:indigo] ])
 
 " Diagnostics
