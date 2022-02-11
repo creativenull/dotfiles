@@ -89,6 +89,7 @@ let s:p.inactive.warning = s:warn_section
 let s:p.tabline = {}
 let s:p.tabline.tabsel = [ [s:text_softdark, s:bg_softlight] ]
 let s:p.tabline.left = [ [s:text_softlight, s:bg_softdark] ]
+let s:p.tabline.middle = [ ['NONE', 'NONE'] ]
 let s:p.tabline.right = [ [s:text_softlight, s:bg_softdark] ]
 
 " Register
