@@ -455,29 +455,7 @@ lua require('cnull.lsp')
 
 " fzf.vim Config
 " ---
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS = '--reverse'
-let g:fzf_preview_window = []
-
-nnoremap <C-p> <Cmd>Files<CR>
-nnoremap <C-t> <Cmd>Rg<CR>
-
-function! g:FzfFileTypeSetup() abort
-  setlocal noruler
-  autocmd BufLeave <buffer> setlocal ruler
-endfunction
-
-augroup fzf_user_events
-  autocmd!
-  autocmd FileType fzf call FzfFileTypeSetup()
-  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
-augroup END
-function! g:FzfVimGrep(qargs, bang) abort
-  let sh = "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(a:qargs)
-  call fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
-endfunction
-
-command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
+call cnull#fzf#Setup()
 
 " pum.vim Config
 " ---
