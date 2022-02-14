@@ -65,43 +65,6 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 
 " =============================================================================
-" = Functions =
-" =============================================================================
-
-" Toggle conceal level of local buffer
-" which is enabled by some syntax plugin
-function! g:ToggleConcealLevel() abort
-  if &conceallevel == 2
-    setlocal conceallevel=0
-  else
-    setlocal conceallevel=2
-  endif
-endfunction
-
-" Toggle the view of the editor, for taking screenshots
-" or for copying code from the editor w/o using "+ register
-" when not accessible, eg from a remote ssh
-function! g:ToggleCodeshot() abort
-  if &number
-    setlocal nonumber signcolumn=no
-    execute ':IndentLinesDisable'
-  else
-    setlocal number signcolumn=yes
-    execute ':IndentLinesEnable'
-  endif
-endfunction
-
-" Indent rules given to a filetype, use spaces if needed
-function! g:IndentSize(size, use_spaces)
-  execute printf('setlocal tabstop=%d softtabstop=%d shiftwidth=0', a:size, a:size)
-  if !empty(a:use_spaces) && a:use_spaces
-    setlocal expandtab
-  else
-    setlocal noexpandtab
-  endif
-endfunction
-
-" =============================================================================
 " = Events (AUG) =
 " =============================================================================
 
@@ -152,14 +115,14 @@ augroup END
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType vim,lua call IndentSize(2, v:true)
-  autocmd FileType scss,sass,css call IndentSize(2, v:true)
-  autocmd FileType javascript,javascriptreact call IndentSize(2, v:true)
-  autocmd FileType typescript,typescriptreact call IndentSize(2, v:true)
-  autocmd FileType json,jsonc call IndentSize(2, v:true)
-  autocmd FileType vue call IndentSize(2, v:true)
-  autocmd FileType php,blade,html call IndentSize(4, v:true)
-  autocmd FileType markdown call IndentSize(4, v:true) | setlocal spell
+  autocmd FileType vim,lua call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType scss,sass,css call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType javascript,javascriptreact call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType json,jsonc call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType vue call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType php,blade,html call cnull#utils#IndentSize(4, v:true)
+  autocmd FileType markdown call cnull#utils#IndentSize(4, v:true) | setlocal spell
 augroup END
 
 " =============================================================================
@@ -307,8 +270,8 @@ nnoremap Q <Nop>
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ToggleConcealLevel call ToggleConcealLevel()
-command! ToggleCodeshot call ToggleCodeshot()
+command! ToggleConcealLevel call cnull#utils#ToggleConcealLevel()
+command! ToggleCodeshot call cnull#utils#ToggleCodeshot()
 
 command! MyTodoPersonal edit ~/todofiles/personal/README.md
 command! MyTodoWork edit ~/todofiles/work/README.md
@@ -350,46 +313,6 @@ augroup emmet_user_events
   autocmd!
   autocmd FileType html,php,blade,vue,javascriptreact,typescriptreact EmmetInstall
 augroup END
-
-" fzf.vim Config
-" ---
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS = '--reverse'
-let g:fzf_preview_window = []
-
-nnoremap <C-p> <Cmd>Files<CR>
-nnoremap <C-t> <Cmd>Rg<CR>
-
-function! g:FzfFileTypeSetup() abort
-  setlocal noruler
-  autocmd BufLeave <buffer> setlocal ruler
-endfunction
-
-augroup fzf_user_events
-  autocmd!
-  autocmd FileType fzf call FzfFileTypeSetup()
-  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
-augroup END
-
-" ALE Config
-" ---
-let g:ale_disable_lsp = 1
-let g:ale_completion_enabled = 0
-let g:ale_completion_autoimport = 1
-let g:ale_hover_cursor = 0
-let g:ale_echo_msg_error_str = 'Err'
-let g:ale_sign_error = 'E'
-let g:ale_echo_msg_warning_str = 'Warn'
-let g:ale_sign_warning = 'W'
-let g:ale_echo_msg_info_str = 'Info'
-let g:ale_sign_info = 'I'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_linters_explicit = 1
-let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
-
-" Keymaps
-nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
-nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
 
 " indentLine Config
 " ---
@@ -541,6 +464,23 @@ lua require('cnull.lsp')
 
 " fzf.vim Config
 " ---
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+let $FZF_DEFAULT_OPTS = '--reverse'
+let g:fzf_preview_window = []
+
+nnoremap <C-p> <Cmd>Files<CR>
+nnoremap <C-t> <Cmd>Rg<CR>
+
+function! g:FzfFileTypeSetup() abort
+  setlocal noruler
+  autocmd BufLeave <buffer> setlocal ruler
+endfunction
+
+augroup fzf_user_events
+  autocmd!
+  autocmd FileType fzf call FzfFileTypeSetup()
+  autocmd ColorScheme * highlight fzfBorder guifg=#aaaaaa
+augroup END
 function! g:FzfVimGrep(qargs, bang) abort
   let sh = "rg --column --line-number --no-heading --color=always --smart-case -- " . shellescape(a:qargs)
   call fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
@@ -550,184 +490,19 @@ command! -bang -nargs=* Rg call FzfVimGrep(<q-args>, <bang>0)
 
 " pum.vim Config
 " ---
-let g:enable_custom_pum = v:false
-
-if g:enable_custom_pum
-  call pum#set_option('border', 'rounded')
-
-  inoremap <Tab> <Cmd>call pum#map#insert_relative(+1)<CR>
-  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-  inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
-  inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
-  inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
-  inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
-
-  augroup pum_user_events
-    autocmd!
-    autocmd ColorScheme * highlight! Pmenu guibg=NONE
-  augroup END
-endif
+call cnull#pum#Setup()
 
 " ddc.vim Config
 " ---
-call ddc#custom#patch_global({
-  \ 'completionMenu': g:enable_custom_pum ? 'pum.vim' : 'native',
-  \ 'sources': ['nvim-lsp', 'vsnip', 'around', 'buffer'],
-  \ 'sourceOptions': {
-    \ '_': {
-      \ 'matchers': ['matcher_fuzzy'],
-      \ 'sorters': ['sorter_fuzzy'],
-      \ 'converters': ['converter_fuzzy'],
-    \ },
-    \ 'nvim-lsp': {
-      \ 'mark': 'LSP',
-      \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
-      \ 'maxCandidates': 10,
-    \ },
-    \ 'vsnip': {
-      \ 'mark': 'SNIPPET',
-      \ 'maxCandidates': 10,
-    \ },
-    \ 'around': {
-      \ 'mark': 'AROUND',
-      \ 'maxCandidates': 5,
-    \ },
-    \ 'buffer': {
-      \ 'mark': 'BUFFER',
-      \ 'maxCandidates': 5,
-    \ },
-  \ },
-\ })
+call cnull#ddc#Setup()
 
-" LSP kind labels - from lspkind-nvim
-call ddc#custom#patch_global('sourceParams', {
-  \ 'nvim-lsp': {
-    \ 'kindLabels': {
-      \ 'Class': 'ﴯ Class',
-      \ 'Color': ' Color',
-      \ 'Constant': ' Const',
-      \ 'Constructor': ' Constructor',
-      \ 'Enum': ' Enum',
-      \ 'EnumMember': ' Enum',
-      \ 'Event': ' Event',
-      \ 'Field': 'ﰠ Field',
-      \ 'File': ' File',
-      \ 'Folder': ' Folder',
-      \ 'Function': ' Function',
-      \ 'Interface': ' Interface',
-      \ 'Keyword': ' Key',
-      \ 'Method': ' Method',
-      \ 'Module': ' Module',
-      \ 'Operator': ' Operator',
-      \ 'Property': 'ﰠ Property',
-      \ 'Reference': ' Reference',
-      \ 'Snippet': ' Snippet',
-      \ 'Struct': 'פּ Struct',
-      \ 'Text': ' Text',
-      \ 'TypeParameter': '',
-      \ 'Unit': '塞 Unit',
-      \ 'Value': ' Value',
-      \ 'Variable': ' Variable',
-    \ },
-  \ },
-\ })
-
-" Markdown FileType completion sources
-call ddc#custom#patch_filetype('markdown', { 'sources': ['around', 'buffer'] })
-
-" Use tab to complete the popup menu item w/ vsnip integration
-inoremap <expr> <C-y> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"
-
-inoremap <expr> <C-Space> ddc#map#manual_complete()
-
-augroup ddc_user_events
-  autocmd!
-  autocmd VimEnter * call popup_preview#enable() | call ddc#enable()
-augroup END
+" ale Config
+" ---
+call cnull#ale#Setup()
 
 " lightline.vim Config
 " ---
-function! g:AleErrComponent() abort
-  if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let errors = info.error
-    if errors > 0
-      return printf('%d', errors)
-    endif
-  endif
-
-  return ''
-endfunction
-
-function! g:AleWarnComponent() abort
-  if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let warnings = info.warning
-    if warnings > 0
-      return printf('%d', warnings)
-    endif
-  endif
-
-  return ''
-endfunction
-
-function! g:AleStatus()
-  if exists('g:loaded_ale')
-    return 'ALE'
-  endif
-
-  return ''
-endfunction
-
-let g:lightline = {}
-let g:lightline.colorscheme = 'tailwind_cnull'
-
-let g:lightline.enable = {}
-let g:lightline.enable.statusline = 1
-let g:lightline.enable.tabline = 1
-
-let g:lightline.tabline = {}
-let g:lightline.tabline.left = [ ['buffers'] ]
-let g:lightline.tabline.right = [ ['filetype'] ]
-
-let g:lightline.component = { 'lineinfo': ' %l/%L  %c' }
-
-let g:lightline.separator = {}
-let g:lightline.separator.left = ''
-let g:lightline.separator.right = ''
-
-let g:lightline.active = {}
-let g:lightline.active.left = [ ['filename'], ['gitbranch', 'readonly', 'modified'] ]
-let g:lightline.active.right = [ ['ale_err', 'ale_warn', 'ale_status'], ['filetype', 'fileencoding'], ['lineinfo'] ]
-
-let g:lightline.inactive = {}
-let g:lightline.inactive.left = [ ['filename'], ['gitbranch', 'modified'] ]
-let g:lightline.inactive.right = [ [], [], ['lineinfo'] ]
-
-let g:lightline.component_function = {}
-let g:lightline.component_function.gitbranch = 'FugitiveHead'
-let g:lightline.component_function.ale_status = 'AleStatus'
-
-let g:lightline.component_expand = {}
-let g:lightline.component_expand.ale_err = 'AleErrComponent'
-let g:lightline.component_expand.ale_warn = 'AleWarnComponent'
-let g:lightline.component_expand.buffers = 'lightline#bufferline#buffers'
-
-let g:lightline.component_type = {}
-let g:lightline.component_type.ale_err = 'error'
-let g:lightline.component_type.ale_warn = 'warning'
-let g:lightline.component_type.buffers = 'tabsel'
-
-augroup ale_lightline_user_events
-  autocmd!
-  autocmd User ALEJobStarted call lightline#update()
-  autocmd User ALELintPost call lightline#update()
-  autocmd User ALEFixPost call lightline#update()
-augroup END
-
-" lightline-bufferline Config
-" ---
-let g:lightline#bufferline#enable_nerdfont = 1
+call cnull#lightline#Setup()
 
 " =============================================================================
 " = Colorscheme =
