@@ -322,15 +322,6 @@ if s:cnull.transparent
   let g:indentLine_color_gui = '#555555'
 endif
 
-" buftabline Config
-" ---
-" let g:buftabline_indicators = 1
-" 
-" augroup buftabline_user_events
-"   autocmd!
-"   autocmd ColorScheme * highlight TabLineSel guibg=#047857 guifg=#cdcdcd
-" augroup END
-
 " fern.vim Config
 " ---
 let g:fern#renderer = 'nerdfont'
