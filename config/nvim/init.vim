@@ -311,7 +311,10 @@ let g:user_emmet_install_global = 0
 
 augroup emmet_user_events
   autocmd!
-  autocmd FileType html,php,blade,vue,javascriptreact,typescriptreact EmmetInstall
+  autocmd FileType html,vue EmmetInstall
+  autocmd FileType javascript,javascriptreact,typescript,typescriptreact EmmetInstall
+  autocmd FileType php,blade EmmetiInstall
+  autocmd FileType twig,html.twig,htmldjango.twig,xml.twig EmmetInstall
 augroup END
 
 " indentLine Config
@@ -431,6 +434,9 @@ Plug 'kevinoid/vim-jsonc'
 
 " Vader
 Plug 'junegunn/vader.vim'
+
+" Twig templates
+Plug 'lumiliet/vim-twig'
 
 " UI Plugins
 Plug 'Yggdroot/indentLine'
