@@ -313,7 +313,7 @@ augroup emmet_user_events
   autocmd!
   autocmd FileType html,vue EmmetInstall
   autocmd FileType javascript,javascriptreact,typescript,typescriptreact EmmetInstall
-  autocmd FileType php,blade EmmetiInstall
+  autocmd FileType php,blade EmmetInstall
   autocmd FileType twig,html.twig,htmldjango.twig,xml.twig EmmetInstall
 augroup END
 
