@@ -366,9 +366,6 @@ vim.keymap.set('n', '<Leader>p', [["+p]], keymap_opts)
 -- Disable Ex-mode
 vim.keymap.set('n', 'Q', [[<Nop>]], keymap_opts)
 
--- Utilities
-vim.keymap.set('n', 'Y', [[y$]], keymap_opts)
-
 -- =============================================================================
 -- = User Commands (CMD) =
 -- =============================================================================
