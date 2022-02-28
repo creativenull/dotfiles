@@ -1,12 +1,18 @@
--- Name: Arnold Chand
--- Github: https://github.com/creativenull
--- Description: My vimrc works with MacOS, Linux and Windows, requires
---   + curl (globally installed)
---   + git (globally installed)
---   + python3 (globally installed)
---   + ripgrep (globally installed)
---   + deno (globally installed)
--- =============================================================================
+--[[
+==============================================================================
+Name: Arnold Chand
+
+Github: https://github.com/creativenull
+
+Description:
+  My init.vim, sort of cross-platform but very experimental, requires:
+    + curl (globally installed)
+    + git (globally installed)
+    + python3 (globally installed)
+    + ripgrep (globally installed)
+    + deno (globally installed)
+==============================================================================
+]]
 
 vim.g.userspace = 'nvim-nightly'
 if vim.g.userspace then
@@ -50,6 +56,7 @@ if vim.fn.has('nvim') == 0 and vim.fn.has('nvim-0.7') == 0 then
   return
 end
 
+-- Hard requirements for this config
 local exec_list = { 'git', 'curl', 'python3', 'rg', 'deno' }
 for _, exec in pairs(exec_list) do
   if vim.fn.executable(exec) == 0 then
