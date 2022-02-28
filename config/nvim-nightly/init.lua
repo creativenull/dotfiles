@@ -354,18 +354,17 @@ vim.keymap.set('n', 'Y', [[y$]], keymap_opts)
 -- =============================================================================
 
 -- Access Todo files
-vim.api.nvim_add_user_command('MyTodoPersonal', 'edit ~/todofiles/personal/README.md')
-vim.api.nvim_add_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md')
+vim.api.nvim_add_user_command('MyTodoPersonal', 'edit ~/todofiles/personal/README.md', {})
+vim.api.nvim_add_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md', {})
 
 -- Open/reload config
-vim.api.nvim_add_user_command('Config', 'edit $MYVIMRC')
-vim.api.nvim_add_user_command('ConfigReload', 'source $MYVIMRC | nohlsearch')
+vim.api.nvim_add_user_command('Config', string.format('edit ~/.config/%s/init.lua', vim.g.userspace), {})
+vim.api.nvim_add_user_command('ConfigReload', string.format('source ~/.config/%s/init.lua | nohlsearch', vim.g.userspace), {})
 
 ---Toggle conceal level of local buffer
 ---which is enabled by some syntax plugin
----@param args table
 ---@return nil
-local function toggle_conceal(args)
+local function toggle_conceal()
   local win = vim.api.nvim_get_current_win()
   if vim.wo[win].conceallevel == 2 then
     vim.wo[win].conceallevel = 0
@@ -374,14 +373,13 @@ local function toggle_conceal(args)
   end
 end
 
-vim.api.nvim_add_user_command('ToggleConcealLevel', toggle_conceal)
+vim.api.nvim_add_user_command('ToggleConcealLevel', toggle_conceal, {})
 
 ---Toggle the view of the editor, for taking screenshots
 ---or for copying code from the editor w/o using "+ register
 ---when not accessible, eg from a remote ssh
----@param args table
 ---@return nil
-local function toggle_codeshot(args)
+local function toggle_codeshot()
   local win = vim.api.nvim_get_current_win()
   if vim.wo[win].number then
     vim.wo[win].number = false
@@ -392,7 +390,7 @@ local function toggle_codeshot(args)
   end
 end
 
-vim.api.nvim_add_user_command('ToggleCodeshot', toggle_codeshot)
+vim.api.nvim_add_user_command('ToggleCodeshot', toggle_codeshot, {})
 
 -- Command Abbreviations, I can't release my shift key fast enough 😭
 vim.cmd('cnoreabbrev Q q')
