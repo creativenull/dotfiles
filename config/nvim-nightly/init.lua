@@ -139,7 +139,7 @@ end
 ---@return number
 vim.augroup.set = function(name, autocmds)
   local aug = vim.api.nvim_create_augroup({ name = name })
-  for _,v in pairs(autocmds) do
+  for _, v in pairs(autocmds) do
     vim.autocmd.set(name, v[1], v[2], v[3], v[4])
   end
 
@@ -199,13 +199,33 @@ local function indent_size(size, use_spaces)
 end
 
 vim.augroup.set('filetype_user_events', {
-  { 'FileType', 'vim,lua', function() indent_size(2, true) end },
-  { 'FileType', 'scss,sass,css', function() indent_size(2, true) end },
-  { 'FileType', 'javascript,javascriptreact', function() indent_size(2, true) end },
-  { 'FileType', 'typescript,typescriptreact', function() indent_size(2, true) end },
-  { 'FileType', 'json,jsonc', function() indent_size(2, true) end },
-  { 'FileType', 'vue', function() indent_size(2, true) end },
-  { 'FileType', 'php,blade,html', function() indent_size(4, true) end },
+  {
+    'FileType',
+    { 'php', 'blade', 'html' },
+    function()
+      indent_size(4, true)
+    end,
+  },
+  {
+    'FileType',
+    {
+      'vim',
+      'lua',
+      'scss',
+      'sass',
+      'css',
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'json',
+      'jsonc',
+      'vue',
+    },
+    function()
+      indent_size(2, true)
+    end,
+  },
 
   -- Enable spell check and set proper indents
   {
@@ -359,7 +379,11 @@ vim.api.nvim_add_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md', {
 
 -- Open/reload config
 vim.api.nvim_add_user_command('Config', string.format('edit ~/.config/%s/init.lua', vim.g.userspace), {})
-vim.api.nvim_add_user_command('ConfigReload', string.format('source ~/.config/%s/init.lua | nohlsearch', vim.g.userspace), {})
+vim.api.nvim_add_user_command(
+  'ConfigReload',
+  string.format('source ~/.config/%s/init.lua | nohlsearch', vim.g.userspace),
+  {}
+)
 
 ---Toggle conceal level of local buffer
 ---which is enabled by some syntax plugin
@@ -565,15 +589,15 @@ vim.keymap.set('i', '<C-Space>', [[ddc#map#manual_complete()]], {
 })
 
 -- Snippets
-vim.keymap.set({'i', 's'}, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
+vim.keymap.set({ 'i', 's' }, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {
   expr = true,
   replace_keycodes = true,
-  remap = true
+  remap = true,
 })
-vim.keymap.set({'i', 's'}, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
+vim.keymap.set({ 'i', 's' }, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
   expr = true,
   replace_keycodes = true,
-  remap = true
+  remap = true,
 })
 
 -- nvim-autopairs Config
@@ -610,12 +634,7 @@ require('cnull.treesitter')
 -- ---
 require('cnull.biscuits')
 
-vim.keymap.set(
-  'n',
-  '<Leader>it',
-  [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]],
-  keymap_opts
-)
+vim.keymap.set('n', '<Leader>it', [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]], keymap_opts)
 
 -- lualine.nvim Config
 -- ---
