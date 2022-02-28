@@ -154,51 +154,6 @@ vim.augroup.del = function(id)
 end
 
 -- =============================================================================
--- = Functions =
--- =============================================================================
-
----Toggle conceal level of local buffer
----which is enabled by some syntax plugin
-function _G.ToggleConcealLevel()
-  local win = vim.api.nvim_get_current_win()
-  if vim.wo[win].conceallevel == 2 then
-    vim.wo[win].conceallevel = 0
-  else
-    vim.wo[win].conceallevel = 2
-  end
-end
-
----Toggle the view of the editor, for taking screenshots
----or for copying code from the editor w/o using "+ register
----when not accessible, eg from a remote ssh
-function _G.ToggleCodeshot()
-  local win = vim.api.nvim_get_current_win()
-  if vim.wo[win].number then
-    vim.wo[win].number = false
-    vim.wo[win].signcolumn = 'no'
-  else
-    vim.wo[win].number = true
-    vim.wo[win].signcolumn = 'yes'
-  end
-end
-
--- Indent rules given to a filetype, use spaces if needed
----@param size number
----@param use_spaces boolean
-function _G.IndentSize(size, use_spaces)
-  local buf = vim.api.nvim_get_current_buf()
-  vim.bo[buf].tabstop = size
-  vim.bo[buf].softtabstop = size
-  vim.bo[buf].shiftwidth = size
-
-  if use_spaces then
-    vim.bo[buf].expandtab = true
-  else
-    vim.bo[buf].expandtab = false
-  end
-end
-
--- =============================================================================
 -- = Events (AUG) =
 -- =============================================================================
 
@@ -230,14 +185,27 @@ end
 vim.augroup.set('highlightyank_user_events', { { 'TextYankPost', '*', set_hlyank } })
 
 -- Default Filetype Options
+local function indent_size(size, use_spaces)
+  local buf = vim.api.nvim_get_current_buf()
+  vim.bo[buf].tabstop = size
+  vim.bo[buf].softtabstop = size
+  vim.bo[buf].shiftwidth = size
+
+  if use_spaces then
+    vim.bo[buf].expandtab = true
+  else
+    vim.bo[buf].expandtab = false
+  end
+end
+
 vim.augroup.set('filetype_user_events', {
-  { 'FileType', 'vim,lua', function() IndentSize(2, true) end },
-  { 'FileType', 'scss,sass,css', function() IndentSize(2, true) end },
-  { 'FileType', 'javascript,javascriptreact', function() IndentSize(2, true) end },
-  { 'FileType', 'typescript,typescriptreact', function() IndentSize(2, true) end },
-  { 'FileType', 'json,jsonc', function() IndentSize(2, true) end },
-  { 'FileType', 'vue', function() IndentSize(2, true) end },
-  { 'FileType', 'php,blade,html', function() IndentSize(4, true) end },
+  { 'FileType', 'vim,lua', function() indent_size(2, true) end },
+  { 'FileType', 'scss,sass,css', function() indent_size(2, true) end },
+  { 'FileType', 'javascript,javascriptreact', function() indent_size(2, true) end },
+  { 'FileType', 'typescript,typescriptreact', function() indent_size(2, true) end },
+  { 'FileType', 'json,jsonc', function() indent_size(2, true) end },
+  { 'FileType', 'vue', function() indent_size(2, true) end },
+  { 'FileType', 'php,blade,html', function() indent_size(4, true) end },
 
   -- Enable spell check and set proper indents
   {
@@ -246,7 +214,7 @@ vim.augroup.set('filetype_user_events', {
     function()
       local bufnr = vim.api.nvim_get_current_buf()
       vim.bo[bufnr].spell = true
-      IndentSize(4, true)
+      indent_size(4, true)
     end,
   },
 })
@@ -382,17 +350,49 @@ vim.keymap.set('n', 'Q', [[<Nop>]], keymap_opts)
 vim.keymap.set('n', 'Y', [[y$]], keymap_opts)
 
 -- =============================================================================
--- = Commands (CMD) =
+-- = User Commands (CMD) =
 -- =============================================================================
 
-vim.cmd('command! Config edit $MYVIMRC')
-vim.cmd('command! ConfigReload source $MYVIMRC | nohlsearch')
+-- Access Todo files
+vim.api.nvim_add_user_command('MyTodoPersonal', 'edit ~/todofiles/personal/README.md')
+vim.api.nvim_add_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md')
 
-vim.cmd('command! ToggleConcealLevel lua ToggleConcealLevel()')
-vim.cmd('command! ToggleCodeshot lua ToggleCodeshot()')
+-- Open/reload config
+vim.api.nvim_add_user_command('Config', 'edit $MYVIMRC')
+vim.api.nvim_add_user_command('ConfigReload', 'source $MYVIMRC | nohlsearch')
 
-vim.cmd('command! MyTodoPersonal edit ~/todofiles/personal/README.md')
-vim.cmd('command! MyTodoWork edit ~/todofiles/work/README.md')
+---Toggle conceal level of local buffer
+---which is enabled by some syntax plugin
+---@param args table
+---@return nil
+local function toggle_conceal(args)
+  local win = vim.api.nvim_get_current_win()
+  if vim.wo[win].conceallevel == 2 then
+    vim.wo[win].conceallevel = 0
+  else
+    vim.wo[win].conceallevel = 2
+  end
+end
+
+vim.api.nvim_add_user_command('ToggleConcealLevel', toggle_conceal)
+
+---Toggle the view of the editor, for taking screenshots
+---or for copying code from the editor w/o using "+ register
+---when not accessible, eg from a remote ssh
+---@param args table
+---@return nil
+local function toggle_codeshot(args)
+  local win = vim.api.nvim_get_current_win()
+  if vim.wo[win].number then
+    vim.wo[win].number = false
+    vim.wo[win].signcolumn = 'no'
+  else
+    vim.wo[win].number = true
+    vim.wo[win].signcolumn = 'yes'
+  end
+end
+
+vim.api.nvim_add_user_command('ToggleCodeshot', toggle_codeshot)
 
 -- Command Abbreviations, I can't release my shift key fast enough 😭
 vim.cmd('cnoreabbrev Q q')
@@ -501,7 +501,7 @@ packer.startup(function(use)
   use('mattn/emmet-vim')
 
   -- AutoCompletion + Sources
-  use({ 'Shougo/ddc.vim', tag = 'v1.0.0' })
+  use('Shougo/ddc.vim')
   use('matsui54/denops-popup-preview.vim')
   use('tani/ddc-fuzzy')
   use('Shougo/ddc-around')
