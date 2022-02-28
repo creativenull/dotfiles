@@ -94,42 +94,56 @@ cnull.config.undodir = string.format('%s/undodir', cnull.config.cache_dir)
 -- Custom vim functions
 local vim = vim
 vim.autocmd = {}
-
----Create an auto command
----@param event string
----@param pattern string
----@param command string
----@param opts table
----@return nil
-vim.autocmd.set = function(event, pattern, command, opts)
-  opts = opts or { once = nil, nested = nil }
-  local once = opts.once and '++once' or ''
-  local nested = opts.nested and '++nested' or ''
-  vim.cmd(string.format('autocmd %s %s %s %s %s', event, pattern, once, nested, command))
-end
-
----Delete an auto command
----@param event string
----@return nil
-vim.autocmd.del = function(event)
-  vim.cmd('autocmd! ' .. event)
-end
-
 vim.augroup = {}
+
+---Create an autocmd event, scoped to an augroup
+---@param event string|table
+---@param pattern string|table
+---@param command string|function
+---@param opts table
+---@return number
+vim.autocmd.set = function(group, event, pattern, command, opts)
+  opts = opts or { once = nil }
+  local autocmd_opts = {}
+  autocmd_opts.once = opts.once and true or false
+  autocmd_opts.group = group
+  autocmd_opts.event = event
+  autocmd_opts.pattern = pattern
+  if type(command) == 'string' then
+    autocmd_opts.command = command
+  elseif type(command) == 'function' then
+    autocmd_opts.callback = command
+  end
+
+  return vim.api.nvim_create_autocmd(autocmd_opts)
+end
+
+---Delete an autocmd provided by an id from vim.autocmd.set
+---@param id number
+---@return nil
+vim.autocmd.del = function(id)
+  vim.api.nvim_del_autocmd(id)
+end
 
 ---Create an auto group command that takes
 ---a vim.autocmd.set values as a table
 ---@param name string
 ---@param autocmds table
----@return nil
+---@return number
 vim.augroup.set = function(name, autocmds)
-  vim.cmd('augroup ' .. name)
-  vim.cmd('autocmd!')
-  for _, au in pairs(autocmds) do
-    -- vim.cmd(au)
-    vim.autocmd.set(au[1], au[2], au[3], au[4])
+  local aug = vim.api.nvim_create_augroup({ name = name })
+  for _,v in pairs(autocmds) do
+    vim.autocmd.set(name, v[1], v[2], v[3], v[4])
   end
-  vim.cmd('augroup END')
+
+  return aug
+end
+
+---Delete augroup provided by an id from vim.augroup.set
+---@param id number
+---@return nil
+vim.augroup.del = function(id)
+  vim.api.nvim_del_augroup(id)
 end
 
 -- =============================================================================
@@ -203,20 +217,31 @@ if cnull.transparent then
   })
 end
 
-vim.augroup.set('highlightyank_user_events', {
-  { 'TextYankPost', '*', 'silent! lua vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })' },
-})
+local set_hlyank = function()
+  vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+end
+vim.augroup.set('highlightyank_user_events', { { 'TextYankPost', '*', set_hlyank } })
 
 -- Default Filetype Options
 vim.augroup.set('filetype_user_events', {
-  { 'FileType', 'vim,lua', 'lua IndentSize(2, true)' },
-  { 'FileType', 'scss,sass,css', 'lua IndentSize(2, true)' },
-  { 'FileType', 'javascript,javascriptreact', 'lua IndentSize(2, true)' },
-  { 'FileType', 'typescript,typescriptreact', 'lua IndentSize(2, true)' },
-  { 'FileType', 'json,jsonc', 'lua IndentSize(2, true)' },
-  { 'FileType', 'vue', 'lua IndentSize(2, true)' },
-  { 'FileType', 'php,blade,html', 'lua IndentSize(4, true)' },
-  { 'FileType', 'markdown', 'setlocal spell | lua IndentSize(4, true)' },
+  { 'FileType', 'vim,lua', function() IndentSize(2, true) end },
+  { 'FileType', 'scss,sass,css', function() IndentSize(2, true) end },
+  { 'FileType', 'javascript,javascriptreact', function() IndentSize(2, true) end },
+  { 'FileType', 'typescript,typescriptreact', function() IndentSize(2, true) end },
+  { 'FileType', 'json,jsonc', function() IndentSize(2, true) end },
+  { 'FileType', 'vue', function() IndentSize(2, true) end },
+  { 'FileType', 'php,blade,html', function() IndentSize(4, true) end },
+
+  -- Enable spell check and set proper indents
+  {
+    'FileType',
+    'markdown',
+    function()
+      local bufnr = vim.api.nvim_get_current_buf()
+      vim.bo[bufnr].spell = true
+      IndentSize(4, true)
+    end,
+  },
 })
 
 -- =============================================================================
@@ -567,7 +592,7 @@ vim.keymap.set('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], keymap_opts)
 vim.keymap.set('n', '<Leader>vf', [[<Cmd>lua TelescopeFindConfigFiles()<CR>]], keymap_opts)
 
 if cnull.transparent then
-  vim.augroup.set('augroup telescope_user_events', {
+  vim.augroup.set('telescope_user_events', {
     { 'ColorScheme', '*', 'highlight! TelescopeBorder guifg=#aaaaaa' },
   })
 end
@@ -594,11 +619,11 @@ require('cnull.statusline')
 -- indent-blankline.nvim Config
 -- ---
 if cnull.transparent then
-  vim.augroup.set('augroup indent_blankline_user_events', {
+  vim.augroup.set('indent_blankline_user_events', {
     { 'ColorScheme', '*', 'highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE' },
   })
 else
-  vim.augroup.set('augroup indent_blankline_user_events', {
+  vim.augroup.set('indent_blankline_user_events', {
     { 'ColorScheme', '*', 'highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE' },
   })
 end
