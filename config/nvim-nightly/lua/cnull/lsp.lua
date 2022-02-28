@@ -1,5 +1,3 @@
-local lspconfig = require('lspconfig')
-local root_pattern = require('lspconfig').util.root_pattern
 local KEYMAP_OPTS = { silent = true, noremap = true }
 local BORDER_STYLE = 'rounded'
 local BORDER_WIDTH = 80
@@ -33,7 +31,7 @@ vim.diagnostic.config({
   underline = true,
   virtual_text = false,
   signs = true,
-  update_in_insert = true,
+  update_in_insert = false,
 })
 
 -- Add border to hover documentation
@@ -69,37 +67,4 @@ local projectlocal = require('projectlocal.lsp')
 projectlocal.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-})
-
--- EFM LSP Server - for linters and formatters
--- ---
-local efmls = require('efmls-configs')
-efmls.init({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  init_options = {
-    documentFormatting = true,
-  },
-})
-
--- Lua LSP Server
--- --
-local lua_rtp = vim.split(package.path, ';')
-table.insert(lua_rtp, 'lua/?.lua')
-table.insert(lua_rtp, 'lua/?/init.lua')
-lspconfig.sumneko_lua.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = root_pattern('.git'),
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-        path = lua_rtp,
-      },
-      diagnostics = { globals = { 'vim' } },
-      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
-      telemetry = { enable = false },
-    },
-  },
 })
