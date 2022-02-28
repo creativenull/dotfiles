@@ -110,19 +110,21 @@ vim.augroup = {}
 ---@param opts table
 ---@return number
 vim.autocmd.set = function(group, event, pattern, command, opts)
-  opts = opts or { once = nil }
+  opts = opts or { once = nil, nested = nil }
+
   local autocmd_opts = {}
   autocmd_opts.once = opts.once and true or false
+  autocmd_opts.nested = opts.nested and true or false
   autocmd_opts.group = group
-  autocmd_opts.event = event
   autocmd_opts.pattern = pattern
+
   if type(command) == 'string' then
     autocmd_opts.command = command
   elseif type(command) == 'function' then
     autocmd_opts.callback = command
   end
 
-  return vim.api.nvim_create_autocmd(autocmd_opts)
+  return vim.api.nvim_create_autocmd(event, autocmd_opts)
 end
 
 ---Delete an autocmd provided by an id from vim.autocmd.set
@@ -138,7 +140,7 @@ end
 ---@param autocmds table
 ---@return number
 vim.augroup.set = function(name, autocmds)
-  local aug = vim.api.nvim_create_augroup({ name = name })
+  local aug = vim.api.nvim_create_augroup(name, { clear = true })
   for _, v in pairs(autocmds) do
     vim.autocmd.set(name, v[1], v[2], v[3], v[4])
   end
