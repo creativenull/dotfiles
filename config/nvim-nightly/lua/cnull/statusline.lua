@@ -83,12 +83,13 @@ local theme = {
 
 -- Line Info Component
 local function line_info_component()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local bufinfo = vim.fn.getbufinfo(bufnr)
-  bufinfo = bufinfo[1]
+  local bufinfo = vim.fn.getbufinfo(vim.api.nvim_get_current_buf())[1]
+
+  -- Get the counts on the current buffer
   local linecount = bufinfo.linecount
   local linenum = bufinfo.lnum
   local col = vim.fn.col('.')
+
   return string.format(' %s/%s  %s', linenum, linecount, col)
 end
 
@@ -104,6 +105,7 @@ local function err_diagnostic_component()
   local bufnr = vim.api.nvim_get_current_buf()
   local severity = vim.diagnostic.severity.ERROR
   local diagnostics = vim.diagnostic.get(bufnr, { severity = severity })
+
   return vim.tbl_count(diagnostics)
 end
 
@@ -111,6 +113,7 @@ local function is_err_diagnostic()
   local bufnr = vim.api.nvim_get_current_buf()
   local severity = vim.diagnostic.severity.ERROR
   local diagnostics = vim.diagnostic.get(bufnr, { severity = severity })
+
   return vim.tbl_count(diagnostics) > 0
 end
 
@@ -118,6 +121,7 @@ local function warn_diagnostic_component()
   local bufnr = vim.api.nvim_get_current_buf()
   local severity = vim.diagnostic.severity.WARN
   local diagnostics = vim.diagnostic.get(bufnr, { severity = severity })
+
   return vim.tbl_count(diagnostics)
 end
 
@@ -125,6 +129,7 @@ local function is_warn_diagnostic()
   local bufnr = vim.api.nvim_get_current_buf()
   local severity = vim.diagnostic.severity.WARN
   local diagnostics = vim.diagnostic.get(bufnr, { severity = severity })
+
   return vim.tbl_count(diagnostics) > 0
 end
 
