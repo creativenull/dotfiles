@@ -403,7 +403,6 @@ Plug 'Shougo/ddc-nvim-lsp'
 Plug 'Shougo/ddc-around'
 Plug 'matsui54/ddc-buffer'
 Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'LumaKernel/ddc-file'
 
 " Snippet Engine + Presets
 Plug 'hrsh7th/vim-vsnip'

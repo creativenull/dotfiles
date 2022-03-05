@@ -1,6 +1,6 @@
 function! cnull#ddc#Setup() abort
   let s:completionMenu = g:enable_custom_pum ? 'pum.vim' : 'native'
-  let s:sources = ['nvim-lsp', 'vsnip', 'around', 'buffer', 'file']
+  let s:sources = ['nvim-lsp', 'vsnip', 'around', 'buffer']
 
   let s:sourceOptions = {}
   let s:sourceOptions['_'] = #{
@@ -24,12 +24,6 @@ function! cnull#ddc#Setup() abort
   let s:sourceOptions.buffer = #{
     \ mark: 'B',
     \ maxCandidates: 3,
-  \ }
-  let s:sourceOptions.file = #{
-    \ mark: 'F',
-    \ maxCandidates: 3,
-    \ isVolatile: v:true,
-    \ forceCompletionPattern: '\S/\S*',
   \ }
 
   let s:sourceParams = {}
