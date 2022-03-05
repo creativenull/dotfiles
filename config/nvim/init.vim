@@ -414,7 +414,8 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Git
-Plug 'tpope/vim-fugitive'
+Plug 'lambdalisue/gin.vim'
+Plug 'lambdalisue/guise.vim'
 Plug 'airblade/vim-gitgutter'
 
 " JS/TS
