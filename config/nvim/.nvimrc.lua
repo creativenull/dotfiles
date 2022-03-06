@@ -5,8 +5,13 @@ local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
 
 -- ALE Config
-vim.g.ale_linters = { lua = { 'luacheck' } }
-vim.g.ale_fixers = { lua = { 'stylua' } }
+vim.cmd [[
+  augroup ale_user_events
+    autocmd!
+    autocmd FileType lua let b:ale_linters = ['luacheck']
+    autocmd FileType lua let b:ale_fixers = ['stylua']
+  augroup END
+]]
 
 -- Lua LSP
 local lua_rtp = vim.split(package.path, ';')
