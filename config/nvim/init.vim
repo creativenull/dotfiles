@@ -414,6 +414,7 @@ Plug 'junegunn/fzf.vim'
 
 " Git
 Plug 'lambdalisue/gina.vim'
+Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
 
 " JS/TS

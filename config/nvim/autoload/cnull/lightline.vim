@@ -25,7 +25,7 @@ function! cnull#lightline#Setup() abort
   let g:lightline.inactive.right = [ [], [], ['lineinfo'] ]
 
   let g:lightline.component_function = {}
-  let g:lightline.component_function.gitbranch = 'FugitiveHead'
+  let g:lightline.component_function.gitbranch = 'gitbranch#name'
   let g:lightline.component_function.ale_status = 'cnull#ale#StlStatus'
 
   let g:lightline.component_expand = {}
