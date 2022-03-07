@@ -413,8 +413,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Git
-Plug 'lambdalisue/gin.vim'
-Plug 'lambdalisue/guise.vim'
+Plug 'lambdalisue/gina.vim'
 Plug 'airblade/vim-gitgutter'
 
 " JS/TS
