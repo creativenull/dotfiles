@@ -344,7 +344,7 @@ augroup END
 
 " gina.vim Config
 " ---
-nnoremap <silent> <Leader>gg <Cmd>Gina status -s<CR>
+nnoremap <silent> <Leader>g <Cmd>Gina status -s<CR>
 
 function! s:gina_keymaps() abort
   nnoremap <buffer> <Leader>ga <Cmd>Gina add -A<CR>
