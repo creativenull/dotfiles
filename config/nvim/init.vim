@@ -349,7 +349,6 @@ nnoremap <silent> <Leader>g <Cmd>Gina status -s<CR>
 function! s:gina_keymaps() abort
   nnoremap <buffer> <Leader>ga <Cmd>Gina add -A<CR>
   nnoremap <buffer> <Leader>gc <Cmd>Gina commit<CR>
-  nnoremap <buffer> q <Cmd>bp<CR>
 endfunction
 
 augroup gina_user_events
