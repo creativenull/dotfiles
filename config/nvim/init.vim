@@ -344,11 +344,14 @@ augroup END
 
 " gina.vim Config
 " ---
-nnoremap <silent> <Leader>g <Cmd>Gina status -s<CR>
+nnoremap <Leader>gg <Cmd>Gina status -s<CR>
+nnoremap <Leader>gp <Cmd>Gina! push<CR>
+nnoremap <Leader>gl <Cmd>Gina! pull<CR>
 
 function! s:gina_keymaps() abort
   nnoremap <buffer> <Leader>ga <Cmd>Gina add -A<CR>
   nnoremap <buffer> <Leader>gc <Cmd>Gina commit<CR>
+  nnoremap <buffer> <Leader>gp <Cmd>Gina push<CR>
 endfunction
 
 augroup gina_user_events
