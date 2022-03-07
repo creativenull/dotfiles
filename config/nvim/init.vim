@@ -342,6 +342,21 @@ augroup fern_user_events
   autocmd ColorScheme * highlight! default link CursorLine Visual
 augroup END
 
+" gina.vim Config
+" ---
+nnoremap <silent> <Leader>gg <Cmd>Gina status -s<CR>
+
+function! s:gina_keymaps() abort
+  nnoremap <buffer> <Leader>ga <Cmd>Gina add -A<CR>
+  nnoremap <buffer> <Leader>gc <Cmd>Gina commit<CR>
+  nnoremap <buffer> q <Cmd>bp<CR>
+endfunction
+
+augroup gina_user_events
+  autocmd!
+  autocmd FileType gina-status call s:gina_keymaps()
+augroup END
+
 " vim-json Config
 " ---
 let g:vim_json_syntax_conceal = 0
