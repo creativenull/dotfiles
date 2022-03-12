@@ -171,13 +171,15 @@ let &undodir=s:cnull.config.undodir
 set backspace=indent,eol,start
 set encoding=utf-8
 set history=10000
-set mouse=
 set nobackup
 set noswapfile
 set ttimeoutlen=50
 set undofile
 set undolevels=10000
 set updatetime=250
+if has('wsl')
+  set mouse=
+endif
 
 " UI
 set cmdheight=2
