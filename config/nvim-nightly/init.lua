@@ -142,7 +142,7 @@ end
 vim.augroup.set = function(name, autocmds)
   local aug = vim.api.nvim_create_augroup(name, { clear = true })
   for _, v in pairs(autocmds) do
-    vim.autocmd.set(name, v[1], v[2], v[3], v[4])
+    vim.autocmd.set(aug, v[1], v[2], v[3], v[4])
   end
 
   return aug
