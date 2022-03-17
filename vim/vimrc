@@ -8,8 +8,29 @@
 "   + ripgrep
 "
 " =============================================================================
-" = Initialize =
+" = Initialize (INIT) =
 " =============================================================================
+
+let mapleader = "\<Space>"
+let s:user = {}
+let s:user.enable_transparent = v:true
+
+" ---
+
+let s:user.config = {}
+if has('win32')
+  let s:user.config.cachedir = expand('$HOME/AppData/Local/Temp/vim')
+  let s:user.config.configdir = expand('$HOME')
+  let s:user.config.datadir = expand('$HOME/vimfiles')
+else
+  let s:user.config.cachedir = expand('$HOME/.cache/vim')
+  let s:user.config.configdir = expand('$HOME')
+  let s:user.config.datadir = expand('$HOME/.vim')
+endif
+
+let s:user.config.undodir = printf('%s/undo', s:user.config.cachedir)
+
+" ---
 
 filetype plugin indent on
 syntax on
@@ -46,70 +67,14 @@ if has('win32')
 endif
 
 " =============================================================================
-" = Functions (FUN) =
-" =============================================================================
-
-function! g:MakeConfig() abort
-  let std_cache = ''
-  let std_config = ''
-  let std_data = ''
-  if has('win32')
-    let std_cache = expand('$HOME/AppData/Local/Temp/vim')
-    let std_config = expand('$HOME')
-    let std_data = expand('$HOME/vimfiles')
-  else
-    let std_cache = expand('$HOME/.cache/vim')
-    let std_config = expand('$HOME')
-    let std_data = expand('$HOME/.vim')
-  endif
-
-  return {
-    \ 'std_cache': std_cache,
-    \ 'std_config': std_config,
-    \ 'std_data': std_data,
-    \ 'undodir': printf('%s/undo', std_cache),
-  \ }
-endfunction
-
-" Toggle conceal level of local buffer
-" which is enabled by some syntax plugin
-function! g:ToggleConcealLevel() abort
-  if &conceallevel == 2
-    setlocal conceallevel=0
-  else
-    setlocal conceallevel=2
-  endif
-endfunction
-
-" Toggle the view of the editor, for taking screenshots
-" or for copying code from the editor w/o using "+ register
-" when not accessible, eg from a remote ssh
-function! g:ToggleCodeshot() abort
-  if &number
-    setlocal nonumber signcolumn=no
-    execute ':IndentLinesDisable'
-  else
-    setlocal number signcolumn=yes
-    execute ':IndentLinesEnable'
-  endif
-endfunction
-
-" =============================================================================
-" = Initialize (INIT) =
-" =============================================================================
-
-let mapleader = ' '
-let s:cnull = {}
-let s:cnull.transparent = v:false
-let s:cnull.config = MakeConfig()
-
-" =============================================================================
 " = Events (AUG) =
 " =============================================================================
 
-if s:cnull.transparent
+if s:user.enable_transparent
   augroup transparent_user_events
     autocmd!
+
+    " Core highlights to make transparent
     autocmd ColorScheme * highlight! Normal guibg=NONE
     autocmd ColorScheme * highlight! SignColumn guibg=NONE
     autocmd ColorScheme * highlight! LineNr guibg=NONE guifg=#888888
@@ -120,7 +85,7 @@ if s:cnull.transparent
     " Sometimes comments are too dark, affects in tranparent mode
     autocmd ColorScheme * highlight! Comment guifg=#888888
 
-    " Tabline
+    " Make tabline bg tranparent
     autocmd ColorScheme * highlight! TabLineFill guibg=NONE
     autocmd ColorScheme * highlight! TabLine guibg=NONE
 
@@ -130,15 +95,29 @@ if s:cnull.transparent
 
     " Vertical Line
     autocmd ColorScheme * highlight! ColorColumn guibg=#999999
+
   augroup END
 endif
+
+augroup customhl_user_events
+  autocmd!
+
+  " Different color when confirming selected substitution with `:s`
+  autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103DA5 guifg=#eeeeee
+
+augroup END
 
 " =============================================================================
 " = Options (OPT) =
 " =============================================================================
 
-if !isdirectory(s:cnull.config.undodir)
-  execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
+" Create a dir for tracking undo
+if !isdirectory(s:user.config.undodir)
+  if has('win32')
+    execute printf('silent !mkdir -Recurse %s', s:user.config.undodir)
+  else
+    execute printf('silent !mkdir -p %s', s:user.config.undodir)
+  endif
 endif
 
 " Completion
@@ -147,49 +126,50 @@ set shortmess+=c
 set wildmenu
 
 " Search
-set ignorecase
-set smartcase
 set hlsearch
+set ignorecase
 set incsearch
+set path=**
 set showmatch
+set smartcase
 
 " Editor
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+set autoindent
+set colorcolumn=120
 set expandtab
+set iskeyword+=-
+set lazyredraw
+set nofoldenable
+set nospell
+set nowrap
+set scrolloff=3
+set shiftwidth=4
 set smartindent
 set smarttab
-set autoindent
-set nowrap
-set colorcolumn=120
-set scrolloff=5
-set nospell
+set softtabstop=4
+set tabstop=4
+set wildignorecase
 
 " System
+let &undodir=s:user.config.undodir
+set backspace=indent,eol,start
 set encoding=utf-8
+set history=10000
+set mouse=a
 set nobackup
 set noswapfile
-set updatetime=250
+set ttimeoutlen=50
 set undofile
 set undolevels=10000
-set history=10000
-set backspace=indent,eol,start
-set ttimeoutlen=50
-set mouse=a
-set lazyredraw
-let &undodir = s:cnull.config.undodir
+set updatetime=250
 
 " UI
-set number
-set nofoldenable
-set hidden
-set conceallevel=0
-set signcolumn=yes
 set cmdheight=2
-set showtabline=2
+set hidden
 set laststatus=2
-set background=dark
+set number
+set showtabline=2
+set signcolumn=yes
 if has('termguicolors')
   set termguicolors
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -229,14 +209,18 @@ nnoremap <Leader><CR> <Cmd>noh<CR>
 
 " List all buffers
 nnoremap <Leader>bb <Cmd>buffers<CR>
+
 " Go to next buffer
 nnoremap <C-l> <Cmd>bnext<CR>
 nnoremap <Leader>bn <Cmd>bnext<CR>
+
 " Go to previous buffer
 nnoremap <C-h> <Cmd>bprevious<CR>
 nnoremap <Leader>bp <Cmd>bprevious<CR>
+
 " Close the current buffer, and more?
 nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
+
 " Close all buffer, except current
 nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
 
@@ -269,6 +253,9 @@ nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 nnoremap Y y$
 
+" Format entire file with =
+nnoremap g= gg=G
+
 " Disable Ex-mode
 nnoremap Q <Nop>
 
@@ -278,10 +265,14 @@ nnoremap Q <Nop>
 
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
-command! ToggleCodeshot call ToggleCodeshot()
-command! ToggleConcealLevel call ToggleConcealLevel()
 
-" Command Abbreviations
+command! ToggleConcealLevel call cnull#utils#ToggleConcealLevel()
+command! ToggleCodeshot call cnull#utils#ToggleCodeshot()
+
+command! MyTodoPersonal edit ~/todofiles/personal/README.md
+command! MyTodoWork edit ~/todofiles/work/README.md
+
+" Command Abbreviations, I can't release my shift key fast enough 😭
 cnoreabbrev Q  q
 cnoreabbrev Qa qa
 cnoreabbrev W  w
@@ -291,40 +282,9 @@ cnoreabbrev Wq wq
 " = Plugin Pre-Config - before loading plugins (PRE) =
 " =============================================================================
 
-" UltiSnips Config
-" ---
-let g:UltiSnipsExpandTrigger = '<C-q>.'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-
 " vim-vue Config
 " ---
 let g:vue_pre_processors = []
-
-" emmet-vim Config
-" ---
-let g:user_emmet_leader_key = '<C-q>'
-let g:user_emmet_install_global = 0
-let g:user_emmet_mode = 'i'
-
-augroup emmet_user_events
-  autocmd!
-  autocmd FileType html,blade,php,javascriptreact,typescriptreact,vue EmmetInstall
-augroup END
-
-" fzf.vim Config
-" ---
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS = '--reverse'
-let g:fzf_preview_window = []
-
-nnoremap <C-p> <Cmd>Files<CR>
-nnoremap <C-t> <Cmd>Rg<CR>
-
-augroup fzf_highlight_user_events
-  autocmd!
-  autocmd ColorScheme * highlight! fzfBorder guifg=#aaaaaa
-augroup END
 
 " indentLine Config
 " ---
@@ -334,48 +294,6 @@ let g:indentLine_char = '│'
 " ---
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
-
-" coc.nvim Config
-" ---
-nnoremap <silent> <Leader>ld <Cmd>call CocActionAsync('jumpDefinition')<CR>
-nnoremap <silent> <Leader>lf <Cmd>call CocActionAsync('format')<CR>
-nnoremap <silent> <Leader>lr <Cmd>call CocActionAsync('rename')<CR>
-nnoremap <silent> <Leader>lh <Cmd>call CocActionAsync('doHover')<CR>
-nnoremap <silent> <Leader>la <Cmd>call CocActionAsync('codeAction')<CR>
-nnoremap <silent> <Leader>le <Cmd>CocList diagnostics<CR>
-inoremap <silent> <expr> <C-@> coc#refresh()
-
-inoremap <silent> <expr> <Tab> pumvisible()
-  \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
-  \ : "\<Tab>"
-
-" ale Config
-" ---
-let g:ale_completion_enabled = 0
-let g:ale_disable_lsp = 1
-let g:ale_hover_cursor = 0
-let g:ale_echo_msg_error_str = ''
-let g:ale_echo_msg_warning_str = ''
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_linters_explicit = 1
-let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
-
-nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
-nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
-nnoremap <silent> <Leader>al <Cmd>lopen<CR>
-
-" fern.vim Config
-" ---
-let g:fern#renderer = 'nerdfont'
-let g:fern#hide_cursor = 1
-
-nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
-
-augroup fern_user_events
-  autocmd!
-  autocmd FileType fern call cnull#fern#keymaps()
-  autocmd ColorScheme * highlight! default link CursorLine Visual
-augroup END
 
 " json.vim Config
 " ---
@@ -390,17 +308,17 @@ let g:gitgutter_map_keys = 0
 " =============================================================================
 
 " Bootstrap - download vim-plug into autoload directory if it doesn't exist
-let s:plugin = {}
-let s:plugin.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plugin.filepath = s:cnull.config.std_data . '/autoload/plug.vim'
-let s:plugin.plugins_dir = s:cnull.config.std_data . '/plugged'
+let s:plug = {}
+let s:plug.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let s:plug.path = s:user.config.datadir . '/autoload/plug.vim'
+let s:plug.pluginsdir = s:user.config.datadir . '/plugged'
 
-if !filereadable(s:plugin.filepath)
-  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.filepath, s:plugin.git)
+if !filereadable(s:plug.path)
+  execute printf('!curl -fLo %s --create-dirs %s', s:plug.path, s:plug.git)
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin(s:plugin.plugins_dir)
+call plug#begin(s:plug.pluginsdir)
 
 " Deps
 Plug 'Shougo/context_filetype.vim'
@@ -423,6 +341,10 @@ Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/nerdfont.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 
+" Fuzzy Finder
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
 " Snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -431,21 +353,19 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-" Auto-completion/LSP/Linters/Formatter
+" Linter and formatter configurations
 Plug 'dense-analysis/ale'
+
+" Auto completion + LSP client
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'neoclide/coc-json', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-tsserver', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'fannheyward/coc-deno', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'marlonfan/coc-phpls', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-css', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-html', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'marlonfan/coc-phpls', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-vetur', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'fannheyward/coc-deno', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'neoclide/coc-json', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-snippets', { 'do': 'yarn install --frozen-lockfile' }
-
-" Fuzzy Finder
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'neoclide/coc-tsserver', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'neoclide/coc-vetur', { 'do': 'yarn install --frozen-lockfile' }
 
 " JS/TS
 Plug 'pangloss/vim-javascript'
@@ -469,6 +389,7 @@ Plug 'junegunn/vader.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
+Plug 'machakann/vim-highlightedyank'
 
 " Colorschemes
 Plug 'bluz71/vim-nightfly-guicolors'
@@ -483,23 +404,37 @@ call plug#end()
 " = Plugin Post-Config - after loading plugins (POST) =
 " =============================================================================
 
+" vim-highlightedyank Config
+" ---
+call cnull#highlightedyank#Setup()
+
+" coc.nvim Config
+" ---
+call cnull#coc#Setup()
+
+" emmet-vim Config
+" ---
+call cnull#emmet#Setup()
+
 " fzf.vim Config
 " ---
-command! -bang -nargs=* Rg cnull#fzf#vim_grep(<q-args>, <bang>0)
+call cnull#fzf#Setup()
+
+" fern.vim Config
+" ---
+call cnull#fern#Setup()
+
+" ale Config
+" ---
+call cnull#ale#Setup()
 
 " lightline.vim Config
 " ---
-call cnull#lightline#setup()
-
-augroup ale_lightline_user_events
-  autocmd!
-  autocmd User ALEJobStarted call lightline#update()
-  autocmd User ALELintPost call lightline#update()
-  autocmd User ALEFixPost call lightline#update()
-augroup END
+call cnull#lightline#Setup()
 
 " =============================================================================
 " = UI/Theme (THEME) =
 " =============================================================================
 
+set background=dark
 colorscheme moonfly
