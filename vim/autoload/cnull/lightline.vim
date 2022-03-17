@@ -1,4 +1,4 @@
-function! cnull#lightline#setup() abort
+function! cnull#lightline#Setup() abort
   let g:lightline = {}
   let g:lightline.colorscheme = 'tailwind_cnull'
 
@@ -26,15 +26,47 @@ function! cnull#lightline#setup() abort
 
   let g:lightline.component_function = {}
   let g:lightline.component_function.gitbranch = 'FugitiveHead'
-  let g:lightline.component_function.ale_status = 'cnull#ale#stl_status'
+  let g:lightline.component_function.ale_status = 'cnull#lightline#ale_status'
 
   let g:lightline.component_expand = {}
-  let g:lightline.component_expand.ale_err = 'cnull#ale#stl_err_component'
-  let g:lightline.component_expand.ale_warn = 'cnull#ale#stl_warn_component'
+  let g:lightline.component_expand.ale_err = 'cnull#lightline#ale_err_component'
+  let g:lightline.component_expand.ale_warn = 'cnull#lightline#ale_warn_component'
   let g:lightline.component_expand.buffers = 'lightline#bufferline#buffers'
 
   let g:lightline.component_type = {}
   let g:lightline.component_type.ale_err = 'error'
   let g:lightline.component_type.ale_warn = 'warning'
   let g:lightline.component_type.buffers = 'tabsel'
+endfunction
+
+function! cnull#lightline#ale_err_component() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let errors = info.error
+    if errors > 0
+      return printf('%d', errors)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! cnull#lightline#ale_warn_component() abort
+  if exists('g:loaded_ale')
+    let info = ale#statusline#Count(bufnr(''))
+    let warnings = info.warning
+    if warnings > 0
+      return printf('%d', warnings)
+    endif
+  endif
+
+  return ''
+endfunction
+
+function! cnull#lightline#ale_status() abort
+  if exists('g:loaded_ale')
+    return 'ALE'
+  endif
+
+  return ''
 endfunction

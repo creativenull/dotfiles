@@ -1,31 +1,24 @@
-function! cnull#ale#stl_err_component() abort
-  if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let errors = info.error
-    if errors > 0
-      return printf('%d', errors)
-    endif
-  endif
+function! cnull#ale#Setup() abort
+  let g:ale_completion_enabled = 0
+  let g:ale_disable_lsp = 1
+  let g:ale_hover_cursor = 0
+  let g:ale_echo_msg_error_str = ''
+  let g:ale_echo_msg_warning_str = ''
+  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+  let g:ale_linters_explicit = 1
+  let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
-  return ''
-endfunction
+  nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
+  nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
+  nnoremap <silent> <Leader>al <Cmd>lopen<CR>
 
-function! cnull#ale#stl_warn_component() abort
-  if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let warnings = info.warning
-    if warnings > 0
-      return printf('%d', warnings)
-    endif
-  endif
+  " Update lightline whenever ALE lints or formats the code
+  augroup ale_lightline_user_events
+    autocmd!
 
-  return ''
-endfunction
+    autocmd User ALEJobStarted call lightline#update()
+    autocmd User ALELintPost call lightline#update()
+    autocmd User ALEFixPost call lightline#update()
 
-function! cnull#ale#stl_status() abort
-  if exists('g:loaded_ale')
-    return 'ALE'
-  endif
-
-  return ''
+  augroup END
 endfunction
