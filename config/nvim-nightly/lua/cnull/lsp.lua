@@ -1,32 +1,33 @@
-local KEYMAP_OPTS = { silent = true, noremap = true }
 local BORDER_STYLE = 'rounded'
 local BORDER_WIDTH = 80
 
 local function on_attach(_, buf)
-  -- Ominfunc backup
+  -- Set omnifunc in case there are not auto completion
   vim.api.nvim_buf_set_option(buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Keymaps
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>la', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], KEYMAP_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>ld', [[<Cmd>lua vim.lsp.buf.definition()<CR>]], KEYMAP_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lf', [[<Cmd>lua vim.lsp.buf.formatting()<CR>]], KEYMAP_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lh', [[<Cmd>lua vim.lsp.buf.hover()<CR>]], KEYMAP_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>lr', [[<Cmd>lua vim.lsp.buf.rename()<CR>]], KEYMAP_OPTS)
-  vim.api.nvim_buf_set_keymap(buf, 'n', '<Leader>le', [[<Cmd>lua vim.diagnostic.setloclist()<CR>]], KEYMAP_OPTS)
+  -- LSP keymaps to be used only when LS server is attached
+  vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, { buffer = buf })
+  vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { buffer = buf })
+  vim.keymap.set('n', '<Leader>lf', vim.lsp.buf.formatting, { buffer = buf })
+  vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { buffer = buf })
+  vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { buffer = buf })
+  vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { buffer = buf })
 
-  local diag_opts = string.format('{ bufnr = %d, width = %d, border = %q }', buf, BORDER_WIDTH, BORDER_STYLE)
-  vim.api.nvim_buf_set_keymap(
-    buf,
-    'n',
-    '<Leader>lw',
-    string.format([[<Cmd>lua vim.diagnostic.open_float(%s)<CR>]], diag_opts),
-    KEYMAP_OPTS
-  )
+  -- Show diagnostic float window, customized
+  local function show_diagnostics()
+    vim.diagnostic.open_float({
+      bufnr = buf,
+      width = BORDER_WIDTH,
+      border = BORDER_STYLE,
+    })
+  end
+
+  vim.keymap.set('n', '<Leader>lw', show_diagnostics, { buffer = buf })
 end
 
 -- Initial LSP Settings
 -- --
--- Gloabally change diagnostic behavior
+-- Global settings for diagnostic behaviour
 vim.diagnostic.config({
   underline = true,
   virtual_text = false,
