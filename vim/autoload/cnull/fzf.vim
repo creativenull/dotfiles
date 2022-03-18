@@ -7,7 +7,7 @@ function! cnull#fzf#Setup() abort
   nnoremap <C-t> <Cmd>Rg<CR>
 
   " Custom UI interface for greping code with fzf
-  command! -bang -nargs=* Rg cnull#fzf#VimGrep(<q-args>, <bang>0)
+  command! -bang -nargs=* Rg call cnull#fzf#VimGrep(<q-args>, <bang>0)
 
   " Use a lighter border color
   augroup fzf_highlight_user_events
@@ -20,5 +20,5 @@ endfunction
 
 function! cnull#fzf#VimGrep(qargs, bang) abort
   let sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' . shellescape(a:qargs)
-  fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
+  call fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
 endfunction
