@@ -256,8 +256,8 @@ nnoremap Y y$
 " Format entire file with =
 nnoremap g= gg=G
 
-" Disable Ex-mode
-nnoremap Q <Nop>
+" Execute last recorded macro
+nnoremap Q @@
 
 " =============================================================================
 " = Commands (CMD) =
