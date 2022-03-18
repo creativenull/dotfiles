@@ -1,5 +1,4 @@
---[[
-==============================================================================
+--[[ ==========================================================================
 Name: Arnold Chand
 
 Github: https://github.com/creativenull
@@ -11,8 +10,7 @@ Description:
     + python3 (globally installed)
     + ripgrep (globally installed)
     + deno (globally installed)
-==============================================================================
-]]
+============================================================================ ]]
 
 vim.g.userspace = 'nvim-nightly'
 if vim.g.userspace then
