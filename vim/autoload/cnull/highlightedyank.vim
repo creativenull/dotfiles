@@ -5,7 +5,7 @@ function! cnull#highlightedyank#Setup() abort
   augroup highlightedyank_user_events
     autocmd!
 
-    autocmd! ColorScheme * highlight! default link HighlightedyankRegion IncSearch
+    autocmd ColorScheme * highlight! default link HighlightedyankRegion IncSearch
 
   augroup END
 endfunction
