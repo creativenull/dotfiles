@@ -181,10 +181,17 @@ if cnull.transparent then
   })
 end
 
+vim.augroup.set('custom_user_events', {
+  { 'ColorScheme', '*', 'highlight! WinSeparator guibg=NONE' },
+})
+
 local set_hlyank = function()
   vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
 end
-vim.augroup.set('highlightyank_user_events', { { 'TextYankPost', '*', set_hlyank } })
+
+vim.augroup.set('highlightyank_user_events', {
+  { 'TextYankPost', '*', set_hlyank },
+})
 
 -- Default Filetype Options
 local function indent_size(size, use_spaces)
@@ -294,7 +301,7 @@ vim.opt.hidden = true
 vim.opt.signcolumn = 'yes'
 vim.opt.cmdheight = 2
 vim.opt.showtabline = 2
-vim.opt.laststatus = 2
+vim.opt.laststatus = 3
 vim.opt.guicursor = { 'n-v-c-sm:block', 'i-ci-ve:block', 'r-cr-o:hor20' }
 vim.opt.termguicolors = true
 vim.opt.number = true

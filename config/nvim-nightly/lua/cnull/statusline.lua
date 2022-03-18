@@ -133,12 +133,17 @@ local function is_warn_diagnostic()
   return vim.tbl_count(diagnostics) > 0
 end
 
+local function nvim_nightly_build_component()
+  return 'nightly'
+end
+
 require('lualine').setup({
   options = {
     icons_enabled = true,
     theme = theme,
     section_separators = { left = '', right = '' },
     disabled_filetypes = { 'TelescopePrompt' },
+    globalstatus = true,
   },
 
   sections = {
@@ -146,7 +151,7 @@ require('lualine').setup({
     lualine_b = { 'branch' },
     lualine_c = {},
 
-    lualine_x = { 'encoding' },
+    lualine_x = { nvim_nightly_build_component, 'encoding' },
     lualine_y = { line_info_component },
     lualine_z = {
       lsp_ready_component,
