@@ -8,13 +8,14 @@
 "   + ripgrep
 "
 " =============================================================================
-" = Initialize (INIT) =
+" = User Initialize (USER) =
 " =============================================================================
 
 let mapleader = "\<Space>"
 let s:user = {}
 let s:user.enable_transparent = v:true
 
+" Vim filepaths
 " ---
 
 let s:user.config = {}
@@ -30,10 +31,14 @@ endif
 
 let s:user.config.undodir = printf('%s/undo', s:user.config.cachedir)
 
+" Enable vim features
 " ---
 
 filetype plugin indent on
 syntax on
+
+" Hard dependencies
+" ---
 
 " Pre-Requisites
 let s:exec_list = ['git', 'curl', 'python3', 'rg', 'node', 'deno']
@@ -44,7 +49,10 @@ for s:exec in s:exec_list
   endif
 endfor
 
-" Windows specific settings
+" OS Specific options
+" ---
+
+" For Windows
 if has('win32')
   if !executable('pwsh')
     echoerr '[vim] PowerShell Core >= v6 is required!'
@@ -67,7 +75,26 @@ if has('win32')
 endif
 
 " =============================================================================
-" = Events (AUG) =
+" = User Commands (CMD) =
+" =============================================================================
+
+command! Config edit $MYVIMRC
+command! ConfigReload source $MYVIMRC | nohlsearch
+
+command! ToggleConcealLevel call cnull#utils#ToggleConcealLevel()
+command! ToggleCodeshot call cnull#utils#ToggleCodeshot()
+
+command! MyTodoPersonal edit ~/todofiles/personal/README.md
+command! MyTodoWork edit ~/todofiles/work/README.md
+
+" Command Abbreviations, I can't release my shift key fast enough 😭
+cnoreabbrev Q  q
+cnoreabbrev Qa qa
+cnoreabbrev W  w
+cnoreabbrev Wq wq
+
+" =============================================================================
+" = Autocmds (AUG) =
 " =============================================================================
 
 if s:user.enable_transparent
@@ -260,50 +287,6 @@ nnoremap g= gg=G
 nnoremap Q @@
 
 " =============================================================================
-" = Commands (CMD) =
-" =============================================================================
-
-command! Config edit $MYVIMRC
-command! ConfigReload source $MYVIMRC | nohlsearch
-
-command! ToggleConcealLevel call cnull#utils#ToggleConcealLevel()
-command! ToggleCodeshot call cnull#utils#ToggleCodeshot()
-
-command! MyTodoPersonal edit ~/todofiles/personal/README.md
-command! MyTodoWork edit ~/todofiles/work/README.md
-
-" Command Abbreviations, I can't release my shift key fast enough 😭
-cnoreabbrev Q  q
-cnoreabbrev Qa qa
-cnoreabbrev W  w
-cnoreabbrev Wq wq
-
-" =============================================================================
-" = Plugin Pre-Config - before loading plugins (PRE) =
-" =============================================================================
-
-" vim-vue Config
-" ---
-let g:vue_pre_processors = []
-
-" indentLine Config
-" ---
-let g:indentLine_char = '│'
-
-" buftabline Config
-" ---
-let g:buftabline_numbers = 2
-let g:buftabline_indicators = 1
-
-" json.vim Config
-" ---
-let g:vim_json_conceal = 0
-
-" vim-gitgutter Config
-" ---
-let g:gitgutter_map_keys = 0
-
-" =============================================================================
 " = Plugin Manager (PLUG) =
 " =============================================================================
 
@@ -320,12 +303,13 @@ endif
 
 call plug#begin(s:plug.pluginsdir)
 
-" Deps
+" Plugin dependencies {{{
 Plug 'Shougo/context_filetype.vim'
 Plug 'vim-denops/denops.vim'
 Plug 'lambdalisue/nerdfont.vim'
+" }}}
 
-" Core
+" Core {{{
 Plug 'cohama/lexima.vim'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
@@ -333,31 +317,37 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim'
 Plug 'creativenull/projectlocal-vim'
+Plug 'mattn/emmet-vim' | call cnull#emmet#Setup()
+" }}}
 
-" File Explorer
-Plug 'lambdalisue/fern.vim'
+" File Explorer {{{
+Plug 'lambdalisue/fern.vim' | call cnull#fern#Setup()
 Plug 'lambdalisue/nerdfont.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+" }}}
 
-" Fuzzy Finder
-Plug 'junegunn/fzf'
+" Fuzzy Finder {{{
+Plug 'junegunn/fzf' | call cnull#fzf#Setup()
 Plug 'junegunn/fzf.vim'
+" }}}
 
-" Snippets
+" Snippets {{{
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+" }}}
 
-" Git
+" Git {{{
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter' | let g:gitgutter_map_keys = 0
+" }}}
 
-" Linter and formatter configurations
-Plug 'dense-analysis/ale'
+" Linter and formatter configurations {{{
+Plug 'dense-analysis/ale' | call cnull#ale#Setup()
+" }}}
 
-" Auto completion + LSP client
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+" Auto completion + LSP client {{{
+Plug 'neoclide/coc.nvim', { 'branch': 'release' } | call cnull#coc#Setup()
 Plug 'fannheyward/coc-deno', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'marlonfan/coc-phpls', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-css', { 'do': 'yarn install --frozen-lockfile' }
@@ -367,71 +357,35 @@ Plug 'neoclide/coc-snippets', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-tsserver', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc-vetur', { 'do': 'yarn install --frozen-lockfile' }
 Plug 'yaegassy/coc-volar', { 'do': 'yarn install --frozen-lockfile' }
+" }}}
 
-" JS/TS
+" File syntax plugins {{{
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'heavenshell/vim-jsdoc', { 'do': 'make install' }
-
-" Vue
-Plug 'posva/vim-vue'
-
-" PHP
+Plug 'posva/vim-vue' | let g:vue_pre_processors = []
 Plug 'jwalton512/vim-blade'
-
-" JSON/JSONC
-Plug 'elzr/vim-json'
+Plug 'elzr/vim-json' | let g:vim_json_conceal = 0
 Plug 'kevinoid/vim-jsonc'
-
-" Vader
 Plug 'junegunn/vader.vim'
+" }}}
 
 " UI Plugins
-Plug 'Yggdroot/indentLine'
-Plug 'itchyny/lightline.vim'
+" ---
+Plug 'Yggdroot/indentLine'| let g:indentLine_char = '│'
+Plug 'machakann/vim-highlightedyank'| call cnull#highlightedyank#Setup()
+Plug 'itchyny/lightline.vim' | call cnull#lightline#Setup()
 Plug 'mengelbrecht/lightline-bufferline'
-Plug 'machakann/vim-highlightedyank'
 
-" Colorschemes
+" Colorschemes {{{
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'gruvbox-community/gruvbox'
 Plug 'fnune/base16-vim'
 Plug 'rigellute/rigel'
+" }}}
 
 call plug#end()
-
-" =============================================================================
-" = Plugin Post-Config - after loading plugins (POST) =
-" =============================================================================
-
-" vim-highlightedyank Config
-" ---
-call cnull#highlightedyank#Setup()
-
-" coc.nvim Config
-" ---
-call cnull#coc#Setup()
-
-" emmet-vim Config
-" ---
-call cnull#emmet#Setup()
-
-" fzf.vim Config
-" ---
-call cnull#fzf#Setup()
-
-" fern.vim Config
-" ---
-call cnull#fern#Setup()
-
-" ale Config
-" ---
-call cnull#ale#Setup()
-
-" lightline.vim Config
-" ---
-call cnull#lightline#Setup()
 
 " =============================================================================
 " = UI/Theme (THEME) =
