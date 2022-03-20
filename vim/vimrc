@@ -372,8 +372,8 @@ Plug 'junegunn/vader.vim'
 
 " UI Plugins
 " ---
-Plug 'Yggdroot/indentLine'| let g:indentLine_char = '│'
-Plug 'machakann/vim-highlightedyank'| call cnull#highlightedyank#Setup()
+Plug 'Yggdroot/indentLine' | let g:indentLine_char = '│'
+Plug 'machakann/vim-highlightedyank' | call cnull#highlightedyank#Setup()
 Plug 'itchyny/lightline.vim' | call cnull#lightline#Setup()
 Plug 'mengelbrecht/lightline-bufferline'
 
