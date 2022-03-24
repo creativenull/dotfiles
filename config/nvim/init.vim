@@ -21,16 +21,18 @@ let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
 " Pre-checks
 " ---
-if !has('nvim') && !has('nvim-0.5')
-  echoerr 'This config requires nvim >= 0.5'
+if !has('nvim') && !has('nvim-0.6')
+  echoerr 'This config requires nvim >= 0.6'
   finish
 endif
 
 " Ensure the following tools are installed in the system
 let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
+
 for s:exec in s:exec_list
   if !executable(s:exec)
     echoerr printf('[nvim] `%s` is needed!', s:exec)
+
     finish
   endif
 endfor
@@ -39,6 +41,7 @@ endfor
 if has('win32')
   if !executable('pwsh')
     echoerr '[nvim] PowerShell Core >= v6 is required!'
+
     finish
   endif
 
@@ -262,9 +265,6 @@ vnoremap <Leader>y "+y
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
-" Disable Ex-mode
-nnoremap Q <Nop>
-
 " =============================================================================
 " = Commands (CMD) =
 " =============================================================================
@@ -323,8 +323,9 @@ augroup END
 " ---
 let g:indentLine_fileTypeExclude = ['help', 'fzf']
 let g:indentLine_char = '│'
+
 if s:cnull.transparent
-  let g:indentLine_color_gui = '#555555'
+  let g:indentLine_color_gui = '#333333'
 endif
 
 " fern.vim Config
