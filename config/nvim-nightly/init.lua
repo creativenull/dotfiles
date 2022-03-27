@@ -13,6 +13,7 @@ Description:
 ============================================================================ ]]
 
 vim.g.userspace = 'nvim-nightly'
+
 if vim.g.userspace then
   -- Runtime Path
   vim.cmd('set runtimepath-=~/.config/nvim')
@@ -51,15 +52,18 @@ end
 
 if vim.fn.has('nvim') == 0 and vim.fn.has('nvim-0.7') == 0 then
   vim.api.nvim_err_writeln('This config is only for neovim nightly version aka EXPERIMENTAL!')
+
   return
 end
 
 -- Hard requirements for this config
 local exec_list = { 'git', 'curl', 'python3', 'rg', 'deno' }
+
 for _, exec in pairs(exec_list) do
   if vim.fn.executable(exec) == 0 then
     local errmsg = string.format('[nvim] %q is needed!', exec)
     vim.api.nvim_err_writeln(errmsg)
+
     return
   end
 end
@@ -74,6 +78,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.python3_host_prog = vim.fn.exepath('python3')
 
 vim.g.mapleader = ' '
+
 local cnull = {
   transparent = true,
   config = {
@@ -98,6 +103,7 @@ cnull.config.undodir = string.format('%s/undodir', cnull.config.cache_dir)
 
 -- Custom vim functions
 local vim = vim
+
 vim.autocmd = {}
 vim.augroup = {}
 
@@ -110,11 +116,12 @@ vim.augroup = {}
 vim.autocmd.set = function(group, event, pattern, command, opts)
   opts = opts or { once = nil, nested = nil }
 
-  local autocmd_opts = {}
-  autocmd_opts.once = opts.once and true or false
-  autocmd_opts.nested = opts.nested and true or false
-  autocmd_opts.group = group
-  autocmd_opts.pattern = pattern
+  local autocmd_opts = {
+    once = opts.once and true or false,
+    nested = opts.nested and true or false,
+    group = group,
+    pattern = pattern,
+  }
 
   if type(command) == 'string' then
     autocmd_opts.command = command
@@ -321,34 +328,34 @@ vim.keymap.set('i', '<Right>', [[<Nop>]], keymap_opts)
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
-vim.keymap.set('n', '<Up>', [[<Cmd>resize +2<CR>]], keymap_opts)
-vim.keymap.set('n', '<Down>', [[<Cmd>resize -2<CR>]], keymap_opts)
-vim.keymap.set('n', '<Left>', [[<Cmd>vertical resize -2<CR>]], keymap_opts)
-vim.keymap.set('n', '<Right>', [[<Cmd>vertical resize +2<CR>]], keymap_opts)
+vim.keymap.set('n', '<Up>', '<Cmd>resize +2<CR>', keymap_opts)
+vim.keymap.set('n', '<Down>', '<Cmd>resize -2<CR>', keymap_opts)
+vim.keymap.set('n', '<Left>', '<Cmd>vertical resize -2<CR>', keymap_opts)
+vim.keymap.set('n', '<Right>', '<Cmd>vertical resize +2<CR>', keymap_opts)
 
 -- Map Esc, to perform quick switching between Normal and Insert mode
-vim.keymap.set('i', 'jk', [[<Esc>]], keymap_opts)
+vim.keymap.set('i', 'jk', '<Esc>', keymap_opts)
 
 -- Map escape from terminal input to Normal mode
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], keymap_opts)
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]], keymap_opts)
 
 -- Disable highlights
-vim.keymap.set('n', '<Leader><CR>', [[<Cmd>noh<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>', keymap_opts)
 
 -- List all buffers
-vim.keymap.set('n', '<Leader>bl', [[<Cmd>buffers<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>', keymap_opts)
 
-vim.keymap.set('n', '<C-l>', [[<Cmd>bnext<CR>]], keymap_opts)
-vim.keymap.set('n', '<Leader>bn', [[<Cmd>bnext<CR>]], keymap_opts)
+vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>', keymap_opts)
 
-vim.keymap.set('n', '<C-h>', [[<Cmd>bprevious<CR>]], keymap_opts)
-vim.keymap.set('n', '<Leader>bp', [[<Cmd>bprevious<CR>]], keymap_opts)
+vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>', keymap_opts)
 
 -- Close the current buffer, and more?
-vim.keymap.set('n', '<Leader>bd', [[<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>', keymap_opts)
 -- Close all buffer, except current
-vim.keymap.set('n', '<Leader>bx', [[<Cmd>%bd<Bar>e#<Bar>bd#<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>', keymap_opts)
 
 -- Move a line of text Alt+[j/k]
 vim.keymap.set('n', '<M-j>', [[mz:m+<CR>`z]], keymap_opts)
@@ -357,13 +364,13 @@ vim.keymap.set('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]], keymap_opts)
 vim.keymap.set('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]], keymap_opts)
 
 -- Edit vimrc
-vim.keymap.set('n', '<Leader>ve', [[<Cmd>edit $MYVIMRC<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>ve', '<Cmd>edit $MYVIMRC<CR>', keymap_opts)
 
 -- Source the vimrc to reflect changes
-vim.keymap.set('n', '<Leader>vs', [[<Cmd>ConfigReload<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>vs', '<Cmd>ConfigReload<CR>', keymap_opts)
 
 -- Reload file
-vim.keymap.set('n', '<Leader>r', [[<Cmd>edit!<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>r', '<Cmd>edit!<CR>', keymap_opts)
 
 -- Copy/Paste from clipboard
 vim.keymap.set('v', '<Leader>y', [["+y]], keymap_opts)
@@ -385,7 +392,7 @@ vim.api.nvim_add_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md', {
 vim.api.nvim_add_user_command('Config', string.format('edit ~/.config/%s/init.lua', vim.g.userspace), {})
 vim.api.nvim_add_user_command(
   'ConfigReload',
-  string.format('source ~/.config/%s/init.lua | nohlsearch', vim.g.userspace),
+  string.format('so ~/.config/%s/init.lua | nohlsearch', vim.g.userspace),
   {}
 )
 
@@ -478,90 +485,108 @@ vim.augroup.set('lir_user_events', {
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
 
-local install_path = cnull.config.data_dir .. '/site/pack/packer/start/packer.nvim'
-local packer_firsttime = false
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  local git = 'https://github.com/wbthomason/packer.nvim'
-  vim.fn.system({ 'git', 'clone', '--depth', '1', git, install_path })
-  packer_firsttime = true
-end
-
-local packer = require('packer')
-packer.init({
-  package_root = cnull.config.data_dir .. '/site/pack',
-  compile_path = cnull.config.data_dir .. '/site/plugin/packer_compiled.lua',
-})
-
-packer.startup(function(use)
+local plugins = {
   -- Self-maintenance
-  use('wbthomason/packer.nvim')
+  { 'savq/paq-nvim', opt = true },
 
-  -- Deps
-  use('Shougo/context_filetype.vim')
-  use('kyazdani42/nvim-web-devicons')
-  use('nvim-lua/plenary.nvim')
-  use('vim-denops/denops.vim')
-  use('lambdalisue/nerdfont.vim')
+  -- Dependencies
+  'Shougo/context_filetype.vim',
+  'kyazdani42/nvim-web-devicons',
+  'lambdalisue/nerdfont.vim',
+  'nvim-lua/plenary.nvim',
+  'vim-denops/denops.vim',
 
   -- Core
-  use('creativenull/projectlocal-vim')
-  use('windwp/nvim-autopairs')
-  use('tpope/vim-abolish')
-  use('tpope/vim-surround')
-  use('tpope/vim-repeat')
-  use('editorconfig/editorconfig-vim')
-  use('numToStr/Comment.nvim')
-  use('kevinhwang91/nvim-bqf')
+  'creativenull/projectlocal-vim',
+  'editorconfig/editorconfig-vim',
+  'kevinhwang91/nvim-bqf',
+  'numToStr/Comment.nvim',
+  'tpope/vim-abolish',
+  'tpope/vim-repeat',
+  'tpope/vim-surround',
+  'windwp/nvim-autopairs',
 
   -- File Explorer
-  use('tamago324/lir.nvim')
+  'tamago324/lir.nvim',
 
   -- Linters + Formatters + LSP Client
-  use('neovim/nvim-lspconfig')
-  use('creativenull/diagnosticls-configs-nvim')
-  use('creativenull/efmls-configs-nvim')
+  'creativenull/diagnosticls-configs-nvim',
+  'creativenull/efmls-configs-nvim',
+  'neovim/nvim-lspconfig',
 
   -- Snippet Engine + Presets
-  use('hrsh7th/vim-vsnip')
-  use('rafamadriz/friendly-snippets')
-  use('mattn/emmet-vim')
+  'hrsh7th/vim-vsnip',
+  'mattn/emmet-vim',
+  'rafamadriz/friendly-snippets',
 
   -- AutoCompletion + Sources
-  use('Shougo/ddc.vim')
-  use('matsui54/denops-popup-preview.vim')
-  use('tani/ddc-fuzzy')
-  use('Shougo/ddc-around')
-  use('matsui54/ddc-buffer')
-  use('hrsh7th/vim-vsnip-integ')
-  use('Shougo/ddc-nvim-lsp')
+  'Shougo/ddc-around',
+  'Shougo/ddc-nvim-lsp',
+  'Shougo/ddc.vim',
+  'hrsh7th/vim-vsnip-integ',
+  'matsui54/ddc-buffer',
+  'matsui54/denops-popup-preview.vim',
+  'tani/ddc-fuzzy',
 
   -- Fuzzy File/Code Finder
-  use('nvim-telescope/telescope.nvim')
+  'nvim-telescope/telescope.nvim',
 
   -- Git
-  use('lewis6991/gitsigns.nvim')
+  'lewis6991/gitsigns.nvim',
 
   -- UI
-  use('nvim-treesitter/nvim-treesitter')
-  use('nvim-treesitter/nvim-treesitter-refactor')
-  use('code-biscuits/nvim-biscuits')
-  use('akinsho/bufferline.nvim')
-  use('folke/todo-comments.nvim')
-  use('nvim-lualine/lualine.nvim')
-  use('norcalli/nvim-colorizer.lua')
-  use('lukas-reineke/indent-blankline.nvim')
+  'akinsho/bufferline.nvim',
+  'code-biscuits/nvim-biscuits',
+  'folke/todo-comments.nvim',
+  'lukas-reineke/indent-blankline.nvim',
+  'norcalli/nvim-colorizer.lua',
+  'nvim-lualine/lualine.nvim',
+
+  'nvim-treesitter/nvim-treesitter',
+  'nvim-treesitter/nvim-treesitter-refactor',
 
   -- Colorschemes
-  use('bluz71/vim-nightfly-guicolors')
-  use('bluz71/vim-moonfly-colors')
-  use('fnune/base16-vim')
+  'bluz71/vim-nightfly-guicolors',
+  'bluz71/vim-moonfly-colors',
+  'fnune/base16-vim',
+}
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_firsttime then
-    packer.sync()
-  end
-end)
+local pluginmanager = {
+  git = 'https://github.com/savq/paq-nvim.git',
+  install_dir = string.format('%s/site/pack/paq/opt/paq-nvim', cnull.config.data_dir),
+  is_firsttime = false,
+
+  -- Options to pass to the plugin manager
+  init_opts = {
+    path = string.format('%s/site/pack/paq/', cnull.config.data_dir),
+  },
+}
+
+-- Install plugin manager if not installed, only for new machine
+-- or first time load
+if vim.fn.isdirectory(pluginmanager.install_dir) == 0 then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--depth',
+    '1',
+    pluginmanager.git,
+    pluginmanager.install_dir,
+  })
+
+  pluginmanager.is_firsttime = true
+end
+
+vim.cmd('packadd paq-nvim')
+local paq = require('paq')
+
+paq:setup(pluginmanager.init_opts)(plugins)
+
+-- On the first run in new machine, install all plugins and then exit
+if pluginmanager.is_firsttime then
+  vim.api.nvim_create_autocmd('User PaqDoneInstall', { command = 'quitall' })
+  paq.install()
+end
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
@@ -569,15 +594,19 @@ end)
 
 -- Comment.nvim Config
 -- ---
-require('Comment').setup()
+local function comment_config()
+  require('Comment').setup()
+end
+
+pcall(comment_config)
 
 -- nvim-lspconfig Config
 -- ---
-require('cnull.lsp')
+pcall(require, 'cnull.lsp')
 
 -- ddc.vim Config
 -- ---
-require('cnull.autocompletion')
+pcall(require, 'cnull.autocompletion')
 
 vim.keymap.set(
   'i',
@@ -598,6 +627,7 @@ vim.keymap.set({ 'i', 's' }, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-
   replace_keycodes = true,
   remap = true,
 })
+
 vim.keymap.set({ 'i', 's' }, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], {
   expr = true,
   replace_keycodes = true,
@@ -606,19 +636,30 @@ vim.keymap.set({ 'i', 's' }, '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump
 
 -- nvim-autopairs Config
 -- ---
-require('nvim-autopairs').setup()
+local function autopairs_config()
+  require('nvim-autopairs').setup()
+end
+
+pcall(autopairs_config)
 
 -- gitsigns.nvim Config
 -- ---
-require('gitsigns').setup()
+local function gitsigns_config()
+  require('gitsigns').setup()
+end
+
+pcall(gitsigns_config)
 
 -- todo-comments.nvim Config
 -- ---
-require('todo-comments').setup()
+local function todocomments_config()
+  require('todo-comments').setup()
+end
+
+pcall(todocomments_config)
 
 -- telescope.nvim Config
--- ---
-require('cnull.finder')
+pcall(require, 'cnull.finder')
 
 vim.keymap.set('n', '<C-p>', [[<Cmd>lua TelescopeFindFiles()<CR>]], keymap_opts)
 vim.keymap.set('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], keymap_opts)
@@ -631,18 +672,17 @@ if cnull.transparent then
 end
 
 -- nvim-treesitter Config
--- ---
-require('cnull.treesitter')
+pcall(require, 'cnull.treesitter')
 
 -- nvim-biscuits Config
 -- ---
-require('cnull.biscuits')
+pcall(require, 'cnull.biscuits')
 
 vim.keymap.set('n', '<Leader>it', [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]], keymap_opts)
 
 -- lualine.nvim Config
 -- ---
-require('cnull.statusline')
+pcall(require, 'cnull.statusline')
 
 -- indent-blankline.nvim Config
 -- ---
@@ -656,22 +696,22 @@ else
   })
 end
 
-require('cnull.indent_blankline')
+pcall(require, 'cnull.indent_blankline')
 
 -- bufferline.lua Config
 -- ---
-require('cnull.bufferline')
+pcall(require, 'cnull.bufferline')
 
 -- lir.nvim Config
 -- ---
-require('cnull.explorer')
+pcall(require, 'cnull.explorer')
 
 -- colorizer.lua Config
 -- ---
-require('cnull.colorizer')
+pcall(require, 'cnull.colorizer')
 
 -- =============================================================================
 -- = UI/Theme =
 -- =============================================================================
 
-vim.cmd('colorscheme base16-horizon-terminal-dark')
+pcall(vim.cmd, 'colorscheme base16-horizon-terminal-dark')
