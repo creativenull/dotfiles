@@ -519,13 +519,13 @@ local plugins = {
   'rafamadriz/friendly-snippets',
 
   -- AutoCompletion + Sources
-  'Shougo/ddc-around',
-  'Shougo/ddc-nvim-lsp',
-  'Shougo/ddc.vim',
-  'hrsh7th/vim-vsnip-integ',
-  'matsui54/ddc-buffer',
-  'matsui54/denops-popup-preview.vim',
-  'tani/ddc-fuzzy',
+  'hrsh7th/nvim-cmp',
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'hrsh7th/cmp-nvim-lua',
+  'hrsh7th/cmp-vsnip',
+  'onsails/lspkind-nvim',
 
   -- Fuzzy File/Code Finder
   'nvim-telescope/telescope.nvim',
@@ -603,22 +603,22 @@ pcall(comment_config)
 -- ---
 pcall(require, 'cnull.lsp')
 
--- ddc.vim Config
+-- autocompletion Config
 -- ---
 pcall(require, 'cnull.autocompletion')
 
-vim.keymap.set(
-  'i',
-  '<C-y>',
-  [[pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"]],
-  { silent = true, expr = true }
-)
-
-vim.keymap.set('i', '<C-Space>', [[ddc#map#manual_complete()]], {
-  silent = true,
-  expr = true,
-  noremap = true,
-})
+-- vim.keymap.set(
+--   'i',
+--   '<C-y>',
+--   [[pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"]],
+--   { silent = true, expr = true }
+-- )
+--
+-- vim.keymap.set('i', '<C-Space>', [[ddc#map#manual_complete()]], {
+--   silent = true,
+--   expr = true,
+--   noremap = true,
+-- })
 
 -- Snippets
 vim.keymap.set({ 'i', 's' }, '<C-j>', [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], {

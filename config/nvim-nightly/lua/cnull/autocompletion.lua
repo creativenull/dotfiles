@@ -1,3 +1,55 @@
+local cmp = require('cmp')
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      if vim.fn.exists('*vsnip#anonymous') == 1 then
+        vim.call('vsnip#anonymous', args.body)
+      end
+    end,
+  },
+
+  mapping = {
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+  },
+
+  -- You should specify your *installed* sources.
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'buffer' },
+  }),
+
+  formatting = {
+    format = require('lspkind').cmp_format({
+      with_text = true,
+
+      menu = {
+        nvim_lsp = '[LS]',
+        buffer = '[B]',
+        nvim_lua = '[Lua]',
+        vsnip = '[S]',
+      },
+    }),
+  },
+
+  documentation = { border = 'rounded' },
+})
+
+cmp.setup.filetype('lua', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lua' },
+    { name = 'vsnip' },
+    { name = 'buffer' },
+  }),
+})
+
+--[[
+
 -- See :help ddc-options
 -- Global config
 vim.call('ddc#custom#patch_global', {
@@ -66,3 +118,5 @@ vim.call('ddc#custom#patch_filetype', 'markdown', { sources = { 'around', 'buffe
 vim.augroup.set('ddc_user_events', {
   { 'VimEnter', '*', 'call popup_preview#enable() | call ddc#enable()' }
 })
+
+--]]

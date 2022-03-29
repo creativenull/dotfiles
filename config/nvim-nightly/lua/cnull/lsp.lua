@@ -59,6 +59,13 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 
+-- nvim-cmp LSP setup
+-- ---
+local ok_cmp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
+if ok_cmp then
+  capabilities = cmp_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+end
+
 -- Log debug
 -- vim.lsp.set_log_level('debug')
 
