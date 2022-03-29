@@ -213,6 +213,7 @@ local function indent_size(size, use_spaces)
 end
 
 vim.augroup.set('filetype_user_events', {
+  -- Use 4 space indents for the following filetypes
   {
     'FileType',
     { 'php', 'blade', 'html' },
@@ -220,6 +221,8 @@ vim.augroup.set('filetype_user_events', {
       indent_size(4, true)
     end,
   },
+
+  -- Use 2 space indents for the following filetypes
   {
     'FileType',
     {
@@ -241,7 +244,7 @@ vim.augroup.set('filetype_user_events', {
     end,
   },
 
-  -- Enable spell check and set proper indents
+  -- Enable spell check, 4 space indents in markdown files
   {
     'FileType',
     'markdown',
@@ -278,9 +281,6 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.tabstop = 4
 vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.smarttab = true
-vim.opt.autoindent = true
 vim.opt.wrap = false
 vim.opt.colorcolumn = '120'
 vim.opt.scrolloff = 3
@@ -498,7 +498,6 @@ local plugins = {
 
   -- Core
   'creativenull/projectlocal-vim',
-  'editorconfig/editorconfig-vim',
   'kevinhwang91/nvim-bqf',
   'numToStr/Comment.nvim',
   'tpope/vim-abolish',

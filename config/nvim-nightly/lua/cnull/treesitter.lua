@@ -3,6 +3,7 @@ require('nvim-treesitter.configs').setup({
     'css',
     'go',
     'graphql',
+    'haskell',
     'html',
     'javascript',
     'jsdoc',
@@ -11,10 +12,12 @@ require('nvim-treesitter.configs').setup({
     'tsx',
     'typescript',
     'vue',
-    'haskell',
   },
+
   highlight = { enable = true },
+
   indent = { enable = false },
+
   refactor = {
     highlight_definitions = { enable = true },
   },
