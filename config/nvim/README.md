@@ -6,4 +6,4 @@ are battle tested and ready for development.
 If you want a pure lua setup check out my [nvim-nightly config][nightly], for my experimental and lua centric config for
 development.
 
-[nightly]: https://github.com/creativenull/dotfiles/tree/main/.config/nvim-nightly
+[nightly]: https://github.com/creativenull/nvim-config
