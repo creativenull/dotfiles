@@ -7,11 +7,17 @@ function! cnull#coc#Setup() abort
   nnoremap <silent> <Leader>le <Cmd>CocList diagnostics<CR>
   inoremap <silent> <expr> <C-@> coc#refresh()
 
-  " Insert the item from the popup menu when pressing <Tab> or <CR>
+  " Insert item from menu when pressing <Tab>, like vscode
   inoremap <silent> <expr> <Tab> pumvisible()
-    \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
+    \ ? exists('g:did_coc_loaded')
+      \ ? coc#_select_confirm()
+      \ : "\<C-y>"
     \ : "\<Tab>"
+
+  " Insert item from menu when pressing <CR>, like vscode
   inoremap <silent> <expr> <CR> pumvisible()
-    \ ? exists('g:did_coc_loaded') ? coc#_select_confirm() : "\<C-y>"
+    \ ? exists('g:did_coc_loaded')
+      \ ? coc#_select_confirm()
+      \ : "\<C-y>"
     \ : "\<CR>"
 endfunction
