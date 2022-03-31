@@ -12,6 +12,7 @@
 " =============================================================================
 
 let mapleader = "\<Space>"
+
 let s:user = {}
 let s:user.enable_transparent = v:true
 
@@ -19,6 +20,7 @@ let s:user.enable_transparent = v:true
 " ---
 
 let s:user.config = {}
+
 if has('win32')
   let s:user.config.cachedir = expand('$HOME/AppData/Local/Temp/vim')
   let s:user.config.configdir = expand('$HOME')
@@ -33,6 +35,9 @@ let s:user.config.undodir = printf('%s/undo', s:user.config.cachedir)
 
 " Enable vim features
 " ---
+
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
 
 filetype plugin indent on
 syntax on
@@ -59,7 +64,6 @@ if has('win32')
     finish
   endif
 
-  set shell=pwsh
   let s:shcmd_flag = [
     \ '-NoLogo',
     \ '-NoProfile',
@@ -68,10 +72,13 @@ if has('win32')
     \ '-Command',
     \ '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
   \ ]
+
   let &shellcmdflag = join(s:shcmd_flag, ' ')
   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  set shellquote= shellxquote=
+  set shell=pwsh
+  set shellquote=
+  set shellxquote=
 endif
 
 " =============================================================================
@@ -138,7 +145,7 @@ augroup END
 " = Options (OPT) =
 " =============================================================================
 
-" Create a dir for tracking undo
+" Ensure dir for storing undo changes
 if !isdirectory(s:user.config.undodir)
   if has('win32')
     execute printf('silent !mkdir -Recurse %s', s:user.config.undodir)
@@ -174,7 +181,7 @@ set shiftwidth=4
 set smartindent
 set smarttab
 set softtabstop=4
-set tabstop=4
+set tabstop=8
 set wildignorecase
 
 " System
@@ -197,6 +204,7 @@ set laststatus=2
 set number
 set showtabline=2
 set signcolumn=yes
+
 if has('termguicolors')
   set termguicolors
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -290,102 +298,123 @@ nnoremap Q @@
 " = Plugin Manager (PLUG) =
 " =============================================================================
 
-" Bootstrap - download vim-plug into autoload directory if it doesn't exist
-let s:plug = {}
-let s:plug.git = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plug.path = s:user.config.datadir . '/autoload/plug.vim'
-let s:plug.pluginsdir = s:user.config.datadir . '/plugged'
+" Bootstrap - ensure jetpack is downloaded
+let s:jetpack_setup = #{
+  \ base_dir: expand('~/.vim/pack/jetpack'),
+  \ git: 'https://github.com/tani/vim-jetpack.git',
+  \ path: expand('~/.vim/pack/jetpack/src/vim-jetpack'),
+  \ linkpath: expand('~/.vim/pack/jetpack/opt/vim-jetpack'),
+\ }
 
-if !filereadable(s:plug.path)
-  execute printf('!curl -fLo %s --create-dirs %s', s:plug.path, s:plug.git)
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if !isdirectory(s:jetpack_setup.base_dir)
+  echo "Creating dirs"
+
+  call system('mkdir -p ' . s:jetpack_setup.base_dir . '/src')
+  call system('mkdir -p ' . s:jetpack_setup.base_dir . '/opt')
 endif
 
-call plug#begin(s:plug.pluginsdir)
+if !isdirectory(s:jetpack_setup.path)
+  let s:gitcmd = ['git', 'clone', '--depth', '1', s:jetpack_setup.git, s:jetpack_setup.path]
+  let s:linkcmd = ['ln', '-s', s:jetpack_setup.path, s:jetpack_setup.linkpath]
+
+  echo "Downloading vim-jetpack plugin manager"
+
+  call system(s:gitcmd->join(' '))
+  call system(s:linkcmd->join(' '))
+endif
+
+" Optimize plugins handled by jetpack
+let g:jetpack#optimization = 2
+
+packadd vim-jetpack
+
+call jetpack#begin()
+
+Jetpack 'tani/vim-jetpack', { 'opt': v:true }
 
 " Plugin dependencies {{{
-Plug 'Shougo/context_filetype.vim'
-Plug 'vim-denops/denops.vim'
-Plug 'lambdalisue/nerdfont.vim'
+Jetpack 'Shougo/context_filetype.vim'
+Jetpack 'vim-denops/denops.vim'
+Jetpack 'lambdalisue/nerdfont.vim'
 " }}}
 
 " Core {{{
-Plug 'cohama/lexima.vim'
-Plug 'godlygeek/tabular'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-repeat'
-Plug 'tyru/caw.vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'creativenull/projectlocal-vim'
-Plug 'mattn/emmet-vim' | call cnull#emmet#Setup()
+Jetpack 'cohama/lexima.vim'
+Jetpack 'godlygeek/tabular'
+Jetpack 'tpope/vim-surround'
+Jetpack 'tpope/vim-abolish'
+Jetpack 'tpope/vim-repeat'
+Jetpack 'tyru/caw.vim'
+Jetpack 'editorconfig/editorconfig-vim'
+Jetpack 'creativenull/projectlocal-vim'
+Jetpack 'mattn/emmet-vim' | call cnull#emmet#Setup()
 " }}}
 
 " File Explorer {{{
-Plug 'lambdalisue/fern.vim' | call cnull#fern#Setup()
-Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Jetpack 'lambdalisue/fern.vim' | call cnull#fern#Setup()
+Jetpack 'lambdalisue/nerdfont.vim'
+Jetpack 'lambdalisue/fern-renderer-nerdfont.vim'
 " }}}
 
 " Fuzzy Finder {{{
-Plug 'junegunn/fzf' | call cnull#fzf#Setup()
-Plug 'junegunn/fzf.vim'
+Jetpack 'junegunn/fzf', { 'do': { -> fzf#install() } } | call cnull#fzf#Setup()
+Jetpack 'junegunn/fzf.vim'
 " }}}
 
 " Snippets {{{
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Jetpack 'SirVer/ultisnips'
+Jetpack 'honza/vim-snippets'
 " }}}
 
 " Git {{{
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter' | let g:gitgutter_map_keys = 0
+Jetpack 'tpope/vim-fugitive'
+Jetpack 'airblade/vim-gitgutter' | let g:gitgutter_map_keys = 0
 " }}}
 
 " Linter and formatter configurations {{{
-Plug 'dense-analysis/ale' | call cnull#ale#Setup()
+Jetpack 'dense-analysis/ale' | call cnull#ale#Setup()
 " }}}
 
 " Auto completion + LSP client {{{
-Plug 'neoclide/coc.nvim', { 'branch': 'release' } | call cnull#coc#Setup()
-Plug 'fannheyward/coc-deno', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'marlonfan/coc-phpls', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-css', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-html', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-json', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-snippets', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-tsserver', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'neoclide/coc-vetur', { 'do': 'yarn install --frozen-lockfile' }
-Plug 'yaegassy/coc-volar', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc.nvim', { 'branch': 'release' } | call cnull#coc#Setup()
+Jetpack 'fannheyward/coc-deno', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'marlonfan/coc-phpls', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc-css', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc-html', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc-json', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc-snippets', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc-tsserver', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'neoclide/coc-vetur', { 'do': 'yarn install --frozen-lockfile' }
+Jetpack 'yaegassy/coc-volar', { 'do': 'yarn install --frozen-lockfile' }
 " }}}
 
 " File syntax plugins {{{
-Plug 'pangloss/vim-javascript'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'heavenshell/vim-jsdoc', { 'do': 'make install' }
-Plug 'posva/vim-vue' | let g:vue_pre_processors = []
-Plug 'jwalton512/vim-blade'
-Plug 'elzr/vim-json' | let g:vim_json_conceal = 0
-Plug 'kevinoid/vim-jsonc'
-Plug 'junegunn/vader.vim'
+Jetpack 'pangloss/vim-javascript'
+Jetpack 'MaxMEllon/vim-jsx-pretty'
+Jetpack 'heavenshell/vim-jsdoc', { 'do': 'make install' }
+Jetpack 'posva/vim-vue' | let g:vue_pre_processors = []
+Jetpack 'jwalton512/vim-blade'
+Jetpack 'elzr/vim-json' | let g:vim_json_conceal = 0
+Jetpack 'kevinoid/vim-jsonc'
+Jetpack 'junegunn/vader.vim'
 " }}}
 
-" UI Plugins
-" ---
-Plug 'Yggdroot/indentLine' | let g:indentLine_char = '│'
-Plug 'machakann/vim-highlightedyank' | call cnull#highlightedyank#Setup()
-Plug 'itchyny/lightline.vim' | call cnull#lightline#Setup()
-Plug 'mengelbrecht/lightline-bufferline'
+" UI Jetpackins {{{
+Jetpack 'Yggdroot/indentLine' | let g:indentLine_char = '│'
+Jetpack 'machakann/vim-highlightedyank' | call cnull#highlightedyank#Setup()
+Jetpack 'itchyny/lightline.vim' | call cnull#lightline#Setup()
+Jetpack 'mengelbrecht/lightline-bufferline'
+" }}}
 
 " Colorschemes {{{
-Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'gruvbox-community/gruvbox'
-Plug 'fnune/base16-vim'
-Plug 'rigellute/rigel'
+Jetpack 'bluz71/vim-nightfly-guicolors'
+Jetpack 'bluz71/vim-moonfly-colors'
+Jetpack 'gruvbox-community/gruvbox'
+Jetpack 'fnune/base16-vim'
+Jetpack 'rigellute/rigel'
 " }}}
 
-call plug#end()
+call jetpack#end()
 
 " =============================================================================
 " = UI/Theme (THEME) =
