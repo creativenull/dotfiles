@@ -45,7 +45,6 @@ if has('win32')
     finish
   endif
 
-  set shell=pwsh
   let s:shcmd_flag = [
     \ '-NoLogo',
     \ '-NoProfile',
@@ -54,10 +53,13 @@ if has('win32')
     \ '-Command',
     \ '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
   \ ]
+
+  set shell=pwsh
   let &shellcmdflag = join(s:shcmd_flag, ' ')
   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  set shellquote= shellxquote=
+  set shellquote=
+  set shellxquote=
 endif
 
 " leader and providers settings
@@ -71,35 +73,39 @@ let g:loaded_perl_provider = 0
 " = Events (AUG) =
 " =============================================================================
 
+function! s:set_custom_highlights() abort
+  highlight Normal guibg=NONE
+  highlight SignColumn guibg=NONE
+  highlight LineNr guibg=NONE guifg=#888888
+  highlight CursorLineNr guibg=NONE
+  highlight EndOfBuffer guibg=NONE
+  highlight Visual guibg=#555555
+
+  " Sometimes comments are too dark, affects in tranparent mode
+  highlight Comment guifg=#888888
+
+  " Tabline
+  highlight TabLineFill guibg=NONE
+  highlight TabLine guibg=NONE
+
+  " Float Border
+  highlight NormalFloat guibg=NONE
+  highlight FloatBorder guibg=NONE guifg=#eeeeee
+
+  " Vertical Line
+  highlight ColorColumn guibg=#999999
+
+  " LSP Diagnostics
+  highlight ErrorFloat guibg=NONE
+  highlight WarningFloat guibg=NONE
+  highlight InfoFloat guibg=NONE
+  highlight HintFloat guibg=NONE
+endfunction
+
 if s:cnull.transparent
   augroup transparent_user_events
     autocmd!
-    autocmd ColorScheme * highlight! Normal guibg=NONE
-    autocmd ColorScheme * highlight! SignColumn guibg=NONE
-    autocmd ColorScheme * highlight! LineNr guibg=NONE guifg=#888888
-    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
-    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
-    autocmd ColorScheme * highlight! Visual guibg=#555555
-
-    " Sometimes comments are too dark, affects in tranparent mode
-    autocmd ColorScheme * highlight! Comment guifg=#888888
-
-    " Tabline
-    autocmd ColorScheme * highlight! TabLineFill guibg=NONE
-    autocmd ColorScheme * highlight! TabLine guibg=NONE
-
-    " Float Border
-    autocmd ColorScheme * highlight! NormalFloat guibg=NONE
-    autocmd ColorScheme * highlight! FloatBorder guibg=NONE guifg=#eeeeee
-
-    " Vertical Line
-    autocmd ColorScheme * highlight! ColorColumn guibg=#999999
-
-    " LSP Diagnostics
-    autocmd ColorScheme * highlight! ErrorFloat guibg=NONE
-    autocmd ColorScheme * highlight! WarningFloat guibg=NONE
-    autocmd ColorScheme * highlight! InfoFloat guibg=NONE
-    autocmd ColorScheme * highlight! HintFloat guibg=NONE
+    autocmd ColorScheme * call s:set_custom_highlights()
   augroup END
 endif
 
