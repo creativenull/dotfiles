@@ -145,15 +145,12 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " Search
-set hlsearch
 set ignorecase
-set incsearch
-set path=**
 set showmatch
 set smartcase
+set path=**
 
 " Editor
-set autoindent
 set colorcolumn=120
 set expandtab
 set iskeyword+=-
@@ -164,22 +161,18 @@ set nowrap
 set scrolloff=3
 set shiftwidth=4
 set smartindent
-set smarttab
 set softtabstop=4
-set tabstop=4
 set wildignorecase
 
 " System
 let &undodir=s:cnull.config.undodir
-set backspace=indent,eol,start
-set encoding=utf-8
 set history=10000
 set nobackup
 set noswapfile
-set ttimeoutlen=50
 set undofile
 set undolevels=10000
-set updatetime=250
+set updatetime=500
+
 if has('wsl')
   set mouse=
 endif
@@ -187,8 +180,6 @@ endif
 " UI
 set cmdheight=2
 set guicursor=n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20
-set hidden
-set laststatus=2
 set number
 set showtabline=2
 set signcolumn=yes
@@ -199,20 +190,20 @@ set termguicolors
 " =============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
-noremap  <Up> <Nop>
-noremap  <Down> <Nop>
-noremap  <Left> <Nop>
+noremap  <Up>    <Nop>
+noremap  <Down>  <Nop>
+noremap  <Left>  <Nop>
 noremap  <Right> <Nop>
-inoremap <Up> <Nop>
-inoremap <Down> <Nop>
-inoremap <Left> <Nop>
+inoremap <Up>    <Nop>
+inoremap <Down>  <Nop>
+inoremap <Left>  <Nop>
 inoremap <Right> <Nop>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
-nnoremap <Up> <Cmd>resize +2<CR>
-nnoremap <Down> <Cmd>resize -2<CR>
-nnoremap <Left> <Cmd>vertical resize -2<CR>
+nnoremap <Up>    <Cmd>resize +2<CR>
+nnoremap <Down>  <Cmd>resize -2<CR>
+nnoremap <Left>  <Cmd>vertical resize -2<CR>
 nnoremap <Right> <Cmd>vertical resize +2<CR>
 
 " Map Esc, to perform quick switching between Normal and Insert mode
@@ -227,14 +218,18 @@ nnoremap <Leader><CR> <Cmd>noh<CR>
 
 " List all buffers
 nnoremap <Leader>bl <Cmd>buffers<CR>
+
 " Go to next buffer
-nnoremap <C-l> <Cmd>bnext<CR>
+nnoremap <C-l>      <Cmd>bnext<CR>
 nnoremap <Leader>bn <Cmd>bnext<CR>
+
 " Go to previous buffer
-nnoremap <C-h> <Cmd>bprevious<CR>
+nnoremap <C-h>      <Cmd>bprevious<CR>
 nnoremap <Leader>bp <Cmd>bprevious<CR>
+
 " Close the current buffer, and more?
 nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
+
 " Close all buffer, except current
 nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
 
@@ -279,9 +274,9 @@ command! MyTodoPersonal edit ~/todofiles/personal/README.md
 command! MyTodoWork edit ~/todofiles/work/README.md
 
 " Command Abbreviations, I can't release my shift key fast enough 😭
-cnoreabbrev Q q
+cnoreabbrev Q  q
 cnoreabbrev Qa qa
-cnoreabbrev W w
+cnoreabbrev W  w
 cnoreabbrev Wq wq
 
 " =============================================================================
