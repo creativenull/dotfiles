@@ -23,6 +23,7 @@ let s:cnull.config.undodir = stdpath('cache') . '/undo'
 " ---
 if !has('nvim') && !has('nvim-0.6')
   echoerr 'This config requires nvim >= 0.6'
+
   finish
 endif
 
@@ -54,10 +55,10 @@ if has('win32')
     \ '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
   \ ]
 
-  set shell=pwsh
   let &shellcmdflag = join(s:shcmd_flag, ' ')
   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+  set shell=pwsh
   set shellquote=
   set shellxquote=
 endif
@@ -74,6 +75,7 @@ let g:loaded_perl_provider = 0
 " =============================================================================
 
 function! s:set_transparent_highlights() abort
+  " Core highlights to make transparent
   highlight Normal guibg=NONE
   highlight SignColumn guibg=NONE
   highlight LineNr guibg=NONE guifg=#888888
@@ -111,8 +113,10 @@ endif
 
 augroup customhl_user_events
   autocmd!
+
   " Don't want any bold or underlines
   autocmd ColorScheme * highlight Tabline gui=NONE
+
   " Different color when confirming selected substitution `:s`
   autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103da5 guifg=#eeeeee
 augroup END
@@ -124,14 +128,14 @@ augroup END
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType vim,lua call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType scss,sass,css call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType javascript,javascriptreact call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType typescript,typescriptreact call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType json,jsonc call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType vue call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType php,blade,html call cnull#utils#IndentSize(4, v:true)
-  autocmd FileType markdown call cnull#utils#IndentSize(4, v:true) | setlocal spell
+  autocmd FileType javascript,javascriptreact  call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType json,jsonc                  call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType markdown                    call cnull#utils#IndentSize(4, v:true) | setlocal spell
+  autocmd FileType php,blade,html              call cnull#utils#IndentSize(4, v:true)
+  autocmd FileType scss,sass,css               call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact  call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType vim,lua                     call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType vue                         call cnull#utils#IndentSize(2, v:true)
 augroup END
 
 " =============================================================================
