@@ -73,7 +73,7 @@ let g:loaded_perl_provider = 0
 " = Events (AUG) =
 " =============================================================================
 
-function! s:set_custom_highlights() abort
+function! s:set_transparent_highlights() abort
   highlight Normal guibg=NONE
   highlight SignColumn guibg=NONE
   highlight LineNr guibg=NONE guifg=#888888
@@ -105,7 +105,7 @@ endfunction
 if s:cnull.transparent
   augroup transparent_user_events
     autocmd!
-    autocmd ColorScheme * call s:set_custom_highlights()
+    autocmd ColorScheme * call s:set_transparent_highlights()
   augroup END
 endif
 
