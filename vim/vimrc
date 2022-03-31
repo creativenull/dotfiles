@@ -50,6 +50,7 @@ let s:exec_list = ['git', 'curl', 'python3', 'rg', 'node', 'deno']
 for s:exec in s:exec_list
   if !executable(s:exec)
     echoerr printf('[vim] `%s` is needed!', s:exec)
+
     finish
   endif
 endfor
@@ -61,6 +62,7 @@ endfor
 if has('win32')
   if !executable('pwsh')
     echoerr '[vim] PowerShell Core >= v6 is required!'
+
     finish
   endif
 
@@ -129,7 +131,6 @@ if s:user.enable_transparent
 
     " Vertical Line
     autocmd ColorScheme * highlight! ColorColumn guibg=#999999
-
   augroup END
 endif
 
@@ -138,7 +139,6 @@ augroup customhl_user_events
 
   " Different color when confirming selected substitution with `:s`
   autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103DA5 guifg=#eeeeee
-
 augroup END
 
 " =============================================================================
