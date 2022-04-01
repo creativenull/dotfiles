@@ -306,6 +306,7 @@ let s:jetpack_setup = #{
   \ linkpath: expand('~/.vim/pack/jetpack/opt/vim-jetpack'),
 \ }
 
+" Ensure jetpack directories exist
 if !isdirectory(s:jetpack_setup.base_dir)
   echo "Creating dirs"
 
@@ -313,14 +314,17 @@ if !isdirectory(s:jetpack_setup.base_dir)
   call system('mkdir -p ' . s:jetpack_setup.base_dir . '/opt')
 endif
 
+" Install jetpack and install plugins on first time load
 if !isdirectory(s:jetpack_setup.path)
-  let s:gitcmd = ['git', 'clone', '--depth', '1', s:jetpack_setup.git, s:jetpack_setup.path]
-  let s:linkcmd = ['ln', '-s', s:jetpack_setup.path, s:jetpack_setup.linkpath]
-
   echo "Downloading vim-jetpack plugin manager"
 
+  let s:gitcmd = ['git', 'clone', '--depth', '1', s:jetpack_setup.git, s:jetpack_setup.path]
   call system(s:gitcmd->join(' '))
+
+  let s:linkcmd = ['ln', '-s', s:jetpack_setup.path, s:jetpack_setup.linkpath]
   call system(s:linkcmd->join(' '))
+
+  autocmd! VimEnter * call jetpack#sync()
 endif
 
 " Optimize plugins handled by jetpack
