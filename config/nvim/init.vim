@@ -183,9 +183,7 @@ set undofile
 set undolevels=10000
 set updatetime=500
 
-if has('wsl')
-  set mouse=
-else
+if !has('wsl')
   set mouse=nv
 endif
 
