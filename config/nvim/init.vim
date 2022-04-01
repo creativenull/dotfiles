@@ -185,6 +185,8 @@ set updatetime=500
 
 if has('wsl')
   set mouse=
+else
+  set mouse=nv
 endif
 
 " UI
