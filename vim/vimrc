@@ -106,33 +106,37 @@ cnoreabbrev Wq wq
 " = Autocmds (AUG) =
 " =============================================================================
 
-if s:user.enable_transparent
-  augroup transparent_user_events
-    autocmd!
-
+function! s:set_transparent_highlights() abort
+  if s:user.enable_transparent
     " Core highlights to make transparent
-    autocmd ColorScheme * highlight! Normal guibg=NONE
-    autocmd ColorScheme * highlight! SignColumn guibg=NONE
-    autocmd ColorScheme * highlight! LineNr guibg=NONE guifg=#888888
-    autocmd ColorScheme * highlight! CursorLineNr guibg=NONE
-    autocmd ColorScheme * highlight! EndOfBuffer guibg=NONE
-    autocmd ColorScheme * highlight! Visual guibg=#555555
+    highlight Normal gui=NONE guibg=NONE
+    highlight SignColumn gui=NONE guibg=NONE
+    highlight LineNr gui=NONE guibg=NONE guifg=#888888
+    highlight CursorLineNr gui=NONE guibg=NONE
+    highlight EndOfBuffer gui=NONE guibg=NONE
+    highlight Visual gui=NONE guibg=#555555
 
     " Sometimes comments are too dark, affects in tranparent mode
-    autocmd ColorScheme * highlight! Comment guifg=#888888
+    highlight Comment gui=NONE cterm=NONE guibg=NONE guifg=#888888
 
     " Make tabline bg tranparent
-    autocmd ColorScheme * highlight! TabLineFill guibg=NONE
-    autocmd ColorScheme * highlight! TabLine guibg=NONE
+    highlight TabLineFill gui=NONE guibg=NONE
+    highlight TabLine gui=NONE guibg=NONE
 
     " Float Border
-    autocmd ColorScheme * highlight! NormalFloat guibg=NONE
-    autocmd ColorScheme * highlight! FloatBorder guibg=NONE guifg=#eeeeee
+    highlight NormalFloat gui=NONE guibg=NONE
+    highlight FloatBorder gui=NONE guibg=NONE guifg=#eeeeee
 
     " Vertical Line
-    autocmd ColorScheme * highlight! ColorColumn guibg=#999999
-  augroup END
-endif
+    highlight ColorColumn gui=NONE guibg=#999999
+  endif
+endfunction
+
+augroup transparent_user_events
+  autocmd!
+
+  autocmd ColorScheme * call s:set_transparent_highlights()
+augroup END
 
 augroup customhl_user_events
   autocmd!
@@ -413,9 +417,8 @@ Jetpack 'mengelbrecht/lightline-bufferline'
 " Colorschemes {{{
 Jetpack 'bluz71/vim-nightfly-guicolors'
 Jetpack 'bluz71/vim-moonfly-colors'
-Jetpack 'gruvbox-community/gruvbox'
 Jetpack 'fnune/base16-vim'
-Jetpack 'rigellute/rigel'
+Jetpack 'haishanh/night-owl.vim'
 " }}}
 
 call jetpack#end()
@@ -425,4 +428,4 @@ call jetpack#end()
 " =============================================================================
 
 set background=dark
-colorscheme moonfly
+colorscheme night-owl
