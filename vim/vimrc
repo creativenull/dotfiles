@@ -302,127 +302,164 @@ nnoremap Q @@
 " = Plugin Manager (PLUG) =
 " =============================================================================
 
-" Bootstrap - ensure jetpack is downloaded
-let s:jetpack_setup = #{
-  \ base_dir: expand('~/.vim/pack/jetpack'),
-  \ git: 'https://github.com/tani/vim-jetpack.git',
-  \ path: expand('~/.vim/pack/jetpack/src/vim-jetpack'),
-  \ linkpath: expand('~/.vim/pack/jetpack/opt/vim-jetpack'),
+" Bootstrap - ensure vim-packager is installed
+let s:plugin = #{
+  \ base_dir: expand('~/.vim/pack/packager'),
+  \ git: 'https://github.com/kristijanhusak/vim-packager.git',
+  \ path: expand('~/.vim/pack/packager/opt/vim-packager'),
 \ }
 
-" Ensure jetpack directories exist
-if !isdirectory(s:jetpack_setup.base_dir)
-  echo "Creating dirs"
+if !isdirectory(s:plugin.path)
+  echo "Downloading vim-packager plugin manager..."
 
-  call system('mkdir -p ' . s:jetpack_setup.base_dir . '/src')
-  call system('mkdir -p ' . s:jetpack_setup.base_dir . '/opt')
-endif
-
-" Install jetpack and install plugins on first time load
-if !isdirectory(s:jetpack_setup.path)
-  echo "Downloading vim-jetpack plugin manager"
-
-  let s:gitcmd = ['git', 'clone', '--depth', '1', s:jetpack_setup.git, s:jetpack_setup.path]
+  let s:gitcmd = ['git', 'clone', s:plugin.git, s:plugin.path]
   call system(s:gitcmd->join(' '))
-
-  let s:linkcmd = ['ln', '-s', s:jetpack_setup.path, s:jetpack_setup.linkpath]
-  call system(s:linkcmd->join(' '))
-
-  autocmd! VimEnter * call jetpack#sync()
 endif
 
-" Optimize plugins handled by jetpack
-let g:jetpack#optimization = 2
+" List all plugins
+function! PackagerInit() abort
+  packadd vim-packager
 
-packadd vim-jetpack
+  call packager#init()
 
-call jetpack#begin()
+  " Self-care
+  call packager#add('kristijanhusak/vim-packager', #{ type: 'opt' })
 
-Jetpack 'tani/vim-jetpack', { 'opt': v:true }
+  " Plugin dependencies {{{
+  call packager#add('Shougo/context_filetype.vim')
+  call packager#add('vim-denops/denops.vim')
+  call packager#add('lambdalisue/nerdfont.vim')
+  " }}}
 
-" Plugin dependencies {{{
-Jetpack 'Shougo/context_filetype.vim'
-Jetpack 'vim-denops/denops.vim'
-Jetpack 'lambdalisue/nerdfont.vim'
-" }}}
+  " Core {{{
+  call packager#add('cohama/lexima.vim')
+  call packager#add('godlygeek/tabular')
+  call packager#add('tpope/vim-surround')
+  call packager#add('tpope/vim-abolish')
+  call packager#add('tpope/vim-repeat')
+  call packager#add('tyru/caw.vim')
+  call packager#add('editorconfig/editorconfig-vim')
+  call packager#add('creativenull/projectlocal-vim')
+  call packager#add('mattn/emmet-vim')
+  " }}}
 
-" Core {{{
-Jetpack 'cohama/lexima.vim'
-Jetpack 'godlygeek/tabular'
-Jetpack 'tpope/vim-surround'
-Jetpack 'tpope/vim-abolish'
-Jetpack 'tpope/vim-repeat'
-Jetpack 'tyru/caw.vim'
-Jetpack 'editorconfig/editorconfig-vim'
-Jetpack 'creativenull/projectlocal-vim'
-Jetpack 'mattn/emmet-vim' | call cnull#emmet#Setup()
-" }}}
+  " File Explorer {{{
+  call packager#add('lambdalisue/fern.vim')
+  call packager#add('lambdalisue/nerdfont.vim')
+  call packager#add('lambdalisue/fern-renderer-nerdfont.vim')
+  " }}}
 
-" File Explorer {{{
-Jetpack 'lambdalisue/fern.vim' | call cnull#fern#Setup()
-Jetpack 'lambdalisue/nerdfont.vim'
-Jetpack 'lambdalisue/fern-renderer-nerdfont.vim'
-" }}}
+  " Fuzzy Finder {{{
+  call packager#add('junegunn/fzf')
+  call packager#add('junegunn/fzf.vim')
+  " }}}
 
-" Fuzzy Finder {{{
-Jetpack 'junegunn/fzf', { 'do': { -> fzf#install() } } | call cnull#fzf#Setup()
-Jetpack 'junegunn/fzf.vim'
-" }}}
+  " Snippets {{{
+  call packager#add('SirVer/ultisnips')
+  call packager#add('honza/vim-snippets')
+  " }}}
 
-" Snippets {{{
-Jetpack 'SirVer/ultisnips'
-Jetpack 'honza/vim-snippets'
-" }}}
+  " Git {{{
+  call packager#add('tpope/vim-fugitive')
+  call packager#add('airblade/vim-gitgutter')
+  " }}}
 
-" Git {{{
-Jetpack 'tpope/vim-fugitive'
-Jetpack 'airblade/vim-gitgutter' | let g:gitgutter_map_keys = 0
-" }}}
+  " Linter and formatter configurations {{{
+  call packager#add('dense-analysis/ale')
+  " }}}
 
-" Linter and formatter configurations {{{
-Jetpack 'dense-analysis/ale' | call cnull#ale#Setup()
-" }}}
+  " Auto completion + LSP client {{{
+  call packager#add('neoclide/coc.nvim', #{ branch: 'release' })
+  call packager#add('fannheyward/coc-deno', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('marlonfan/coc-phpls', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-css', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-html', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-json', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-snippets', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-tsserver', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-vetur', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('yaegassy/coc-volar', #{ do: 'yarn install --frozen-lockfile' })
+  " }}}
 
-" Auto completion + LSP client {{{
-Jetpack 'neoclide/coc.nvim', { 'branch': 'release' } | call cnull#coc#Setup()
-Jetpack 'fannheyward/coc-deno', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'marlonfan/coc-phpls', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'neoclide/coc-css', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'neoclide/coc-html', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'neoclide/coc-json', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'neoclide/coc-snippets', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'neoclide/coc-tsserver', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'neoclide/coc-vetur', { 'do': 'yarn install --frozen-lockfile' }
-Jetpack 'yaegassy/coc-volar', { 'do': 'yarn install --frozen-lockfile' }
-" }}}
+  " File syntax plugins {{{
+  call packager#add('pangloss/vim-javascript')
+  call packager#add('MaxMEllon/vim-jsx-pretty')
+  call packager#add('heavenshell/vim-jsdoc', #{ do: 'make install' })
+  call packager#add('posva/vim-vue')
+  call packager#add('jwalton512/vim-blade')
+  call packager#add('elzr/vim-json')
+  call packager#add('kevinoid/vim-jsonc')
+  call packager#add('junegunn/vader.vim')
+  " }}}
 
-" File syntax plugins {{{
-Jetpack 'pangloss/vim-javascript'
-Jetpack 'MaxMEllon/vim-jsx-pretty'
-Jetpack 'heavenshell/vim-jsdoc', { 'do': 'make install' }
-Jetpack 'posva/vim-vue' | let g:vue_pre_processors = []
-Jetpack 'jwalton512/vim-blade'
-Jetpack 'elzr/vim-json' | let g:vim_json_conceal = 0
-Jetpack 'kevinoid/vim-jsonc'
-Jetpack 'junegunn/vader.vim'
-" }}}
+  " UI Jetpackins {{{
+  call packager#add('Yggdroot/indentLine')
+  call packager#add('machakann/vim-highlightedyank')
+  call packager#add('itchyny/lightline.vim')
+  call packager#add('mengelbrecht/lightline-bufferline')
+  " }}}
 
-" UI Jetpackins {{{
-Jetpack 'Yggdroot/indentLine' | let g:indentLine_char = '│'
-Jetpack 'machakann/vim-highlightedyank' | call cnull#highlightedyank#Setup()
-Jetpack 'itchyny/lightline.vim' | call cnull#lightline#Setup()
-Jetpack 'mengelbrecht/lightline-bufferline'
-" }}}
+  " Colorschemes {{{
+  call packager#add('bluz71/vim-nightfly-guicolors')
+  call packager#add('bluz71/vim-moonfly-colors')
+  call packager#add('fnune/base16-vim')
+  call packager#add('nanotech/jellybeans.vim')
+  call packager#add('keqizeng/nightelf')
+  " }}}
+endfunction
 
-" Colorschemes {{{
-Jetpack 'bluz71/vim-nightfly-guicolors'
-Jetpack 'bluz71/vim-moonfly-colors'
-Jetpack 'fnune/base16-vim'
-Jetpack 'nanotech/jellybeans.vim'
-Jetpack 'keqizeng/nightelf'
-" }}}
+command! -nargs=* -bar PackagerInstall call PackagerInit() | call packager#install(<args>)
+command! -nargs=* -bar PackagerUpdate call PackagerInit() | call packager#update(<args>)
+command! -bar PackagerClean call PackagerInit() | call packager#clean()
+command! -bar PackagerStatus call PackagerInit() | call packager#status()
 
-call jetpack#end()
+" =============================================================================
+" = Plugin Configurations (POST) =
+" =============================================================================
+
+" Emmet Config
+" ---
+call cnull#emmet#Setup()
+
+" fern.vim Config
+" ---
+call cnull#fern#Setup()
+
+" fzf.vim Config
+" ---
+call cnull#fzf#Setup()
+
+" vim-gitgutter Config
+" ---
+let g:gitgutter_map_keys = 0
+
+" ale Config
+" ---
+call cnull#ale#Setup()
+
+" coc.nvim Config
+" ---
+call cnull#coc#Setup()
+
+" vim-vue Config
+" ---
+let g:vue_pre_processors = []
+
+" vim-json Config
+" ---
+let g:vim_json_conceal = 0
+
+" indentLine Config
+" ---
+let g:indentLine_char = '│'
+
+" vim-highlightedyank Config
+" ---
+call cnull#highlightedyank#Setup()
+
+" lightline.vim Config
+" ---
+call cnull#lightline#Setup()
 
 " =============================================================================
 " = UI/Theme (THEME) =
