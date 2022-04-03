@@ -20,4 +20,15 @@ function! cnull#ale#Setup() abort
     autocmd User ALELintPost call lightline#update()
     autocmd User ALEFixPost call lightline#update()
   augroup END
+
+  if g:user.enable_transparent
+    augroup ale_transparent_user_events
+      autocmd!
+
+      " Transparent colors for code highlight by ALE
+      autocmd ColorScheme * highlight! ALEError cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=LightRed
+      autocmd ColorScheme * highlight! ALEWarning cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=Yellow
+      autocmd ColorScheme * highlight! ALEInfo cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=LightBlue
+    augroup END
+  endif
 endfunction
