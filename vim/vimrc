@@ -419,6 +419,7 @@ Jetpack 'bluz71/vim-nightfly-guicolors'
 Jetpack 'bluz71/vim-moonfly-colors'
 Jetpack 'fnune/base16-vim'
 Jetpack 'nanotech/jellybeans.vim'
+Jetpack 'keqizeng/nightelf'
 " }}}
 
 call jetpack#end()
@@ -428,4 +429,4 @@ call jetpack#end()
 " =============================================================================
 
 set background=dark
-colorscheme jellybeans
+colorscheme nightelf
