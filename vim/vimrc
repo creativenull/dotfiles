@@ -13,25 +13,25 @@
 
 let mapleader = "\<Space>"
 
-let s:user = {}
-let s:user.enable_transparent = v:true
+let g:user = {}
+let g:user.enable_transparent = v:true
 
 " Vim filepaths
 " ---
 
-let s:user.config = {}
+let g:user.config = {}
 
 if has('win32')
-  let s:user.config.cachedir = expand('$HOME/AppData/Local/Temp/vim')
-  let s:user.config.configdir = expand('$HOME')
-  let s:user.config.datadir = expand('$HOME/vimfiles')
+  let g:user.config.cachedir = expand('$HOME/AppData/Local/Temp/vim')
+  let g:user.config.configdir = expand('$HOME')
+  let g:user.config.datadir = expand('$HOME/vimfiles')
 else
-  let s:user.config.cachedir = expand('$HOME/.cache/vim')
-  let s:user.config.configdir = expand('$HOME')
-  let s:user.config.datadir = expand('$HOME/.vim')
+  let g:user.config.cachedir = expand('$HOME/.cache/vim')
+  let g:user.config.configdir = expand('$HOME')
+  let g:user.config.datadir = expand('$HOME/.vim')
 endif
 
-let s:user.config.undodir = printf('%s/undo', s:user.config.cachedir)
+let g:user.config.undodir = printf('%s/undo', g:user.config.cachedir)
 
 " Enable vim features
 " ---
@@ -107,7 +107,7 @@ cnoreabbrev Wq wq
 " =============================================================================
 
 function! s:set_transparent_highlights() abort
-  if s:user.enable_transparent
+  if g:user.enable_transparent
     " Core highlights to make transparent
     highlight Normal cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
     highlight SignColumn cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
@@ -117,7 +117,7 @@ function! s:set_transparent_highlights() abort
     highlight Visual cterm=NONE gui=NONE guibg=#555555
 
     " Sometimes comments are too dark, affects in tranparent mode
-    highlight Comment cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#888888
+    highlight Comment cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#aaaaaa
 
     " Make tabline bg tranparent
     highlight TabLineFill cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
@@ -150,11 +150,11 @@ augroup END
 " =============================================================================
 
 " Ensure dir for storing undo changes
-if !isdirectory(s:user.config.undodir)
+if !isdirectory(g:user.config.undodir)
   if has('win32')
-    execute printf('silent !mkdir -Recurse %s', s:user.config.undodir)
+    execute printf('silent !mkdir -Recurse %s', g:user.config.undodir)
   else
-    execute printf('silent !mkdir -p %s', s:user.config.undodir)
+    execute printf('silent !mkdir -p %s', g:user.config.undodir)
   endif
 endif
 
@@ -189,7 +189,7 @@ set tabstop=8
 set wildignorecase
 
 " System
-let &undodir=s:user.config.undodir
+let &undodir=g:user.config.undodir
 set backspace=indent,eol,start
 set encoding=utf-8
 set history=10000
@@ -418,7 +418,6 @@ Jetpack 'mengelbrecht/lightline-bufferline'
 Jetpack 'bluz71/vim-nightfly-guicolors'
 Jetpack 'bluz71/vim-moonfly-colors'
 Jetpack 'fnune/base16-vim'
-Jetpack 'haishanh/night-owl.vim'
 " }}}
 
 call jetpack#end()
