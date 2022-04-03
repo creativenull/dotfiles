@@ -26,9 +26,14 @@ function! cnull#ale#Setup() abort
       autocmd!
 
       " Transparent colors for code highlight by ALE
-      autocmd ColorScheme * highlight! ALEError cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=LightRed
-      autocmd ColorScheme * highlight! ALEWarning cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=Yellow
-      autocmd ColorScheme * highlight! ALEInfo cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=LightBlue
+      autocmd ColorScheme * highlight ALEError cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=LightRed
+      autocmd ColorScheme * highlight ALEWarning cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=Yellow
+      autocmd ColorScheme * highlight ALEInfo cterm=underline ctermbg=NONE gui=underline guibg=NONE guifg=LightBlue
+
+      " Transparent colors for signs by ALE
+      autocmd ColorScheme * highlight ALEErrorSign ctermbg=NONE guibg=NONE guifg=LightRed
+      autocmd ColorScheme * highlight ALEWarningSign ctermbg=NONE guibg=NONE guifg=Yellow
+      autocmd ColorScheme * highlight ALEInfoSign ctermbg=NONE guibg=NONE guifg=LightBlue
     augroup END
   endif
 endfunction
