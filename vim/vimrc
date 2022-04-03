@@ -304,13 +304,14 @@ nnoremap Q @@
 
 " Bootstrap - ensure vim-packager is installed
 let s:plugin = #{
+  \ name: 'vim-packager',
   \ base_dir: expand('~/.vim/pack/packager'),
   \ git: 'https://github.com/kristijanhusak/vim-packager.git',
   \ path: expand('~/.vim/pack/packager/opt/vim-packager'),
 \ }
 
 if !isdirectory(s:plugin.path)
-  echo "Downloading vim-packager plugin manager..."
+  echo printf('Downloading %s plugin manager...', s:plugin.name)
 
   let s:gitcmd = ['git', 'clone', s:plugin.git, s:plugin.path]
   call system(s:gitcmd->join(' '))
