@@ -109,26 +109,26 @@ cnoreabbrev Wq wq
 function! s:set_transparent_highlights() abort
   if s:user.enable_transparent
     " Core highlights to make transparent
-    highlight Normal gui=NONE guibg=NONE
-    highlight SignColumn gui=NONE guibg=NONE
+    highlight Normal cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
+    highlight SignColumn cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
     highlight LineNr gui=NONE guibg=NONE guifg=#888888
-    highlight CursorLineNr gui=NONE guibg=NONE
-    highlight EndOfBuffer gui=NONE guibg=NONE
-    highlight Visual gui=NONE guibg=#555555
+    highlight CursorLineNr cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
+    highlight EndOfBuffer cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
+    highlight Visual cterm=NONE gui=NONE guibg=#555555
 
     " Sometimes comments are too dark, affects in tranparent mode
-    highlight Comment gui=NONE cterm=NONE guibg=NONE guifg=#888888
+    highlight Comment cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#888888
 
     " Make tabline bg tranparent
-    highlight TabLineFill gui=NONE guibg=NONE
-    highlight TabLine gui=NONE guibg=NONE
+    highlight TabLineFill cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
+    highlight TabLine cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
 
     " Float Border
-    highlight NormalFloat gui=NONE guibg=NONE
-    highlight FloatBorder gui=NONE guibg=NONE guifg=#eeeeee
+    highlight NormalFloat cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
+    highlight FloatBorder cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#eeeeee
 
     " Vertical Line
-    highlight ColorColumn gui=NONE guibg=#999999
+    highlight ColorColumn cterm=NONE gui=NONE guibg=#999999
   endif
 endfunction
 
