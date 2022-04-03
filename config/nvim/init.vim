@@ -15,7 +15,7 @@
 " ---
 let s:cnull = {}
 let s:cnull.leaderkey = "\<Space>"
-let s:cnull.transparent = v:true
+let s:cnull.transparent = v:false
 let s:cnull.config = {}
 let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
@@ -512,6 +512,7 @@ call cnull#lightline#Setup()
 
 " moonfly Config
 " ---
+let g:moonflyTransparent = 1
 let g:moonflyNormalFloat = 1
 let g:moonflyItalics = 0
 
