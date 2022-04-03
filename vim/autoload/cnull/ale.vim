@@ -12,13 +12,12 @@ function! cnull#ale#Setup() abort
   nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
   nnoremap <silent> <Leader>al <Cmd>lopen<CR>
 
-  " Update lightline whenever ALE lints or formats the code
   augroup ale_lightline_user_events
     autocmd!
 
+    " Update lightline whenever ALE lints or formats the code
     autocmd User ALEJobStarted call lightline#update()
     autocmd User ALELintPost call lightline#update()
     autocmd User ALEFixPost call lightline#update()
-
   augroup END
 endfunction

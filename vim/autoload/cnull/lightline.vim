@@ -41,10 +41,11 @@ endfunction
 
 function! cnull#lightline#ale_err_component() abort
   if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let errors = info.error
-    if errors > 0
-      return printf('%d', errors)
+    let l:info = ale#statusline#Count(bufnr(''))
+    let l:errors = l:info.error
+
+    if l:errors > 0
+      return printf('%d', l:errors)
     endif
   endif
 
@@ -53,10 +54,11 @@ endfunction
 
 function! cnull#lightline#ale_warn_component() abort
   if exists('g:loaded_ale')
-    let info = ale#statusline#Count(bufnr(''))
-    let warnings = info.warning
-    if warnings > 0
-      return printf('%d', warnings)
+    let l:info = ale#statusline#Count(bufnr(''))
+    let l:warnings = l:info.warning
+
+    if l:warnings > 0
+      return printf('%d', l:warnings)
     endif
   endif
 

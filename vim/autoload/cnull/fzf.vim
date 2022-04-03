@@ -9,16 +9,16 @@ function! cnull#fzf#Setup() abort
   " Custom UI interface for greping code with fzf
   command! -bang -nargs=* Rg call cnull#fzf#VimGrep(<q-args>, <bang>0)
 
-  " Use a lighter border color
   augroup fzf_highlight_user_events
     autocmd!
 
+    " Use a lighter border color
     autocmd ColorScheme * highlight! fzfBorder guifg=#aaaaaa
-
   augroup END
 endfunction
 
 function! cnull#fzf#VimGrep(qargs, bang) abort
   let sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' . shellescape(a:qargs)
+
   call fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
 endfunction
