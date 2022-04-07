@@ -2,8 +2,12 @@ function! cnull#ale#Setup() abort
   let g:ale_completion_enabled = 0
   let g:ale_disable_lsp = 1
   let g:ale_hover_cursor = 0
-  let g:ale_echo_msg_error_str = ''
-  let g:ale_echo_msg_warning_str = ''
+  let g:ale_echo_msg_error_str = 'Err'
+  let g:ale_sign_error = ' '
+  let g:ale_echo_msg_warning_str = 'Warn'
+  let g:ale_sign_warning = ' '
+  let g:ale_echo_msg_info_str = 'Info'
+  let g:ale_sign_info = ' '
   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
   let g:ale_linters_explicit = 1
   let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
