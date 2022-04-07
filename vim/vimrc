@@ -200,6 +200,7 @@ set ttimeoutlen=50
 set undofile
 set undolevels=10000
 set updatetime=250
+set clipboard-=autoselect
 
 " UI
 set cmdheight=2
@@ -328,26 +329,26 @@ function! PackagerInit() abort
 
   " Plugin dependencies {{{
   call packager#add('Shougo/context_filetype.vim')
-  call packager#add('vim-denops/denops.vim')
   call packager#add('lambdalisue/nerdfont.vim')
+  call packager#add('vim-denops/denops.vim')
   " }}}
 
   " Core {{{
   call packager#add('cohama/lexima.vim')
-  call packager#add('godlygeek/tabular')
-  call packager#add('tpope/vim-surround')
+  call packager#add('creativenull/projectlocal-vim')
+  call packager#add('editorconfig/editorconfig-vim')
+  call packager#add('junegunn/vim-easy-align')
+  call packager#add('mattn/emmet-vim')
   call packager#add('tpope/vim-abolish')
   call packager#add('tpope/vim-repeat')
+  call packager#add('tpope/vim-surround')
   call packager#add('tyru/caw.vim')
-  call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('creativenull/projectlocal-vim')
-  call packager#add('mattn/emmet-vim')
   " }}}
 
   " File Explorer {{{
+  call packager#add('lambdalisue/fern-renderer-nerdfont.vim')
   call packager#add('lambdalisue/fern.vim')
   call packager#add('lambdalisue/nerdfont.vim')
-  call packager#add('lambdalisue/fern-renderer-nerdfont.vim')
   " }}}
 
   " Fuzzy Finder {{{
@@ -361,8 +362,8 @@ function! PackagerInit() abort
   " }}}
 
   " Git {{{
-  call packager#add('tpope/vim-fugitive')
   call packager#add('airblade/vim-gitgutter')
+  call packager#add('tpope/vim-fugitive')
   " }}}
 
   " Linter and formatter configurations {{{
@@ -370,27 +371,27 @@ function! PackagerInit() abort
   " }}}
 
   " Auto completion + LSP client {{{
-  call packager#add('neoclide/coc.nvim', #{ branch: 'release' })
-  call packager#add('fannheyward/coc-deno', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('marlonfan/coc-phpls', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-css', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-html', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-json', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-snippets', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-tsserver', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-vetur', #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('yaegassy/coc-volar', #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc.nvim',      #{ branch: 'release' })
+  call packager#add('fannheyward/coc-deno',   #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('marlonfan/coc-phpls',    #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-css',       #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-html',      #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-json',      #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-snippets',  #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-tsserver',  #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('neoclide/coc-vetur',     #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('yaegassy/coc-volar',     #{ do: 'yarn install --frozen-lockfile' })
   " }}}
 
   " File syntax plugins {{{
-  call packager#add('pangloss/vim-javascript')
   call packager#add('MaxMEllon/vim-jsx-pretty')
-  call packager#add('heavenshell/vim-jsdoc', #{ do: 'make install' })
-  call packager#add('posva/vim-vue')
-  call packager#add('jwalton512/vim-blade')
   call packager#add('elzr/vim-json')
-  call packager#add('kevinoid/vim-jsonc')
+  call packager#add('heavenshell/vim-jsdoc', #{ do: 'make install' })
   call packager#add('junegunn/vader.vim')
+  call packager#add('jwalton512/vim-blade')
+  call packager#add('kevinoid/vim-jsonc')
+  call packager#add('pangloss/vim-javascript')
+  call packager#add('posva/vim-vue')
   " }}}
 
   " UI Jetpackins {{{
@@ -401,11 +402,11 @@ function! PackagerInit() abort
   " }}}
 
   " Colorschemes {{{
-  call packager#add('bluz71/vim-nightfly-guicolors')
   call packager#add('bluz71/vim-moonfly-colors')
+  call packager#add('bluz71/vim-nightfly-guicolors')
   call packager#add('fnune/base16-vim')
-  call packager#add('nanotech/jellybeans.vim')
   call packager#add('keqizeng/nightelf')
+  call packager#add('nanotech/jellybeans.vim')
   " }}}
 endfunction
 
@@ -461,6 +462,10 @@ call cnull#highlightedyank#Setup()
 " lightline.vim Config
 " ---
 call cnull#lightline#Setup()
+
+" gitgutter Config
+" ---
+call cnull#gitgutter#Setup()
 
 " =============================================================================
 " = UI/Theme (THEME) =
