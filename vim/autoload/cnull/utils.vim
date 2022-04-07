@@ -1,3 +1,8 @@
+" Strip sign column, number line, etc to be able
+" to copy and paste from a vim instance that has
+" mouse disabled, or not able to use `"+y`.
+"
+" Example of such and instance is running vim in WSL2
 function! cnull#utils#ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
@@ -8,6 +13,8 @@ function! cnull#utils#ToggleCodeshot() abort
   endif
 endfunction
 
+" Toggle the conceallevel, should any syntax plugin overtake
+" and hide/conceal words
 function! cnull#utils#ToggleConcealLevel() abort
   if &conceallevel == 2
     setlocal conceallevel=0
