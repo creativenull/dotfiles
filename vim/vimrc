@@ -358,8 +358,8 @@ function! PackagerInit() abort
   " }}}
 
   " Snippets {{{
-  call packager#add('SirVer/ultisnips')
-  call packager#add('honza/vim-snippets')
+  call packager#add('hrsh7th/vim-vsnip')
+  call packager#add('rafamadriz/friendly-snippets')
   " }}}
 
   " Git {{{
@@ -376,6 +376,7 @@ function! PackagerInit() abort
   call packager#add('prabirshrestha/asyncomplete.vim')
   call packager#add('prabirshrestha/asyncomplete-lsp.vim')
   call packager#add('prabirshrestha/asyncomplete-buffer.vim')
+  call packager#add('hrsh7th/vim-vsnip-integ')
   " }}}
 
   " File syntax plugins {{{
