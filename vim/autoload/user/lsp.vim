@@ -5,54 +5,54 @@ def RegisterServers(): void
 
   # Vim
   const vimls = 'vim-language-server'
-  g:user_lsp_vimlsOpts = {
+  g:userLspVimLangServerOptions = {
     name: vimls,
-    cmd: (serverInfo) => [vimls, '--stdio'],
+    cmd: [vimls, '--stdio'],
     allowlist: ['vim'],
   }
 
   if executable(vimls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user_lsp_vimlsOpts)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspVimLangServerOptions)
   endif
 
   # JS/TS
   const tsserver = 'typescript-language-server'
-  g:user_lsp_tsserverOpts = {
+  g:userLspTsserverOptions = {
     name: tsserver,
-    cmd: (serverInfo) => [tsserver, '--stdio'],
+    cmd: [tsserver, '--stdio'],
     allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
   }
 
   if executable(tsserver)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user_lsp_tsserverOpts)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspTsserverOptions)
   endif
 
   # Vue
   const vuels = 'vue-language-server'
-  g:user_lsp_vuelsOpts = {
+  g:userLspVueLangServerOptions = {
     name: vuels,
-    cmd: (serverInfo) => [vuels, '--stdio'],
+    cmd: [vuels, '--stdio'],
     allowlist: ['vue'],
   }
 
   if executable(vuels)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user_lsp_vuelsOpts)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspVueLangServerOptions)
   endif
 
   # Go
   const gopls = 'gopls'
-  g:user_lsp_goplsOpts = {
+  g:userLspGoLangServerOptions = {
     name: gopls,
-    cmd: (serverInfo) => [gopls],
+    cmd: [gopls],
     allowlist: ['go'],
   }
 
   if executable(gopls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user_lsp_goplsOpts)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspGoLangServerOptions)
   endif
 enddef
 
-export def LspOnAttach(): void
+export def OnAttachedBuffer(): void
   setlocal omnifunc=lsp#complete
 
   nmap <buffer> <Leader>ld <Plug>(lsp-definition)
@@ -67,25 +67,22 @@ export def LspOnAttach(): void
 enddef
 
 export def Setup(): void
-  # Plugin config
-  g:lsp_diagnostics_enabled = 0
+  g:lsp_diagnostics_enabled = 1
+  g:lsp_diagnostics_echo_cursor = 0
+  g:lsp_diagnostics_float_cursor = 0
+  g:lsp_diagnostics_virtual_text_enabled = 0
+  g:lsp_document_code_action_signs_enabled = 0
   g:lsp_document_highlight_enabled = 0
 
   # Use for debugging
   # let g:lsp_log_verbose = 1
   # let g:lsp_log_file = expand('~/.cache/vim/vim-lsp.log')
 
-  # Keymaps
-  imap <C-@> <Plug>(asyncomplete_force_refresh)
-  inoremap <expr> <Tab> pumvisible() ? asyncomplete#close_popup() : "\<Tab>"
-  inoremap <expr> <CR>  pumvisible() ? asyncomplete#close_popup() : "\<CR>"
-
-  # Register LSP servers
   RegisterServers()
 
-  # LSP specific settings
+  # Main setup
   augroup lsp_user_events
     au!
-    autocmd User lsp_buffer_enabled call cnull#lsp#LspOnAttach()
+    autocmd User lsp_buffer_enabled call user#lsp#OnAttachedBuffer()
   augroup END
 enddef
