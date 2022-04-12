@@ -14,7 +14,7 @@
 let mapleader = "\<Space>"
 
 let g:user = {}
-let g:user.enable_transparent = v:true
+let g:user.enable_transparent = v:false
 
 " Vim filepaths
 " ---
@@ -46,7 +46,8 @@ syntax on
 " ---
 
 " Pre-Requisites
-let s:exec_list = ['git', 'curl', 'python3', 'rg', 'node', 'deno']
+let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
+
 for s:exec in s:exec_list
   if !executable(s:exec)
     echoerr printf('[vim] `%s` is needed!', s:exec)
@@ -90,8 +91,8 @@ endif
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ToggleConcealLevel call cnull#utils#ToggleConcealLevel()
-command! ToggleCodeshot call cnull#utils#ToggleCodeshot()
+command! ToggleConcealLevel call user#utils#ToggleConcealLevel()
+command! ToggleCodeshot call user#utils#ToggleCodeshot()
 
 command! MyTodoPersonal edit ~/todofiles/personal/README.md
 command! MyTodoWork edit ~/todofiles/work/README.md
@@ -111,13 +112,10 @@ function! s:set_transparent_highlights() abort
     " Core highlights to make transparent
     highlight Normal cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
     highlight SignColumn cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight LineNr gui=NONE guibg=NONE guifg=#888888
+    highlight LineNr gui=NONE guibg=NONE guifg=#EEEEEE
     highlight CursorLineNr cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
     highlight EndOfBuffer cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
     highlight Visual cterm=NONE gui=NONE guibg=#555555
-
-    " Sometimes comments are too dark, affects in tranparent mode
-    highlight Comment cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#aaaaaa
 
     " Make tabline bg tranparent
     highlight TabLineFill cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
@@ -125,7 +123,7 @@ function! s:set_transparent_highlights() abort
 
     " Float Border
     highlight NormalFloat cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight FloatBorder cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#eeeeee
+    highlight FloatBorder cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#EEEEEE
 
     " Vertical Line
     highlight ColorColumn cterm=NONE gui=NONE guibg=#999999
@@ -201,7 +199,7 @@ set undolevels=10000
 set updatetime=250
 set clipboard-=autoselect
 
-if cnull#utils#IsWSL()
+if user#utils#IsWSL()
   set mouse=
 endif
 
@@ -374,16 +372,9 @@ function! PackagerInit() abort
   " }}}
 
   " Auto completion + LSP client {{{
-  call packager#add('neoclide/coc.nvim',      #{ branch: 'release' })
-  call packager#add('fannheyward/coc-deno',   #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('marlonfan/coc-phpls',    #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-css',       #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-html',      #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-json',      #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-snippets',  #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-tsserver',  #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('neoclide/coc-vetur',     #{ do: 'yarn install --frozen-lockfile' })
-  call packager#add('yaegassy/coc-volar',     #{ do: 'yarn install --frozen-lockfile' })
+  call packager#add('prabirshrestha/vim-lsp')
+  call packager#add('prabirshrestha/asyncomplete.vim')
+  call packager#add('prabirshrestha/asyncomplete-lsp.vim')
   " }}}
 
   " File syntax plugins {{{
@@ -424,15 +415,15 @@ command! -bar PackagerStatus call PackagerInit() | call packager#status()
 
 " Emmet Config
 " ---
-call cnull#emmet#Setup()
+call user#emmet#Setup()
 
 " fern.vim Config
 " ---
-call cnull#fern#Setup()
+call user#fern#Setup()
 
 " fzf.vim Config
 " ---
-call cnull#fzf#Setup()
+call user#fzf#Setup()
 
 " vim-gitgutter Config
 " ---
@@ -440,11 +431,11 @@ let g:gitgutter_map_keys = 0
 
 " ale Config
 " ---
-call cnull#ale#Setup()
+call user#ale#Setup()
 
 " coc.nvim Config
 " ---
-call cnull#coc#Setup()
+" call user#coc#Setup()
 
 " vim-vue Config
 " ---
@@ -460,19 +451,26 @@ let g:indentLine_char = '│'
 
 " vim-highlightedyank Config
 " ---
-call cnull#highlightedyank#Setup()
+call user#highlightedyank#Setup()
 
 " lightline.vim Config
 " ---
-call cnull#lightline#Setup()
+call user#lightline#Setup()
 
 " gitgutter Config
 " ---
-call cnull#gitgutter#Setup()
+call user#gitgutter#Setup()
+
+" vim-lsp Config
+" ---
+call user#lsp#Setup()
 
 " =============================================================================
 " = UI/Theme (THEME) =
 " =============================================================================
 
+let g:moonflyNormalFloat = 1
+let g:moonflyTransparent = 1
+
 set background=dark
-colorscheme nightelf
+colorscheme moonfly
