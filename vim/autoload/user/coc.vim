@@ -10,7 +10,7 @@ function! s:tabCompletion(defaultKey) abort
   return a:defaultKey
 endfunction
 
-function! cnull#coc#Setup() abort
+function! user#coc#Setup() abort
   nmap <Leader>ld <Plug>(coc-definition)
   nmap <Leader>lf <Plug>(coc-format)
   nmap <Leader>lr <Plug>(coc-rename)

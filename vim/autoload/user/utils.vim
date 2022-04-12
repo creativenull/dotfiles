@@ -3,7 +3,7 @@
 " mouse disabled, or not able to use `"+y`.
 "
 " Example of such and instance is running vim in WSL2
-function! cnull#utils#ToggleCodeshot() abort
+function! user#utils#ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
     execute ':IndentLinesDisable'
@@ -15,7 +15,7 @@ endfunction
 
 " Toggle the conceallevel, should any syntax plugin overtake
 " and hide/conceal words
-function! cnull#utils#ToggleConcealLevel() abort
+function! user#utils#ToggleConcealLevel() abort
   if &conceallevel == 2
     setlocal conceallevel=0
   else
@@ -25,7 +25,7 @@ endfunction
 
 " Check if the vim instance is running on a WSL vm
 " Ref: https://github.com/neovim/neovim/issues/12642#issuecomment-658944841
-function! cnull#utils#IsWSL() abort
+function! user#utils#IsWSL() abort
   let l:proc_version = '/proc/version'
 
   return filereadable(l:proc_version)

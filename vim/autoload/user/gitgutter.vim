@@ -1,4 +1,4 @@
-function! cnull#gitgutter#Setup() abort
+function! user#gitgutter#Setup() abort
   if g:user.enable_transparent
     augroup gitgutter_user_events
       autocmd!

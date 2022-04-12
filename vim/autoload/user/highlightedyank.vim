@@ -1,4 +1,4 @@
-function! cnull#highlightedyank#Setup() abort
+function! user#highlightedyank#Setup() abort
   let g:highlightedyank_highlight_duration = 300
 
   augroup highlightedyank_user_events

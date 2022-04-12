@@ -1,4 +1,4 @@
-function! cnull#lightline#Setup() abort
+function! user#lightline#Setup() abort
   let g:lightline = {}
   let g:lightline.colorscheme = 'tailwind_cnull'
 
@@ -26,11 +26,11 @@ function! cnull#lightline#Setup() abort
 
   let g:lightline.component_function = {}
   let g:lightline.component_function.gitbranch = 'FugitiveHead'
-  let g:lightline.component_function.ale_status = 'cnull#lightline#ale_status'
+  let g:lightline.component_function.ale_status = 'user#lightline#ale_status'
 
   let g:lightline.component_expand = {}
-  let g:lightline.component_expand.ale_err = 'cnull#lightline#ale_err_component'
-  let g:lightline.component_expand.ale_warn = 'cnull#lightline#ale_warn_component'
+  let g:lightline.component_expand.ale_err = 'user#lightline#ale_err_component'
+  let g:lightline.component_expand.ale_warn = 'user#lightline#ale_warn_component'
   let g:lightline.component_expand.buffers = 'lightline#bufferline#buffers'
 
   let g:lightline.component_type = {}
@@ -39,7 +39,7 @@ function! cnull#lightline#Setup() abort
   let g:lightline.component_type.buffers = 'tabsel'
 endfunction
 
-function! cnull#lightline#ale_err_component() abort
+function! user#lightline#ale_err_component() abort
   if exists('g:loaded_ale')
     let l:info = ale#statusline#Count(bufnr(''))
     let l:errors = l:info.error
@@ -52,7 +52,7 @@ function! cnull#lightline#ale_err_component() abort
   return ''
 endfunction
 
-function! cnull#lightline#ale_warn_component() abort
+function! user#lightline#ale_warn_component() abort
   if exists('g:loaded_ale')
     let l:info = ale#statusline#Count(bufnr(''))
     let l:warnings = l:info.warning
@@ -65,7 +65,7 @@ function! cnull#lightline#ale_warn_component() abort
   return ''
 endfunction
 
-function! cnull#lightline#ale_status() abort
+function! user#lightline#ale_status() abort
   if exists('g:loaded_ale')
     return 'ALE'
   endif

@@ -1,4 +1,4 @@
-function! cnull#ale#Setup() abort
+function! user#ale#Setup() abort
   let g:ale_completion_enabled = 0
   let g:ale_disable_lsp = 1
   let g:ale_hover_cursor = 0
