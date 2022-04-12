@@ -375,6 +375,7 @@ function! PackagerInit() abort
   call packager#add('prabirshrestha/vim-lsp')
   call packager#add('prabirshrestha/asyncomplete.vim')
   call packager#add('prabirshrestha/asyncomplete-lsp.vim')
+  call packager#add('prabirshrestha/asyncomplete-buffer.vim')
   " }}}
 
   " File syntax plugins {{{
@@ -460,6 +461,10 @@ call user#lightline#Setup()
 " gitgutter Config
 " ---
 call user#gitgutter#Setup()
+
+" asyncomplete.vim Config
+" ---
+call user#asyncomplete#Setup()
 
 " vim-lsp Config
 " ---
