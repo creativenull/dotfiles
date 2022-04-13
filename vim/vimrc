@@ -372,10 +372,28 @@ function! PackagerInit() abort
   " }}}
 
   " Auto completion + LSP client {{{
+  " call packager#add('neoclide/coc.nvim',      #{ branch: 'release' })
+  " call packager#add('fannheyward/coc-deno',   #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('marlonfan/coc-phpls',    #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('neoclide/coc-css',       #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('neoclide/coc-html',      #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('neoclide/coc-json',      #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('neoclide/coc-snippets',  #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('neoclide/coc-tsserver',  #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('neoclide/coc-vetur',     #{ do: 'yarn install --frozen-lockfile' })
+  " call packager#add('yaegassy/coc-volar',     #{ do: 'yarn install --frozen-lockfile' })
+  " }}}
+
+  " LSP client {{{
   call packager#add('prabirshrestha/vim-lsp')
-  call packager#add('prabirshrestha/asyncomplete.vim')
-  call packager#add('prabirshrestha/asyncomplete-lsp.vim')
-  call packager#add('prabirshrestha/asyncomplete-buffer.vim')
+  " }}}
+
+  " Autocompletion {{{
+  call packager#add('Shougo/ddc.vim')
+  call packager#add('matsui54/denops-popup-preview.vim')
+  call packager#add('tani/ddc-fuzzy')
+  call packager#add('shun/ddc-vim-lsp')
+  call packager#add('Shougo/ddc-around')
   call packager#add('hrsh7th/vim-vsnip-integ')
   " }}}
 
@@ -465,7 +483,11 @@ call user#gitgutter#Setup()
 
 " asyncomplete.vim Config
 " ---
-call user#asyncomplete#Setup()
+" call user#asyncomplete#Setup()
+
+" ddc.vim Config
+" ---
+call user#ddc#Setup()
 
 " vim-lsp Config
 " ---
