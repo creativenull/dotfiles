@@ -1,5 +1,7 @@
 vim9script
 
+# Register LSP servers assuming they are installed in the system
+# within a custom user autocmd group.
 def RegisterServers(): void
   augroup user_lsp_events
 
@@ -52,13 +54,28 @@ def RegisterServers(): void
   endif
 enddef
 
+export def SetLspBorderHighlights(): void
+  highlight UserLspFloatBorder guibg=NONE guifg=#eeeeee
+  highlight UserLspFloat guibg=NONE
+enddef
+
+export def SetLspPopupOptions(): void
+  popup_setoptions(lsp#ui#vim#output#getpreviewwinid(), {
+    highlight: 'UserLspFloat',
+    borderhighlight: ['UserLspFloatBorder'],
+    borderchars: ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
+    border: [1, 1, 1, 1],
+    padding: [0, 1, 0, 1],
+  })
+enddef
+
 export def OnAttachedBuffer(): void
   setlocal omnifunc=lsp#complete
 
   nmap <buffer> <Leader>ld <Plug>(lsp-definition)
   nmap <buffer> <Leader>lf <Plug>(lsp-document-format)
   nmap <buffer> <Leader>lr <Plug>(lsp-rename)
-  nmap <buffer> <Leader>lh <Plug>(lsp-hover-float)
+  nmap <buffer> <Leader>lh <Plug>(lsp-hover)
   nmap <buffer> <Leader>la <Plug>(lsp-code-action)
   vmap <buffer> <Leader>la <Plug>(lsp-code-action)
   nmap <buffer> <Leader>le <Plug>(lsp-document-diagnostics)
@@ -67,22 +84,27 @@ export def OnAttachedBuffer(): void
 enddef
 
 export def Setup(): void
-  g:lsp_diagnostics_enabled = 1
+  g:lsp_completion_documentation_enabled = 0
   g:lsp_diagnostics_echo_cursor = 0
-  g:lsp_diagnostics_float_cursor = 0
+  g:lsp_diagnostics_enabled = 1
+  g:lsp_diagnostics_float_cursor = 1
   g:lsp_diagnostics_virtual_text_enabled = 0
   g:lsp_document_code_action_signs_enabled = 0
   g:lsp_document_highlight_enabled = 0
+  g:lsp_hover_ui = 'float'
 
   # Use for debugging
-  # let g:lsp_log_verbose = 1
-  # let g:lsp_log_file = expand('~/.cache/vim/vim-lsp.log')
+  # g:lsp_log_verbose = 1
+  # g:lsp_log_file = expand('~/.cache/vim/vim-lsp.log')
 
+  # Manually register user-defined servers
   RegisterServers()
 
   # Main setup
   augroup lsp_user_events
     au!
     autocmd User lsp_buffer_enabled call user#lsp#OnAttachedBuffer()
+    autocmd User lsp_float_opened call user#lsp#SetLspPopupOptions()
+    autocmd ColorScheme * call user#lsp#SetLspBorderHighlights()
   augroup END
 enddef
