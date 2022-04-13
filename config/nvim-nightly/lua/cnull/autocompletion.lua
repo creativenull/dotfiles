@@ -36,7 +36,9 @@ cmp.setup({
     }),
   },
 
-  documentation = { border = 'rounded' },
+  window = {
+    documentation = { border = 'rounded' },
+  },
 })
 
 cmp.setup.filetype('lua', {
