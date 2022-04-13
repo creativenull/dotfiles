@@ -385,12 +385,12 @@ vim.keymap.set('n', 'Q', [[<Nop>]], keymap_opts)
 -- =============================================================================
 
 -- Access Todo files
-vim.api.nvim_add_user_command('MyTodoPersonal', 'edit ~/todofiles/personal/README.md', {})
-vim.api.nvim_add_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md', {})
+vim.api.nvim_create_user_command('MyTodoPersonal', 'edit ~/todofiles/personal/README.md', {})
+vim.api.nvim_create_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md', {})
 
 -- Open/reload config
-vim.api.nvim_add_user_command('Config', string.format('edit ~/.config/%s/init.lua', vim.g.userspace), {})
-vim.api.nvim_add_user_command(
+vim.api.nvim_create_user_command('Config', string.format('edit ~/.config/%s/init.lua', vim.g.userspace), {})
+vim.api.nvim_create_user_command(
   'ConfigReload',
   string.format('so ~/.config/%s/init.lua | nohlsearch', vim.g.userspace),
   {}
@@ -408,7 +408,7 @@ local function toggle_conceal()
   end
 end
 
-vim.api.nvim_add_user_command('ToggleConcealLevel', toggle_conceal, {})
+vim.api.nvim_create_user_command('ToggleConcealLevel', toggle_conceal, {})
 
 ---Toggle the view of the editor, for taking screenshots
 ---or for copying code from the editor w/o using "+ register
@@ -425,7 +425,7 @@ local function toggle_codeshot()
   end
 end
 
-vim.api.nvim_add_user_command('ToggleCodeshot', toggle_codeshot, {})
+vim.api.nvim_create_user_command('ToggleCodeshot', toggle_codeshot, {})
 
 -- Command Abbreviations, I can't release my shift key fast enough 😭
 vim.cmd('cnoreabbrev Q q')
