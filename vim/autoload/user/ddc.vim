@@ -36,7 +36,7 @@ export def Setup(): void
 
   # Complete vsnip snippet if it's possible
   inoremap <expr> <C-y> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"
-  inoremap <expr> <Tab> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"
+  inoremap <expr> <Tab> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<Tab>"
 
   # Manual trigger
   inoremap <expr> <C-@> ddc#map#manual_complete()
