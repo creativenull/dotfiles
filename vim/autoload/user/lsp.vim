@@ -3,54 +3,68 @@ vim9script
 # Register LSP servers assuming they are installed in the system
 # within a custom user autocmd group.
 def RegisterServers(): void
+  g:user#lsp_opts = {}
+
   augroup user_lsp_events
 
   # Vim
   const vimls = 'vim-language-server'
-  g:userLspVimLangServerOptions = {
+  g:user#lsp_opts.vim = {
     name: vimls,
     cmd: [vimls, '--stdio'],
     allowlist: ['vim'],
   }
 
   if executable(vimls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspVimLangServerOptions)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.vim)
   endif
 
   # JS/TS
   const tsserver = 'typescript-language-server'
-  g:userLspTsserverOptions = {
+  g:user#lsp_opts.tsserver = {
     name: tsserver,
     cmd: [tsserver, '--stdio'],
     allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
   }
 
   if executable(tsserver)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspTsserverOptions)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.tsserver)
   endif
 
   # Vue
   const vuels = 'vue-language-server'
-  g:userLspVueLangServerOptions = {
+  g:user#lsp_opts.vue = {
     name: vuels,
     cmd: [vuels, '--stdio'],
     allowlist: ['vue'],
   }
 
   if executable(vuels)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspVueLangServerOptions)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.vue)
   endif
 
   # Go
   const gopls = 'gopls'
-  g:userLspGoLangServerOptions = {
+  g:user#lsp_opts.go = {
     name: gopls,
     cmd: [gopls],
     allowlist: ['go'],
   }
 
   if executable(gopls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:userLspGoLangServerOptions)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.go)
+  endif
+
+  # PHP
+  const phpls = 'intelephense'
+  g:user#lsp_opts.php = {
+    name: phpls,
+    cmd: [phpls, '--stdio'],
+    allowlist: ['php'],
+  }
+
+  if executable(phpls)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.php)
   endif
 enddef
 
@@ -100,7 +114,7 @@ export def Setup(): void
   augroup lsp_user_events
     au!
     autocmd User lsp_buffer_enabled call user#lsp#OnAttachedBuffer()
-    autocmd User lsp_float_opened call user#lsp#SetLspPopupOptions()
     autocmd ColorScheme * call user#lsp#SetLspBorderHighlights()
+    # autocmd User lsp_float_opened call user#lsp#SetLspPopupOptions()
   augroup END
 enddef
