@@ -386,6 +386,7 @@ function! PackagerInit() abort
 
   " LSP client {{{
   call packager#add('prabirshrestha/vim-lsp')
+  call packager#add('rhysd/vim-lsp-ale')
   " }}}
 
   " Autocompletion {{{
