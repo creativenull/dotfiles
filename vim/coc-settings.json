@@ -1,3 +1,13 @@
 {
-    "diagnostic.displayByAle": true
+    "diagnostic.displayByAle": true,
+    "hover.floatConfig": {
+        "border": true
+    },
+    "suggest.floatConfig": {
+        "border": true
+    },
+    "signature.floatConfig": {
+        "border": true
+    },
+    "suggest.floatEnable": true
 }
