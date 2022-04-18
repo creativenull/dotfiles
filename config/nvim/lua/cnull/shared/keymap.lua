@@ -13,7 +13,7 @@ local function validate_keymap(mode, lhs, rhs)
   vim.validate({
     mode = {mode, 'string'},
     lhs = {lhs, 'string'},
-    rhs = {rhs, 'string'}
+    rhs = {rhs, {'string', 'function'}}
   })
 end
 
@@ -27,7 +27,7 @@ local function validate_buf_keymap(bufnr, mode, lhs, rhs)
     bufnr = {bufnr, 'number'},
     mode = {mode, 'string'},
     lhs = {lhs, 'string'},
-    rhs = {rhs, 'string'}
+    rhs = {rhs, {'string', 'function'}}
   })
 end
 
@@ -52,7 +52,7 @@ M.keymap.set = function(mode, lhs, rhs, opts)
     return
   end
 
-  vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 ---Set a buffer-local keymap, for example:
@@ -67,6 +67,7 @@ end
 M.buf_keymap.set = function(bufnr, mode, lhs, rhs, opts)
   if opts ~= nil then
     opts = vim.tbl_extend('force', DEFAULT_KEYMAP_OPTS, opts)
+    opts = vim.tbl_extend('force', opts, { buffer = bufnr })
   else
     opts = DEFAULT_KEYMAP_OPTS
   end
@@ -77,7 +78,7 @@ M.buf_keymap.set = function(bufnr, mode, lhs, rhs, opts)
     return
   end
 
-  vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 return M
