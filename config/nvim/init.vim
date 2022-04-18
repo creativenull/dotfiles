@@ -398,15 +398,15 @@ Plug 'vim-denops/denops.vim'
 Plug 'lambdalisue/nerdfont.vim'
 
 " Core
-Plug 'cohama/lexima.vim'
-Plug 'godlygeek/tabular'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-repeat'
-Plug 'tyru/caw.vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim'
-Plug 'creativenull/projectlocal-vim'
+Plug 'cohama/lexima.vim', { 'commit': 'fbc05de53ca98b7f36a82f566db1df49864e58ef' }
+Plug 'godlygeek/tabular', { 'commit': '339091ac4dd1f17e225fe7d57b48aff55f99b23a' }
+Plug 'tpope/vim-surround', { 'tag': 'v2.2' }
+Plug 'tpope/vim-abolish', { 'tag': 'v1.1' }
+Plug 'tpope/vim-repeat', { 'commit': '24afe922e6a05891756ecf331f39a1f6743d3d5a' }
+Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
+Plug 'editorconfig/editorconfig-vim', { 'commit': 'a8e3e66deefb6122f476c27cee505aaae93f7109' }
+Plug 'mattn/emmet-vim', { 'commit': 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' }
+Plug 'creativenull/projectlocal-vim', { 'tag': 'v0.3.0' }
 
 " File Explorer + Addons
 Plug 'antoinemadec/FixCursorHold.nvim'
