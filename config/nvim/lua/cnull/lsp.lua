@@ -1,28 +1,42 @@
+local augroup = require('cnull.shared.event').augroup
 local keymap = require('cnull.shared.keymap').keymap
 local buf_keymap = require('cnull.shared.keymap').buf_keymap
-local BORDER_STYLE = 'rounded'
-local BORDER_WIDTH = 80
+local border = 'rounded'
+local width = 80
 
-local function on_attach(_, bufnr)
-  local diag_opts = string.format('{ width = %d, border = %q, bufnr = %d }', BORDER_WIDTH, BORDER_STYLE, bufnr)
+augroup.set('lsp_user_events', {
+  {
+    'CursorHold', '*',
+    function()
+      vim.diagnostic.open_float(nil, {
+        width = width,
+        border = border,
+      })
+    end,
+  }
+})
 
+---@param client table
+---@param bufnr number
+local function on_attach(client, bufnr)
   -- Omnifunc backup
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- LSP Keymaps
-  buf_keymap.set(bufnr, 'n', '<Leader>la', '<Cmd>lua vim.lsp.buf.code_action()<CR>')
-  buf_keymap.set(bufnr, 'n', '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>')
-  buf_keymap.set(bufnr, 'n', '<Leader>lf', '<Cmd>lua vim.lsp.buf.formatting()<CR>')
-  buf_keymap.set(bufnr, 'n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-  buf_keymap.set(bufnr, 'n', '<Leader>lr', '<Cmd>lua vim.lsp.buf.rename()<CR>')
-  buf_keymap.set(bufnr, 'n', '<Leader>ls', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
-  buf_keymap.set(bufnr, 'n', '<Leader>le', '<Cmd>lua vim.diagnostic.setloclist()<CR>')
-  buf_keymap.set(
-    bufnr,
-    'n',
-    '<Leader>lw',
-    string.format('<Cmd>lua vim.diagnostic.open_float(%s)<CR>', diag_opts)
-  )
+  buf_keymap.set(bufnr, 'n', '<Leader>la', vim.lsp.buf.code_action)
+  buf_keymap.set(bufnr, 'n', '<Leader>ld', vim.lsp.buf.definition)
+  buf_keymap.set(bufnr, 'n', '<Leader>lf', vim.lsp.buf.formatting)
+  buf_keymap.set(bufnr, 'n', '<Leader>lh', vim.lsp.buf.hover)
+  buf_keymap.set(bufnr, 'n', '<Leader>lr', vim.lsp.buf.rename)
+  buf_keymap.set(bufnr, 'n', '<Leader>ls', vim.lsp.buf.signature_help)
+  buf_keymap.set(bufnr, 'n', '<Leader>le', vim.diagnostic.setloclist)
+  buf_keymap.set(bufnr, 'n', '<Leader>lw', function()
+    vim.diagnostic.open_float({
+      bufnr = bufnr,
+      width = width,
+      border = border,
+    })
+  end)
 end
 
 -- Add support to get snippets from lsp
@@ -48,13 +62,13 @@ vim.diagnostic.config({
 
 -- Add border to hover documentation
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-  width = BORDER_WIDTH,
-  border = BORDER_STYLE,
+  width = width,
+  border = border,
 })
 
 -- Add border to signature help
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = BORDER_STYLE,
+  border = border,
 })
 
 -- Check registered LSP info
