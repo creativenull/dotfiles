@@ -18,10 +18,11 @@ local validate_autocmd = function(event, pattern, command, opts)
   })
 end
 
----Create an auto command, for example:
+---Create an autocmd, take the same pattern as :autocmd except for the extra args
+---which are moved into the 4th arg in this function. Example:
 ---
----    autocmd.set('FileType', 'setlocal expandtab', { pattern = 'python' })
----    autocmd.set('BufEnter', 'setlocal colorcolumns', { pattern = '*.js' })
+---    autocmd.set('FileType', 'python', 'setlocal expandtab')
+---    autocmd.set('BufEnter', '*', 'setlocal colorcolumn=100', { buffer = 0 })
 ---
 ---@param event string|table
 ---@param pattern string|table
@@ -53,27 +54,29 @@ M.autocmd.set = function(event, pattern, command, opts)
 end
 
 ---@param name string
----@param autocmd_tbl table
+---@param cb function
 ---@return nil
-local validate_augroup = function(name, autocmd_tbl)
+local validate_augroup = function(name, cb)
   vim.validate({
     name = {name, 'string'},
-    autocmd_tbl = {autocmd_tbl, {'table'}},
+    cb = {cb, {'function'}},
   })
 end
 
----Create an auto group command that takes autocmd table, for example:
+---Create an auto group command that executes a function that calls autocmd.set()
 ---
----    augroup.set('custom_events', {
----        { 'ColorScheme', '*', 'highlight! Normal guibg=NONE' },
----        { 'FileType', 'javascript', 'setlocal colorcolumn=120' },
----    })
+---    augroup.set('custom_events', function(autocmd)
+---        autocmd.set('ColorScheme', '*', 'highlight! Normal guibg=NONE')
+---        autocmd.set('Filetype', 'javascript', function()
+---            vim.opt.colorcolumn = '120'
+---        end)
+---    end)
 ---
 ---@param name string
----@param autocmd_tbl table
+---@param cb function
 ---@return nil
-M.augroup.set = function(name, autocmd_tbl)
-  local ok, errmsg = pcall(validate_augroup, name, autocmd_tbl)
+M.augroup.set = function(name, cb)
+  local ok, errmsg = pcall(validate_augroup, name, cb)
   if not ok then
     err(string.format('Not a valid augroup: %s', errmsg))
     return
@@ -81,14 +84,15 @@ M.augroup.set = function(name, autocmd_tbl)
 
   local group = vim.api.nvim_create_augroup(name, { clear = true })
 
-  for _, autocmd in pairs(autocmd_tbl) do
-    local event = autocmd[1]
-    local pattern = autocmd[2]
-    local command = autocmd[3]
-    local opts = vim.tbl_extend('force', autocmd[4] or {}, { group = group })
-
-    M.autocmd.set(event, pattern, command, opts)
-  end
+  cb({
+    ---@param event string|table
+    ---@param pattern string|table
+    ---@param command string|function
+    ---@param autocmd_opts table
+    set = function(event, pattern, command, autocmd_opts)
+      M.autocmd.set(event, pattern, command, vim.tbl_extend('force', autocmd_opts or {}, { group = group }))
+    end
+  })
 end
 
 return M
