@@ -4,17 +4,14 @@ local buf_keymap = require('cnull.shared.keymap').buf_keymap
 local border = 'rounded'
 local width = 80
 
-augroup.set('lsp_user_events', {
-  {
-    'CursorHold', '*',
-    function()
-      vim.diagnostic.open_float(nil, {
-        width = width,
-        border = border,
-      })
-    end,
-  }
-})
+augroup.set('lsp_user_events', function(autocmd)
+  autocmd.set('CursorHold', '*', function()
+    vim.diagnostic.open_float(nil, {
+      width = width,
+      border = border,
+    })
+  end)
+end)
 
 ---@param client table
 ---@param bufnr number
