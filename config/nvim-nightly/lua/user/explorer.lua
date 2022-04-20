@@ -44,9 +44,6 @@ lir.setup({
   },
 })
 
-vim.api.nvim_set_keymap(
-  'n',
-  '<Leader>ff',
-  [[<Cmd>lua require('lir.float').toggle()<CR>]],
-  { noremap = true, silent = true }
-)
+vim.keymap.set('n', '<Leader>ff', function()
+  require('lir.float').toggle()
+end, { desc = 'Open File Explorer' })

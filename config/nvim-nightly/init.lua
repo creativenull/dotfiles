@@ -50,7 +50,7 @@ if vim.g.userspace then
   vim.cmd(string.format('set packpath+=~/.local/share/%s/site/after', vim.g.userspace))
 end
 
-if vim.fn.has('nvim') == 0 and vim.fn.has('nvim-0.7') == 0 then
+if vim.fn.has('nvim') == 0 and vim.fn.has('nvim-0.8') == 0 then
   vim.api.nvim_err_writeln('This config is only for neovim nightly version aka EXPERIMENTAL!')
 
   return
@@ -79,7 +79,7 @@ vim.g.python3_host_prog = vim.fn.exepath('python3')
 
 vim.g.mapleader = ' '
 
-local cnull = {
+local user = {
   transparent = true,
   config = {
     config_dir = '',
@@ -90,112 +90,61 @@ local cnull = {
 }
 
 if vim.g.userspace then
-  cnull.config.data_dir = string.format('%s/.local/share/%s', vim.env.HOME, vim.g.userspace)
-  cnull.config.cache_dir = string.format('%s/.cache/%s', vim.env.HOME, vim.g.userspace)
-  cnull.config.config_dir = string.format('%s/.config/%s', vim.env.HOME, vim.g.userspace)
+  user.config.data_dir = string.format('%s/.local/share/%s', vim.env.HOME, vim.g.userspace)
+  user.config.cache_dir = string.format('%s/.cache/%s', vim.env.HOME, vim.g.userspace)
+  user.config.config_dir = string.format('%s/.config/%s', vim.env.HOME, vim.g.userspace)
 else
-  cnull.config.data_dir = vim.fn.stdpath('data')
-  cnull.config.cache_dir = vim.fn.stdpath('config')
-  cnull.config.config_dir = vim.fn.stdpath('cache')
+  user.config.data_dir = vim.fn.stdpath('data')
+  user.config.cache_dir = vim.fn.stdpath('config')
+  user.config.config_dir = vim.fn.stdpath('cache')
 end
 
-cnull.config.undodir = string.format('%s/undodir', cnull.config.cache_dir)
-
--- Custom vim functions
-local vim = vim
-
-vim.autocmd = {}
-vim.augroup = {}
-
----Create an autocmd event, scoped to an augroup
----@param event string|table
----@param pattern string|table
----@param command string|function
----@param opts table
----@return number
-vim.autocmd.set = function(group, event, pattern, command, opts)
-  opts = opts or { once = nil, nested = nil }
-
-  local autocmd_opts = {
-    once = opts.once and true or false,
-    nested = opts.nested and true or false,
-    group = group,
-    pattern = pattern,
-  }
-
-  if type(command) == 'string' then
-    autocmd_opts.command = command
-  elseif type(command) == 'function' then
-    autocmd_opts.callback = command
-  end
-
-  return vim.api.nvim_create_autocmd(event, autocmd_opts)
-end
-
----Delete an autocmd provided by an id from vim.autocmd.set
----@param id number
----@return nil
-vim.autocmd.del = function(id)
-  vim.api.nvim_del_autocmd(id)
-end
-
----Create an auto group command that takes
----a vim.autocmd.set values as a table
----@param name string
----@param autocmds table
----@return number
-vim.augroup.set = function(name, autocmds)
-  local aug = vim.api.nvim_create_augroup(name, { clear = true })
-  for _, v in pairs(autocmds) do
-    vim.autocmd.set(aug, v[1], v[2], v[3], v[4])
-  end
-
-  return aug
-end
-
----Delete augroup provided by an id from vim.augroup.set
----@param id number
----@return nil
-vim.augroup.del = function(id)
-  vim.api.nvim_del_augroup(id)
-end
+user.config.undodir = string.format('%s/undodir', user.config.cache_dir)
 
 -- =============================================================================
 -- = Events (AUG) =
 -- =============================================================================
 
-if cnull.transparent then
-  vim.augroup.set('transparent_user_events', {
-    { 'ColorScheme', '*', 'highlight! Normal guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! SignColumn guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! LineNr guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! CursorLineNr guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! EndOfBuffer guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! ColorColumn guibg=#444444' },
+if user.transparent then
+  local transparent_user_events = vim.api.nvim_create_augroup('transparent_user_events', { clear = true })
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = transparent_user_events,
+    callback = function()
+      vim.api.nvim_command('highlight! Normal guibg=NONE')
+      vim.api.nvim_command('highlight! SignColumn guibg=NONE')
+      vim.api.nvim_command('highlight! LineNr guibg=NONE')
+      vim.api.nvim_command('highlight! CursorLineNr guibg=NONE')
+      vim.api.nvim_command('highlight! EndOfBuffer guibg=NONE')
+      vim.api.nvim_command('highlight! ColorColumn guibg=#444444')
 
-    -- Transparent LSP Float Windows
-    { 'ColorScheme', '*', 'highlight! NormalFloat guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! ErrorFloat guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! WarningFloat guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! InfoFloat guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! HintFloat guibg=NONE' },
-    { 'ColorScheme', '*', 'highlight! FloatBorder guifg=#aaaaaa guibg=NONE' },
+      -- Transparent LSP Float Windows
+      vim.api.nvim_command('highlight! NormalFloat guibg=NONE')
+      vim.api.nvim_command('highlight! ErrorFloat guibg=NONE')
+      vim.api.nvim_command('highlight! WarningFloat guibg=NONE')
+      vim.api.nvim_command('highlight! InfoFloat guibg=NONE')
+      vim.api.nvim_command('highlight! HintFloat guibg=NONE')
+      vim.api.nvim_command('highlight! FloatBorder guifg=#aaaaaa guibg=NONE')
 
-    -- Transparent Comments
-    { 'ColorScheme', '*', 'highlight! Comment guifg=#888888 guibg=NONE' },
+      -- Transparent Comments
+      vim.api.nvim_command('highlight! Comment guifg=#888888 guibg=NONE')
+    end,
   })
 end
 
-vim.augroup.set('custom_user_events', {
-  { 'ColorScheme', '*', 'highlight! WinSeparator guibg=NONE' },
+local hl_user_events = vim.api.nvim_create_augroup('hl_user_events', { clear = true })
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = hl_user_events,
+  callback = function()
+    vim.api.nvim_command('highlight! WinSeparator guibg=NONE')
+  end,
 })
 
-local set_hlyank = function()
-  vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
-end
-
-vim.augroup.set('highlightyank_user_events', {
-  { 'TextYankPost', '*', set_hlyank },
+local yank_user_events = vim.api.nvim_create_augroup('yank_user_events', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = yank_user_events,
+  callback = function()
+    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+  end,
 })
 
 -- Default Filetype Options
@@ -212,56 +161,56 @@ local function indent_size(size, use_spaces)
   end
 end
 
-vim.augroup.set('filetype_user_events', {
-  -- Use 4 space indents for the following filetypes
-  {
-    'FileType',
-    { 'php', 'blade', 'html' },
-    function()
-      indent_size(4, true)
-    end,
-  },
+local filetype_user_events = vim.api.nvim_create_augroup('filetype_user_events', { clear = true })
 
-  -- Use 2 space indents for the following filetypes
-  {
-    'FileType',
-    {
-      'vim',
-      'lua',
-      'scss',
-      'sass',
-      'css',
-      'javascript',
-      'javascriptreact',
-      'typescript',
-      'typescriptreact',
-      'json',
-      'jsonc',
-      'vue',
-    },
-    function()
-      indent_size(2, true)
-    end,
-  },
+-- Use 4 space indents for the following filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  group = filetype_user_events,
+  pattern = { 'php', 'blade', 'html' },
+  callback = function()
+    indent_size(4, true)
+  end,
+})
 
-  -- Enable spell check, 4 space indents in markdown files
-  {
-    'FileType',
-    'markdown',
-    function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      vim.bo[bufnr].spell = true
-      indent_size(4, true)
-    end,
+-- Use 2 space indents for the following filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  group = filetype_user_events,
+  pattern = {
+    'vim',
+    'lua',
+    'scss',
+    'sass',
+    'css',
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+    'json',
+    'jsonc',
+    'vue',
   },
+  callback = function()
+    indent_size(2, true)
+  end,
+})
+
+-- Enable spell check, 2 space indents in markdown files
+vim.api.nvim_create_autocmd('FileType', {
+  group = filetype_user_events,
+  pattern = 'markdown',
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    vim.bo[bufnr].spell = true
+    indent_size(2, true)
+  end,
 })
 
 -- =============================================================================
 -- = Options (OPT) =
 -- =============================================================================
 
-if vim.fn.isdirectory(cnull.config.undodir) == 0 then
-  vim.cmd(string.format('silent !mkdir -p %s', cnull.config.undodir))
+if vim.fn.isdirectory(user.config.undodir) == 0 then
+  vim.cmd(string.format('silent !mkdir -p %s', user.config.undodir))
 end
 
 -- Completion
@@ -294,7 +243,7 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.updatetime = 250
 vim.opt.undofile = true
-vim.opt.undodir = cnull.config.undodir
+vim.opt.undodir = user.config.undodir
 vim.opt.undolevels = 10000
 vim.opt.history = 10000
 vim.opt.backspace = { 'indent', 'eol', 'start' }
@@ -314,71 +263,70 @@ vim.opt.number = true
 -- =============================================================================
 -- = Keybindings (KEY) =
 -- =============================================================================
-local keymap_opts = { noremap = true, silent = true }
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
-vim.keymap.set('', '<Up>', [[<Nop>]], keymap_opts)
-vim.keymap.set('', '<Down>', [[<Nop>]], keymap_opts)
-vim.keymap.set('', '<Left>', [[<Nop>]], keymap_opts)
-vim.keymap.set('', '<Right>', [[<Nop>]], keymap_opts)
-vim.keymap.set('i', '<Up>', [[<Nop>]], keymap_opts)
-vim.keymap.set('i', '<Down>', [[<Nop>]], keymap_opts)
-vim.keymap.set('i', '<Left>', [[<Nop>]], keymap_opts)
-vim.keymap.set('i', '<Right>', [[<Nop>]], keymap_opts)
+vim.keymap.set('', '<Up>', '')
+vim.keymap.set('', '<Down>', '')
+vim.keymap.set('', '<Left>', '')
+vim.keymap.set('', '<Right>', '')
+vim.keymap.set('i', '<Up>', '')
+vim.keymap.set('i', '<Down>', '')
+vim.keymap.set('i', '<Left>', '')
+vim.keymap.set('i', '<Right>', '')
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
-vim.keymap.set('n', '<Up>', '<Cmd>resize +2<CR>', keymap_opts)
-vim.keymap.set('n', '<Down>', '<Cmd>resize -2<CR>', keymap_opts)
-vim.keymap.set('n', '<Left>', '<Cmd>vertical resize -2<CR>', keymap_opts)
-vim.keymap.set('n', '<Right>', '<Cmd>vertical resize +2<CR>', keymap_opts)
+vim.keymap.set('n', '<Up>', '<Cmd>resize +2<CR>')
+vim.keymap.set('n', '<Down>', '<Cmd>resize -2<CR>')
+vim.keymap.set('n', '<Left>', '<Cmd>vertical resize -2<CR>')
+vim.keymap.set('n', '<Right>', '<Cmd>vertical resize +2<CR>')
 
 -- Map Esc, to perform quick switching between Normal and Insert mode
-vim.keymap.set('i', 'jk', '<Esc>', keymap_opts)
+vim.keymap.set('i', 'jk', '<Esc>')
 
 -- Map escape from terminal input to Normal mode
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], keymap_opts)
-vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]], keymap_opts)
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
+vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 
 -- Disable highlights
-vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>')
 
 -- List all buffers
-vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>')
 
-vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>', keymap_opts)
-vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>', keymap_opts)
+vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>')
+vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>')
 
-vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>', keymap_opts)
-vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>', keymap_opts)
+vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>')
+vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>')
 
 -- Close the current buffer, and more?
-vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>')
 -- Close all buffer, except current
-vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>')
 
 -- Move a line of text Alt+[j/k]
-vim.keymap.set('n', '<M-j>', [[mz:m+<CR>`z]], keymap_opts)
-vim.keymap.set('n', '<M-k>', [[mz:m-2<CR>`z]], keymap_opts)
-vim.keymap.set('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]], keymap_opts)
-vim.keymap.set('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]], keymap_opts)
+vim.keymap.set('n', '<M-j>', [[mz:m+<CR>`z]])
+vim.keymap.set('n', '<M-k>', [[mz:m-2<CR>`z]])
+vim.keymap.set('v', '<M-j>', [[:m'>+<CR>`<my`>mzgv`yo`z]])
+vim.keymap.set('v', '<M-k>', [[:m'<-2<CR>`>my`<mzgv`yo`z]])
 
 -- Edit vimrc
-vim.keymap.set('n', '<Leader>ve', '<Cmd>edit $MYVIMRC<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>ve', '<Cmd>edit $MYVIMRC<CR>')
 
 -- Source the vimrc to reflect changes
-vim.keymap.set('n', '<Leader>vs', '<Cmd>ConfigReload<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>vs', '<Cmd>ConfigReload<CR>')
 
 -- Reload file
-vim.keymap.set('n', '<Leader>r', '<Cmd>edit!<CR>', keymap_opts)
+vim.keymap.set('n', '<Leader>r', '<Cmd>edit!<CR>')
 
 -- Copy/Paste from clipboard
-vim.keymap.set('v', '<Leader>y', [["+y]], keymap_opts)
-vim.keymap.set('n', '<Leader>y', [["+y]], keymap_opts)
-vim.keymap.set('n', '<Leader>p', [["+p]], keymap_opts)
+vim.keymap.set('v', '<Leader>y', [["+y]])
+vim.keymap.set('n', '<Leader>y', [["+y]])
+vim.keymap.set('n', '<Leader>p', [["+p]])
 
 -- Disable Ex-mode
-vim.keymap.set('n', 'Q', [[<Nop>]], keymap_opts)
+vim.keymap.set('n', 'Q', '')
 
 -- =============================================================================
 -- = User Commands (CMD) =
@@ -450,35 +398,28 @@ vim.g.vsnip_filetypes = {
 vim.g.user_emmet_leader_key = '<C-q>'
 vim.g.user_emmet_install_global = 0
 
-vim.augroup.set('emmet_user_events', {
-  { 'FileType', 'html,blade,php,vue,javascriptreact,typescriptreact', 'EmmetInstall' },
+local emmet_user_events = vim.api.nvim_create_augroup('emmet_user_events', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  group = emmet_user_events,
+  pattern = { 'html', 'blade', 'php', 'vue', 'javascriptreact', 'typescriptreact' },
+  command = 'EmmetInstall',
 })
 
 -- indentLine Config
 -- ---
 vim.g.indentLine_char = '│'
 
--- projectlocal-vim Config
--- ---
-vim.g.projectlocal = {
-  showMessage = true,
-  projectConfig = '.vim/init.lua',
-  debug = false,
-}
-
 -- vim-json Config
 -- ---
 vim.g.vim_json_syntax_conceal = 0
 vim.g.vim_json_conceal = 0
 
--- moonfly Config
--- ---
-vim.g.moonflyNormalFloat = 1
-
 -- lir.nvim Config
 -- ---
-vim.augroup.set('lir_user_events', {
-  { 'ColorScheme', '*', 'highlight! default link CursorLine Visual' },
+local lir_user_events = vim.api.nvim_create_augroup('lir_user_events', { clear = true })
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = lir_user_events,
+  command = 'highlight! default link CursorLine Visual',
 })
 
 -- =============================================================================
@@ -552,27 +493,19 @@ local plugins = {
 
 local pluginmanager = {
   git = 'https://github.com/savq/paq-nvim.git',
-  install_dir = string.format('%s/site/pack/paq/opt/paq-nvim', cnull.config.data_dir),
+  install_dir = string.format('%s/site/pack/paq/opt/paq-nvim', user.config.data_dir),
   is_firsttime = false,
 
   -- Options to pass to the plugin manager
   init_opts = {
-    path = string.format('%s/site/pack/paq/', cnull.config.data_dir),
+    path = string.format('%s/site/pack/paq/', user.config.data_dir),
   },
 }
 
 -- Install plugin manager if not installed, only for new machine
 -- or first time load
 if vim.fn.isdirectory(pluginmanager.install_dir) == 0 then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--depth',
-    '1',
-    pluginmanager.git,
-    pluginmanager.install_dir,
-  })
-
+  vim.fn.system({ 'git', 'clone', '--depth', '1', pluginmanager.git, pluginmanager.install_dir })
   pluginmanager.is_firsttime = true
 end
 
@@ -601,11 +534,11 @@ pcall(comment_config)
 
 -- nvim-lspconfig Config
 -- ---
-pcall(require, 'cnull.lsp')
+pcall(require, 'user.lsp')
 
 -- autocompletion Config
 -- ---
-pcall(require, 'cnull.autocompletion')
+pcall(require, 'user.autocompletion')
 
 -- vim.keymap.set(
 --   'i',
@@ -658,59 +591,65 @@ end
 pcall(todocomments_config)
 
 -- telescope.nvim Config
-pcall(require, 'cnull.finder')
+pcall(require, 'user.finder')
 
-vim.keymap.set('n', '<C-p>', [[<Cmd>lua TelescopeFindFiles()<CR>]], keymap_opts)
-vim.keymap.set('n', '<C-t>', [[<Cmd>lua TelescopeLiveGrep()<CR>]], keymap_opts)
-vim.keymap.set('n', '<Leader>vf', [[<Cmd>lua TelescopeFindConfigFiles()<CR>]], keymap_opts)
-
-if cnull.transparent then
-  vim.augroup.set('telescope_user_events', {
-    { 'ColorScheme', '*', 'highlight! TelescopeBorder guifg=#aaaaaa' },
+if user.transparent then
+  local telescope_user_events = vim.api.nvim_create_augroup('telescope_user_events', { clear = true })
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = telescope_user_events,
+    command = 'highlight! TelescopeBorder guifg=#aaaaaa',
   })
 end
 
 -- nvim-treesitter Config
-pcall(require, 'cnull.treesitter')
+pcall(require, 'user.treesitter')
 
 -- nvim-biscuits Config
 -- ---
-pcall(require, 'cnull.biscuits')
+pcall(require, 'user.biscuits')
 
-vim.keymap.set('n', '<Leader>it', [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]], keymap_opts)
+vim.keymap.set('n', '<Leader>it', [[<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>]])
 
 -- lualine.nvim Config
 -- ---
-pcall(require, 'cnull.statusline')
+pcall(require, 'user.statusline')
 
 -- indent-blankline.nvim Config
 -- ---
-if cnull.transparent then
-  vim.augroup.set('indent_blankline_user_events', {
-    { 'ColorScheme', '*', 'highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE' },
+local indent_blankline_user_events = vim.api.nvim_create_augroup('indent_blankline_user_events', { clear = true })
+
+if user.transparent then
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = indent_blankline_user_events,
+    command = 'highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE',
   })
 else
-  vim.augroup.set('indent_blankline_user_events', {
-    { 'ColorScheme', '*', 'highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE' },
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = indent_blankline_user_events,
+    command = 'highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE',
   })
 end
 
-pcall(require, 'cnull.indent_blankline')
+pcall(require, 'user.indent_blankline')
 
 -- bufferline.lua Config
 -- ---
-pcall(require, 'cnull.bufferline')
+pcall(require, 'user.bufferline')
 
 -- lir.nvim Config
 -- ---
-pcall(require, 'cnull.explorer')
+pcall(require, 'user.explorer')
 
 -- colorizer.lua Config
 -- ---
-pcall(require, 'cnull.colorizer')
+pcall(require, 'user.colorizer')
 
 -- =============================================================================
 -- = UI/Theme =
 -- =============================================================================
+
+-- moonfly Config
+-- ---
+vim.g.moonflyNormalFloat = 1
 
 pcall(vim.cmd, 'colorscheme base16-horizon-terminal-dark')

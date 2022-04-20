@@ -10,18 +10,18 @@ telescope.setup({
   },
 })
 
-function _G.TelescopeFindFiles()
+local function find_files()
   telescope_builtin.find_files({
     find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' },
     previewer = false,
   })
 end
 
-function _G.TelescopeLiveGrep()
+local function live_grep()
   telescope_builtin.live_grep({})
 end
 
-function _G.TelescopeFindConfigFiles()
+local function find_config_files()
   local configdir
   if vim.g.userspace ~= nil then
     configdir = vim.fn.expand('$HOME/.config/' .. vim.g.userspace)
@@ -34,3 +34,7 @@ function _G.TelescopeFindConfigFiles()
     previewer = false,
   })
 end
+
+vim.keymap.set('n', '<C-p>', find_files, { desc = "Show Files with Telescope" })
+vim.keymap.set('n', '<C-t>', live_grep, { desc = "Grep code with Telescope" })
+vim.keymap.set('n', '<Leader>vf', find_config_files, { desc = "Find files in the config directory with Telescope" })

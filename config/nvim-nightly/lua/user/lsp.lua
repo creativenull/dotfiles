@@ -1,28 +1,33 @@
 local BORDER_STYLE = 'rounded'
 local BORDER_WIDTH = 80
 
-local function on_attach(_, buf)
+local function on_attach(_, bufnr)
   -- Set omnifunc in case there are not auto completion
-  vim.api.nvim_buf_set_option(buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- LSP keymaps to be used only when LS server is attached
-  vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, { buffer = buf })
-  vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { buffer = buf })
-  vim.keymap.set('n', '<Leader>lf', vim.lsp.buf.formatting, { buffer = buf })
-  vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { buffer = buf })
-  vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { buffer = buf })
-  vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { buffer = buf })
+  vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'LSP Code Action' })
+  vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { buffer = bufnr, desc = 'LSP Go-to Definition' })
+  vim.keymap.set('n', '<Leader>lf', vim.lsp.buf.formatting, { buffer = bufnr, desc = 'LSP Formatting' })
+  vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { buffer = bufnr, desc = 'LSP Hover Information' })
+  vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { buffer = bufnr, desc = 'LSP Rename Feature' })
+  vim.keymap.set(
+    'n',
+    '<Leader>le',
+    vim.diagnostic.setloclist,
+    { buffer = bufnr, desc = 'Diagnostics in Location List' }
+  )
 
   -- Show diagnostic float window, customized
   local function show_diagnostics()
     vim.diagnostic.open_float({
-      bufnr = buf,
+      bufnr = bufnr,
       width = BORDER_WIDTH,
       border = BORDER_STYLE,
     })
   end
 
-  vim.keymap.set('n', '<Leader>lw', show_diagnostics, { buffer = buf })
+  vim.keymap.set('n', '<Leader>lw', show_diagnostics, { buffer = bufnr, desc = 'Show Diagnostic in Float Window' })
 end
 
 -- Initial LSP Settings
