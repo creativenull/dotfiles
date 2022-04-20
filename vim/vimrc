@@ -409,7 +409,7 @@ function! PackagerInit() abort
   call packager#add('posva/vim-vue')
   " }}}
 
-  " UI Jetpackins {{{
+  " UI {{{
   call packager#add('Yggdroot/indentLine')
   call packager#add('machakann/vim-highlightedyank')
   call packager#add('itchyny/lightline.vim')
