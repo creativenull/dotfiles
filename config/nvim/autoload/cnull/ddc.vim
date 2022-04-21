@@ -6,7 +6,8 @@ function! cnull#ddc#Setup() abort
   let s:sourceOptions['_'] = #{
     \ matchers: ['matcher_fuzzy'],
     \ sorters: ['sorter_fuzzy'],
-    \ converters: ['converter_fuzzy']
+    \ converters: ['converter_fuzzy'],
+    \ minKeywordLength: 2,
   \ }
   let s:sourceOptions['nvim-lsp'] = #{
     \ mark: 'LS',
@@ -58,6 +59,7 @@ function! cnull#ddc#Setup() abort
   \ }
 
   call ddc#custom#patch_global(#{
+    \ autoCompleteDelay: 100,
     \ completionMenu: s:completionMenu,
     \ sources: s:sources,
     \ sourceOptions: s:sourceOptions,
@@ -67,14 +69,22 @@ function! cnull#ddc#Setup() abort
   " Markdown FileType completion sources
   call ddc#custom#patch_filetype('markdown', #{ sources: ['around', 'buffer'] })
 
-  " Complete vsnip snippet if it's possible
-  inoremap <expr> <C-y> pumvisible() ? (vsnip#expandable() ? "\<Plug>(vsnip-expand)" : "\<C-y>") : "\<C-y>"
-
-  " Manual trigger
+  inoremap <expr> <C-y> cnull#ddc#confirm_completion("\<C-y>")
   inoremap <expr> <C-Space> ddc#map#manual_complete()
 
   augroup ddc_user_events
     autocmd!
     autocmd VimEnter * call popup_preview#enable() | call ddc#enable()
   augroup END
+endfunction
+
+" Accept completion with snippet support
+function! cnull#ddc#confirm_completion(default_key) abort
+  if vsnip#expandable()
+    return "\<Plug>(vsnip-expand)"
+  elseif ddc#map#can_complete()
+    return ddc#map#extend()
+  endif
+
+  return a:default_key
 endfunction
