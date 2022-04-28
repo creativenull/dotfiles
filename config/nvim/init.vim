@@ -138,6 +138,11 @@ augroup filetype_user_events
   autocmd FileType vue                         call cnull#utils#IndentSize(2, v:true)
 augroup END
 
+augroup quickfix_user_events
+  autocmd!
+  autocmd FileType qf nnoremap <CR> <CR>:cclose<CR>
+augroup END
+
 " =============================================================================
 " = Options (OPT) =
 " =============================================================================
