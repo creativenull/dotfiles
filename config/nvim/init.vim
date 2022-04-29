@@ -397,7 +397,6 @@ endif
 call plug#begin(s:plugin.plugins_dir)
 
 " Deps
-Plug 'Shougo/context_filetype.vim'
 Plug 'vim-denops/denops.vim'
 Plug 'lambdalisue/nerdfont.vim'
 
@@ -407,6 +406,7 @@ Plug 'godlygeek/tabular', { 'commit': '339091ac4dd1f17e225fe7d57b48aff55f99b23a'
 Plug 'tpope/vim-surround', { 'tag': 'v2.2' }
 Plug 'tpope/vim-abolish', { 'tag': 'v1.1' }
 Plug 'tpope/vim-repeat', { 'commit': '24afe922e6a05891756ecf331f39a1f6743d3d5a' }
+Plug 'Shougo/context_filetype.vim', { 'commit': '28768168261bca161c3f2599e0ed63c96aab6dea' }
 Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
 Plug 'editorconfig/editorconfig-vim', { 'commit': 'a8e3e66deefb6122f476c27cee505aaae93f7109' }
 Plug 'mattn/emmet-vim', { 'commit': 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' }
@@ -414,14 +414,14 @@ Plug 'creativenull/projectlocal-vim', { 'tag': 'v0.4.3' }
 
 " File Explorer + Addons
 Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/fern.vim', { 'tag': 'v1.46.0' }
+Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1a3719f226edc27e7241da7cda4bc4d4c7db889c' }
 
 " Linters + Formatters
 Plug 'dense-analysis/ale'
 
 " Builtin LSP Configs
-Plug 'neovim/nvim-lspconfig'
+Plug 'neovim/nvim-lspconfig', { 'tag': 'v0.1.3' }
 Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 
 " AutoCompletion + Sources
