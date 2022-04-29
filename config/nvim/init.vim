@@ -160,7 +160,6 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " Search
-set ignorecase
 set showmatch
 set smartcase
 set path=**
