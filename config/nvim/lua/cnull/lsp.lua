@@ -10,7 +10,7 @@ augroup.set('lsp_user_events', function(autocmd)
       width = width,
       border = border,
     })
-  end)
+  end, { desc = 'Show LSP Line Diagnostic' })
 end)
 
 ---@param client table
@@ -20,20 +20,29 @@ local function on_attach(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- LSP Keymaps
-  buf_keymap.set(bufnr, 'n', '<Leader>la', vim.lsp.buf.code_action)
-  buf_keymap.set(bufnr, 'n', '<Leader>ld', vim.lsp.buf.definition)
-  buf_keymap.set(bufnr, 'n', '<Leader>lf', vim.lsp.buf.formatting)
-  buf_keymap.set(bufnr, 'n', '<Leader>lh', vim.lsp.buf.hover)
-  buf_keymap.set(bufnr, 'n', '<Leader>lr', vim.lsp.buf.rename)
-  buf_keymap.set(bufnr, 'n', '<Leader>ls', vim.lsp.buf.signature_help)
-  buf_keymap.set(bufnr, 'n', '<Leader>le', vim.diagnostic.setloclist)
+  buf_keymap.set(bufnr, 'n', '<Leader>la', vim.lsp.buf.code_action, { desc = 'LSP Code Actions' })
+  buf_keymap.set(bufnr, 'n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'LSP Go-to Definition' })
+  buf_keymap.set(bufnr, 'n', '<Leader>lh', vim.lsp.buf.hover, { desc = 'LSP Hover Information' })
+  buf_keymap.set(bufnr, 'n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'LSP Rename' })
+  buf_keymap.set(bufnr, 'n', '<Leader>ls', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help' })
+  buf_keymap.set(bufnr, 'n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics' })
   buf_keymap.set(bufnr, 'n', '<Leader>lw', function()
     vim.diagnostic.open_float({
       bufnr = bufnr,
       width = width,
       border = border,
     })
-  end)
+  end, { desc = 'Show LSP Line Diagnostic' })
+
+  -- LSP Formatting keymap only from the following
+  -- linter/formatter servers
+  local utility_servers = { 'diagnosticls', 'efm', 'null-ls' }
+
+  if vim.tbl_contains(utility_servers, client.name) then
+    buf_keymap.set(bufnr, 'n', '<Leader>lf', function()
+      client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), nil, bufnr)
+    end, { desc = 'LSP Formatting' })
+  end
 end
 
 -- Add support to get snippets from lsp
@@ -50,6 +59,8 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 -- Gloabally change diagnostic behavior
+-- turn them off so that ALE can handle diagnostics
+-- exclusively
 vim.diagnostic.config({
   underline = false,
   virtual_text = false,
@@ -58,15 +69,19 @@ vim.diagnostic.config({
 })
 
 -- Add border to hover documentation
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-  width = width,
-  border = border,
-})
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  {
+    width = width,
+    border = border,
+  }
+)
 
 -- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = border,
-})
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.signature_help,
+  { border = border }
+)
 
 -- Check registered LSP info
 keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
