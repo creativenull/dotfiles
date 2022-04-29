@@ -11,10 +11,10 @@ local M = {
 ---@return nil
 local validate_autocmd = function(event, pattern, command, opts)
   vim.validate({
-    event = {event, {'string', 'table'}},
-    pattern = {pattern, {'string', 'table'}},
-    command = {command, {'string', 'function'}},
-    opts = {opts, {'table'}},
+    event = { event, { 'string', 'table' } },
+    pattern = { pattern, { 'string', 'table' } },
+    command = { command, { 'string', 'function' } },
+    opts = { opts, { 'table' } },
   })
 end
 
@@ -33,8 +33,10 @@ M.autocmd.set = function(event, pattern, command, opts)
   opts = opts or { once = false, nested = false }
 
   local ok, errmsg = pcall(validate_autocmd, event, pattern, command, opts)
+
   if not ok then
     err(string.format('Not a valid autocmd: %s', errmsg))
+
     return
   end
 
@@ -58,8 +60,8 @@ end
 ---@return nil
 local validate_augroup = function(name, cb)
   vim.validate({
-    name = {name, 'string'},
-    cb = {cb, {'function'}},
+    name = { name, 'string' },
+    cb = { cb, { 'function' } },
   })
 end
 
@@ -77,8 +79,10 @@ end
 ---@return nil
 M.augroup.set = function(name, cb)
   local ok, errmsg = pcall(validate_augroup, name, cb)
+
   if not ok then
     err(string.format('Not a valid augroup: %s', errmsg))
+
     return
   end
 

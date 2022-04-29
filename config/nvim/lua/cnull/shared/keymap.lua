@@ -1,5 +1,5 @@
 local err = require('cnull.shared.handlers.err')
-local default_options = { silent = true, noremap = true }
+local DEFAULT_KEYMAP_OPTS = { silent = true, noremap = true }
 local M = {
   keymap = {},
   buf_keymap = {},
@@ -11,9 +11,9 @@ local M = {
 ---@param rhs string
 local function validate_keymap(mode, lhs, rhs)
   vim.validate({
-    mode = {mode, 'string'},
-    lhs = {lhs, 'string'},
-    rhs = {rhs, {'string', 'function'}}
+    mode = { mode, 'string' },
+    lhs = { lhs, 'string' },
+    rhs = { rhs, { 'string', 'function' } }
   })
 end
 
@@ -24,10 +24,10 @@ end
 ---@param rhs string
 local function validate_buf_keymap(bufnr, mode, lhs, rhs)
   vim.validate({
-    bufnr = {bufnr, 'number'},
-    mode = {mode, 'string'},
-    lhs = {lhs, 'string'},
-    rhs = {rhs, {'string', 'function'}}
+    bufnr = { bufnr, 'number' },
+    mode = { mode, 'string' },
+    lhs = { lhs, 'string' },
+    rhs = { rhs, { 'string', 'function' } }
   })
 end
 
@@ -41,14 +41,16 @@ end
 ---@param opts table
 M.keymap.set = function(mode, lhs, rhs, opts)
   if opts ~= nil then
-    opts = vim.tbl_extend('force', default_options, opts)
+    opts = vim.tbl_extend('force', DEFAULT_KEYMAP_OPTS, opts)
   else
-    opts = default_options
+    opts = DEFAULT_KEYMAP_OPTS
   end
 
   local ok, errmsg = pcall(validate_keymap, mode, lhs, rhs)
+
   if not ok then
     err(string.format('Not a valid keymap: %s', errmsg))
+
     return
   end
 
@@ -66,13 +68,14 @@ end
 ---@param opts table
 M.buf_keymap.set = function(bufnr, mode, lhs, rhs, opts)
   if opts ~= nil then
-    opts = vim.tbl_extend('force', default_options, opts)
+    opts = vim.tbl_extend('force', DEFAULT_KEYMAP_OPTS, opts)
     opts = vim.tbl_extend('force', opts, { buffer = bufnr })
   else
-    opts = default_options
+    opts = DEFAULT_KEYMAP_OPTS
   end
 
   local ok, errmsg = pcall(validate_buf_keymap, bufnr, mode, lhs, rhs)
+
   if not ok then
     err(string.format('Not a valid keymap: %s', errmsg))
     return
