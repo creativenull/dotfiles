@@ -18,7 +18,10 @@ function! cnull#lightline#Setup() abort
 
   let g:lightline.active = {}
   let g:lightline.active.left = [ ['filename'], ['gitbranch', 'readonly', 'modified'] ]
-  let g:lightline.active.right = [ ['ale_err', 'ale_warn', 'ale_status'], ['filetype', 'fileencoding'], ['lineinfo'] ]
+  let g:lightline.active.right = [
+    \ ['ale_err', 'ale_warn', 'ale_status', 'nvimlsp_status'],
+    \ ['filetype', 'fileencoding'], ['lineinfo']
+  \ ]
 
   let g:lightline.inactive = {}
   let g:lightline.inactive.left = [ ['filename'], ['gitbranch', 'modified'] ]
@@ -27,6 +30,7 @@ function! cnull#lightline#Setup() abort
   let g:lightline.component_function = {}
   let g:lightline.component_function.gitbranch = 'cnull#lightline#GitBranch'
   let g:lightline.component_function.ale_status = 'cnull#ale#StlStatus'
+  let g:lightline.component_function.nvimlsp_status = 'cnull#nvimlsp#LspStatus'
 
   let g:lightline.component_expand = {}
   let g:lightline.component_expand.ale_err = 'cnull#ale#StlErrComponent'
