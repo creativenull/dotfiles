@@ -374,8 +374,8 @@ function! s:ginPullOrigin() abort
 endfunction
 
 nnoremap <Leader>gs <Cmd>GinStatus<CR>
-nnoremap <Leader>gp <Cmd>call <SID>GinPushOrigin()<CR>
-nnoremap <Leader>gl <Cmd>call <SID>GinPullOrigin()<CR>
+nnoremap <Leader>gp <Cmd>call <SID>ginPushOrigin()<CR>
+nnoremap <Leader>gl <Cmd>call <SID>ginPullOrigin()<CR>
 nnoremap <Leader>gb <Cmd>GinBranch<CR>
 nnoremap <Leader>gc <Cmd>Gin commit<CR>
 
