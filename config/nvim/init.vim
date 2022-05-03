@@ -428,7 +428,7 @@ Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1a3719f226edc27e7241
 Plug 'dense-analysis/ale'
 
 " Builtin LSP Configs
-Plug 'neovim/nvim-lspconfig', { 'tag': 'v0.1.3' }
+Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 
 " AutoCompletion + Sources
