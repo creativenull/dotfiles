@@ -355,22 +355,27 @@ augroup fern_user_events
   autocmd ColorScheme * highlight! default link CursorLine Visual
 augroup END
 
-" gina.vim Config
+" gin.vim Config
 " ---
-nnoremap <Leader>gg <Cmd>Gina status -s<CR>
-nnoremap <Leader>gp <Cmd>Gina! push<CR>
-nnoremap <Leader>gl <Cmd>Gina! pull<CR>
-
-function! s:gina_keymaps() abort
-  nnoremap <buffer> <Leader>ga <Cmd>Gina add -A<CR>
-  nnoremap <buffer> <Leader>gc <Cmd>Gina commit<CR>
-  nnoremap <buffer> <Leader>gp <Cmd>Gina push<CR>
+" Push from git repo, notify user since this is async
+function! s:ginPushOrigin() abort
+  let l:branch = gitbranch#name()
+  let l:cmd = printf('Gin push origin %s', l:branch)
+  execute printf('echo "%s"', l:cmd)
+  execute l:cmd
 endfunction
 
-augroup gina_user_events
-  autocmd!
-  autocmd FileType gina-status call s:gina_keymaps()
-augroup END
+" Pull from git repo, notify user since this is async
+function! s:ginPullOrigin() abort
+  let l:branch = gitbranch#name()
+  let l:cmd = printf('Gin pull origin %s', l:branch)
+  execute printf('echo "%s"', l:cmd)
+  execute l:cmd
+endfunction
+
+nnoremap <Leader>gs <Cmd>GinStatus<CR>
+nnoremap <Leader>gp <Cmd>call <SID>GinPushOrigin()<CR>
+nnoremap <Leader>gl <Cmd>call <SID>GinPullOrigin()<CR>
 
 " vim-json Config
 " ---
