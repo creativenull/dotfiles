@@ -41,7 +41,7 @@ endfor
 " Windows specific settings
 if has('win32')
   if !executable('pwsh')
-    echoerr '[nvim] PowerShell Core >= v6 is required!'
+    echoerr '[nvim] PowerShell Core >= v6 is required on Windows!'
 
     finish
   endif
