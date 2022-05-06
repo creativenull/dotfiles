@@ -12,11 +12,11 @@ local function indent_size(size, use_spaces)
   end
 end
 
-local filetype = vim.api.nvim_create_augroup('filetype_user_events', { clear = true })
+local filetypeUserGroup = vim.api.nvim_create_augroup('filetypeUserGroup', { clear = true })
 
 -- Use 4 space indents for the following filetypes
 vim.api.nvim_create_autocmd('FileType', {
-  group = filetype,
+  group = filetypeUserGroup,
 
   pattern = { 'php', 'blade', 'html' },
 
@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Use 2 space indents for the following filetypes
 vim.api.nvim_create_autocmd('FileType', {
-  group = filetype,
+  group = filetypeUserGroup,
 
   pattern = {
     'vim',
@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Enable spell check, 2 space indents in markdown files
 vim.api.nvim_create_autocmd('FileType', {
-  group = filetype,
+  group = filetypeUserGroup,
 
   pattern = 'markdown',
 

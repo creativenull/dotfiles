@@ -1,8 +1,8 @@
-local lazy_load_gitsigns = vim.api.nvim_create_augroup('lazy_load_gitsigns_user_events', { clear = true })
+local lazyLoadGitsignsPluginGroup = vim.api.nvim_create_augroup('lazyLoadGitsignsPluginGroup', { clear = true })
 
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, {
   desc = 'Lazy load gitsigns',
-  group = lazy_load_gitsigns,
+  group = lazyLoadGitsignsPluginGroup,
   once = true,
 
   callback = function()

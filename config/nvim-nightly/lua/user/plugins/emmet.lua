@@ -1,13 +1,13 @@
-local loaded = false
-
 vim.g.user_emmet_leader_key = '<C-q>'
 vim.g.user_emmet_install_global = 0
 
-local emmet_user_events = vim.api.nvim_create_augroup('emmet_user_events', { clear = true })
+local loaded = false
+
+local lazyLoadEmmetPluginGroup = vim.api.nvim_create_augroup('lazyLoadEmmetPluginGroup', { clear = true })
 
 vim.api.nvim_create_autocmd('FileType', {
   desc = 'Enable emmet by filetype only',
-  group = emmet_user_events,
+  group = lazyLoadEmmetPluginGroup,
   pattern = { 'html', 'blade', 'php', 'vue', 'javascriptreact', 'typescriptreact' },
 
   callback = function()

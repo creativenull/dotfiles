@@ -1,8 +1,8 @@
 -- Highlight characters on yank
-local yank_user_events = vim.api.nvim_create_augroup('yank_user_events', { clear = true })
+local yankUserGroup = vim.api.nvim_create_augroup('yankUserGroup', { clear = true })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-  group = yank_user_events,
+  group = yankUserGroup,
 
   callback = function()
     vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
@@ -10,4 +10,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
   desc = 'Highlight words on yank',
 })
-

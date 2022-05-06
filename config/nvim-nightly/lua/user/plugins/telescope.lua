@@ -57,6 +57,8 @@ local function packload()
   if not loaded then
     vim.cmd('packadd telescope.nvim')
     setup()
+
+    loaded = true
   end
 end
 

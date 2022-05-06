@@ -60,10 +60,10 @@ vim.api.nvim_create_user_command('UserLirToggle', function()
 end, { desc = "Lazy load lir explorer" })
 
 -- Change the color of the cursor line inside lir explorer
-local lir_user_events = vim.api.nvim_create_augroup('lir_user_events', { clear = true })
+local lirUserGroup = vim.api.nvim_create_augroup('lirUserGroup', { clear = true })
 
 vim.api.nvim_create_autocmd('ColorScheme', {
-  group = lir_user_events,
+  group = lirUserGroup,
   command = 'highlight! default link CursorLine Visual',
 })
 

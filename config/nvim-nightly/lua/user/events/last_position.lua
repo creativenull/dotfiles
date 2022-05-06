@@ -1,8 +1,8 @@
 -- Move cursor to the last known position in the file
-local last_position_user_events = vim.api.nvim_create_augroup('last_position_user_events', { clear = true })
+local lastPositionUserGroup = vim.api.nvim_create_augroup('lastPositionUserGroup', { clear = true })
 
 vim.api.nvim_create_autocmd('BufReadPost', {
-  group = last_position_user_events,
+  group = lastPositionUserGroup,
 
   callback = function()
     local prev_line_pos = vim.fn.line([['"]])

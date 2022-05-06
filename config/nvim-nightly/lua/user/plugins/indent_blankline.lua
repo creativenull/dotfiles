@@ -9,14 +9,14 @@ local function setup()
   })
 end
 
-local lazy_load_indent_blankline = vim.api.nvim_create_augroup(
-  'lazy_load_indent_blankline_user_events',
+local lazyLoadIndentBlanklinePluginGroup = vim.api.nvim_create_augroup(
+  'lazyLoadIndentBlanklinePluginGroup',
   { clear = true }
 )
 
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead', 'BufNew' }, {
   desc = 'Lazy load indent_blankline',
-  group = lazy_load_indent_blankline,
+  group = lazyLoadIndentBlanklinePluginGroup,
   once = true,
 
   callback = function()
@@ -29,17 +29,17 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead', 'BufNew' }, {
   end,
 })
 
-local indent_blankline_group = vim.api.nvim_create_augroup('indent_blankline_user_events', { clear = true })
+local indentBlanklineUserGroup = vim.api.nvim_create_augroup('indentBlanklineUserGroup', { clear = true })
 
 if _G.User.transparent then
   vim.api.nvim_create_autocmd('ColorScheme', {
-    group = indent_blankline_group,
+    group = indentBlanklineUserGroup,
     command = 'highlight! IndentBlanklineHighlight guifg=#777777 guibg=NONE',
     desc = 'Change indent blankline color to be lighter in transparent mode',
   })
 else
   vim.api.nvim_create_autocmd('ColorScheme', {
-    group = indent_blankline_group,
+    group = indentBlanklineUserGroup,
     command = 'highlight! IndentBlanklineHighlight guifg=#444444 guibg=NONE',
     desc = 'Change indent blankline color to be darker',
   })

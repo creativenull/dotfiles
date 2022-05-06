@@ -1,8 +1,8 @@
-local lazy_load_autopairs = vim.api.nvim_create_augroup('lazy_load_autopairs_user_events', { clear = true })
+local lazyLoadAutopairsPluginGroup = vim.api.nvim_create_augroup('lazyLoadAutopairsPluginGroup', { clear = true })
 
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufRead' }, {
   desc = 'Lazy load autopairs',
-  group = lazy_load_autopairs,
+  group = lazyLoadAutopairsPluginGroup,
   once = true,
 
   callback = function()

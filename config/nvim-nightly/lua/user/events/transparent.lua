@@ -1,10 +1,10 @@
 -- Only adjust highlight colors when transparent is enabled by the user
 -- these are customs changes irrelevant to themes
 if _G.User.transparent then
-  local transparent_user_events = vim.api.nvim_create_augroup('transparent_user_events', { clear = true })
+  local transparentUserGroup = vim.api.nvim_create_augroup('transparentUserGroup', { clear = true })
 
   vim.api.nvim_create_autocmd('ColorScheme', {
-    group = transparent_user_events,
+    group = transparentUserGroup,
 
     callback = function()
       vim.api.nvim_command('highlight! Normal guibg=NONE')
