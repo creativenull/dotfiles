@@ -34,6 +34,7 @@ cmp.setup({
         buffer = '[B]',
         nvim_lua = '[Lua]',
         vsnip = '[S]',
+        path = '[FS]',
       },
     }),
   },

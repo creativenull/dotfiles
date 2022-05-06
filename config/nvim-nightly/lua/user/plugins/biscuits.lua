@@ -7,3 +7,5 @@ require('nvim-biscuits').setup({
     on_events = { 'InsertLeave', 'CursorHoldI' },
   },
 })
+
+vim.keymap.set('n', '<Leader>it', require('nvim-biscuits').toggle_biscuits, { desc = 'Toggle biscuits feature' })
