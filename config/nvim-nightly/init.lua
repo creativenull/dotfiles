@@ -230,7 +230,9 @@ end
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
 
-require('user.plugins')
+if not pluginManager.isFirstTime then
+  require('user.plugins')
+end
 
 -- =============================================================================
 -- = UI/Theme =
