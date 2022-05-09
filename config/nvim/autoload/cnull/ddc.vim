@@ -80,10 +80,12 @@ endfunction
 
 " Accept completion with snippet support
 function! cnull#ddc#confirm_completion(default_key) abort
-  if vsnip#expandable()
-    return "\<Plug>(vsnip-expand)"
-  elseif ddc#map#can_complete()
-    return ddc#map#extend()
+  if ddc#map#pum_visible()
+    if vsnip#expandable()
+      return "\<Plug>(vsnip-expand)"
+    elseif ddc#map#can_complete()
+      return ddc#map#extend()
+    endif
   endif
 
   return a:default_key
