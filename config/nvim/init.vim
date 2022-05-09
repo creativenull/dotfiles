@@ -21,8 +21,8 @@ let s:cnull.config.undodir = stdpath('cache') . '/undo'
 
 " Pre-checks
 " ---
-if !has('nvim') && !has('nvim-0.6')
-  echoerr 'This config requires nvim >= 0.6'
+if !has('nvim') && !has('nvim-0.7')
+  echoerr 'This config requires nvim >= 0.7'
 
   finish
 endif
