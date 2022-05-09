@@ -4,12 +4,10 @@ function! cnull#pum#Setup() abort
   if g:enable_custom_pum
     call pum#set_option('border', 'rounded')
 
-    inoremap <Tab> <Cmd>call pum#map#insert_relative(+1)<CR>
-    inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-    inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
-    inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
-    inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
-    inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
+    inoremap <expr> <C-n> pum#map#insert_relative(+1)
+    inoremap <expr> <C-p> pum#map#insert_relative(-1)
+    inoremap <expr> <C-y> pum#map#confirm()
+    inoremap <expr> <C-e> pum#map#cancel()
 
     augroup pum_user_events
       autocmd!
