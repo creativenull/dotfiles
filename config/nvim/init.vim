@@ -312,7 +312,7 @@ smap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 
 " vim-vue Config
 " ---
-let g:vue_pre_processors = []
+let g:vue_pre_processors = ['typescript']
 
 " emmet-vim Config
 " ---
@@ -375,7 +375,9 @@ endfunction
 
 nnoremap <Leader>gs <Cmd>GinStatus<CR>
 nnoremap <Leader>gp <Cmd>call <SID>ginPushOrigin()<CR>
+nnoremap <Leader>gpp <Cmd>call :Gin push origin 
 nnoremap <Leader>gl <Cmd>call <SID>ginPullOrigin()<CR>
+nnoremap <Leader>gll <Cmd>call :Gin pull origin 
 nnoremap <Leader>gb <Cmd>GinBranch<CR>
 nnoremap <Leader>gc <Cmd>Gin commit<CR>
 
