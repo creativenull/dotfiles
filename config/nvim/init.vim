@@ -129,13 +129,13 @@ augroup END
 augroup filetype_user_events
   autocmd!
   autocmd FileType javascript,javascriptreact  call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType json,jsonc                  call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType markdown                    call cnull#utils#IndentSize(4, v:true) | setlocal spell
-  autocmd FileType php,blade,html              call cnull#utils#IndentSize(4, v:true)
-  autocmd FileType scss,sass,css               call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType json,jsonc call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType markdown call cnull#utils#IndentSize(4, v:true) | setlocal spell
+  autocmd FileType php,blade,html call cnull#utils#IndentSize(4, v:true)
+  autocmd FileType scss,sass,css call cnull#utils#IndentSize(2, v:true)
   autocmd FileType typescript,typescriptreact  call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType vim,lua                     call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType vue                         call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType vim,lua call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType vue call cnull#utils#IndentSize(2, v:true)
 augroup END
 
 augroup quickfix_user_events
