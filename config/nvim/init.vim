@@ -506,6 +506,7 @@ call cnull#fzf#Setup()
 
 " pum.vim Config
 " ---
+" let g:enable_custom_pum = 1
 " call cnull#pum#Setup()
 
 " ddc.vim Config

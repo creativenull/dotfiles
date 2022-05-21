@@ -1,6 +1,4 @@
 function! cnull#pum#Setup() abort
-  let g:enable_custom_pum = v:false
-
   call pum#set_option('border', 'rounded')
 
   inoremap <expr> <C-n> pum#map#insert_relative(+1)
