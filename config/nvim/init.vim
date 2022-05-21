@@ -506,7 +506,7 @@ call cnull#fzf#Setup()
 
 " pum.vim Config
 " ---
-call cnull#pum#Setup()
+" call cnull#pum#Setup()
 
 " ddc.vim Config
 " ---
