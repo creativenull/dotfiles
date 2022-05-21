@@ -437,6 +437,7 @@ Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 Plug 'Shougo/ddc.vim'
 Plug 'Shougo/pum.vim'
 Plug 'matsui54/denops-popup-preview.vim'
+Plug 'matsui54/denops-signature_help'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-nvim-lsp'
 Plug 'Shougo/ddc-around'
