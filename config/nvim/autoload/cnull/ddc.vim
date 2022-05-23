@@ -1,27 +1,36 @@
 function! cnull#ddc#Setup() abort
-  let s:completionMenu = g:enable_custom_pum ? 'pum.vim' : 'native'
+  let s:usePumVim = get(g:, 'enable_custom_pum', 0)
+
   let s:sources = ['nvim-lsp', 'vsnip', 'around', 'buffer']
+
+  let s:completionMenu = 'native'
+  if s:usePumVim
+    let s:completionMenu = 'pum.vim'
+  endif
 
   let s:sourceOptions = {}
   let s:sourceOptions['_'] = #{
     \ matchers: ['matcher_fuzzy'],
     \ sorters: ['sorter_fuzzy'],
     \ converters: ['converter_fuzzy'],
-    \ minKeywordLength: 2,
   \ }
+
   let s:sourceOptions['nvim-lsp'] = #{
     \ mark: 'LS',
     \ forceCompletionPattern: '\.\w*|:\w*|->\w*',
     \ maxCandidates: 10,
   \ }
+
   let s:sourceOptions.vsnip = #{
     \ mark: 'S',
     \ maxCandidates: 5,
   \ }
+
   let s:sourceOptions.around = #{
     \ mark: 'A',
     \ maxCandidates: 3,
   \ }
+
   let s:sourceOptions.buffer = #{
     \ mark: 'B',
     \ maxCandidates: 3,
@@ -69,16 +78,18 @@ function! cnull#ddc#Setup() abort
   " Markdown FileType completion sources
   call ddc#custom#patch_filetype('markdown', #{ sources: ['around', 'buffer'] })
 
-  inoremap <expr> <C-y> cnull#ddc#confirm_completion("\<C-y>")
-  inoremap <expr> <C-Space> ddc#map#manual_complete()
+  if !s:usePumVim
+    inoremap <expr> <C-y> cnull#ddc#confirm_completion("\<C-y>")
+    inoremap <expr> <C-Space> ddc#map#manual_complete()
+  endif
 
   augroup ddc_user_events
     autocmd!
-    autocmd VimEnter * call popup_preview#enable() | call ddc#enable()
+    autocmd VimEnter *  call popup_preview#enable() | call signature_help#enable() | call ddc#enable()
   augroup END
 endfunction
 
-" Accept completion with snippet support
+" Accept completion from ddc.vim or from vsnip
 function! cnull#ddc#confirm_completion(default_key) abort
   if ddc#map#pum_visible()
     if vsnip#expandable()
