@@ -393,17 +393,18 @@ let g:javascript_plugin_jsdoc = 1
 " = Plugin Manager (PLUG) =
 " =============================================================================
 
-let s:plugin = {}
-let s:plugin.url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-let s:plugin.plug_filepath = stdpath('data') . '/site/autoload/plug.vim'
-let s:plugin.plugins_dir = stdpath('data') . '/plugged'
+let s:plugin = #{
+  \ plugUrl: 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim',
+  \ plugFilepath: printf('%s/site/autoload/plug.vim', stdpath('data')),
+  \ pluginsDirpath: printf('%s/plugged', stdpath('data')),
+\ }
 
-if !filereadable(s:plugin.plug_filepath)
-  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.plug_filepath, s:plugin.url)
+if !filereadable(s:plugin.plugFilepath)
+  execute printf('!curl -fLo %s --create-dirs %s', s:plugin.plugFilepath, s:plugin.plugUrl)
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin(s:plugin.plugins_dir)
+call plug#begin(s:plugin.pluginsDirpath)
 
 " Deps
 " ---
