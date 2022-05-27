@@ -406,10 +406,12 @@ endif
 call plug#begin(s:plugin.plugins_dir)
 
 " Deps
+" ---
 Plug 'vim-denops/denops.vim'
 Plug 'lambdalisue/nerdfont.vim'
 
 " Core
+" ---
 Plug 'cohama/lexima.vim', { 'commit': 'fbc05de53ca98b7f36a82f566db1df49864e58ef' }
 Plug 'godlygeek/tabular', { 'commit': '339091ac4dd1f17e225fe7d57b48aff55f99b23a' }
 Plug 'tpope/vim-surround', { 'tag': 'v2.2' }
@@ -422,18 +424,22 @@ Plug 'mattn/emmet-vim'
 Plug 'creativenull/projectlocal-vim', { 'tag': 'v0.4.3' }
 
 " File Explorer + Addons
+" ---
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lambdalisue/fern.vim', { 'tag': 'v1.46.0' }
 Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1a3719f226edc27e7241da7cda4bc4d4c7db889c' }
 
 " Linters + Formatters
+" ---
 Plug 'dense-analysis/ale'
 
 " Builtin LSP Configs
+" ---
 Plug 'neovim/nvim-lspconfig'
 Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 
 " AutoCompletion + Sources
+" ---
 Plug 'Shougo/ddc.vim'
 Plug 'Shougo/pum.vim'
 Plug 'matsui54/denops-popup-preview.vim'
@@ -445,45 +451,41 @@ Plug 'matsui54/ddc-buffer'
 Plug 'hrsh7th/vim-vsnip-integ'
 
 " Snippet Engine + Presets
+" ---
 Plug 'hrsh7th/vim-vsnip'
 Plug 'rafamadriz/friendly-snippets'
 
 " Fuzzy File/Code Finder
+" ---
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Git
+" ---
 Plug 'lambdalisue/gin.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
 
-" JS/TS
+" FileType Syntax
+" ---
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'heavenshell/vim-jsdoc', { 'do': 'make install' }
-
-" Vue
 Plug 'posva/vim-vue'
-
-" PHP
 Plug 'jwalton512/vim-blade'
-
-" JSON/JSONC
+Plug 'lumiliet/vim-twig'
 Plug 'elzr/vim-json'
 Plug 'kevinoid/vim-jsonc'
-
-" Vader
 Plug 'junegunn/vader.vim'
 
-" Twig templates
-Plug 'lumiliet/vim-twig'
-
-" UI Plugins
+" UI/Aesthetics
+" ---
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 
 " Colorschemes
+" ---
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'gruvbox-community/gruvbox'
