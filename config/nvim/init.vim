@@ -13,11 +13,11 @@
 
 " User Config
 " ---
-let s:cnull = {}
-let s:cnull.leaderkey = "\<Space>"
-let s:cnull.transparent = v:false
-let s:cnull.config = {}
-let s:cnull.config.undodir = stdpath('cache') . '/undo'
+let s:user = {}
+let s:user.leaderkey = "\<Space>"
+let s:user.transparent = v:false
+let s:user.config = {}
+let s:user.config.undodir = stdpath('cache') . '/undo'
 
 " Pre-checks
 " ---
@@ -64,7 +64,7 @@ if has('win32')
 endif
 
 " leader and providers settings
-let g:mapleader = s:cnull.leaderkey
+let g:mapleader = s:user.leaderkey
 let g:python3_host_prog = exepath('python3')
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
@@ -104,7 +104,7 @@ function! s:set_transparent_highlights() abort
   highlight HintFloat guibg=NONE
 endfunction
 
-if s:cnull.transparent
+if s:user.transparent
   augroup transparent_user_events
     autocmd!
     autocmd ColorScheme * call s:set_transparent_highlights()
@@ -128,14 +128,14 @@ augroup END
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType javascript,javascriptreact  call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType json,jsonc call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType markdown call cnull#utils#IndentSize(4, v:true) | setlocal spell
-  autocmd FileType php,blade,html call cnull#utils#IndentSize(4, v:true)
-  autocmd FileType scss,sass,css call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType typescript,typescriptreact  call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType vim,lua call cnull#utils#IndentSize(2, v:true)
-  autocmd FileType vue call cnull#utils#IndentSize(2, v:true)
+  autocmd FileType javascript,javascriptreact  call user#utils#IndentSize(2, v:true)
+  autocmd FileType json,jsonc call user#utils#IndentSize(2, v:true)
+  autocmd FileType markdown call user#utils#IndentSize(4, v:true) | setlocal spell
+  autocmd FileType php,blade,html call user#utils#IndentSize(4, v:true)
+  autocmd FileType scss,sass,css call user#utils#IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact  call user#utils#IndentSize(2, v:true)
+  autocmd FileType vim,lua call user#utils#IndentSize(2, v:true)
+  autocmd FileType vue call user#utils#IndentSize(2, v:true)
 augroup END
 
 augroup quickfix_user_events
@@ -147,11 +147,11 @@ augroup END
 " = Options (OPT) =
 " =============================================================================
 
-if !isdirectory(s:cnull.config.undodir)
+if !isdirectory(s:user.config.undodir)
   if has('win32')
-    execute printf('silent !mkdir -Recurse %s', s:cnull.config.undodir)
+    execute printf('silent !mkdir -Recurse %s', s:user.config.undodir)
   else
-    execute printf('silent !mkdir -p %s', s:cnull.config.undodir)
+    execute printf('silent !mkdir -p %s', s:user.config.undodir)
   endif
 endif
 
@@ -179,7 +179,7 @@ set softtabstop=4
 set wildignorecase
 
 " System
-let &undodir=s:cnull.config.undodir
+let &undodir=s:user.config.undodir
 set history=10000
 set nobackup
 set noswapfile
@@ -281,8 +281,8 @@ nnoremap <Leader>p "+p
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ToggleConcealLevel call cnull#utils#ToggleConcealLevel()
-command! ToggleCodeshot call cnull#utils#ToggleCodeshot()
+command! ToggleConcealLevel call user#utils#ToggleConcealLevel()
+command! ToggleCodeshot call user#utils#ToggleCodeshot()
 
 command! MyTodoPersonal edit ~/todofiles/personal/README.md
 command! MyTodoWork edit ~/todofiles/work/README.md
@@ -333,7 +333,7 @@ augroup END
 let g:indentLine_fileTypeExclude = ['help', 'fzf']
 let g:indentLine_char = '│'
 
-if s:cnull.transparent
+if s:user.transparent
   let g:indentLine_color_gui = '#333333'
 endif
 
@@ -501,28 +501,28 @@ call plug#end()
 
 " nvim-lspconfig Config
 " ---
-lua require('cnull.lsp')
+lua require('user.lsp')
 
 " fzf.vim Config
 " ---
-call cnull#fzf#Setup()
+call user#fzf#Setup()
 
 " pum.vim Config
 " ---
 " let g:enable_custom_pum = 1
-" call cnull#pum#Setup()
+" call user#pum#Setup()
 
 " ddc.vim Config
 " ---
-call cnull#ddc#Setup()
+call user#ddc#Setup()
 
 " ale Config
 " ---
-call cnull#ale#Setup()
+call user#ale#Setup()
 
 " lightline.vim Config
 " ---
-call cnull#lightline#Setup()
+call user#lightline#Setup()
 
 " =============================================================================
 " = Colorscheme =

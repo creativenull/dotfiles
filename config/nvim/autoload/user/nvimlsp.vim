@@ -1,3 +1,3 @@
-function! cnull#nvimlsp#LspStatus() abort
+function! user#nvimlsp#LspStatus() abort
   return luaeval('LspInfoStatusline()')
 endfunction

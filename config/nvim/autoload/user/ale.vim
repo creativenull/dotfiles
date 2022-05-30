@@ -1,4 +1,4 @@
-function! cnull#ale#Setup() abort
+function! user#ale#Setup() abort
   let g:ale_disable_lsp = 1
   let g:ale_completion_enabled = 0
   let g:ale_completion_autoimport = 1
@@ -18,7 +18,7 @@ function! cnull#ale#Setup() abort
   nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
 endfunction
 
-function! cnull#ale#StlErrComponent() abort
+function! user#ale#StlErrComponent() abort
   if exists('g:loaded_ale')
     let info = ale#statusline#Count(bufnr(''))
     let errors = info.error
@@ -30,7 +30,7 @@ function! cnull#ale#StlErrComponent() abort
   return ''
 endfunction
 
-function! cnull#ale#StlWarnComponent() abort
+function! user#ale#StlWarnComponent() abort
   if exists('g:loaded_ale')
     let info = ale#statusline#Count(bufnr(''))
     let warnings = info.warning
@@ -42,7 +42,7 @@ function! cnull#ale#StlWarnComponent() abort
   return ''
 endfunction
 
-function! cnull#ale#StlStatus()
+function! user#ale#StlStatus()
   if exists('g:loaded_ale')
     return 'ALE'
   endif

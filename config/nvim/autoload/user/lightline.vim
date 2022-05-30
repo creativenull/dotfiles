@@ -1,4 +1,4 @@
-function! cnull#lightline#Setup() abort
+function! user#lightline#Setup() abort
   let g:lightline = {}
   let g:lightline.colorscheme = 'tailwind_cnull'
 
@@ -28,13 +28,13 @@ function! cnull#lightline#Setup() abort
   let g:lightline.inactive.right = [ [], [], ['lineinfo'] ]
 
   let g:lightline.component_function = {}
-  let g:lightline.component_function.gitbranch = 'cnull#lightline#GitBranch'
-  let g:lightline.component_function.ale_status = 'cnull#ale#StlStatus'
-  let g:lightline.component_function.nvimlsp_status = 'cnull#nvimlsp#LspStatus'
+  let g:lightline.component_function.gitbranch = 'user#lightline#GitBranch'
+  let g:lightline.component_function.ale_status = 'user#ale#StlStatus'
+  let g:lightline.component_function.nvimlsp_status = 'user#nvimlsp#LspStatus'
 
   let g:lightline.component_expand = {}
-  let g:lightline.component_expand.ale_err = 'cnull#ale#StlErrComponent'
-  let g:lightline.component_expand.ale_warn = 'cnull#ale#StlWarnComponent'
+  let g:lightline.component_expand.ale_err = 'user#ale#StlErrComponent'
+  let g:lightline.component_expand.ale_warn = 'user#ale#StlWarnComponent'
   let g:lightline.component_expand.buffers = 'lightline#bufferline#buffers'
 
   let g:lightline.component_type = {}
@@ -54,6 +54,6 @@ function! cnull#lightline#Setup() abort
   let g:lightline#bufferline#enable_nerdfont = 1
 endfunction
 
-function! cnull#lightline#GitBranch() abort
+function! user#lightline#GitBranch() abort
   return printf(' %s', gitbranch#name())
 endfunction

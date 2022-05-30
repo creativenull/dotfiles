@@ -1,4 +1,4 @@
-function! cnull#ddc#Setup() abort
+function! user#ddc#Setup() abort
   let s:usePumVim = get(g:, 'enable_custom_pum', 0)
 
   let s:sources = ['nvim-lsp', 'vsnip', 'around', 'buffer']
@@ -79,7 +79,7 @@ function! cnull#ddc#Setup() abort
   call ddc#custom#patch_filetype('markdown', #{ sources: ['around', 'buffer'] })
 
   if !s:usePumVim
-    inoremap <expr> <C-y> cnull#ddc#confirm_completion("\<C-y>")
+    inoremap <expr> <C-y> user#ddc#confirm_completion("\<C-y>")
     inoremap <expr> <C-Space> ddc#map#manual_complete()
   endif
 
@@ -90,7 +90,7 @@ function! cnull#ddc#Setup() abort
 endfunction
 
 " Accept completion from ddc.vim or from vsnip
-function! cnull#ddc#confirm_completion(default_key) abort
+function! user#ddc#confirm_completion(default_key) abort
   if ddc#map#pum_visible()
     if vsnip#expandable()
       return "\<Plug>(vsnip-expand)"

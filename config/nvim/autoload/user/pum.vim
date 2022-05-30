@@ -1,4 +1,4 @@
-function! cnull#pum#Setup() abort
+function! user#pum#Setup() abort
   call pum#set_option('border', 'rounded')
 
   inoremap <expr> <C-n> pum#map#insert_relative(+1)

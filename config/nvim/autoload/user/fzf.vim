@@ -8,7 +8,7 @@ function! s:ft_setup() abort
   autocmd BufLeave <buffer> setlocal ruler
 endfunction
 
-function! cnull#fzf#Setup() abort
+function! user#fzf#Setup() abort
   let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
   let $FZF_DEFAULT_OPTS = '--reverse'
   let g:fzf_preview_window = []
