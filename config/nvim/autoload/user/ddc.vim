@@ -1,10 +1,10 @@
 function! user#ddc#Setup() abort
-  let s:usePumVim = get(g:, 'enable_custom_pum', 0)
+  let s:enableCustomPum = get(g:, 'enable_custom_pum', 0)
 
   let s:sources = ['nvim-lsp', 'vsnip', 'around', 'buffer']
 
   let s:completionMenu = 'native'
-  if s:usePumVim
+  if s:enableCustomPum
     let s:completionMenu = 'pum.vim'
   endif
 
@@ -78,7 +78,7 @@ function! user#ddc#Setup() abort
   " Markdown FileType completion sources
   call ddc#custom#patch_filetype('markdown', #{ sources: ['around', 'buffer'] })
 
-  if !s:usePumVim
+  if !s:enableCustomPum
     inoremap <expr> <C-y> user#ddc#confirm_completion("\<C-y>")
     inoremap <expr> <C-Space> ddc#map#manual_complete()
   endif

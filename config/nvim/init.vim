@@ -13,11 +13,11 @@
 
 " User Config
 " ---
-let s:user = {}
-let s:user.leaderkey = "\<Space>"
-let s:user.transparent = v:false
-let s:user.config = {}
-let s:user.config.undodir = stdpath('cache') . '/undo'
+let g:user = {}
+let g:user.leaderkey = "\<Space>"
+let g:user.transparent = v:false
+let g:user.config = {}
+let g:user.config.undodir = stdpath('cache') . '/undo'
 
 " Pre-checks
 " ---
@@ -64,7 +64,7 @@ if has('win32')
 endif
 
 " leader and providers settings
-let g:mapleader = s:user.leaderkey
+let g:mapleader = g:user.leaderkey
 let g:python3_host_prog = exepath('python3')
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
@@ -73,56 +73,6 @@ let g:loaded_perl_provider = 0
 " =============================================================================
 " = Events (AUG) =
 " =============================================================================
-
-function! s:set_transparent_highlights() abort
-  " Core highlights to make transparent
-  highlight Normal guibg=NONE
-  highlight SignColumn guibg=NONE
-  highlight LineNr guibg=NONE guifg=#888888
-  highlight CursorLineNr guibg=NONE
-  highlight EndOfBuffer guibg=NONE
-  highlight Visual guibg=#555555
-
-  " Sometimes comments are too dark, affects in tranparent mode
-  highlight Comment guifg=#888888
-
-  " Tabline
-  highlight TabLineFill guibg=NONE
-  highlight TabLine guibg=NONE
-
-  " Float Border
-  highlight NormalFloat guibg=NONE
-  highlight FloatBorder guibg=NONE guifg=#eeeeee
-
-  " Vertical Line
-  highlight ColorColumn guibg=#999999
-
-  " LSP Diagnostics
-  highlight ErrorFloat guibg=NONE
-  highlight WarningFloat guibg=NONE
-  highlight InfoFloat guibg=NONE
-  highlight HintFloat guibg=NONE
-endfunction
-
-if s:user.transparent
-  augroup transparent_user_events
-    autocmd!
-    autocmd ColorScheme * call s:set_transparent_highlights()
-  augroup END
-endif
-
-augroup customhl_user_events
-  autocmd!
-  " Don't want any bold or underlines on the tabline
-  autocmd ColorScheme * highlight Tabline gui=NONE
-  " Show different color in substitution mode aka `:substitute` / `:s`
-  autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103da5 guifg=#eeeeee
-augroup END
-
-augroup highlightyank_user_events
-  autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
-augroup END
 
 augroup filetype_user_events
   autocmd!
@@ -136,20 +86,15 @@ augroup filetype_user_events
   autocmd FileType vue call user#utils#IndentSize(2, v:true)
 augroup END
 
-augroup quickfix_user_events
-  autocmd!
-  autocmd FileType qf nnoremap <CR> <CR>:cclose<CR>
-augroup END
-
 " =============================================================================
 " = Options (OPT) =
 " =============================================================================
 
-if !isdirectory(s:user.config.undodir)
+if !isdirectory(g:user.config.undodir)
   if has('win32')
-    execute printf('silent !mkdir -Recurse %s', s:user.config.undodir)
+    execute printf('silent !mkdir -Recurse %s', g:user.config.undodir)
   else
-    execute printf('silent !mkdir -p %s', s:user.config.undodir)
+    execute printf('silent !mkdir -p %s', g:user.config.undodir)
   endif
 endif
 
@@ -177,7 +122,7 @@ set softtabstop=4
 set wildignorecase
 
 " System
-let &undodir=s:user.config.undodir
+let &undodir=g:user.config.undodir
 set history=10000
 set nobackup
 set noswapfile
@@ -331,7 +276,7 @@ augroup END
 let g:indentLine_fileTypeExclude = ['help', 'fzf']
 let g:indentLine_char = '│'
 
-if s:user.transparent
+if g:user.transparent
   let g:indentLine_color_gui = '#333333'
 endif
 
@@ -507,8 +452,8 @@ call user#fzf#Setup()
 
 " pum.vim Config
 " ---
-" let g:enable_custom_pum = 1
-" call user#pum#Setup()
+let g:enable_custom_pum = 1
+call user#pum#Setup()
 
 " ddc.vim Config
 " ---
