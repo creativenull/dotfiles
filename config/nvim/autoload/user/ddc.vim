@@ -85,8 +85,14 @@ function! user#ddc#Setup() abort
 
   augroup ddc_user_events
     autocmd!
-    autocmd VimEnter *  call popup_preview#enable() | call signature_help#enable() | call ddc#enable()
+    autocmd VimEnter *  call user#ddc#Enable()
   augroup END
+endfunction
+
+function! user#ddc#Enable() abort
+  call popup_preview#enable()
+  call signature_help#enable()
+  call ddc#enable()
 endfunction
 
 " Accept completion from ddc.vim or from vsnip
