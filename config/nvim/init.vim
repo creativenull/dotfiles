@@ -265,7 +265,7 @@ let g:user_emmet_install_global = 0
 
 augroup emmet_user_events
   autocmd!
-  autocmd FileType html,vue EmmetInstall
+  autocmd FileType html,vue,astro EmmetInstall
   autocmd FileType javascript,javascriptreact,typescript,typescriptreact EmmetInstall
   autocmd FileType php,blade EmmetInstall
   autocmd FileType twig,html.twig,htmldjango.twig,xml.twig EmmetInstall
@@ -421,6 +421,7 @@ Plug 'lumiliet/vim-twig'
 Plug 'elzr/vim-json'
 Plug 'kevinoid/vim-jsonc'
 Plug 'junegunn/vader.vim'
+Plug 'rajasegar/vim-astro'
 
 " UI/Aesthetics
 " ---
