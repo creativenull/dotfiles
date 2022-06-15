@@ -385,8 +385,6 @@ Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' }
 " AutoCompletion + Sources
 " ---
 Plug 'Shougo/ddc.vim'
-Plug 'Shougo/pum.vim'
-Plug 'matsui54/denops-popup-preview.vim'
 Plug 'matsui54/denops-signature_help'
 Plug 'tani/ddc-fuzzy'
 Plug 'Shougo/ddc-nvim-lsp'
@@ -453,8 +451,8 @@ call user#fzf#Setup()
 
 " pum.vim Config
 " ---
-let g:enable_custom_pum = 1
-call user#pum#Setup()
+" let g:enable_custom_pum = 1
+" call user#pum#Setup()
 
 " ddc.vim Config
 " ---

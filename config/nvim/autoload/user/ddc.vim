@@ -1,12 +1,5 @@
 function! user#ddc#Setup() abort
-  let s:enableCustomPum = get(g:, 'enable_custom_pum', 0)
-
   let s:sources = ['nvim-lsp', 'vsnip', 'around', 'buffer']
-
-  let s:completionMenu = 'native'
-  if s:enableCustomPum
-    let s:completionMenu = 'pum.vim'
-  endif
 
   let s:sourceOptions = {}
   let s:sourceOptions['_'] = #{
@@ -16,23 +9,23 @@ function! user#ddc#Setup() abort
   \ }
 
   let s:sourceOptions['nvim-lsp'] = #{
-    \ mark: 'LS',
+    \ mark: 'Language',
     \ forceCompletionPattern: '\.\w*|:\w*|->\w*',
     \ maxCandidates: 10,
   \ }
 
   let s:sourceOptions.vsnip = #{
-    \ mark: 'S',
+    \ mark: 'Snippet',
     \ maxCandidates: 5,
   \ }
 
   let s:sourceOptions.around = #{
-    \ mark: 'A',
+    \ mark: 'Local',
     \ maxCandidates: 3,
   \ }
 
   let s:sourceOptions.buffer = #{
-    \ mark: 'B',
+    \ mark: 'Buffer',
     \ maxCandidates: 3,
   \ }
 
@@ -41,35 +34,37 @@ function! user#ddc#Setup() abort
     \ kindLabels: #{
       \ Class: 'ﴯ Class',
       \ Color: ' Color',
-      \ Constant: ' Cons',
+      \ Constant: ' Constant',
       \ Constructor: ' New',
       \ Enum: ' Enum',
       \ EnumMember: ' Enum',
       \ Event: ' Event',
       \ Field: 'ﰠ Field',
       \ File: ' File',
-      \ Folder: ' Dir',
-      \ Function: ' Fun',
-      \ Interface: ' Int',
+      \ Folder: ' Directory',
+      \ Function: ' Function',
+      \ Interface: ' Interface',
       \ Keyword: ' Key',
       \ Method: ' Method',
-      \ Module: ' Mod',
-      \ Operator: ' Op',
-      \ Property: 'ﰠ Prop',
-      \ Reference: ' Ref',
-      \ Snippet: ' Snip',
+      \ Module: ' Module',
+      \ Operator: ' Operator',
+      \ Property: 'ﰠ Property',
+      \ Reference: ' Reference',
+      \ Snippet: ' Snippet',
       \ Struct: 'פּ Struct',
       \ Text: ' Text',
       \ TypeParameter: '',
       \ Unit: '塞 Unit',
       \ Value: ' Value',
-      \ Variable: ' Var',
+      \ Variable: ' Variable',
     \ },
   \ }
 
   call ddc#custom#patch_global(#{
     \ autoCompleteDelay: 100,
-    \ completionMenu: s:completionMenu,
+    \ overwriteCompleteopt: v:false,
+    \ backspaceCompletion: v:true,
+    \ smartCase: v:true,
     \ sources: s:sources,
     \ sourceOptions: s:sourceOptions,
     \ sourceParams: s:sourceParams,
@@ -78,10 +73,8 @@ function! user#ddc#Setup() abort
   " Markdown FileType completion sources
   call ddc#custom#patch_filetype('markdown', #{ sources: ['around', 'buffer'] })
 
-  if !s:enableCustomPum
-    inoremap <expr> <C-y> user#ddc#confirm_completion("\<C-y>")
-    inoremap <expr> <C-Space> ddc#map#manual_complete()
-  endif
+  inoremap <expr> <C-y> user#ddc#confirm_completion("\<C-y>")
+  inoremap <expr> <C-Space> ddc#map#manual_complete()
 
   augroup ddc_user_events
     autocmd!
@@ -90,9 +83,8 @@ function! user#ddc#Setup() abort
 endfunction
 
 function! user#ddc#Enable() abort
-  call popup_preview#enable()
-  call signature_help#enable()
   call ddc#enable()
+  call signature_help#enable()
 endfunction
 
 " Accept completion from ddc.vim or from vsnip
