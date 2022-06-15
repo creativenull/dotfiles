@@ -476,6 +476,11 @@ let g:moonflyTransparent = 1
 let g:moonflyNormalFloat = 1
 let g:moonflyItalics = 0
 
+augroup moonfly_user_events
+  au!
+  autocmd ColorScheme * highlight! ColorColumn guibg=#777777
+augroup END
+
 " gruvbox Config
 " ---
 let g:gruvbox_bold = 0
