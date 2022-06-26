@@ -13,11 +13,13 @@
 
 " User Config
 " ---
-let g:user = {}
-let g:user.leaderkey = "\<Space>"
-let g:user.transparent = v:false
-let g:user.config = {}
-let g:user.config.undodir = stdpath('cache') . '/undo'
+let g:user = #{
+  \ leaderkey: "\<Space>",
+  \ transparent: v:false,
+  \ config: #{
+    \ undodir: stdpath('cache') . '/undo',
+  \ },
+\ }
 
 " Pre-checks
 " ---
@@ -242,9 +244,9 @@ cnoreabbrev Wq wq
 " vim-vsnip Config
 " ---
 let g:vsnip_extra_mapping = v:false
-let g:vsnip_filetypes = {
-  \ 'javascriptreact': ['javascript'],
-  \ 'typescriptreact': ['typescript'],
+let g:vsnip_filetypes = #{
+  \ javascriptreact: ['javascript'],
+  \ typescriptreact: ['typescript'],
 \ }
 
 imap <expr> <C-j> vsnip#jumpable(1)  ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"

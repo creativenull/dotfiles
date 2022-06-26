@@ -1,46 +1,38 @@
 function! user#lightline#Setup() abort
-  let g:lightline = {}
-  let g:lightline.colorscheme = 'tailwind_cnull'
-
-  let g:lightline.enable = {}
-  let g:lightline.enable.statusline = 1
-  let g:lightline.enable.tabline = 1
-
-  let g:lightline.tabline = {}
-  let g:lightline.tabline.left = [ ['buffers'] ]
-  let g:lightline.tabline.right = [ ['filetype'] ]
-
-  let g:lightline.component = { 'lineinfo': ' %l/%L  %c' }
-
-  let g:lightline.separator = {}
-  let g:lightline.separator.left = ''
-  let g:lightline.separator.right = ''
-
-  let g:lightline.active = {}
-  let g:lightline.active.left = [ ['filename'], ['gitbranch', 'readonly', 'modified'] ]
-  let g:lightline.active.right = [
-    \ ['ale_err', 'ale_warn', 'ale_status', 'nvimlsp_status'],
-    \ ['filetype', 'fileencoding'], ['lineinfo']
-  \ ]
-
-  let g:lightline.inactive = {}
-  let g:lightline.inactive.left = [ ['filename'], ['gitbranch', 'modified'] ]
-  let g:lightline.inactive.right = [ [], [], ['lineinfo'] ]
-
-  let g:lightline.component_function = {}
-  let g:lightline.component_function.gitbranch = 'user#lightline#GitBranch'
-  let g:lightline.component_function.ale_status = 'user#ale#StlStatus'
-  let g:lightline.component_function.nvimlsp_status = 'user#nvimlsp#LspStatus'
-
-  let g:lightline.component_expand = {}
-  let g:lightline.component_expand.ale_err = 'user#ale#StlErrComponent'
-  let g:lightline.component_expand.ale_warn = 'user#ale#StlWarnComponent'
-  let g:lightline.component_expand.buffers = 'lightline#bufferline#buffers'
-
-  let g:lightline.component_type = {}
-  let g:lightline.component_type.ale_err = 'error'
-  let g:lightline.component_type.ale_warn = 'warning'
-  let g:lightline.component_type.buffers = 'tabsel'
+  let g:lightline = #{
+    \ colorscheme: 'tailwind_cnull',
+    \ enable: #{ statusline: 1, tabline: 1 },
+    \ separator: #{ left: '', right: '' },
+    \ tabline: #{ left: [ ['buffers'] ], right: [ ['filetype'] ] },
+    \ active: #{
+      \ left: [ ['filename'], ['gitbranch', 'readonly', 'modified'] ],
+      \ right: [
+        \ ['ale_err', 'ale_warn', 'ale_status', 'nvimlsp_status'],
+        \ ['filetype', 'fileencoding'],
+        \ ['lineinfo']
+      \ ],
+    \ },
+    \ inactive: #{
+      \ left: [ ['filename'], [] ],
+      \ right: [ [], [], ['lineinfo'] ],
+    \ },
+    \ component: #{ lineinfo: ' %l/%L  %c' },
+    \ component_function: #{
+      \ gitbranch: 'user#lightline#GitBranch',
+      \ ale_status: 'user#ale#StlStatus',
+      \ nvimlsp_status: 'user#nvimlsp#LspStatus',
+    \ },
+    \ component_expand: #{
+      \ ale_err: 'user#ale#StlErrComponent',
+      \ ale_warn: 'user#ale#StlWarnComponent',
+      \ buffers: 'lightline#bufferline#buffers',
+    \ },
+    \ component_type: #{
+      \ ale_err: 'error',
+      \ ale_warn: 'warning',
+      \ buffers: 'tabsel',
+    \ },
+  \ }
 
   augroup ale_lightline_user_events
     autocmd!
