@@ -110,7 +110,6 @@ set path=**
 " Editor
 set colorcolumn=120
 set expandtab
-set iskeyword+=-
 set lazyredraw
 set nofoldenable
 set nospell
