@@ -76,14 +76,14 @@ let g:loaded_perl_provider = 0
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType javascript,javascriptreact  call user#utils#IndentSize(2, v:true)
+  autocmd FileType javascript,javascriptreact call user#utils#IndentSize(2, v:true)
   autocmd FileType json,jsonc call user#utils#IndentSize(2, v:true)
-  autocmd FileType markdown call user#utils#IndentSize(4, v:true) | setlocal spell
-  autocmd FileType php,blade,html call user#utils#IndentSize(4, v:true)
+  autocmd FileType markdown call user#utils#IndentSize(4, v:true) | setlocal spell iskeyword+=-
+  autocmd FileType php,blade,html call user#utils#IndentSize(4, v:true) | setlocal iskeyword+=-
   autocmd FileType scss,sass,css call user#utils#IndentSize(2, v:true)
-  autocmd FileType typescript,typescriptreact  call user#utils#IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact call user#utils#IndentSize(2, v:true)
   autocmd FileType vim,lua call user#utils#IndentSize(2, v:true)
-  autocmd FileType vue call user#utils#IndentSize(2, v:true)
+  autocmd FileType vue call user#utils#IndentSize(2, v:true) | setlocal iskeyword+=-
 augroup END
 
 " =============================================================================
