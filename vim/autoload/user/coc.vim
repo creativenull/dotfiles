@@ -10,7 +10,7 @@ def TabCompletion(defaultKey: string): string
   endif
 
   return defaultKey
-endfunction
+enddef
 
 export def Setup(): void
   nmap <Leader>ld <Plug>(coc-definition)
