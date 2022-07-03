@@ -132,15 +132,25 @@ endfunction
 
 augroup transparent_user_events
   autocmd!
-
   autocmd ColorScheme * call s:set_transparent_highlights()
 augroup END
 
 augroup customhl_user_events
   autocmd!
-
   " Different color when confirming selected substitution with `:s`
   autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103DA5 guifg=#eeeeee
+augroup END
+
+augroup custom_indent_user_events
+  autocmd!
+  autocmd FileType javascript,javascriptreact call user#utils#IndentSize(2, v:true)
+  autocmd FileType json,jsonc call user#utils#IndentSize(2, v:true)
+  autocmd FileType markdown call user#utils#IndentSize(4, v:true) | setlocal spell iskeyword+=-
+  autocmd FileType php,blade,html call user#utils#IndentSize(4, v:true) | setlocal iskeyword+=-
+  autocmd FileType scss,sass,css call user#utils#IndentSize(2, v:true)
+  autocmd FileType typescript,typescriptreact call user#utils#IndentSize(2, v:true)
+  autocmd FileType vim,lua call user#utils#IndentSize(2, v:true)
+  autocmd FileType vue call user#utils#IndentSize(2, v:true) | setlocal iskeyword+=-
 augroup END
 
 " =============================================================================
@@ -160,6 +170,7 @@ endif
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 set wildmenu
+set wildoptions=pum,fuzzy
 
 " Search
 set hlsearch
@@ -304,25 +315,10 @@ nnoremap Q @@
 " = Plugin Manager (PLUG) =
 " =============================================================================
 
-" Bootstrap - ensure vim-packager is installed
-let s:plugin = #{
-  \ name: 'vim-packager',
-  \ base_dir: expand('~/.vim/pack/packager'),
-  \ git: 'https://github.com/kristijanhusak/vim-packager.git',
-  \ path: expand('~/.vim/pack/packager/opt/vim-packager'),
-\ }
+call user#packager#Bootstrap()
 
-if !isdirectory(s:plugin.path)
-  echo printf('Downloading %s plugin manager...', s:plugin.name)
-
-  let s:gitcmd = ['git', 'clone', s:plugin.git, s:plugin.path]
-  call system(s:gitcmd->join(' '))
-endif
-
-" List all plugins
 function! PackagerInit() abort
   packadd vim-packager
-
   call packager#init()
 
   " Self-care
@@ -357,14 +353,10 @@ function! PackagerInit() abort
   call packager#add('junegunn/fzf.vim')
   " }}}
 
-  " Snippets {{{
-  call packager#add('hrsh7th/vim-vsnip')
-  call packager#add('rafamadriz/friendly-snippets')
-  " }}}
-
   " Git {{{
   call packager#add('airblade/vim-gitgutter')
-  call packager#add('tpope/vim-fugitive')
+  call packager#add('itchyny/vim-gitbranch')
+  call packager#add('lambdalisue/gin.vim')
   " }}}
 
   " Linter and formatter configurations {{{
@@ -391,11 +383,10 @@ function! PackagerInit() abort
 
   " Autocompletion {{{
   call packager#add('Shougo/ddc.vim')
-  call packager#add('matsui54/denops-popup-preview.vim')
   call packager#add('tani/ddc-fuzzy')
   call packager#add('shun/ddc-vim-lsp')
   call packager#add('Shougo/ddc-around')
-  call packager#add('hrsh7th/vim-vsnip-integ')
+  call packager#add('matsui54/ddc-buffer')
   " }}}
 
   " File syntax plugins {{{
@@ -433,6 +424,10 @@ command! -bar PackagerStatus call PackagerInit() | call packager#status()
 " =============================================================================
 " = Plugin Configurations (POST) =
 " =============================================================================
+
+" gin.vim Config
+" ---
+call user#gin#Setup()
 
 " Emmet Config
 " ---

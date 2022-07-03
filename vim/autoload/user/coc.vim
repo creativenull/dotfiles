@@ -1,4 +1,6 @@
-function! s:tabCompletion(defaultKey) abort
+vim9script
+
+def TabCompletion(defaultKey: string): string
   if pumvisible()
     if exists('g:did_coc_loaded')
       return coc#_select_confirm()
@@ -7,10 +9,10 @@ function! s:tabCompletion(defaultKey) abort
     endif
   endif
 
-  return a:defaultKey
+  return defaultKey
 endfunction
 
-function! user#coc#Setup() abort
+export def Setup(): void
   nmap <Leader>ld <Plug>(coc-definition)
   nmap <Leader>lf <Plug>(coc-format)
   nmap <Leader>lr <Plug>(coc-rename)
@@ -22,9 +24,9 @@ function! user#coc#Setup() abort
 
   inoremap <expr> <C-@> coc#refresh()
 
-  " Insert item from menu when pressing <Tab>, like vscode
-  inoremap <silent> <expr> <Tab> <SID>tabCompletion("\<Tab>")
+  # Insert item from menu when pressing <Tab>, like vscode
+  inoremap <silent> <expr> <Tab> <SID>TabCompletion("\<Tab>")
 
-  " Insert item from menu when pressing <CR>, like vscode
-  inoremap <silent> <expr> <CR> <SID>tabCompletion("\<CR>")
-endfunction
+  # Insert item from menu when pressing <CR>, like vscode
+  inoremap <silent> <expr> <CR> <SID>TabCompletion("\<CR>")
+enddef

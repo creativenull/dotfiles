@@ -7,18 +7,6 @@ def RegisterServers(): void
 
   augroup user_lsp_events
 
-  # Vim
-  const vimls = 'vim-language-server'
-  g:user#lsp_opts.vim = {
-    name: vimls,
-    cmd: [vimls, '--stdio'],
-    allowlist: ['vim'],
-  }
-
-  if executable(vimls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.vim)
-  endif
-
   # JS/TS
   const tsserver = 'typescript-language-server'
   g:user#lsp_opts.tsserver = {
