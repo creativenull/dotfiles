@@ -1,58 +1,72 @@
 vim9script
 
+# JS/TS
+const tsserver = 'typescript-language-server'
+const tsserverOpts = {
+  name: tsserver,
+  cmd: [tsserver, '--stdio'],
+  allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+}
+
+const denols = 'deno'
+const denolsOpts = {
+  name: denols,
+  cmd: [denols, 'lsp'],
+  workspace_config: { deno: { enable: true, lint: true } },
+  allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+}
+
+# Vue
+const vuels = 'vue-language-server'
+const vuelsOpts = {
+  name: vuels,
+  cmd: [vuels, '--stdio'],
+  allowlist: ['vue'],
+}
+
+# Go
+const gopls = 'gopls'
+const goplsOpts = {
+  name: gopls,
+  cmd: [gopls],
+  allowlist: ['go'],
+}
+
+# PHP
+const phpls = 'intelephense'
+const phplsOpts = {
+  name: phpls,
+  cmd: [phpls, '--stdio'],
+  allowlist: ['php'],
+}
+
 # Register LSP servers assuming they are installed in the system
 # within a custom user autocmd group.
 def RegisterServers(): void
-  g:user#lsp_opts = {}
-
   augroup user_lsp_events
 
   # JS/TS
-  const tsserver = 'typescript-language-server'
-  g:user#lsp_opts.tsserver = {
-    name: tsserver,
-    cmd: [tsserver, '--stdio'],
-    allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
-  }
+  if executable(tsserver) && filereadable(getcwd() .. '/package.json')
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(tsserverOpts->copy())
+  endif
 
-  if executable(tsserver)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.tsserver)
+  if executable(denols) && filereadable(getcwd() .. '/deno.json') || filereadable(getcwd() .. '/deno.jsonc')
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(denolsOpts->copy())
   endif
 
   # Vue
-  const vuels = 'vue-language-server'
-  g:user#lsp_opts.vue = {
-    name: vuels,
-    cmd: [vuels, '--stdio'],
-    allowlist: ['vue'],
-  }
-
   if executable(vuels)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.vue)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(vuelsOpts->copy())
   endif
 
   # Go
-  const gopls = 'gopls'
-  g:user#lsp_opts.go = {
-    name: gopls,
-    cmd: [gopls],
-    allowlist: ['go'],
-  }
-
   if executable(gopls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.go)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(goplsOpts->copy())
   endif
 
   # PHP
-  const phpls = 'intelephense'
-  g:user#lsp_opts.php = {
-    name: phpls,
-    cmd: [phpls, '--stdio'],
-    allowlist: ['php'],
-  }
-
   if executable(phpls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(g:user#lsp_opts.php)
+    autocmd user_lsp_events User lsp_setup call lsp#register_server(phplsOpts->copy())
   endif
 enddef
 
