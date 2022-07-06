@@ -188,7 +188,7 @@ set lazyredraw
 set nofoldenable
 set nospell
 set nowrap
-set scrolloff=3
+set scrolloff=1
 set shiftwidth=4
 set smartindent
 set smarttab
