@@ -108,6 +108,7 @@ set shortmess+=c
 set showmatch
 set smartcase
 set path=**
+set wildignore=*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*
 
 " Editor
 set colorcolumn=120
