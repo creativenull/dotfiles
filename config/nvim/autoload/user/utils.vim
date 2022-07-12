@@ -10,7 +10,7 @@ endfunction
 
 " Toggle the view of the editor, for taking screenshots
 " or for copying code from the editor w/o using "+ register
-" when not accessible, eg from a remote ssh
+" when not accessible, eg from a remote ssh or WSL
 function! user#utils#ToggleCodeshot() abort
   if &number
     setlocal nonumber signcolumn=no
