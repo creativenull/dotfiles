@@ -34,8 +34,8 @@ export def IsWSL(): bool
     return false
   endif
 
-  const procFile = readfile(proc_version, '', 1)
-  return !procFile->filter((_, val) => val =~? 'microsoft')->empty()
+  const procFileResult = readfile(proc_version, '', 1)->filter((_, val) => val =~? 'microsoft')
+  return !procFileResult->empty()
 enddef
 
 # Indent rules given to a filetype, use spaces if needed
