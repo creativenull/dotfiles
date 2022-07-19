@@ -7,6 +7,7 @@ local root_pattern = require('lspconfig').util.root_pattern
 -- ALE Config
 vim.api.nvim_create_augroup('ALEUserEvents', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
+  group = 'ALEUserEvents',
   pattern = 'lua',
   callback = function()
     local buf = vim.api.nvim_get_current_buf()
