@@ -5,13 +5,15 @@ local lspconfig = require('lspconfig')
 local root_pattern = require('lspconfig').util.root_pattern
 
 -- ALE Config
-vim.cmd [[
-  augroup ale_user_events
-    autocmd!
-    autocmd FileType lua let b:ale_linters = ['luacheck']
-    autocmd FileType lua let b:ale_fixers = ['stylua']
-  augroup END
-]]
+vim.api.nvim_create_augroup('ALEUserEvents', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'lua',
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    vim.b[buf].ale_linters = { 'luacheck' }
+    vim.b[buf].ale_fixers = { 'stylua' }
+  end
+})
 
 -- Lua LSP
 local lua_rtp = vim.split(package.path, ';')
@@ -31,6 +33,3 @@ lspconfig.sumneko_lua.setup(projectlocal.get_config({
     },
   },
 }))
-
--- Vim LSP
-lspconfig.vimls.setup(projectlocal.get_config())
