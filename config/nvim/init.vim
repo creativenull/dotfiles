@@ -78,14 +78,14 @@ let g:loaded_perl_provider = 0
 
 augroup filetype_user_events
   autocmd!
-  autocmd FileType javascript,javascriptreact call user#utils#IndentSize(2, v:true)
-  autocmd FileType json,jsonc call user#utils#IndentSize(2, v:true)
-  autocmd FileType markdown call user#utils#IndentSize(4, v:true) | setlocal spell iskeyword+=-
-  autocmd FileType php,blade,html call user#utils#IndentSize(4, v:true) | setlocal iskeyword+=-
-  autocmd FileType scss,sass,css call user#utils#IndentSize(2, v:true)
-  autocmd FileType typescript,typescriptreact call user#utils#IndentSize(2, v:true)
-  autocmd FileType vim,lua call user#utils#IndentSize(2, v:true)
-  autocmd FileType vue call user#utils#IndentSize(2, v:true) | setlocal iskeyword+=-
+  autocmd FileType javascript,javascriptreact lua require('user.utils').IndentSize(2, true)
+  autocmd FileType json,jsonc lua require('user.utils').IndentSize(2, true)
+  autocmd FileType markdown lua require('user.utils').IndentSize(4, true) | setlocal spell iskeyword+=-
+  autocmd FileType php,blade,html lua require('user.utils').IndentSize(4, true) | setlocal iskeyword+=-
+  autocmd FileType scss,sass,css lua require('user.utils').IndentSize(2, true)
+  autocmd FileType typescript,typescriptreact lua require('user.utils').IndentSize(2, true)
+  autocmd FileType vim,lua lua require('user.utils').IndentSize(2, true)
+  autocmd FileType vue lua require('user.utils').IndentSize(2, true) | setlocal iskeyword+=-
 augroup END
 
 " =============================================================================
@@ -226,8 +226,8 @@ nnoremap <Leader>p "+p
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
 
-command! ToggleConcealLevel call user#utils#ToggleConcealLevel()
-command! ToggleCodeshot call user#utils#ToggleCodeshot()
+command! ToggleConcealLevel lua require('user.utils').ToggleConcealLevel()
+command! ToggleCodeshot lua require('user.utils').ToggleCodeshot()
 
 command! MyTodoPersonal edit ~/todofiles/personal/README.md
 command! MyTodoWork edit ~/todofiles/work/README.md
@@ -449,24 +449,24 @@ lua require('user.lsp')
 
 " fzf.vim Config
 " ---
-call user#fzf#Setup()
+lua require('user.fzf').Setup()
 
 " pum.vim Config
 " ---
 " let g:enable_custom_pum = 1
-" call user#pum#Setup()
+" lua require('user.pum').Setup()
 
 " ddc.vim Config
 " ---
-call user#ddc#Setup()
+lua require('user.ddc').Setup()
 
 " ale Config
 " ---
-call user#ale#Setup()
+lua require('user.ale').Setup()
 
 " lightline.vim Config
 " ---
-call user#lightline#Setup()
+lua require('user.lightline').Setup()
 
 " =============================================================================
 " = Colorscheme =
