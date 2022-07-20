@@ -31,9 +31,9 @@ end
 function M.IndentSize(size, use_spaces)
   local buf = vim.api.nvim_get_current_buf()
 
-	vim.bo[buf].tabstop = size
-	vim.bo[buf].softtabstop = size
-	vim.bo[buf].shiftwidth = 0
+  vim.bo[buf].tabstop = size
+  vim.bo[buf].softtabstop = size
+  vim.bo[buf].shiftwidth = 0
 
   if vim.fn.empty(use_spaces) == 1 and use_spaces then
     vim.bo[buf].expandtab = true
