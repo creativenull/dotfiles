@@ -76,16 +76,16 @@ let g:loaded_perl_provider = 0
 " = Events (AUG) =
 " =============================================================================
 
-augroup filetype_user_events
+augroup UserFileTypeEvents
   autocmd!
   autocmd FileType javascript,javascriptreact lua require('user.utils').IndentSize(2, true)
   autocmd FileType json,jsonc lua require('user.utils').IndentSize(2, true)
-  autocmd FileType markdown lua require('user.utils').IndentSize(4, true) | setlocal spell iskeyword+=-
-  autocmd FileType php,blade,html lua require('user.utils').IndentSize(4, true) | setlocal iskeyword+=-
+  autocmd FileType markdown setlocal spell iskeyword+=- | lua require('user.utils').IndentSize(4, true)
+  autocmd FileType php,blade,html setlocal iskeyword+=- | lua require('user.utils').IndentSize(4, true)
   autocmd FileType scss,sass,css lua require('user.utils').IndentSize(2, true)
   autocmd FileType typescript,typescriptreact lua require('user.utils').IndentSize(2, true)
   autocmd FileType vim,lua lua require('user.utils').IndentSize(2, true)
-  autocmd FileType vue lua require('user.utils').IndentSize(2, true) | setlocal iskeyword+=-
+  autocmd FileType vue setlocal iskeyword+=- | lua require('user.utils').IndentSize(2, true)
 augroup END
 
 " =============================================================================
