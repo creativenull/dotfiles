@@ -265,7 +265,7 @@ let g:user_emmet_leader_key = '<C-q>'
 let g:user_emmet_mode = 'i'
 let g:user_emmet_install_global = 0
 
-augroup emmet_user_events
+augroup UserEmmetEvents
   autocmd!
   autocmd FileType html,vue,astro EmmetInstall
   autocmd FileType javascript,javascriptreact,typescript,typescriptreact EmmetInstall
@@ -294,7 +294,7 @@ function! g:FernKeymaps() abort
   nmap <buffer> D <Plug>(fern-action-remove)
 endfunction
 
-augroup fern_user_events
+augroup UserFernEvents
   autocmd!
   autocmd FileType fern call FernKeymaps()
   autocmd ColorScheme * highlight! default link CursorLine Visual
@@ -478,7 +478,7 @@ let g:moonflyTransparent = 1
 let g:moonflyNormalFloat = 1
 let g:moonflyItalics = 0
 
-augroup moonfly_user_events
+augroup UserMoonflyEvents
   au!
   autocmd ColorScheme * highlight! ColorColumn guibg=#777777
 augroup END
