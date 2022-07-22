@@ -22,7 +22,7 @@ function M.Setup()
     component_function = {
       gitbranch = 'user#lightline#GitBranch',
       ale_status = 'user#lightline#StlStatus',
-      nvimlsp_status = 'user#nvimlsp#LspStatus',
+      nvimlsp_status = 'user#lightline#LspStatus',
     },
     component_expand = {
       ale_err = 'user#lightline#StlErrComponent',

@@ -33,3 +33,7 @@ endfunction
 function! user#lightline#GitBranch() abort
   return printf(' %s', gitbranch#name())
 endfunction
+
+function! user#lightline#LspStatus() abort
+  return luaeval('LspInfoStatusline()')
+endfunction
