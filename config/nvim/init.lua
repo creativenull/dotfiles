@@ -395,109 +395,112 @@ vim.g.javascript_plugin_jsdoc = 1
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
 
-local plugin = {
-  plugUrl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim',
-  plugFilepath = string.format('%s/site/autoload/plug.vim', vim.fn.stdpath('data')),
-  pluginsDirpath = string.format('%s/plugged', vim.fn.stdpath('data')),
-}
+local function packagerSetup(packager)
+	packager.add('kristijanhusak/vim-packager', { type = 'opt' })
 
-if vim.fn.filereadable(plugin.plugFilepath) == 0 then
-  vim.cmd(string.format('!curl -fLo %s --create-dirs %s', plugin.plugFilepath, plugin.plugUrl))
-  vim.api.nvim_create_autocmd('VimEnter', {
-    pattern = '*',
-    command = 'PlugInstall --sync | source $MYVIMRC',
-  })
+	-- Deps
+	-- ---
+	packager.add('vim-denops/denops.vim')
+	packager.add('lambdalisue/nerdfont.vim')
+
+	-- Core
+	-- ---
+	packager.add('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
+	packager.add('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
+	packager.add('tpope/vim-surround', { tag = 'v2.2' })
+	packager.add('tpope/vim-abolish', { tag = 'v1.1' })
+	packager.add('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
+	packager.add('Shougo/context_filetype.vim')
+	packager.add('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
+	packager.add('editorconfig/editorconfig-vim')
+	packager.add('mattn/emmet-vim')
+	packager.add('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
+
+	-- File Explorer + Addons
+	-- ---
+	packager.add('antoinemadec/FixCursorHold.nvim')
+	packager.add('lambdalisue/fern.vim', { tag = 'v1.46.0' })
+	packager.add('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
+
+	-- Linters + Formatters
+	-- ---
+	packager.add('dense-analysis/ale')
+
+	-- Builtin LSP Configs
+	-- ---
+	packager.add('neovim/nvim-lspconfig')
+	packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
+
+	-- AutoCompletion + Sources
+	-- ---
+	packager.add('Shougo/ddc.vim')
+	packager.add('matsui54/denops-signature_help')
+	packager.add('tani/ddc-fuzzy')
+	packager.add('Shougo/ddc-nvim-lsp')
+	packager.add('Shougo/ddc-around')
+	packager.add('matsui54/ddc-buffer')
+	packager.add('hrsh7th/vim-vsnip-integ')
+
+	-- Snippet Engine + Presets
+	-- ---
+	packager.add('hrsh7th/vim-vsnip')
+	packager.add('rafamadriz/friendly-snippets')
+
+	-- Fuzzy File/Code Finder
+	-- ---
+	packager.add('junegunn/fzf')
+	packager.add('junegunn/fzf.vim')
+
+	-- Git
+	-- ---
+	packager.add('lambdalisue/gin.vim')
+	packager.add('itchyny/vim-gitbranch')
+	packager.add('airblade/vim-gitgutter')
+
+	-- FileType Syntax
+	-- ---
+	packager.add('pangloss/vim-javascript')
+	packager.add('MaxMEllon/vim-jsx-pretty')
+	packager.add('heavenshell/vim-jsdoc', { ['do'] = 'make install' })
+	packager.add('posva/vim-vue')
+	packager.add('jwalton512/vim-blade')
+	packager.add('lumiliet/vim-twig')
+	packager.add('elzr/vim-json')
+	packager.add('kevinoid/vim-jsonc')
+	packager.add('junegunn/vader.vim')
+	packager.add('rajasegar/vim-astro')
+
+	-- UI/Aesthetics
+	-- ---
+	packager.add('Yggdroot/indentLine')
+	packager.add('itchyny/lightline.vim')
+	packager.add('mengelbrecht/lightline-bufferline')
+
+	-- Colorschemes
+	-- ---
+	packager.add('bluz71/vim-nightfly-guicolors')
+	packager.add('bluz71/vim-moonfly-colors')
+	packager.add('gruvbox-community/gruvbox')
+	packager.add('fnune/base16-vim')
+	packager.add('rigellute/rigel')
 end
 
-vim.call('plug#begin', plugin.pluginsDirpath)
+local manager = {
+	gitUrl = 'https://github.com/kristijanhusak/vim-packager',
+	destPath = string.format('%s/site/pack/packager/opt/vim-packager', vim.fn.stdpath('data')),
+	config = {
+		dir = string.format('%s/site/pack/packager', vim.fn.stdpath('data'))
+	}
+}
 
--- Deps
--- ---
-vim.cmd([[ Plug 'vim-denops/denops.vim' ]])
-vim.cmd([[ Plug 'lambdalisue/nerdfont.vim' ]])
+if vim.fn.isdirectory(manager.destPath) == 0 then
+	print('Downloading plugin manager...')
+	vim.fn.system({ 'git', 'clone', manager.gitUrl, manager.destPath })
+	print('Completed')
+end
 
--- Core
--- ---
-vim.cmd([[ Plug 'cohama/lexima.vim', { 'commit': 'fbc05de53ca98b7f36a82f566db1df49864e58ef' } ]])
-vim.cmd([[ Plug 'godlygeek/tabular', { 'commit': '339091ac4dd1f17e225fe7d57b48aff55f99b23a' } ]])
-vim.cmd([[ Plug 'tpope/vim-surround', { 'tag': 'v2.2' } ]])
-vim.cmd([[ Plug 'tpope/vim-abolish', { 'tag': 'v1.1' } ]])
-vim.cmd([[ Plug 'tpope/vim-repeat', { 'commit': '24afe922e6a05891756ecf331f39a1f6743d3d5a' } ]])
-vim.cmd([[ Plug 'Shougo/context_filetype.vim' ]])
-vim.cmd([[ Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' } ]])
-vim.cmd([[ Plug 'editorconfig/editorconfig-vim' ]])
-vim.cmd([[ Plug 'mattn/emmet-vim' ]])
-vim.cmd([[ Plug 'creativenull/projectlocal-vim', { 'tag': 'v0.4.3' } ]])
-
--- File Explorer + Addons
--- ---
-vim.cmd([[ Plug 'antoinemadec/FixCursorHold.nvim' ]])
-vim.cmd([[ Plug 'lambdalisue/fern.vim', { 'tag': 'v1.46.0' } ]])
-vim.cmd([[ Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1a3719f226edc27e7241da7cda4bc4d4c7db889c' } ]])
-
--- Linters + Formatters
--- ---
-vim.cmd([[ Plug 'dense-analysis/ale' ]])
-
--- Builtin LSP Configs
--- ---
-vim.cmd([[ Plug 'neovim/nvim-lspconfig' ]])
-vim.cmd([[ Plug 'creativenull/nvim-ale-diagnostic', { 'branch': 'v2' } ]])
-
--- AutoCompletion + Sources
--- ---
-vim.cmd([[ Plug 'Shougo/ddc.vim' ]])
-vim.cmd([[ Plug 'matsui54/denops-signature_help' ]])
-vim.cmd([[ Plug 'tani/ddc-fuzzy' ]])
-vim.cmd([[ Plug 'Shougo/ddc-nvim-lsp' ]])
-vim.cmd([[ Plug 'Shougo/ddc-around' ]])
-vim.cmd([[ Plug 'matsui54/ddc-buffer' ]])
-vim.cmd([[ Plug 'hrsh7th/vim-vsnip-integ' ]])
-
--- Snippet Engine + Presets
--- ---
-vim.cmd([[ Plug 'hrsh7th/vim-vsnip' ]])
-vim.cmd([[ Plug 'rafamadriz/friendly-snippets' ]])
-
--- Fuzzy File/Code Finder
--- ---
-vim.cmd([[ Plug 'junegunn/fzf' ]])
-vim.cmd([[ Plug 'junegunn/fzf.vim' ]])
-
--- Git
--- ---
-vim.cmd([[ Plug 'lambdalisue/gin.vim' ]])
-vim.cmd([[ Plug 'itchyny/vim-gitbranch' ]])
-vim.cmd([[ Plug 'airblade/vim-gitgutter' ]])
-
--- FileType Syntax
--- ---
-vim.cmd([[ Plug 'pangloss/vim-javascript' ]])
-vim.cmd([[ Plug 'MaxMEllon/vim-jsx-pretty' ]])
-vim.cmd([[ Plug 'heavenshell/vim-jsdoc', { 'do': 'make install' } ]])
-vim.cmd([[ Plug 'posva/vim-vue' ]])
-vim.cmd([[ Plug 'jwalton512/vim-blade' ]])
-vim.cmd([[ Plug 'lumiliet/vim-twig' ]])
-vim.cmd([[ Plug 'elzr/vim-json' ]])
-vim.cmd([[ Plug 'kevinoid/vim-jsonc' ]])
-vim.cmd([[ Plug 'junegunn/vader.vim' ]])
-vim.cmd([[ Plug 'rajasegar/vim-astro' ]])
-
--- UI/Aesthetics
--- ---
-vim.cmd([[ Plug 'Yggdroot/indentLine' ]])
-vim.cmd([[ Plug 'itchyny/lightline.vim' ]])
-vim.cmd([[ Plug 'mengelbrecht/lightline-bufferline' ]])
-
--- Colorschemes
--- ---
-vim.cmd([[ Plug 'bluz71/vim-nightfly-guicolors' ]])
-vim.cmd([[ Plug 'bluz71/vim-moonfly-colors' ]])
-vim.cmd([[ Plug 'gruvbox-community/gruvbox' ]])
-vim.cmd([[ Plug 'fnune/base16-vim' ]])
-vim.cmd([[ Plug 'rigellute/rigel' ]])
-
-vim.call('plug#end')
+vim.cmd('packadd vim-packager')
+require('packager').setup(packagerSetup, manager.config)
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
