@@ -2,6 +2,8 @@ vim9script
 
 # Install vim-packager if not installed. For first time setup only.
 export def Bootstrap(): void
+  var isFirstTimeInstall = false
+
   const plugin = {
     name: 'vim-packager',
     base_dir: expand('~/.vim/pack/packager'),
@@ -14,5 +16,11 @@ export def Bootstrap(): void
 
     const gitcmd = ['git', 'clone', plugin.git, plugin.path]
     call system(gitcmd->join(' '))
+
+    isFirstTimeInstall = true
+  endif
+
+  if isFirstTimeInstall
+    execute 'PackagerInstall'
   endif
 enddef

@@ -314,8 +314,6 @@ nnoremap Q @@
 " = Plugin Manager (PLUG) =
 " =============================================================================
 
-call user#packager#Bootstrap()
-
 function! PackagerInit() abort
   packadd vim-packager
   call packager#init()
@@ -419,6 +417,8 @@ command! -nargs=* -bar PackagerInstall call PackagerInit() | call packager#insta
 command! -nargs=* -bar PackagerUpdate call PackagerInit() | call packager#update(<args>)
 command! -bar PackagerClean call PackagerInit() | call packager#clean()
 command! -bar PackagerStatus call PackagerInit() | call packager#status()
+
+call user#packager#Bootstrap()
 
 " =============================================================================
 " = Plugin Configurations (POST) =
