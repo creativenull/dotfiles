@@ -493,14 +493,20 @@ local manager = {
 	}
 }
 
+local isFirstTimeInstall = false
+
 if vim.fn.isdirectory(manager.destPath) == 0 then
 	print('Downloading plugin manager...')
 	vim.fn.system({ 'git', 'clone', manager.gitUrl, manager.destPath })
-	print('Completed')
+	isFirstTimeInstall = true
 end
 
 vim.cmd('packadd vim-packager')
 require('packager').setup(packagerSetup, manager.config)
+
+if isFirstTimeInstall then
+	vim.cmd('PackagerInstall')
+end
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
