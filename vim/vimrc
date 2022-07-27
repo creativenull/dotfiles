@@ -489,11 +489,13 @@ call user#ddc#Setup()
 " ---
 " call user#lsp#Setup()
 
-call void#lspclient#Setup({
+call void#lspclient#MakeLspClient({
   \ 'name': 'tsserver',
   \ 'cmd': ['typescript-language-server', '--stdio'],
   \ 'filetypes': ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'],
-  \ 'initOptions': { 'hostInfo': 'Vim 9' }
+  \ 'initOptions': {
+    \ 'hostInfo': 'Vim 9',
+  \ },
 \ })
 
 " call void#lspclient#Setup({
