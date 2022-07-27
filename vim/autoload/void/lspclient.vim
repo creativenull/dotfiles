@@ -1,132 +1,134 @@
 vim9script
 
-import './lspclient/core/protocol.vim' as proto
 import './lspclient/core/client.vim'
-import './lspclient/core/document_sync.vim'
-import './lspclient/core/log.vim'
+import './lspclient/core/document.vim'
 import './lspclient/core/fs.vim'
+import './lspclient/core/log.vim'
 import './lspclient/router.vim'
+import './lspclient/config.vim'
 
-# interface VimDocument {
-#   buf: number;
-#   version: number;
-# }
+const openBufEvents = ['BufNew', 'BufEnter']
+const closeBufEvents = ['BufUnload', 'BufWipeout']
+var lspClients = {}
 
-# interface SetupConfig {
-#   name: string;
-#   cmd: List<string>;
-#   filetypes: List<string>;
-#   markers: List<string>;
-#   initOptions?: Dict<any>;
-#   config?: Dict<any>;
-# }
-
-var self = {
-  job: null_job,
-  channel: null_channel,
-  clientEventGroup: 'VoidLspClientGroup',
-}
-
-def GetGroupName(name: string): string
-  return printf('%s_%s', self.clientEventGroup, name)
+def HasStarted(ch: channel): bool
+  return ch->ch_status() == 'open'
 enddef
 
-def HasStarted(): bool
-  return self.channel->ch_status() == 'open'
-enddef
-
-def MergeSetupConfig(partialSetupConfig: dict<any>): dict<any>
-  const defaults = {
-    initOptions: null_dict,
-    settings: null_dict,
-    markers: null_list,
-  }
-
-  return extendnew(defaults, partialSetupConfig, 'force')
-enddef
-
-def ValidateSetupConfig(setupConfig: dict<any>): void
-  if setupConfig->get('name', '') == ''
-    throw log.Error('`name` must be present')
-  endif
-
-  if setupConfig->get('cmd', []) == []
-    throw log.Error('`cmd` must be present')
-  endif
-
-  if setupConfig->get('filetypes', []) == []
-    throw log.Error('`filetypes` must be present')
-  endif
-enddef
-
-def DocumentDidOpen(): number
-  const b = bufnr('%')
-  const documentOpts = {
-    filepath: b->bufname(),
-    filetype: b->getbufvar('&filetype'),
-    version: changenr(),
-    contents: fs.GetBufferContents(b),
-  }
-
-  document_sync.NotifyDidOpen(self.channel, documentOpts)
-
-  return b
-enddef
-
-export def DocumentDidChange(): void
-  if !HasStarted()
-    return
-  endif
-
+export def DocumentDidChange(id: string): void
   const b = bufnr('%')
 
-  # Only notify of change when it has been modified
   if b->getbufvar('&modified')
-    document_sync.NotifyDidChange(self.channel, {
-      version: changenr(),
+    document.NotifyDidChange(lspClients[id].channel, {
+      version: b->getbufvar('changedtick'),
       contents: fs.GetBufferContents(b),
     })
   endif
 enddef
 
-export def DocumentDidClose(): void
+export def DocumentDidOpen(id: string): void
   const b = bufnr('%')
 
-  const documentChangeEvent = {
-    event: 'InsertLeave',
-    bufnr: b,
-  }
+  const ft = b->getbufvar('&filetype')
+  const isFileType = lspClients[id].config.filetypes->index(ft) != -1
+  if isFileType
+    document.NotifyDidOpen(lspClients[id].channel, {
+      uri: fs.FileToUri(b->bufname()),
+      filetype: ft,
+      version: b->getbufvar('changedtick'),
+      contents: fs.GetBufferContents(b),
+    })
 
-  const documentCloseEvent = {
-    event: ['BufUnload', 'BufWipeout'],
-    bufnr: b,
-  }
+    # Subscribe to buffer changes
+    def OnChange(bufnr: number, start: any, end: any, added: any, changes: any)
+      DocumentDidChange(id)
+    enddef
 
-  autocmd_delete([documentChangeEvent, documentCloseEvent])
+    const ref = listener_add(OnChange, b)
 
-  document_sync.NotifyDidClose(self.channel, { filepath: bufname(b) })
+    # Track this document lifecycle with any other refs
+    lspClients[id].documents->add({ bufnr: b, listenerRef: ref })
+
+    # Cleanup
+    autocmd_add([
+      {
+        group: lspClients[id].group,
+        event: closeBufEvents,
+        bufnr: b,
+        cmd: printf('call void#lspclient#DocumentDidClose("%s")', id)
+      },
+    ])
+  endif
 enddef
 
-export def StartLspServer(setupConfig: dict<any>): void
-  if HasStarted()
+export def DocumentDidClose(id: string): void
+  const b = bufnr('%')
+
+  autocmd_delete([
+    {
+      group: lspClients[id].group,
+      event: closeBufEvents,
+      bufnr: b,
+    },
+  ])
+  
+  document.NotifyDidClose(lspClients[id].channel, { uri: fs.FileToUri(b->bufname()) })
+enddef
+
+export def LspStartServer(id: string): void
+  if HasStarted(lspClients[id].channel)
     return
   endif
 
+  # Notify the server that the client has initialized once
+  # the response provides no errors
+  def OnInitialize(ch: channel, response: dict<any>): void
+    var errmsg = ''
+
+    if response->empty()
+      errmsg = 'Empty Response'
+      log.LogError(errmsg)
+
+      return
+    endif
+
+    if response->has_key('error')
+      errmsg = response.error->string()
+      log.LogError(errmsg)
+
+      return
+    endif
+
+    client.Initialized(ch)
+
+    # Open the current document
+    DocumentDidOpen(id)
+
+    # Let future buffers know about the open document event
+    autocmd_add([
+      {
+        group: lspClients[id].group,
+        event: openBufEvents,
+        pattern: '*',
+        cmd: printf('call void#lspclient#DocumentDidOpen("%s")', id),
+      },
+    ])
+  enddef
+
   def OnStdout(ch: channel, request: dict<any>): void
     log.LogInfo('STDOUT : ' .. request->string())
-    router.HandleServerRequest(ch, request, setupConfig)
+    router.HandleServerRequest(ch, request, lspClients[id].config)
   enddef
 
-  def OnStderr(ch: channel, msg: any): void
-    log.LogError('STDERR : ' .. msg->string())
+  def OnStderr(ch: channel, data: any): void
+    log.LogError('STDERR : ' .. data->string())
   enddef
 
-  def OnExit(ch: channel, msg: any): void
-    echom log.Info('Channel Exiting')
+  def OnExit(ch: channel, data: any): void
+    log.LogInfo('Channel Exiting')
   enddef
 
-  const group = GetGroupName(setupConfig.name)
-  const opts = {
+  const jobOpts = {
     in_mode: 'lsp',
     out_mode: 'lsp',
     err_mode: 'nl',
@@ -135,80 +137,67 @@ export def StartLspServer(setupConfig: dict<any>): void
     exit_cb: OnExit,
   }
 
-  log.PrintInfo('Starting LSP Server')
+  log.PrintInfo('Starting LSP Server: ' .. lspClients[id].config.name)
 
-  self.job = job_start(setupConfig.cmd, opts)
-  self.channel = job_getchannel(self.job)
+  lspClients[id].job = job_start(lspClients[id].config.cmd, jobOpts)
+  lspClients[id].channel = job_getchannel(lspClients[id].job)
 
-  try
-    log.LogInfo('=== VOID LSP CLIENT LOG ===')
-
-    client.Initialize(self.channel, setupConfig.initOptions)
-    client.Initialized(self.channel)
-
-    # Let server know of open document
-    const b = DocumentDidOpen()
-
-    const documentChangeEvent = {
-      group: group,
-      event: 'InsertLeave',
-      bufnr: b,
-      cmd: 'call void#lspclient#DocumentDidChange()',
-    }
-
-    const documentCloseEvent = {
-      group: group,
-      event: ['BufUnload', 'BufWipeout'],
-      bufnr: b,
-      once: true,
-      cmd: 'call void#lspclient#DocumentDidClose()',
-    }
-
-    autocmd_add([documentChangeEvent, documentCloseEvent])
-  catch
-    const msg = 'Failed to initialize LSP server with exception: ' .. v:exception->string()
-    log.PrintError(msg)
-  endtry
+  # Start the initialization process
+  log.LogInfo('<======= VOID LSP CLIENT LOG =======>')
+  client.Initialize(lspClients[id].channel, {
+    lspClientConfig: lspClients[id].config,
+    callback: OnInitialize,
+  })
 enddef
 
-export def StopLspServer(setupConfig: dict<any>): void
-  if !HasStarted()
+export def LspStopServer(id: string): void
+  if !HasStarted(lspClients[id].channel)
     return
   endif
 
-  try
-    client.Shutdown(self.channel)
-    client.Exit(self.channel)
-  catch
-    const msg = 'Failed to shutdown LSP server with exception: ' .. v:exception->string()
-    log.PrintError(msg)
-  endtry
+  log.LogInfo('<======= VOID LSP CLIENT SHUTDOWN PHASE =======>')
+  client.Shutdown(lspClients[id].channel)
 enddef
 
-export def Setup(partialSetupConfig: dict<any>): void
-  const setupConfig = MergeSetupConfig(partialSetupConfig)
-  try
-    ValidateSetupConfig(setupConfig)
-  catch
-    echoerr v:exception
-  endtry
+export def MakeLspClient(partialLspClientConfig: dict<any>): void
+  # Merge and validate the client config and fail the setup
+  # if invalidated
+  const lspClientConfig = config.MergeLspClientConfig(partialLspClientConfig)
 
-  const group = GetGroupName(setupConfig.name)
-  execute printf('augroup %s', group)
+  const errmsg = config.ValidateLspClientConfig(lspClientConfig)
+  if !errmsg->empty()
+    log.PrintError(errmsg)
+    log.LogError(errmsg)
 
-  const clientStartEvent = {
-    group: group,
-    event: 'FileType',
-    pattern: setupConfig.filetypes,
-    cmd: printf('call void#lspclient#StartLspServer(%s)', string(setupConfig)),
+    return
+  endif
+
+  const id = lspClientConfig.name
+  var lspClient = {
+    id: id,
+    group: printf('VoidLspClient_%s', id),
+    config: lspClientConfig,
+    job: null_job,
+    channel: null_channel,
+    documents: [],
   }
 
-  const clientStopEvent = {
-    group: group,
-    event: 'VimLeavePre',
-    pattern: '*',
-    cmd: printf('call void#lspclient#StopLspServer(%s)', string(setupConfig)),
-  }
+  # Add to a 'global' state
+  lspClients[id] = lspClient
 
-  autocmd_add([clientStartEvent, clientStopEvent])
+  execute printf('augroup %s', lspClients[id].group)
+  autocmd_add([
+    {
+      group: lspClients[id].group,
+      event: 'FileType',
+      pattern: lspClients[id].config.filetypes,
+      cmd: printf('call void#lspclient#LspStartServer("%s")', id),
+    },
+    {
+      group: lspClients[id].group,
+      event: 'VimLeavePre',
+      pattern: '*',
+      cmd: printf('call void#lspclient#LspStopServer("%s")', id),
+    },
+  ])
 enddef
