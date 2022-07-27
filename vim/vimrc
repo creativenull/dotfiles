@@ -487,7 +487,24 @@ call user#ddc#Setup()
 
 " vim-lsp Config
 " ---
-call user#lsp#Setup()
+" call user#lsp#Setup()
+
+call void#lspclient#Setup({
+  \ 'name': 'tsserver',
+  \ 'cmd': ['typescript-language-server', '--stdio'],
+  \ 'filetypes': ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'],
+  \ 'initOptions': { 'hostInfo': 'Vim 9' }
+\ })
+
+" call void#lspclient#Setup({
+"   \ 'name': 'deno',
+"   \ 'cmd': ['deno', 'lsp'],
+"   \ 'filetypes': ['typescript', 'javascript'],
+"   \ 'config': {
+"     \ 'enable': v:true,
+"     \ 'unstable': v:false,
+"   \ },
+" \ })
 
 " =============================================================================
 " = UI/Theme (THEME) =
