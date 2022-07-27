@@ -395,6 +395,7 @@ function! PackagerInit() abort
   call packager#add('kevinoid/vim-jsonc')
   call packager#add('pangloss/vim-javascript')
   call packager#add('posva/vim-vue')
+  call packager#add('MTDL9/vim-log-highlighting')
   " }}}
 
   " UI {{{
