@@ -20,7 +20,7 @@ export def NotifyDidOpen(ch: channel, document: dict<any>): void
   log.LogInfo(printf('Notify Open Document: (buffer: %s)', bufnr('%')))
   proto.NotifyAsync(ch, 'textDocument/didOpen', {
     textDocument: {
-      uri: fs.FileToUri(document.filepath),
+      uri: document.uri,
       languageId: document.filetype,
       version: document.version,
       text: document.contents,
@@ -43,7 +43,7 @@ enddef
 export def NotifyDidClose(ch: channel, document: dict<any>): void
   proto.NotifyAsync(ch, 'textDocument/didClose', {
     textDocument: {
-      uri: fs.FileToUri(document.filepath),
+      uri: document.uri,
     },
   })
   log.LogInfo(printf('Notify Close Document: (buffer: %s)', bufnr('%')))
@@ -53,7 +53,7 @@ enddef
 export def NotifyWillSave(ch: channel, document: dict<any>): void
   proto.NotifyAsync(ch, 'textDocument/willSave', {
     textDocument: {
-      uri: fs.FileToUri(document.filepath),
+      uri: document.uri,
     },
     reason: 1, # Manually
   })
@@ -64,7 +64,7 @@ enddef
 export def NotifyDidSave(ch: channel, document: dict<any>): void
   proto.NotifyAsync(ch, 'textDocument/didSave', {
     textDocument: {
-      uri: fs.FileToUri(document.filepath),
+      uri: document.uri,
     },
   })
   log.LogInfo(printf('Notify WillSave Document: (buffer: %s)', bufnr('%')))
