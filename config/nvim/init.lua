@@ -469,6 +469,7 @@ local function packagerSetup(packager)
 	packager.add('kevinoid/vim-jsonc')
 	packager.add('junegunn/vader.vim')
 	packager.add('rajasegar/vim-astro')
+	packager.add('MTDL9/vim-log-highlighting')
 
 	-- UI/Aesthetics
 	-- ---
