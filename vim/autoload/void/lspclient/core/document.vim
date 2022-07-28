@@ -17,7 +17,6 @@ import './log.vim'
 
 # Notify LSP server on file/buffer open
 export def NotifyDidOpen(ch: channel, document: dict<any>): void
-  log.LogInfo(printf('Notify Open Document: (buffer: %s)', bufnr('%')))
   proto.NotifyAsync(ch, 'textDocument/didOpen', {
     textDocument: {
       uri: document.uri,
@@ -26,6 +25,7 @@ export def NotifyDidOpen(ch: channel, document: dict<any>): void
       text: document.contents,
     },
   })
+  log.LogInfo(printf('Open Document: (uri: %s)', document.uri))
 enddef
 
 # Notify LSP server on file/buffer change
@@ -36,7 +36,7 @@ export def NotifyDidChange(ch: channel, document: dict<any>): void
     },
     contentChanges: [ { text: document.contents } ],
   })
-  log.LogInfo(printf('Notify Change Document: (buffer: %s)', bufnr('%')))
+  log.LogInfo(printf('Change Document: (uri: %s)', document.uri))
 enddef
 
 # Notify LSP server when a file/buffer is closed
@@ -46,7 +46,7 @@ export def NotifyDidClose(ch: channel, document: dict<any>): void
       uri: document.uri,
     },
   })
-  log.LogInfo(printf('Notify Close Document: (buffer: %s)', bufnr('%')))
+  log.LogInfo(printf('Close Document: (uri: %s)', document.uri))
 enddef
 
 # WIP:
@@ -57,7 +57,7 @@ export def NotifyWillSave(ch: channel, document: dict<any>): void
     },
     reason: 1, # Manually
   })
-  log.LogInfo(printf('Notify WillSave Document: (buffer: %s)', bufnr('%')))
+  log.LogInfo(printf('WillSave Document: (buffer: %s)', bufnr('%')))
 enddef
 
 # WIP:
@@ -67,5 +67,5 @@ export def NotifyDidSave(ch: channel, document: dict<any>): void
       uri: document.uri,
     },
   })
-  log.LogInfo(printf('Notify WillSave Document: (buffer: %s)', bufnr('%')))
+  log.LogInfo(printf('DidSave Document: (buffer: %s)', bufnr('%')))
 enddef

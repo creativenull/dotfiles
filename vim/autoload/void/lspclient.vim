@@ -7,21 +7,21 @@ import './lspclient/core/log.vim'
 import './lspclient/router.vim'
 import './lspclient/config.vim'
 
-const openBufEvents = ['BufNew', 'BufEnter']
-const closeBufEvents = ['BufUnload', 'BufWipeout']
+const openBufEvents = ['BufRead']
+const closeBufEvents = ['BufDelete']
+
 var lspClients = {}
 
 def HasStarted(ch: channel): bool
   return ch->ch_status() == 'open'
 enddef
 
-export def DocumentDidChange(id: string): void
-  const b = bufnr('%')
-
-  if b->getbufvar('&modified')
+export def DocumentDidChange(id: string, buf: number): void
+  if buf->getbufvar('&modified')
     document.NotifyDidChange(lspClients[id].channel, {
-      version: b->getbufvar('changedtick'),
-      contents: fs.GetBufferContents(b),
+      uri: fs.FileToUri(buf->bufname()),
+      version: buf->getbufvar('changedtick'),
+      contents: fs.GetBufferContents(buf),
     })
   endif
 enddef
@@ -41,38 +41,40 @@ export def DocumentDidOpen(id: string): void
 
     # Subscribe to buffer changes
     def OnChange(bufnr: number, start: any, end: any, added: any, changes: any)
-      DocumentDidChange(id)
+      DocumentDidChange(id, bufnr)
     enddef
 
     const ref = listener_add(OnChange, b)
 
-    # Track this document lifecycle with any other refs
+    # Track this document lifecycle, include any other refs
     lspClients[id].documents->add({ bufnr: b, listenerRef: ref })
 
-    # Cleanup
+    # Register for cleanup
     autocmd_add([
       {
         group: lspClients[id].group,
         event: closeBufEvents,
         bufnr: b,
-        cmd: printf('call void#lspclient#DocumentDidClose("%s")', id)
+        cmd: printf('call void#lspclient#DocumentDidClose("%s", %d)', id, b)
       },
     ])
   endif
 enddef
 
-export def DocumentDidClose(id: string): void
-  const b = bufnr('%')
+export def DocumentDidClose(id: string, buf: number): void
+  const [doc] = filter(copy(lspClients[id].documents), (i, val) => val.bufnr == buf)
 
+  # Unsubscribe from changes and events
+  listener_remove(doc.listenerRef)
   autocmd_delete([
     {
       group: lspClients[id].group,
       event: closeBufEvents,
-      bufnr: b,
+      bufnr: buf,
     },
   ])
   
-  document.NotifyDidClose(lspClients[id].channel, { uri: fs.FileToUri(b->bufname()) })
+  document.NotifyDidClose(lspClients[id].channel, { uri: fs.FileToUri(buf->bufname()) })
 enddef
 
 export def LspStartServer(id: string): void
