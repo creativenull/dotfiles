@@ -374,8 +374,12 @@ function! PackagerInit() abort
   " }}}
 
   " LSP client {{{
-  call packager#add('prabirshrestha/vim-lsp')
-  call packager#add('rhysd/vim-lsp-ale')
+  " call packager#add('prabirshrestha/vim-lsp')
+  " call packager#add('rhysd/vim-lsp-ale')
+  " }}}
+
+  " LSP client {{{
+  call packager#add('creativenull/vim-lspclient')
   " }}}
 
   " Autocompletion {{{
@@ -489,7 +493,7 @@ call user#ddc#Setup()
 " ---
 " call user#lsp#Setup()
 
-call void#lspclient#MakeLspClient({
+call lspclient#Create({
   \ 'name': 'tsserver',
   \ 'cmd': ['typescript-language-server', '--stdio'],
   \ 'filetypes': ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'],
@@ -498,7 +502,7 @@ call void#lspclient#MakeLspClient({
   \ },
 \ })
 
-" call void#lspclient#Setup({
+" call lspclient#Create({
 "   \ 'name': 'deno',
 "   \ 'cmd': ['deno', 'lsp'],
 "   \ 'filetypes': ['typescript', 'javascript'],
