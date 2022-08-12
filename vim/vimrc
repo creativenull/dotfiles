@@ -374,12 +374,8 @@ function! PackagerInit() abort
   " }}}
 
   " LSP client {{{
-  " call packager#add('prabirshrestha/vim-lsp')
-  " call packager#add('rhysd/vim-lsp-ale')
-  " }}}
-
-  " LSP client {{{
-  call packager#add('creativenull/vim-lspclient')
+  call packager#add('prabirshrestha/vim-lsp')
+  call packager#add('rhysd/vim-lsp-ale')
   " }}}
 
   " Autocompletion {{{
@@ -491,26 +487,7 @@ call user#ddc#Setup()
 
 " vim-lsp Config
 " ---
-" call user#lsp#Setup()
-
-call lspclient#Create({
-  \ 'name': 'tsserver',
-  \ 'cmd': ['typescript-language-server', '--stdio'],
-  \ 'filetypes': ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'],
-  \ 'initOptions': {
-    \ 'hostInfo': 'Vim 9',
-  \ },
-\ })
-
-" call lspclient#Create({
-"   \ 'name': 'deno',
-"   \ 'cmd': ['deno', 'lsp'],
-"   \ 'filetypes': ['typescript', 'javascript'],
-"   \ 'config': {
-"     \ 'enable': v:true,
-"     \ 'unstable': v:false,
-"   \ },
-" \ })
+call user#lsp#Setup()
 
 " =============================================================================
 " = UI/Theme (THEME) =
