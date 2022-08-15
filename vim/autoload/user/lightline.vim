@@ -31,7 +31,7 @@ export def Setup(): void
     },
 
     component_function: {
-      gitbranch: 'FugitiveHead',
+      gitbranch: 'gitbranch#name',
       ale_status: 'user#lightline#AleStatus',
     },
 
