@@ -389,10 +389,9 @@ function! PackagerInit() abort
   " File syntax plugins {{{
   call packager#add('MaxMEllon/vim-jsx-pretty')
   call packager#add('elzr/vim-json')
-  call packager#add('heavenshell/vim-jsdoc', #{ do: 'make install' })
+  call packager#add('kevinoid/vim-jsonc')
   call packager#add('junegunn/vader.vim')
   call packager#add('jwalton512/vim-blade')
-  call packager#add('kevinoid/vim-jsonc')
   call packager#add('pangloss/vim-javascript')
   call packager#add('posva/vim-vue')
   call packager#add('MTDL9/vim-log-highlighting')
@@ -461,7 +460,7 @@ let g:vue_pre_processors = []
 
 " vim-json Config
 " ---
-let g:vim_json_conceal = 0
+let g:vim_json_syntax_conceal = 0
 
 " indentLine Config
 " ---
