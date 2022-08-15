@@ -396,6 +396,7 @@ function! PackagerInit() abort
   call packager#add('pangloss/vim-javascript')
   call packager#add('posva/vim-vue')
   call packager#add('MTDL9/vim-log-highlighting')
+  call packager#add('lacygoill/vim9-syntax')
   " }}}
 
   " UI {{{
@@ -403,6 +404,7 @@ function! PackagerInit() abort
   call packager#add('machakann/vim-highlightedyank')
   call packager#add('itchyny/lightline.vim')
   call packager#add('mengelbrecht/lightline-bufferline')
+  call packager#add('markonm/traces.vim')
   " }}}
 
   " Colorschemes {{{
