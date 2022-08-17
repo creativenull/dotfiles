@@ -340,7 +340,7 @@ vim.keymap.set('n', '<Leader>ff', '<Cmd>Fern . -reveal=%<CR>')
 local function setFernKeymaps()
   local buf = vim.api.nvim_get_current_buf()
   vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = buf })
-  vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true })
+  vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true, buffer = buf })
 end
 
 vim.api.nvim_create_augroup('UserFernEvents', { clear = true })
