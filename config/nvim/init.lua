@@ -20,6 +20,9 @@ vim.g.user = {
   },
 }
 
+-- TODO: remove once upgraded to 0.8
+vim.g.do_filetype_lua = 1
+
 -- Pre-checks
 -- ---
 if vim.fn.has('nvim') == 1 and vim.fn.has('nvim-0.7') == 0 then
