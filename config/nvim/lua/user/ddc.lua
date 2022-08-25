@@ -1,10 +1,10 @@
 local M = {}
 
 -- Accept completion from ddc.vim or from vsnip
-local function confirm(default)
+local function confirm_completion(default)
   if vim.call('ddc#map#pum_visible') == 1 then
     if vim.call('vsnip#expandable') == 1 then
-      return [[\<Plug>(vsnip-expand)]]
+      return "<Plug>(vsnip-expand)"
     elseif vim.call('ddc#map#can_complete') == 1 then
       return vim.call('ddc#map#extend')
     end
@@ -93,7 +93,7 @@ function M.Setup()
 
   -- Insert selected completion item and close menu
   vim.keymap.set('i', '<C-y>', function()
-    return confirm([[\<C-y>]])
+    return confirm_completion('<C-y>')
   end, { expr = true, desc = 'Insert selected completion item and close menu' })
 
   -- Manually open the completion menu
