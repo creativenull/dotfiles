@@ -22,9 +22,8 @@ function M.Setup()
   end, { expr = true, desc = 'Insert selected completion item and close menu' })
 
   -- Events
-  vim.api.nvim_create_augroup('UserPumEvents', { clear = true })
   vim.api.nvim_create_autocmd('ColorScheme', {
-    pattern = '*',
+    group = vim.g.user.event,
     callback = function()
       vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
     end,

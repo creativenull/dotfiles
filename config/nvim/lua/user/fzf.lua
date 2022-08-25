@@ -23,26 +23,25 @@ function M.Setup()
   vim.env.FZF_DEFAULT_OPTS = '--reverse'
   vim.g.fzf_preview_window = {}
 
-  -- Keymaps
-  vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
-  vim.keymap.set('n', '<C-t>', '<Cmd>Rg<CR>')
-
   -- Commands
   vim.api.nvim_create_user_command('Rg', function(arg)
     vimGrep(arg.qargs, arg.bang)
   end, { bang = true, nargs = '*' })
 
+  -- Keymaps
+  vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
+  vim.keymap.set('n', '<C-t>', '<Cmd>Rg<CR>')
+
   -- Events
-  vim.api.nvim_create_augroup('UserFzfEvents', { clear = true })
   vim.api.nvim_create_autocmd('FileType', {
-    group = 'UserFzfEvents',
+    group = vim.g.user.event,
     pattern = 'fzf',
     callback = fzfWindowSetup,
     desc = 'Configure fzf window before it is viewed',
   })
+
   vim.api.nvim_create_autocmd('FileType', {
-    group = 'UserFzfEvents',
-    pattern = '*',
+    group = vim.g.user.event,
     callback = function()
       vim.api.nvim_set_hl(0, 'fzfBorder', { fg = '#aaaaaa' })
     end,

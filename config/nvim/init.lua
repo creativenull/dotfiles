@@ -15,6 +15,7 @@
 vim.g.user = {
   leaderkey = ' ',
   transparent = false,
+  event = 'UserEvents',
   config = {
     undodir = vim.fn.stdpath('cache') .. '/undo',
   },
@@ -49,7 +50,7 @@ if vim.fn.has('win32') == 1 then
     return
   end
 
-  local pwshFlags = {
+  local pwsh_flags = {
     '-NoLogo',
     '-NoProfile',
     '-ExecutionPolicy',
@@ -77,9 +78,11 @@ vim.g.loaded_perl_provider = 0
 -- = Events (AUG) =
 -- =============================================================================
 
-vim.api.nvim_create_augroup('UserFileTypeEvents', { clear = true })
+-- Global user group to register other custom autocmds
+vim.api.nvim_create_augroup(vim.g.user.event, {})
+
 vim.api.nvim_create_autocmd('FileType', {
-  group = 'UserFileTypeEvents',
+  group = vim.g.user.event,
   pattern = {
     'javascript',
     'javascriptreact',
@@ -98,8 +101,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
   desc = 'Set code indents',
 })
+
 vim.api.nvim_create_autocmd('FileType', {
-  group = 'UserFileTypeEvents',
+  group = vim.g.user.event,
   pattern = { 'markdown', 'php', 'blade', 'html' },
   callback = function()
     require('user.utils').IndentSize(4, true)
@@ -107,8 +111,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
   desc = 'Set code indents',
 })
+
 vim.api.nvim_create_autocmd('FileType', {
-  group = 'UserFileTypeEvents',
+  group = vim.g.user.event,
   pattern = { 'vue' },
   callback = function()
     require('user.utils').IndentSize(2, true)
@@ -302,9 +307,8 @@ vim.g.user_emmet_leader_key = '<C-q>'
 vim.g.user_emmet_mode = 'i'
 vim.g.user_emmet_install_global = 0
 
-vim.api.nvim_create_augroup('UserEmmetEvents', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-  group = 'UserEmmetEvents',
+  group = vim.g.user.event,
   pattern = {
     'html',
     'vue',
@@ -346,16 +350,14 @@ local function setFernKeymaps()
   vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true, buffer = buf })
 end
 
-vim.api.nvim_create_augroup('UserFernEvents', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-  group = 'UserFernEvents',
+  group = vim.g.user.event,
   pattern = 'fern',
   callback = setFernKeymaps,
   desc = 'Set custom fern keymaps',
 })
 vim.api.nvim_create_autocmd('ColorScheme', {
-  group = 'UserFernEvents',
-  pattern = '*',
+  group = vim.g.user.event,
   command = 'highlight! default link CursorLine Visual',
   desc = 'Set custom line highlight in fern',
 })
@@ -551,10 +553,8 @@ vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
 vim.g.moonflyItalics = 0
 
-vim.api.nvim_create_augroup('UserMoonflyEvents', { clear = true })
 vim.api.nvim_create_autocmd('ColorScheme', {
-  group = 'UserMoonflyEvents',
-  pattern = '*',
+  group = vim.g.user.event,
   command = 'highlight! ColorColumn guibg=#777777',
   desc = 'Set custom higlights for moonfly theme only',
 })

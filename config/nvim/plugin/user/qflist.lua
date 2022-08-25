@@ -2,9 +2,8 @@ if vim.g.loaded_user_qflist ~= nil then
   return
 end
 
-vim.api.nvim_create_augroup('UserQFListEvents', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-  group = 'UserQFListEvents',
+  group = vim.g.user.event,
   pattern = 'qf',
   callback = function()
     local buf = vim.api.nvim_get_current_buf()

@@ -104,10 +104,8 @@ function M.Setup()
     { expr = true, desc = 'Manually open the completion menu' }
   )
 
-  vim.api.nvim_create_augroup('UserDDCEvents', { clear = true })
   vim.api.nvim_create_autocmd('VimEnter', {
-    group = 'UserDDCEvents',
-    pattern = '*',
+    group = vim.g.user.event,
     callback = enable,
     desc = 'Enable ddc by default',
   })

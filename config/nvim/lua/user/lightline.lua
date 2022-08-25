@@ -36,16 +36,18 @@ function M.Setup()
     },
   }
 
-	vim.api.nvim_create_augroup('UserAleLightlineEvents', { clear = true })
 	vim.api.nvim_create_autocmd('User', {
+		group = vim.g.user.event,
 		pattern = 'ALEJobStarted',
 		command = 'call lightline#update()',
 	})
 	vim.api.nvim_create_autocmd('User', {
+		group = vim.g.user.event,
 		pattern = 'ALELintPost',
 		command = 'call lightline#update()',
 	})
 	vim.api.nvim_create_autocmd('User', {
+		group = vim.g.user.event,
 		pattern = 'ALEFixPost',
 		command = 'call lightline#update()',
 	})

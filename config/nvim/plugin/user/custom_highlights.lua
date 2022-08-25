@@ -2,10 +2,8 @@ if vim.g.loaded_user_highlights ~= nil then
   return
 end
 
-vim.api.nvim_create_augroup('UserHighlightEvents', { clear = true })
 vim.api.nvim_create_autocmd('ColorScheme', {
-  group = 'UserHighlightEvents',
-  pattern = '*',
+  group = vim.g.user.event,
   callback = function()
     -- Don't want any bold or underlines on the tabline
     vim.cmd('highlight Tabline gui=NONE')
