@@ -59,7 +59,7 @@ if vim.fn.has('win32') == 1 then
     '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
   }
 
-  vim.opt.shellcmdflag = table.concat(pwshFlags, ' ')
+  vim.opt.shellcmdflag = table.concat(pwsh_flags, ' ')
   vim.opt.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   vim.opt.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
   vim.opt.shell = 'pwsh'
