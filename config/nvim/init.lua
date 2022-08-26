@@ -141,6 +141,7 @@ vim.opt.shortmess:append('c')
 -- Search
 vim.opt.showmatch = true
 vim.opt.smartcase = true
+vim.opt.ignorecase = true
 vim.opt.path = '**'
 vim.opt.wildignore = '*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*'
 
