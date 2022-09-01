@@ -22,18 +22,18 @@ local function on_attach(client, bufnr)
 
   -- LSP Keymaps
   vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, { desc = 'LSP Code Actions', buffer = bufnr })
-  vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'LSP Go-to Definition', buffer  = bufnr })
-  vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { desc = 'LSP Hover Information', buffer  = bufnr })
-  vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'LSP Rename', buffer  = bufnr })
-  vim.keymap.set('n', '<Leader>ls', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer  = bufnr })
-  vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics', buffer  = bufnr })
+  vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'LSP Go-to Definition', buffer = bufnr })
+  vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { desc = 'LSP Hover Information', buffer = bufnr })
+  vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'LSP Rename', buffer = bufnr })
+  vim.keymap.set('n', '<Leader>ls', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer = bufnr })
+  vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics', buffer = bufnr })
   vim.keymap.set('n', '<Leader>lw', function()
     vim.diagnostic.open_float({
       bufnr = bufnr,
       width = WIDTH,
       border = BORDER,
     })
-  end, { desc = 'Show LSP Line Diagnostic', buffer  = bufnr })
+  end, { desc = 'Show LSP Line Diagnostic', buffer = bufnr })
 
   -- LSP Formatting keymap only from the following linter/formatter servers
   -- Ref: https://github.com/neovim/nvim-lspconfig/wiki/Multiple-language-servers-FAQ
@@ -74,19 +74,13 @@ vim.diagnostic.config({
 })
 
 -- Add border to hover documentation
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  {
-    width = WIDTH,
-    border = BORDER,
-  }
-)
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+  width = WIDTH,
+  border = BORDER,
+})
 
 -- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help,
-  { border = BORDER }
-)
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = BORDER })
 
 -- Check registered LSP info
 vim.keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')

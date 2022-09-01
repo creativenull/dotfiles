@@ -1,7 +1,7 @@
 local M = {}
 
 function M.Setup()
-	-- Vars
+  -- Vars
   vim.g.ale_disable_lsp = 1
   vim.g.ale_completion_enabled = 0
   vim.g.ale_completion_autoimport = 1
@@ -17,8 +17,8 @@ function M.Setup()
   vim.g.ale_fixers = { ['*'] = { 'remove_trailing_lines', 'trim_whitespace' } }
 
   -- Keymaps
-	vim.keymap.set('n', '<Leader>af', '<Cmd>ALEFix<CR>', { silent = true })
-	vim.keymap.set('n', '<Leader>ai', '<Cmd>ALEInfo<CR>', { silent = true })
+  vim.keymap.set('n', '<Leader>af', '<Cmd>ALEFix<CR>', { silent = true })
+  vim.keymap.set('n', '<Leader>ai', '<Cmd>ALEInfo<CR>', { silent = true })
 end
 
 return M

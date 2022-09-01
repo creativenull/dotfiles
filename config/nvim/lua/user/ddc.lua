@@ -4,7 +4,7 @@ local M = {}
 local function confirm_completion(default)
   if vim.call('ddc#map#pum_visible') == 1 then
     if vim.call('vsnip#expandable') == 1 then
-      return "<Plug>(vsnip-expand)"
+      return '<Plug>(vsnip-expand)'
     elseif vim.call('ddc#map#can_complete') == 1 then
       return vim.call('ddc#map#extend')
     end

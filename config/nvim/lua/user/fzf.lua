@@ -1,10 +1,10 @@
 local M = {}
 
 local function vim_grep(qargs, bang)
-	local query = '""'
-	if qargs ~= nil then
-		query = vim.fn.shellescape(qargs)
-	end
+  local query = '""'
+  if qargs ~= nil then
+    query = vim.fn.shellescape(qargs)
+  end
 
   local sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. query
   vim.call('fzf#vim#grep', sh, 1, vim.call('fzf#vim#with_preview', 'right:50%', 'ctrl-/'), bang)

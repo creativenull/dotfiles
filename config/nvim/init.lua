@@ -402,117 +402,117 @@ vim.g.javascript_plugin_jsdoc = 1
 -- =============================================================================
 
 local function packagerSetup(packager)
-	packager.add('kristijanhusak/vim-packager', { ['type'] = 'opt' })
+  packager.add('kristijanhusak/vim-packager', { ['type'] = 'opt' })
 
-	-- Deps
-	-- ---
-	packager.add('vim-denops/denops.vim', { tag = 'v3.2.0' })
-	packager.add('lambdalisue/nerdfont.vim', { tag = 'v1.3.0' })
+  -- Deps
+  -- ---
+  packager.add('vim-denops/denops.vim', { tag = 'v3.2.0' })
+  packager.add('lambdalisue/nerdfont.vim', { tag = 'v1.3.0' })
 
-	-- Core
-	-- ---
-	packager.add('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
-	packager.add('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
-	packager.add('tpope/vim-surround', { tag = 'v2.2' })
-	packager.add('tpope/vim-abolish', { tag = 'v1.1' })
-	packager.add('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
-	packager.add('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
-	packager.add('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
-	packager.add('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
-	packager.add('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
-	packager.add('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
+  -- Core
+  -- ---
+  packager.add('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
+  packager.add('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
+  packager.add('tpope/vim-surround', { tag = 'v2.2' })
+  packager.add('tpope/vim-abolish', { tag = 'v1.1' })
+  packager.add('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
+  packager.add('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
+  packager.add('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
+  packager.add('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
+  packager.add('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+  packager.add('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
 
-	-- File Explorer + Addons
-	-- ---
-	packager.add('antoinemadec/FixCursorHold.nvim', { commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
-	packager.add('lambdalisue/fern.vim', { tag = 'v1.51.1' })
-	packager.add('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
+  -- File Explorer + Addons
+  -- ---
+  packager.add('antoinemadec/FixCursorHold.nvim', { commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
+  packager.add('lambdalisue/fern.vim', { tag = 'v1.51.1' })
+  packager.add('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
 
-	-- Linters + Formatters
-	-- ---
-	packager.add('dense-analysis/ale')
+  -- Linters + Formatters
+  -- ---
+  packager.add('dense-analysis/ale')
 
-	-- Builtin LSP Configs
-	-- ---
-	packager.add('neovim/nvim-lspconfig', { tag = 'v0.1.3' })
-	packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
+  -- Builtin LSP Configs
+  -- ---
+  packager.add('neovim/nvim-lspconfig', { tag = 'v0.1.3' })
+  packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
 
-	-- AutoCompletion + Sources
-	-- ---
-	packager.add('Shougo/ddc.vim')
-	packager.add('matsui54/denops-signature_help')
-	packager.add('tani/ddc-fuzzy')
-	packager.add('Shougo/ddc-nvim-lsp')
-	packager.add('Shougo/ddc-around')
-	packager.add('matsui54/ddc-buffer')
-	packager.add('hrsh7th/vim-vsnip-integ')
+  -- AutoCompletion + Sources
+  -- ---
+  packager.add('Shougo/ddc.vim')
+  packager.add('matsui54/denops-signature_help')
+  packager.add('tani/ddc-fuzzy')
+  packager.add('Shougo/ddc-nvim-lsp')
+  packager.add('Shougo/ddc-around')
+  packager.add('matsui54/ddc-buffer')
+  packager.add('hrsh7th/vim-vsnip-integ')
 
-	-- Snippet Engine + Presets
-	-- ---
-	packager.add('hrsh7th/vim-vsnip')
-	packager.add('rafamadriz/friendly-snippets')
+  -- Snippet Engine + Presets
+  -- ---
+  packager.add('hrsh7th/vim-vsnip')
+  packager.add('rafamadriz/friendly-snippets')
 
-	-- Fuzzy File/Code Finder
-	-- ---
-	packager.add('junegunn/fzf', { tag = '0.32.1' })
-	packager.add('junegunn/fzf.vim', { commit = 'c491d702b76c6b4918abb80be3cfb57d1b618ffa' })
+  -- Fuzzy File/Code Finder
+  -- ---
+  packager.add('junegunn/fzf', { tag = '0.32.1' })
+  packager.add('junegunn/fzf.vim', { commit = 'c491d702b76c6b4918abb80be3cfb57d1b618ffa' })
 
-	-- Git
-	-- ---
-	packager.add('lambdalisue/gin.vim', { tag = 'v0.2.1' })
-	packager.add('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-	packager.add('airblade/vim-gitgutter', { commit = 'f19b6203191d69de955d91467a5707959572119b' })
+  -- Git
+  -- ---
+  packager.add('lambdalisue/gin.vim', { tag = 'v0.2.1' })
+  packager.add('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
+  packager.add('airblade/vim-gitgutter', { commit = 'f19b6203191d69de955d91467a5707959572119b' })
 
-	-- FileType Syntax
-	-- ---
-	packager.add('pangloss/vim-javascript')
-	packager.add('MaxMEllon/vim-jsx-pretty')
-	packager.add('heavenshell/vim-jsdoc', { ['do'] = 'make install' })
-	packager.add('posva/vim-vue')
-	packager.add('jwalton512/vim-blade')
-	packager.add('lumiliet/vim-twig')
-	packager.add('elzr/vim-json')
-	packager.add('kevinoid/vim-jsonc')
-	packager.add('junegunn/vader.vim')
-	packager.add('rajasegar/vim-astro')
-	packager.add('MTDL9/vim-log-highlighting')
+  -- FileType Syntax
+  -- ---
+  packager.add('pangloss/vim-javascript')
+  packager.add('MaxMEllon/vim-jsx-pretty')
+  packager.add('heavenshell/vim-jsdoc', { ['do'] = 'make install' })
+  packager.add('posva/vim-vue')
+  packager.add('jwalton512/vim-blade')
+  packager.add('lumiliet/vim-twig')
+  packager.add('elzr/vim-json')
+  packager.add('kevinoid/vim-jsonc')
+  packager.add('junegunn/vader.vim')
+  packager.add('rajasegar/vim-astro')
+  packager.add('MTDL9/vim-log-highlighting')
 
-	-- UI/Aesthetics
-	-- ---
-	packager.add('Yggdroot/indentLine')
-	packager.add('itchyny/lightline.vim')
-	packager.add('mengelbrecht/lightline-bufferline')
+  -- UI/Aesthetics
+  -- ---
+  packager.add('Yggdroot/indentLine')
+  packager.add('itchyny/lightline.vim')
+  packager.add('mengelbrecht/lightline-bufferline')
 
-	-- Colorschemes
-	-- ---
-	packager.add('bluz71/vim-nightfly-guicolors')
-	packager.add('bluz71/vim-moonfly-colors')
-	packager.add('gruvbox-community/gruvbox')
-	packager.add('fnune/base16-vim')
-	packager.add('rigellute/rigel')
+  -- Colorschemes
+  -- ---
+  packager.add('bluz71/vim-nightfly-guicolors')
+  packager.add('bluz71/vim-moonfly-colors')
+  packager.add('gruvbox-community/gruvbox')
+  packager.add('fnune/base16-vim')
+  packager.add('rigellute/rigel')
 end
 
 local manager = {
-	gitUrl = 'https://github.com/kristijanhusak/vim-packager',
-	destPath = string.format('%s/site/pack/packager/opt/vim-packager', vim.fn.stdpath('data')),
-	config = {
-		dir = string.format('%s/site/pack/packager', vim.fn.stdpath('data'))
-	}
+  gitUrl = 'https://github.com/kristijanhusak/vim-packager',
+  destPath = string.format('%s/site/pack/packager/opt/vim-packager', vim.fn.stdpath('data')),
+  config = {
+    dir = string.format('%s/site/pack/packager', vim.fn.stdpath('data')),
+  },
 }
 
 local isFirstTimeInstall = false
 
 if vim.fn.isdirectory(manager.destPath) == 0 then
-	print('Downloading plugin manager...')
-	vim.fn.system({ 'git', 'clone', manager.gitUrl, manager.destPath })
-	isFirstTimeInstall = true
+  print('Downloading plugin manager...')
+  vim.fn.system({ 'git', 'clone', manager.gitUrl, manager.destPath })
+  isFirstTimeInstall = true
 end
 
 vim.cmd('packadd vim-packager')
 require('packager').setup(packagerSetup, manager.config)
 
 if isFirstTimeInstall then
-	vim.cmd('PackagerInstall')
+  vim.cmd('PackagerInstall')
 end
 
 -- =============================================================================

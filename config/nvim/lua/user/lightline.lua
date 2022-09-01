@@ -36,21 +36,21 @@ function M.Setup()
     },
   }
 
-	vim.api.nvim_create_autocmd('User', {
-		group = vim.g.user.event,
-		pattern = 'ALEJobStarted',
-		command = 'call lightline#update()',
-	})
-	vim.api.nvim_create_autocmd('User', {
-		group = vim.g.user.event,
-		pattern = 'ALELintPost',
-		command = 'call lightline#update()',
-	})
-	vim.api.nvim_create_autocmd('User', {
-		group = vim.g.user.event,
-		pattern = 'ALEFixPost',
-		command = 'call lightline#update()',
-	})
+  vim.api.nvim_create_autocmd('User', {
+    group = vim.g.user.event,
+    pattern = 'ALEJobStarted',
+    command = 'call lightline#update()',
+  })
+  vim.api.nvim_create_autocmd('User', {
+    group = vim.g.user.event,
+    pattern = 'ALELintPost',
+    command = 'call lightline#update()',
+  })
+  vim.api.nvim_create_autocmd('User', {
+    group = vim.g.user.event,
+    pattern = 'ALEFixPost',
+    command = 'call lightline#update()',
+  })
 
   -- lightline-bufferline Config
   vim.g['lightline#bufferline#enable_nerdfont'] = 1
