@@ -32,7 +32,7 @@ if vim.fn.has('nvim') == 1 and vim.fn.has('nvim-0.7') == 0 then
 end
 
 -- Ensure the following tools are installed in the system
-local executables = { 'git', 'curl', 'python3', 'rg', 'deno' }
+local executables = { 'git', 'curl', 'python3', 'rg', 'deno', 'stylua', 'luacheck' }
 
 for _, exec in pairs(executables) do
   if vim.fn.executable(exec) == 0 then
