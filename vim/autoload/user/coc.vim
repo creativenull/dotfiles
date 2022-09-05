@@ -13,6 +13,18 @@ def TabCompletion(defaultKey: string): string
 enddef
 
 export def Setup(): void
+  g:coc_global_extensions = [
+    'coc-deno',
+    'coc-phpls',
+    'coc-css',
+    'coc-html',
+    'coc-json',
+    'coc-snippets',
+    'coc-tsserver',
+    'coc-vetur',
+    'coc-volar',
+  ]
+
   nmap <Leader>ld <Plug>(coc-definition)
   nmap <Leader>lf <Plug>(coc-format)
   nmap <Leader>lr <Plug>(coc-rename)
