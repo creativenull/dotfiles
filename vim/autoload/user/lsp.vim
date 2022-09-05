@@ -1,73 +1,49 @@
 vim9script
 
-# JS/TS
-const tsserver = 'typescript-language-server'
-const tsserverOpts = {
-  name: tsserver,
-  cmd: [tsserver, '--stdio'],
-  allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
-}
-
-const denols = 'deno'
-const denolsOpts = {
-  name: denols,
-  cmd: [denols, 'lsp'],
-  workspace_config: { deno: { enable: true, lint: true } },
-  allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
-}
-
-# Vue
-const vuels = 'vue-language-server'
-const vuelsOpts = {
-  name: vuels,
-  cmd: [vuels, '--stdio'],
-  allowlist: ['vue'],
-}
-
-# Go
-const gopls = 'gopls'
-const goplsOpts = {
-  name: gopls,
-  cmd: [gopls],
-  allowlist: ['go'],
-}
-
-# PHP
-const phpls = 'intelephense'
-const phplsOpts = {
-  name: phpls,
-  cmd: [phpls, '--stdio'],
-  allowlist: ['php'],
-}
+const lsp_servers = [
+  {
+    name: 'typescript-language-server',
+    cmd: ['typescript-language-server', '--stdio'],
+    allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+    condition: filereadable(getcwd() .. '/package.json') || 1,
+  },
+  {
+    name: 'deno',
+    cmd: ['deno', 'lsp'],
+    workspace_config: { deno: { enable: true, lint: true } },
+    allowlist: ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+    condition: filereadable(getcwd() .. '/deno.json') || filereadable(getcwd() .. '/deno.jsonc'),
+  },
+  {
+    name: 'vue-language-server',
+    cmd: ['vue-language-server', '--stdio'],
+    allowlist: ['vue'],
+  },
+  {
+    name: 'intelephense',
+    cmd: ['intelephense', '--stdio'],
+    allowlist: ['php'],
+  },
+]
 
 # Register LSP servers assuming they are installed in the system
 # within a custom user autocmd group.
 def RegisterServers(): void
-  augroup user_lsp_events
+  augroup UserLspRegisterGroup
 
-  # JS/TS
-  if executable(tsserver) && filereadable(getcwd() .. '/package.json')
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(tsserverOpts->copy())
-  endif
+  for lsp_server in lsp_servers
+    if executable(lsp_server.name)
+      if has_key(lsp_server, 'condition')
+        if lsp_server.condition
+          execute printf("autocmd UserLspRegisterGroup User lsp_setup call lsp#register_server(%s)", string(lsp_server))
+        endif
 
-  if executable(denols) && filereadable(getcwd() .. '/deno.json') || filereadable(getcwd() .. '/deno.jsonc')
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(denolsOpts->copy())
-  endif
+        continue
+      endif
 
-  # Vue
-  if executable(vuels)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(vuelsOpts->copy())
-  endif
-
-  # Go
-  if executable(gopls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(goplsOpts->copy())
-  endif
-
-  # PHP
-  if executable(phpls)
-    autocmd user_lsp_events User lsp_setup call lsp#register_server(phplsOpts->copy())
-  endif
+      execute printf("autocmd UserLspRegisterGroup User lsp_setup call lsp#register_server(%s)", string(lsp_server))
+    endif
+  endfor
 enddef
 
 export def SetLspBorderHighlights(): void
@@ -76,7 +52,7 @@ export def SetLspBorderHighlights(): void
 enddef
 
 export def SetLspPopupOptions(): void
-  popup_setoptions(lsp#ui#vim#output#getpreviewwinid(), {
+  popup_setoptions(lsp#document_hover_preview_winid(), {
     highlight: 'UserLspFloat',
     borderhighlight: ['UserLspFloatBorder'],
     borderchars: ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
@@ -113,10 +89,10 @@ export def Setup(): void
   RegisterServers()
 
   # Main setup
-  augroup lsp_user_events
+  augroup UserLspSetupGroup
     au!
-    autocmd User lsp_buffer_enabled call user#lsp#OnAttachedBuffer()
-    autocmd ColorScheme * call user#lsp#SetLspBorderHighlights()
-    # autocmd User lsp_float_opened call user#lsp#SetLspPopupOptions()
+    autocmd User lsp_buffer_enabled call OnAttachedBuffer()
+    autocmd ColorScheme * call SetLspBorderHighlights()
+    autocmd User lsp_float_opened call SetLspPopupOptions()
   augroup END
 enddef
