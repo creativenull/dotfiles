@@ -1,7 +1,7 @@
 vim9script
 
 export def Setup(): void
-  g:asyncomplete_popup_delay = 300
+  g:asyncomplete_popup_delay = 150
   g:asyncomplete_min_chars = 2
   g:asyncomplete_matchfuzzy = 1
 
@@ -16,7 +16,7 @@ export def Setup(): void
       blocklist: ['go'],
       completor: function('asyncomplete#sources#buffer#completor'),
       config: {
-        max_buffer_size: 2000000, # 2mb
+        max_buffer_size: 500 * 1000, # 500KB
       },
     })
   )
