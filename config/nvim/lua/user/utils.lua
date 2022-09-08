@@ -3,11 +3,13 @@ local M = {}
 -- Toggle conceal level of local buffer
 -- which is enabled by some syntax plugin
 function M.ToggleConcealLevel()
-  local cl = vim.opt.conceallevel:get()
+  local win = vim.api.nvim_get_current_win()
+  local cl = vim.api.nvim_win_get_option(win, 'conceallevel')
+
   if cl == 2 then
-    vim.opt.conceallevel = 0
+    vim.wo[win].conceallevel = 0
   else
-    vim.opt.conceallevel = 2
+    vim.wo[win].conceallevel = 2
   end
 end
 
@@ -15,7 +17,9 @@ end
 -- or for copying code from the editor w/o using "+ register
 -- when not accessible, eg from a remote ssh or WSL
 function M.ToggleCodeshot()
-  local num = vim.opt.number:get()
+  local win = vim.api.nvim_get_current_win()
+  local num = vim.api.nvim_win_get_option(win, 'number')
+
   if num then
     vim.opt.number = false
     vim.opt.signcolumn = 'no'
@@ -35,7 +39,7 @@ function M.IndentSize(size, use_spaces)
   vim.bo[buf].softtabstop = size
   vim.bo[buf].shiftwidth = 0
 
-  if vim.fn.empty(use_spaces) == 1 and use_spaces then
+  if use_spaces ~= nil then
     vim.bo[buf].expandtab = true
   else
     vim.bo[buf].expandtab = false
