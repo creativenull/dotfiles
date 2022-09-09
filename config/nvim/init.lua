@@ -448,7 +448,7 @@ local function packagerSetup(packager)
 
   -- Linters + Formatters
   -- ---
-  packager.add('dense-analysis/ale')
+  packager.add('dense-analysis/ale', { tag = 'v3.2.0' })
 
   -- Builtin LSP Configs
   -- ---
@@ -457,18 +457,18 @@ local function packagerSetup(packager)
 
   -- AutoCompletion + Sources
   -- ---
-  packager.add('Shougo/ddc.vim')
-  packager.add('matsui54/denops-signature_help')
-  packager.add('tani/ddc-fuzzy')
-  packager.add('Shougo/ddc-nvim-lsp')
-  packager.add('Shougo/ddc-around')
-  packager.add('matsui54/ddc-buffer')
-  packager.add('hrsh7th/vim-vsnip-integ')
+  packager.add('Shougo/ddc.vim', { tag = 'v2.4.0' })
+  packager.add('matsui54/denops-signature_help', { commit = '807226cf698c537c335284f5a9af79067991f930' })
+  packager.add('tani/ddc-fuzzy', { commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
+  packager.add('Shougo/ddc-nvim-lsp', { commit = '706c601d2c780039b5f8e9f7592f4d960c9af5ff' })
+  packager.add('Shougo/ddc-around', { commit = '58249707478dbd53bd4eb18c0c42770886a849d7' })
+  packager.add('matsui54/ddc-buffer', { commit = '5cce1b264d83d6cc38c0bbb044da51ec0dd92c12' })
+  packager.add('hrsh7th/vim-vsnip-integ', { commit = '64c2ed66406c58163cf81fb5e13ac2f9fcdfb52b' })
 
   -- Snippet Engine + Presets
   -- ---
-  packager.add('hrsh7th/vim-vsnip')
-  packager.add('rafamadriz/friendly-snippets')
+  packager.add('hrsh7th/vim-vsnip', { commit = '8f199ef690ed26dcbb8973d9a6760d1332449ac9' })
+  packager.add('rafamadriz/friendly-snippets', { commit = '22a99756492a340c161ab122b0ded90ab115a1b3' })
 
   -- Fuzzy File/Code Finder
   -- ---
