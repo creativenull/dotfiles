@@ -265,10 +265,11 @@ vim.keymap.set('n', '<Leader>mi', '<Cmd>imap<CR>')
 vim.keymap.set('n', '<Leader>mt', '<Cmd>tmap<CR>')
 vim.keymap.set('n', '<Leader>mc', '<Cmd>cmap<CR>')
 
--- Copy/Paste from clipboard
-vim.keymap.set('v', '<Leader>y', '"+y')
-vim.keymap.set('n', '<Leader>y', '"+y')
-vim.keymap.set('n', '<Leader>p', '"+p')
+-- Copy/Paste from sytem clipboard
+vim.keymap.set('v', 'p', [["_dP]])
+vim.keymap.set('v', '<Leader>y', [["+y]])
+vim.keymap.set('n', '<Leader>y', [["+y]])
+vim.keymap.set('n', '<Leader>p', [["+p]])
 
 -- =============================================================================
 -- = Commands (CMD) =
