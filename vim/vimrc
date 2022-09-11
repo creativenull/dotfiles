@@ -300,8 +300,9 @@ vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
 " Copy/Paste system clipboard
+vnoremap p "_dP
 nnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
+nnoremap <Leader>p <Cmd>set paste<Bar>"+p<Bar>set nopaste<CR>
 nnoremap Y y$
 
 " Format entire file with =
