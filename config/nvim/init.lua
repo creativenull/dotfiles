@@ -28,6 +28,7 @@ vim.g.do_filetype_lua = 1
 -- ---
 if vim.fn.has('nvim') == 1 and vim.fn.has('nvim-0.7') == 0 then
   print('This config requires nvim >= 0.7')
+
   return
 end
 
