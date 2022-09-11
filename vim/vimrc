@@ -323,42 +323,41 @@ function! PackagerInit() abort
   call packager#add('kristijanhusak/vim-packager', #{ type: 'opt' })
 
   " Plugin dependencies {{{
-  call packager#add('Shougo/context_filetype.vim')
-  call packager#add('lambdalisue/nerdfont.vim')
-  call packager#add('vim-denops/denops.vim')
+  call packager#add('lambdalisue/nerdfont.vim', #{ tag: 'v1.3.0' })
+  call packager#add('vim-denops/denops.vim', #{ tag: 'v3.2.0' })
   " }}}
 
   " Core {{{
-  call packager#add('cohama/lexima.vim')
-  call packager#add('creativenull/projectlocal-vim')
-  call packager#add('editorconfig/editorconfig-vim')
-  call packager#add('junegunn/vim-easy-align')
-  call packager#add('mattn/emmet-vim')
-  call packager#add('tpope/vim-abolish')
-  call packager#add('tpope/vim-repeat')
-  call packager#add('tpope/vim-surround')
-  call packager#add('tyru/caw.vim')
+  call packager#add('cohama/lexima.vim', #{ commit: 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
+  call packager#add('creativenull/projectlocal-vim', #{ tag: 'v0.4.3' })
+  call packager#add('editorconfig/editorconfig-vim', #{ commit: 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
+  call packager#add('junegunn/vim-easy-align', #{ commit: '12dd6316974f71ce333e360c0260b4e1f81169c3' })
+  call packager#add('mattn/emmet-vim', #{ commit: 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+  call packager#add('tpope/vim-abolish', #{ tag: 'v1.1' })
+  call packager#add('tpope/vim-repeat', #{ commit: '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
+  call packager#add('tpope/vim-surround', #{ tag: 'v2.2' })
+  call packager#add('Shougo/context_filetype.vim', #{ commit: '28768168261bca161c3f2599e0ed63c96aab6dea' })
+  call packager#add('tyru/caw.vim', #{ commit: '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
   " }}}
 
   " File Explorer {{{
-  call packager#add('lambdalisue/fern-renderer-nerdfont.vim')
-  call packager#add('lambdalisue/fern.vim')
-  call packager#add('lambdalisue/nerdfont.vim')
+  call packager#add('lambdalisue/fern.vim', #{ tag: 'v1.51.1' })
+  call packager#add('lambdalisue/fern-renderer-nerdfont.vim', #{ commit: '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
   " }}}
 
   " Fuzzy Finder {{{
-  call packager#add('junegunn/fzf')
-  call packager#add('junegunn/fzf.vim')
+  call packager#add('junegunn/fzf', #{ tag: '0.32.1' })
+  call packager#add('junegunn/fzf.vim', #{ commit: 'c491d702b76c6b4918abb80be3cfb57d1b618ffa' })
   " }}}
 
   " Git {{{
-  call packager#add('airblade/vim-gitgutter')
-  call packager#add('itchyny/vim-gitbranch')
-  call packager#add('lambdalisue/gin.vim')
+  call packager#add('lambdalisue/gin.vim', #{ tag: 'v0.2.1' })
+  call packager#add('itchyny/vim-gitbranch', #{ commit: '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
+  call packager#add('airblade/vim-gitgutter', #{ commit: 'f19b6203191d69de955d91467a5707959572119b' })
   " }}}
 
   " Linter and formatter configurations {{{
-  call packager#add('dense-analysis/ale')
+  call packager#add('dense-analysis/ale', #{ tag: 'v3.2.0' })
   " }}}
 
   " Auto-completion + LSP client {{{
@@ -366,42 +365,37 @@ function! PackagerInit() abort
   " }}}
 
   " LSP client {{{
-  call packager#add('prabirshrestha/vim-lsp')
-  call packager#add('rhysd/vim-lsp-ale')
+  call packager#add('prabirshrestha/vim-lsp', #{ commit: '4d8a27513daef41915eaf2d315a2662e95d71080' })
+  call packager#add('rhysd/vim-lsp-ale', #{ commit: 'db0f9a8a33c0480988dc420cd2fba8a07743e4a4' })
   " }}}
 
   " Auto-completion {{{
-  call packager#add('prabirshrestha/asyncomplete.vim')
-  call packager#add('prabirshrestha/asyncomplete-lsp.vim')
-  call packager#add('prabirshrestha/asyncomplete-buffer.vim')
+  call packager#add('Shougo/ddc.vim', #{ tag: 'v2.4.0' })
+  call packager#add('tani/ddc-fuzzy', #{ commit: '3339deacff797cc23f79a45c5e72ba0eed0af119' })
+  call packager#add('matsui54/denops-signature_help', #{ commit: '807226cf698c537c335284f5a9af79067991f930' })
+  call packager#add('shun/ddc-vim-lsp', #{ commit: '8035fe3f7cccbb75686c27e6631361650456d876' })
+  call packager#add('Shougo/ddc-around', #{ commit: '58249707478dbd53bd4eb18c0c42770886a849d7' })
+  call packager#add('matsui54/ddc-buffer', #{ commit: '5cce1b264d83d6cc38c0bbb044da51ec0dd92c12' })
   " }}}
 
-  " Auto-completion {{{
-  " call packager#add('Shougo/ddc.vim')
-  " call packager#add('tani/ddc-fuzzy')
-  " call packager#add('shun/ddc-vim-lsp')
-  " call packager#add('Shougo/ddc-around')
-  " call packager#add('matsui54/ddc-buffer')
+  " UI {{{
+  call packager#add('itchyny/lightline.vim', #{ commit: 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' })
+  call packager#add('mengelbrecht/lightline-bufferline', #{ commit: '8b6e29e65e9711b75df289879186ff3888feed00' })
+  call packager#add('Yggdroot/indentLine', #{ commit: 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
+  call packager#add('machakann/vim-highlightedyank', #{ commit: 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' })
+  call packager#add('markonm/traces.vim', #{ commit: '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' })
   " }}}
 
   " File syntax plugins {{{
-  call packager#add('MaxMEllon/vim-jsx-pretty')
   call packager#add('elzr/vim-json')
   call packager#add('kevinoid/vim-jsonc')
   call packager#add('junegunn/vader.vim')
   call packager#add('jwalton512/vim-blade')
   call packager#add('pangloss/vim-javascript')
+  call packager#add('MaxMEllon/vim-jsx-pretty')
   call packager#add('posva/vim-vue')
   call packager#add('MTDL9/vim-log-highlighting')
   call packager#add('lacygoill/vim9-syntax')
-  " }}}
-
-  " UI {{{
-  call packager#add('Yggdroot/indentLine')
-  call packager#add('machakann/vim-highlightedyank')
-  call packager#add('itchyny/lightline.vim')
-  call packager#add('mengelbrecht/lightline-bufferline')
-  call packager#add('markonm/traces.vim')
   " }}}
 
   " Colorschemes {{{
@@ -478,11 +472,11 @@ call user#gitgutter#Setup()
 
 " asyncomplete.vim Config
 " ---
-call user#asyncomplete#Setup()
+" call user#asyncomplete#Setup()
 
 " ddc.vim Config
 " ---
-" call user#ddc#Setup()
+call user#ddc#Setup()
 
 " vim-lsp Config
 " ---
