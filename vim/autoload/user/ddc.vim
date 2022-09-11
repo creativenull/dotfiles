@@ -27,6 +27,10 @@ export def Setup(): void
 
   # Register global options
   ddc#custom#patch_global({
+    autoCompleteDelay: 50,
+    overwriteCompleteopt: false,
+    backspaceCompletion: true,
+    smartCase: true,
     sources: sources,
     sourceOptions: sourceOptions,
   })
@@ -38,7 +42,5 @@ export def Setup(): void
   inoremap <expr> <C-@> ddc#map#manual_complete()
 
   augroup ddc_user_events
-    autocmd!
-    autocmd VimEnter * call ddc#enable()
-  augroup END
+  autocmd ddc_user_events VimEnter * call ddc#enable()
 enddef
