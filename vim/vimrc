@@ -51,7 +51,6 @@ let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
 for s:exec in s:exec_list
   if !executable(s:exec)
     echoerr printf('[vim] `%s` is needed!', s:exec)
-
     finish
   endif
 endfor
@@ -63,7 +62,6 @@ endfor
 if has('win32')
   if !executable('pwsh')
     echoerr '[vim] PowerShell Core >= v6 is required!'
-
     finish
   endif
 
