@@ -11,6 +11,11 @@
 " = User Initialize (USER) =
 " =============================================================================
 
+if !has('vim9script')
+  echoerr '[vim] Vim 9 is required for this config!'
+  finish
+endif
+
 let mapleader = "\<Space>"
 
 let g:user = {}
