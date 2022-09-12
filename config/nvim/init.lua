@@ -480,6 +480,12 @@ local function packagerSetup(packager)
   packager.add('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
   packager.add('airblade/vim-gitgutter', { commit = 'f19b6203191d69de955d91467a5707959572119b' })
 
+  -- UI/Aesthetics
+  -- ---
+  packager.add('Yggdroot/indentLine', { commit = 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
+  packager.add('itchyny/lightline.vim', { commit = 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' })
+  packager.add('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
+
   -- FileType Syntax
   -- ---
   packager.add('pangloss/vim-javascript')
@@ -493,12 +499,6 @@ local function packagerSetup(packager)
   packager.add('junegunn/vader.vim')
   packager.add('rajasegar/vim-astro')
   packager.add('MTDL9/vim-log-highlighting')
-
-  -- UI/Aesthetics
-  -- ---
-  packager.add('Yggdroot/indentLine')
-  packager.add('itchyny/lightline.vim')
-  packager.add('mengelbrecht/lightline-bufferline')
 
   -- Colorschemes
   -- ---
