@@ -448,11 +448,13 @@ local function packagerSetup(packager)
   -- Linters + Formatters
   -- ---
   packager.add('dense-analysis/ale', { tag = 'v3.2.0' })
+  packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
+  packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.2', ['type'] = 'opt' })
+  packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.7', ['type'] = 'opt' })
 
   -- Builtin LSP Configs
   -- ---
   packager.add('neovim/nvim-lspconfig', { tag = 'v0.1.3' })
-  packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
 
   -- AutoCompletion + Sources
   -- ---
