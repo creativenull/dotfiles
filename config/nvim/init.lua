@@ -414,6 +414,11 @@ vim.g.vim_json_syntax_conceal = 0
 -- ---
 vim.g.javascript_plugin_jsdoc = 1
 
+-- lexima Config
+-- ---
+vim.g.lexima_enable_endwise_rules = 0
+vim.g.lexima_enable_newline_rules = 0
+
 -- =============================================================================
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
