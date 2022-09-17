@@ -428,16 +428,17 @@ local function packagerSetup(packager)
 
   -- Core
   -- ---
-  packager.add('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
-  packager.add('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
-  packager.add('tpope/vim-surround', { tag = 'v2.2' })
-  packager.add('tpope/vim-abolish', { tag = 'v1.1' })
-  packager.add('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
   packager.add('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
-  packager.add('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
-  packager.add('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
-  packager.add('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+  packager.add('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
   packager.add('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
+  packager.add('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
+  packager.add('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
+  packager.add('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+  packager.add('tpope/vim-abolish', { tag = 'v1.1' })
+  packager.add('tpope/vim-endwise', { commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
+  packager.add('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
+  packager.add('tpope/vim-surround', { tag = 'v2.2' })
+  packager.add('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
 
   -- File Explorer + Addons
   -- ---
