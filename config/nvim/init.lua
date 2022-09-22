@@ -31,25 +31,35 @@ end
 
 -- Pre-checks
 -- ---
-if vim.fn.has('nvim') == 1 and vim.fn.has('nvim-0.7') == 0 then
-  print('This config requires nvim >= 0.7')
+if vim.fn.has('nvim-0.7') == 0 then
+  local errmsg = debug.traceback('This config requires nvim >= 0.7')
+  vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
   return
 end
 
 -- Ensure the following tools are installed in the system
-local executables = { 'git', 'curl', 'python3', 'rg', 'deno', 'stylua', 'luacheck' }
+local required_execs = { 'git', 'curl', 'rg', 'deno' }
+local optional_execs = { 'python3', 'stylua', 'luacheck' }
 
-for _, exec in pairs(executables) do
+for _, exec in pairs(required_execs) do
   if vim.fn.executable(exec) == 0 then
-    print(string.format('[nvim] `%s` is needed!', exec))
+    local errmsg = debug.traceback(string.format('[nvim] `%s` is needed!', exec))
+    vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
     return
+  end
+end
+
+for _, exec in pairs(optional_execs) do
+  if vim.fn.executable(exec) == 0 then
+    vim.api.nvim_echo({ { string.format('[nvim] `%s` not found, but optional', exec), 'WarningMsg' } }, true, {})
   end
 end
 
 -- Windows specific settings
 if vim.fn.has('win32') == 1 then
   if vim.fn.executable('pwsh') == 0 then
-    print('[nvim] PowerShell Core >= v6 is required on Windows!')
+    local errmsg = debug.traceback('[nvim] PowerShell Core >= v6 is required on Windows!')
+    vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
     return
   end
 
