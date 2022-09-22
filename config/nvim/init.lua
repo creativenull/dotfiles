@@ -21,6 +21,9 @@ vim.g.user = {
   },
 }
 
+-- Global user group to register other custom autocmds
+vim.api.nvim_create_augroup(vim.g.user.event, {})
+
 -- TODO: remove once upgraded to 0.8
 vim.g.do_filetype_lua = 1
 
@@ -75,9 +78,6 @@ vim.g.loaded_perl_provider = 0
 -- =============================================================================
 -- = Events (AUG) =
 -- =============================================================================
-
--- Global user group to register other custom autocmds
-vim.api.nvim_create_augroup(vim.g.user.event, {})
 
 -- From vim defaults.vim
 -- ---
