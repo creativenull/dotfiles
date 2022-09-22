@@ -25,7 +25,9 @@ vim.g.user = {
 vim.api.nvim_create_augroup(vim.g.user.event, {})
 
 -- TODO: remove once upgraded to 0.8
-vim.g.do_filetype_lua = 1
+if vim.fn.has('nvim-0.8') == 0 then
+  vim.g.do_filetype_lua = 1
+end
 
 -- Pre-checks
 -- ---
