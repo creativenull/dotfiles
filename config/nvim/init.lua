@@ -524,9 +524,9 @@ local function packagerSetup(packager)
   -- ---
   packager.add('bluz71/vim-nightfly-guicolors')
   packager.add('bluz71/vim-moonfly-colors')
-  packager.add('gruvbox-community/gruvbox')
   packager.add('fnune/base16-vim')
-  packager.add('rigellute/rigel')
+  packager.add('rebelot/kanagawa.nvim')
+  packager.add('catppuccin/nvim')
 end
 
 local manager = {
@@ -597,12 +597,17 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   desc = 'Set custom higlights for moonfly theme only',
 })
 
--- gruvbox Config
+-- catppuccin Config
 -- ---
-vim.g.gruvbox_bold = 0
-vim.g.gruvbox_italic = 0
-vim.g.gruvbox_contrast_dark = 'hard'
-vim.g.gruvbox_invert_selection = 0
-vim.g.gruvbox_sign_column = 'bg0'
+pcall(function()
+  vim.g.catppuccin_flavour = 'mocha' -- latte, frappe, macchiato, mocha
+  require('catppuccin').setup({ transparent_background = true })
+end)
 
-vim.cmd('colorscheme moonfly')
+-- kanagawa Config
+-- ---
+pcall(function()
+  require('kanagawa').setup({ transparent = true })
+end)
+
+vim.cmd('colorscheme catppuccin')
