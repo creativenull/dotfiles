@@ -506,6 +506,14 @@ local function packagerSetup(packager)
   packager.add('itchyny/lightline.vim', { commit = 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' })
   packager.add('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
 
+  -- TreeSitter
+  -- ---
+  -- packager.add('nvim-treesitter/nvim-treesitter', {
+  --   ['do'] = function()
+  --     vim.cmd('TSUpdate')
+  --   end,
+  -- })
+
   -- FileType Syntax
   -- ---
   packager.add('pangloss/vim-javascript')
@@ -555,6 +563,10 @@ end
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
+
+--- nvim-treesitter Config
+-- ---
+-- require('user.treesitter')
 
 -- nvim-lspconfig Config
 -- ---
