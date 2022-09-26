@@ -163,15 +163,15 @@ if vim.fn.isdirectory(vim.g.user.config.undodir) == 0 then
 end
 
 -- Completion
-vim.opt.completeopt = 'menuone,noinsert,noselect'
+vim.opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
 vim.opt.shortmess:append('c')
 
 -- Search
 vim.opt.showmatch = true
 vim.opt.smartcase = true
 vim.opt.ignorecase = true
-vim.opt.path = '**'
-vim.opt.wildignore = '*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*'
+vim.opt.path = { '**' }
+vim.opt.wildignore = { '*.git/*', '*node_modules/*', '*vendor/*', '*dist/*', '*build/*' }
 
 -- Editor
 vim.opt.colorcolumn = '120'
@@ -201,7 +201,7 @@ end
 
 -- UI
 vim.opt.cmdheight = 2
-vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:block,r-cr-o:hor20'
+vim.opt.guicursor = { 'n-v-c-sm:block', 'i-ci-ve:block', 'r-cr-o:hor20' }
 vim.opt.number = true
 vim.opt.showtabline = 2
 vim.opt.signcolumn = 'yes'
