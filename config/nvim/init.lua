@@ -508,11 +508,11 @@ local function packagerSetup(packager)
 
   -- TreeSitter
   -- ---
-  -- packager.add('nvim-treesitter/nvim-treesitter', {
-  --   ['do'] = function()
-  --     vim.cmd('TSUpdate')
-  --   end,
-  -- })
+  packager.add('nvim-treesitter/nvim-treesitter', {
+    ['do'] = function()
+      vim.cmd('TSUpdate')
+    end,
+  })
 
   -- FileType Syntax
   -- ---
@@ -566,7 +566,7 @@ end
 
 --- nvim-treesitter Config
 -- ---
--- require('user.treesitter')
+require('user.treesitter')
 
 -- nvim-lspconfig Config
 -- ---
