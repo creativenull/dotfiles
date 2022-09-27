@@ -622,4 +622,4 @@ pcall(function()
   require('kanagawa').setup({ transparent = true })
 end)
 
-vim.cmd('colorscheme catppuccin')
+vim.cmd('colorscheme moonfly')
