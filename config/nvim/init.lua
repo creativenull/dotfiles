@@ -125,7 +125,7 @@ vim.api.nvim_create_autocmd('FileType', {
     'lua',
   },
   callback = function()
-    require('user.utils').IndentSize(2, true)
+    require('user.utils').indent_size(2, true)
   end,
   desc = 'Set code indents',
 })
@@ -134,7 +134,7 @@ vim.api.nvim_create_autocmd('FileType', {
   group = vim.g.user.event,
   pattern = { 'markdown', 'php', 'blade', 'html' },
   callback = function()
-    require('user.utils').IndentSize(4, true)
+    require('user.utils').indent_size(4, true)
     vim.opt.iskeyword:append('-')
   end,
   desc = 'Set code indents',
@@ -144,7 +144,7 @@ vim.api.nvim_create_autocmd('FileType', {
   group = vim.g.user.event,
   pattern = { 'vue' },
   callback = function()
-    require('user.utils').IndentSize(2, true)
+    require('user.utils').indent_size(2, true)
     vim.opt.iskeyword:append('-')
   end,
   desc = 'Set code indents',
@@ -292,12 +292,12 @@ vim.api.nvim_create_user_command('ConfigReload', 'source $MYVIMRC | nohlsearch',
 
 vim.api.nvim_create_user_command(
   'ToggleConcealLevel',
-  require('user.utils').ToggleConcealLevel,
+  require('user.utils').toggle_conceal_level,
   { desc = 'Toggle the conceals in editor' }
 )
 vim.api.nvim_create_user_command(
   'ToggleCodeshot',
-  require('user.utils').ToggleCodeshot,
+  require('user.utils').toggle_codeshot,
   { desc = 'Toggle features to enable copying from terminal' }
 )
 
