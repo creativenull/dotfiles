@@ -316,16 +316,7 @@ vim.cmd('cnoreabbrev Wq wq')
 
 -- vim-vsnip Config
 -- ---
-vim.g.vsnip_extra_mapping = false
-vim.g.vsnip_filetypes = {
-  javascriptreact = { 'javascript' },
-  typescriptreact = { 'typescript' },
-}
-
-vim.keymap.set('i', '<C-j>', [[vsnip#jumpable(1)  ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], { expr = true })
-vim.keymap.set('i', '<C-j>', [[vsnip#jumpable(1)  ? "\<Plug>(vsnip-jump-next)" : "\<C-j>"]], { expr = true })
-vim.keymap.set('s', '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], { expr = true })
-vim.keymap.set('s', '<C-k>', [[vsnip#jumpable(-1) ? "\<Plug>(vsnip-jump-prev)" : "\<C-k>"]], { expr = true })
+require('user.vsnip').Setup()
 
 -- vim-vue Config
 -- ---
