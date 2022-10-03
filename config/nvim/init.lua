@@ -525,7 +525,7 @@ local function packagerSetup(packager)
   packager.add('bluz71/vim-moonfly-colors')
   packager.add('fnune/base16-vim')
   packager.add('rebelot/kanagawa.nvim')
-  packager.add('catppuccin/nvim')
+  packager.add('catppuccin/nvim', { name = 'catppuccin' })
 end
 
 local manager = {
