@@ -1,23 +1,5 @@
 local M = {}
 
--- Accept completion from ddc.vim or from vsnip
-local function confirm_completion(default)
-  if vim.call('ddc#map#pum_visible') == 1 then
-    if vim.call('vsnip#expandable') == 1 then
-      return '<Plug>(vsnip-expand)'
-    elseif vim.call('ddc#map#can_complete') == 1 then
-      return vim.call('ddc#map#extend')
-    end
-  end
-
-  return default
-end
-
-local function enable()
-  vim.call('ddc#enable')
-  vim.call('signature_help#enable')
-end
-
 function M.Setup()
   local sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' }
 
@@ -93,21 +75,28 @@ function M.Setup()
 
   -- Insert selected completion item and close menu
   vim.keymap.set('i', '<C-y>', function()
-    return confirm_completion('<C-y>')
-  end, { expr = true, desc = 'Insert selected completion item and close menu' })
+    if vim.call('ddc#map#pum_visible') == 1 and vim.call('ddc#map#can_complete') == 1 then
+      return vim.call('ddc#map#extend')
+    end
+
+    return '<C-y>'
+  end, { expr = true, desc = '[ddc.vim] Insert item from menu provided by ddc' })
 
   -- Manually open the completion menu
   vim.keymap.set(
     'i',
     '<C-Space>',
     'ddc#map#manual_complete()',
-    { expr = true, desc = 'Manually open the completion menu' }
+    { expr = true, desc = '[ddc.vim] Manually open popup menu' }
   )
 
   vim.api.nvim_create_autocmd('VimEnter', {
     group = vim.g.user.event,
-    callback = enable,
-    desc = 'Enable ddc by default',
+    callback = function()
+      vim.call('ddc#enable')
+      vim.call('signature_help#enable')
+    end,
+    desc = '[ddc.vim] Enable autocompletion by on startup',
   })
 end
 
