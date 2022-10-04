@@ -467,12 +467,12 @@ local function packagerSetup(packager)
 
   -- AutoCompletion + Sources
   -- ---
-  packager.add('Shougo/ddc.vim', { tag = 'v2.4.0' })
-  packager.add('matsui54/denops-signature_help', { commit = '807226cf698c537c335284f5a9af79067991f930' })
+  packager.add('Shougo/ddc.vim', { tag = 'v2.5.1' })
+  packager.add('matsui54/denops-signature_help', { commit = 'f77f9c9b578e425908e34875c58ae2134984acfa' })
   packager.add('tani/ddc-fuzzy', { commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
-  packager.add('Shougo/ddc-nvim-lsp', { commit = '706c601d2c780039b5f8e9f7592f4d960c9af5ff' })
-  packager.add('Shougo/ddc-around', { commit = '58249707478dbd53bd4eb18c0c42770886a849d7' })
-  packager.add('matsui54/ddc-buffer', { commit = '5cce1b264d83d6cc38c0bbb044da51ec0dd92c12' })
+  packager.add('Shougo/ddc-nvim-lsp', { commit = 'f0a34fa80fa80091c47b1c22b46a978b4f1dc221' })
+  packager.add('Shougo/ddc-around', { commit = 'c30a1844509c424f2e59550db856dfb1bc0f24eb' })
+  packager.add('matsui54/ddc-buffer', { commit = '9df18ccc37ed8dca6c1523b02ee510df480b9d3a' })
   packager.add('hrsh7th/vim-vsnip-integ', { commit = '64c2ed66406c58163cf81fb5e13ac2f9fcdfb52b' })
 
   -- Snippet Engine + Presets
