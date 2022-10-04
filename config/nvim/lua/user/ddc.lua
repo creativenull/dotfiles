@@ -87,17 +87,11 @@ function M.Setup()
     'i',
     '<C-Space>',
     'ddc#map#manual_complete()',
-    { expr = true, desc = '[ddc.vim] Manually open popup menu' }
+    { replace_keycodes = false, expr = true, desc = '[ddc.vim] Manually open popup menu' }
   )
 
-  vim.api.nvim_create_autocmd('VimEnter', {
-    group = vim.g.user.event,
-    callback = function()
-      vim.call('ddc#enable')
-      vim.call('signature_help#enable')
-    end,
-    desc = '[ddc.vim] Enable autocompletion by on startup',
-  })
+  vim.call('ddc#enable')
+  vim.call('signature_help#enable')
 end
 
 return M
