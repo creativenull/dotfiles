@@ -482,8 +482,8 @@ local function packagerSetup(packager)
 
   -- Fuzzy File/Code Finder
   -- ---
-  packager.add('junegunn/fzf', { tag = '0.32.1' })
-  packager.add('junegunn/fzf.vim', { commit = 'c491d702b76c6b4918abb80be3cfb57d1b618ffa' })
+  packager.add('junegunn/fzf', { tag = '0.34.0' })
+  packager.add('junegunn/fzf.vim', { commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
 
   -- Git
   -- ---
