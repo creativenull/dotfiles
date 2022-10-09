@@ -195,7 +195,9 @@ vim.opt.undofile = true
 vim.opt.undolevels = 10000
 vim.opt.updatetime = 500
 
-if vim.fn.has('wsl') == 0 then
+if vim.fn.has('wsl') == 1 then
+  vim.opt.mouse = ''
+else
   vim.opt.mouse = 'nv'
 end
 
