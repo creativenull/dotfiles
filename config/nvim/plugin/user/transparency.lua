@@ -5,7 +5,7 @@ end
 if vim.g.user.transparent then
   vim.api.nvim_create_autocmd('ColorScheme', {
     group = vim.g.user.event,
-    command = 'call transparency#setHighlights()',
+    command = 'echomsg "WIP"',
     desc = 'Set transparent highlights when enabled',
   })
 end

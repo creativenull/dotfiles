@@ -381,7 +381,9 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 vim.api.nvim_create_autocmd('ColorScheme', {
   group = vim.g.user.event,
-  command = 'highlight! default link CursorLine Visual',
+  callback = function()
+    vim.api.nvim_set_hl(0, 'CursorLine', { link = 'Visual', default = true })
+  end,
   desc = 'Set custom line highlight in fern',
 })
 
@@ -598,7 +600,9 @@ vim.g.moonflyItalics = 0
 
 vim.api.nvim_create_autocmd('ColorScheme', {
   group = vim.g.user.event,
-  command = 'highlight! ColorColumn guibg=#777777',
+  callback = function()
+    vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#777777' })
+  end,
   desc = 'Set custom higlights for moonfly theme only',
 })
 
