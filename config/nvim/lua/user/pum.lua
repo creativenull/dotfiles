@@ -12,7 +12,7 @@ local function confirm(default)
   return default
 end
 
-function M.Setup()
+function M.setup()
   -- Keymaps
   vim.keymap.set('i', '<C-n>', 'pum#map#insert_relative(+1)', { expr = true })
   vim.keymap.set('i', '<C-p>', 'pum#map#insert_relative(-1)', { expr = true })

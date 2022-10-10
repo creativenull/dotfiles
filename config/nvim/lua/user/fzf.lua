@@ -22,7 +22,7 @@ local function fzf_window_setup()
   })
 end
 
-function M.Setup()
+function M.setup()
   -- Vars
   vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
   vim.env.FZF_DEFAULT_OPTS = '--reverse'

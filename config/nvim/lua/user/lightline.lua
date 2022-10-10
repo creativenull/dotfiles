@@ -1,6 +1,6 @@
 local M = {}
 
-function M.Setup()
+function M.setup()
   vim.g.lightline = {
     colorscheme = 'tailwind_cnull',
     enable = { statusline = 1, tabline = 1 },

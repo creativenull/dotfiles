@@ -20,7 +20,7 @@ local function jump_prev(default_key)
   end
 end
 
-function M.Setup()
+function M.setup()
   vim.g.vsnip_filetypes = {
     javascriptreact = { 'javascript' },
     typescriptreact = { 'typescript' },

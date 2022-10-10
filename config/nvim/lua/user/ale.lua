@@ -1,6 +1,6 @@
 local M = {}
 
-function M.Setup()
+function M.setup()
   -- Vars
   vim.g.ale_disable_lsp = 1
   vim.g.ale_completion_enabled = 0

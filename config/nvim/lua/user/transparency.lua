@@ -1,6 +1,6 @@
 local M = {}
 
-function M.SetHighlights()
+function M.set_hls()
   -- Core highlights to make transparent
   vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })

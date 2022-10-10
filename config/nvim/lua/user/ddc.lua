@@ -1,6 +1,6 @@
 local M = {}
 
-function M.Setup()
+function M.setup()
   local sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' }
 
   local sourceOptions = {

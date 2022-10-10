@@ -318,7 +318,7 @@ vim.cmd('cnoreabbrev Wq wq')
 
 -- vim-vsnip Config
 -- ---
-require('user.vsnip').Setup()
+require('user.vsnip').setup()
 
 -- vim-vue Config
 -- ---
@@ -567,7 +567,7 @@ packager_bootstrap()
 
 --- nvim-treesitter Config
 -- ---
-require('user.treesitter')
+require('user.treesitter').setup()
 
 -- nvim-lspconfig Config
 -- ---
@@ -575,7 +575,7 @@ require('user.lsp')
 
 -- fzf.vim Config
 -- ---
-require('user.fzf').Setup()
+require('user.fzf').setup()
 
 -- pum.vim Config
 -- ---
@@ -584,15 +584,15 @@ require('user.fzf').Setup()
 
 -- ddc.vim Config
 -- ---
-require('user.ddc').Setup()
+require('user.ddc').setup()
 
 -- ale Config
 -- ---
-require('user.ale').Setup()
+require('user.ale').setup()
 
 -- lightline.vim Config
 -- ---
-require('user.lightline').Setup()
+require('user.lightline').setup()
 
 -- =============================================================================
 -- = Colorscheme =
