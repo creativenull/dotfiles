@@ -367,8 +367,8 @@ vim.g['fern#hide_cursor'] = 1
 
 vim.keymap.set('n', '<Leader>ff', '<Cmd>Fern . -reveal=%<CR>')
 
-local function setFernKeymaps()
-  local buf = vim.api.nvim_get_current_buf()
+local function set_fern_keymaps(autocmd_args)
+  local buf = autocmd_args.buf
   vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = buf })
   vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true, buffer = buf })
 end
@@ -376,7 +376,7 @@ end
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.g.user.event,
   pattern = 'fern',
-  callback = setFernKeymaps,
+  callback = set_fern_keymaps,
   desc = 'Set custom fern keymaps',
 })
 vim.api.nvim_create_autocmd('ColorScheme', {
@@ -389,8 +389,10 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 -- gin.vim Config
 -- ---
+local gin = {}
+
 -- Push from git repo, notify user since this is async
-local function ginPushOrigin()
+gin.push_origin = function()
   local branch = vim.call('gitbranch#name')
   local cmd = string.format('Gin push origin %s', branch)
   print(cmd)
@@ -398,7 +400,7 @@ local function ginPushOrigin()
 end
 
 -- Pull from git repo, notify user since this is async
-local function ginPullOrigin()
+gin.pull_origin = function()
   local branch = vim.call('gitbranch#name')
   local cmd = string.format('Gin pull origin %s', branch)
   print(cmd)
@@ -406,10 +408,10 @@ local function ginPullOrigin()
 end
 
 vim.keymap.set('n', '<Leader>gs', '<Cmd>GinStatus<CR>')
-vim.keymap.set('n', '<Leader>gp', ginPushOrigin, { desc = 'Git push to origin from default branch' })
-vim.keymap.set('n', '<Leader>gpp', '<Cmd>call :Gin push origin ')
-vim.keymap.set('n', '<Leader>gl', ginPullOrigin, { desc = 'Git pull from origin from default branch' })
-vim.keymap.set('n', '<Leader>gll', '<Cmd>call :Gin pull origin ')
+vim.keymap.set('n', '<Leader>gp', gin.push_origin, { desc = 'Git push to origin from default branch' })
+vim.keymap.set('n', '<Leader>gpp', ':Gin push origin ')
+vim.keymap.set('n', '<Leader>gl', gin.pull_origin, { desc = 'Git pull from origin from default branch' })
+vim.keymap.set('n', '<Leader>gll', ':Gin pull origin ')
 vim.keymap.set('n', '<Leader>gb', '<Cmd>GinBranch<CR>')
 vim.keymap.set('n', '<Leader>gc', '<Cmd>Gin commit<CR>')
 
@@ -430,7 +432,7 @@ vim.g.lexima_enable_newline_rules = 0
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
 
-local function packagerSetup(packager)
+local function packager_setup(packager)
   packager.add('kristijanhusak/vim-packager', { ['type'] = 'opt' })
 
   -- Deps
@@ -532,28 +534,32 @@ local function packagerSetup(packager)
   packager.add('catppuccin/nvim', { name = 'catppuccin' })
 end
 
-local manager = {
-  gitUrl = 'https://github.com/kristijanhusak/vim-packager',
-  destPath = string.format('%s/site/pack/packager/opt/vim-packager', vim.fn.stdpath('data')),
-  config = {
-    dir = string.format('%s/site/pack/packager', vim.fn.stdpath('data')),
-  },
-}
+local function packager_bootstrap()
+  local manager = {
+    git_url = 'https://github.com/kristijanhusak/vim-packager',
+    local_path = string.format('%s/site/pack/packager/opt/vim-packager', vim.fn.stdpath('data')),
+    config = {
+      dir = string.format('%s/site/pack/packager', vim.fn.stdpath('data')),
+    },
+  }
 
-local isFirstTimeInstall = false
+  local is_first_time = false
 
-if vim.fn.isdirectory(manager.destPath) == 0 then
-  print('Downloading plugin manager...')
-  vim.fn.system({ 'git', 'clone', manager.gitUrl, manager.destPath })
-  isFirstTimeInstall = true
+  if vim.fn.isdirectory(manager.local_path) == 0 then
+    print('Downloading plugin manager...')
+    vim.fn.system({ 'git', 'clone', manager.git_url, manager.local_path })
+    is_first_time = true
+  end
+
+  vim.cmd('packadd vim-packager')
+  require('packager').setup(packager_setup, manager.config)
+
+  if is_first_time then
+    vim.cmd('PackagerInstall')
+  end
 end
 
-vim.cmd('packadd vim-packager')
-require('packager').setup(packagerSetup, manager.config)
-
-if isFirstTimeInstall then
-  vim.cmd('PackagerInstall')
-end
+packager_bootstrap()
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
