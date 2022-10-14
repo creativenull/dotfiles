@@ -481,6 +481,14 @@ local function packager_setup(packager)
   packager.add('matsui54/ddc-buffer', { commit = '9df18ccc37ed8dca6c1523b02ee510df480b9d3a' })
   packager.add('hrsh7th/vim-vsnip-integ', { commit = '64c2ed66406c58163cf81fb5e13ac2f9fcdfb52b' })
 
+  -- AutoCompletion + Sources
+  -- ---
+  -- packager.add('hrsh7th/nvim-cmp')
+  -- packager.add('hrsh7th/cmp-nvim-lsp')
+  -- packager.add('hrsh7th/cmp-buffer')
+  -- packager.add('hrsh7th/cmp-vsnip')
+  -- packager.add('onsails/lspkind.nvim')
+
   -- Snippet Engine + Presets
   -- ---
   packager.add('hrsh7th/vim-vsnip', { commit = '8f199ef690ed26dcbb8973d9a6760d1332449ac9' })
@@ -585,6 +593,10 @@ require('user.fzf').setup()
 -- ddc.vim Config
 -- ---
 require('user.ddc').setup()
+
+-- nvim-cmp Config
+-- ---
+-- require('user.cmp').setup()
 
 -- ale Config
 -- ---
