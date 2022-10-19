@@ -449,6 +449,7 @@ local function packager_setup(packager)
   -- ---
   packager.add('vim-denops/denops.vim', { tag = 'v3.2.0' })
   packager.add('lambdalisue/nerdfont.vim', { tag = 'v1.3.0' })
+  packager.add('nvim-lua/plenary.nvim', { commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' })
 
   -- Core
   -- ---
@@ -474,12 +475,13 @@ local function packager_setup(packager)
   -- ---
   packager.add('dense-analysis/ale', { tag = 'v3.2.0' })
   packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
-  packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.2', ['type'] = 'opt' })
-  packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.7', ['type'] = 'opt' })
 
   -- Builtin LSP Configs
   -- ---
   packager.add('neovim/nvim-lspconfig')
+  packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.2', ['type'] = 'opt' })
+  packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.7', ['type'] = 'opt' })
+  packager.add('jose-elias-alvarez/null-ls.nvim', { commit = '643c67a296711ff40f1a4d1bec232fa20b179b90' })
 
   -- AutoCompletion + Sources
   -- ---
@@ -628,14 +630,6 @@ vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
 vim.g.moonflyItalics = 0
 
-vim.api.nvim_create_autocmd('ColorScheme', {
-  group = vim.g.user.event,
-  callback = function()
-    vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#777777' })
-  end,
-  desc = 'Set custom higlights for moonfly theme only',
-})
-
 -- catppuccin Config
 -- ---
 pcall(function()
@@ -664,4 +658,4 @@ pcall(function()
   require('nightfox').setup()
 end)
 
-pcall(vim.cmd, 'colorscheme kanagawa')
+pcall(vim.cmd, 'colorscheme moonfly')
