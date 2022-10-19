@@ -547,13 +547,9 @@ local function packager_setup(packager)
 
   -- Colorschemes
   -- ---
-  packager.add('bluz71/vim-nightfly-guicolors')
   packager.add('bluz71/vim-moonfly-colors')
   packager.add('fnune/base16-vim')
-  packager.add('rebelot/kanagawa.nvim')
-  packager.add('catppuccin/nvim', { name = 'catppuccin' })
-  packager.add('folke/tokyonight.nvim')
-  packager.add('EdenEast/nightfox.nvim')
+  packager.add('olimorris/onedarkpro.nvim')
 end
 
 local function packager_bootstrap()
@@ -630,32 +626,10 @@ vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
 vim.g.moonflyItalics = 0
 
--- catppuccin Config
+-- onedarkpro Config
 -- ---
 pcall(function()
-  vim.g.catppuccin_flavour = 'mocha' -- latte, frappe, macchiato, mocha
-  require('catppuccin').setup({ transparent_background = true })
+  require('onedarkpro').setup({ theme = 'onedark_dark' })
 end)
 
--- kanagawa Config
--- ---
-pcall(function()
-  require('kanagawa').setup({
-    dimInactive = true,
-    globalStatus = true,
-  })
-end)
-
--- tokyonight Config
--- ---
-pcall(function()
-  require('tokyonight').setup({ style = 'night' })
-end)
-
--- nightfox Config
--- ---
-pcall(function()
-  require('nightfox').setup()
-end)
-
-pcall(vim.cmd, 'colorscheme moonfly')
+pcall(vim.cmd, 'colorscheme onedarkpro')
