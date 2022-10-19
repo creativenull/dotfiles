@@ -550,6 +550,8 @@ local function packager_setup(packager)
   packager.add('fnune/base16-vim')
   packager.add('rebelot/kanagawa.nvim')
   packager.add('catppuccin/nvim', { name = 'catppuccin' })
+  packager.add('folke/tokyonight.nvim')
+  packager.add('EdenEast/nightfox.nvim')
 end
 
 local function packager_bootstrap()
@@ -644,7 +646,22 @@ end)
 -- kanagawa Config
 -- ---
 pcall(function()
-  require('kanagawa').setup({ transparent = true })
+  require('kanagawa').setup({
+    dimInactive = true,
+    globalStatus = true,
+  })
 end)
 
-vim.cmd('colorscheme moonfly')
+-- tokyonight Config
+-- ---
+pcall(function()
+  require('tokyonight').setup({ style = 'night' })
+end)
+
+-- nightfox Config
+-- ---
+pcall(function()
+  require('nightfox').setup()
+end)
+
+pcall(vim.cmd, 'colorscheme kanagawa')
