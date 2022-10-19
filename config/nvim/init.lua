@@ -518,7 +518,7 @@ local function packager_setup(packager)
   -- UI/Aesthetics
   -- ---
   packager.add('Yggdroot/indentLine', { commit = 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
-  packager.add('itchyny/lightline.vim', { commit = 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' })
+  packager.add('itchyny/lightline.vim', { commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
   packager.add('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
 
   -- TreeSitter
