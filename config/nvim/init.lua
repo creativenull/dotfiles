@@ -479,7 +479,7 @@ local function packager_setup(packager)
 
   -- Builtin LSP Configs
   -- ---
-  packager.add('neovim/nvim-lspconfig', { tag = 'v0.1.3' })
+  packager.add('neovim/nvim-lspconfig')
 
   -- AutoCompletion + Sources
   -- ---
