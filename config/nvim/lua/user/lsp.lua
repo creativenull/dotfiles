@@ -71,6 +71,7 @@ vim.diagnostic.config({
   virtual_text = false,
   signs = false,
   update_in_insert = false,
+  float = { source = 'if_many' },
 })
 
 -- Add border to hover documentation
