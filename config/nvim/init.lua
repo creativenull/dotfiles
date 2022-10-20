@@ -527,7 +527,7 @@ local function packager_setup(packager)
   -- ---
   packager.add('nvim-treesitter/nvim-treesitter', {
     ['do'] = function()
-      vim.cmd('TSUpdate')
+      require('nvim-treesitter.install').update({ with_sync = true })
     end,
   })
 
