@@ -15,7 +15,7 @@
 vim.g.user = {
   leaderkey = ' ',
   transparent = false,
-  event = 'UserEvents',
+  event = 'UserGroup',
   config = {
     undodir = vim.fn.stdpath('cache') .. '/undo',
   },
