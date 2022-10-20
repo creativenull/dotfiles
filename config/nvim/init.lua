@@ -620,11 +620,27 @@ require('user.lightline').setup()
 -- = Colorscheme =
 -- =============================================================================
 
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = vim.g.user.event,
+  callback = function()
+    -- Don't want any bold or underlines on the tabline
+    -- vim.cmd('highlight Tabline gui=NONE')
+    -- vim.api.nvim_set_hl(0, 'TabLine', { bold = false, underline = false, undercurl = false, italic = false })
+
+    -- Show different color in substitution mode aka `:substitute` / `:s`
+    -- vim.cmd('highlight IncSearch gui=NONE guibg=#103da5 guifg=#eeeeee')
+    vim.api.nvim_set_hl(0, 'IncSearch', { bg = '#103da5', fg = '#eeeeee' })
+
+    -- Custom WinSeparator colors
+    vim.api.nvim_set_hl(0, 'WinSeparator', { bg = 'NONE', fg = '#eeeeee' })
+  end,
+  desc = 'Custom user highlights',
+})
+
 -- moonfly Config
 -- ---
 vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
-vim.g.moonflyItalics = 0
 
 -- onedarkpro Config
 -- ---
