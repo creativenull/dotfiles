@@ -5,7 +5,7 @@ end
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.g.user.event,
   callback = function()
-    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 500 })
+    vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 300 })
   end,
   desc = 'Highlight words when a yank (y) is performed',
 })
