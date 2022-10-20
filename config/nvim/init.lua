@@ -580,7 +580,7 @@ require('user.treesitter').setup()
 
 -- nvim-lspconfig Config
 -- ---
-require('user.lsp')
+require('user.lsp').setup()
 
 -- fzf.vim Config
 -- ---

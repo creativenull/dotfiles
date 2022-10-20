@@ -1,3 +1,5 @@
+local M = {}
+
 local BORDER = 'rounded'
 local WIDTH = 80
 
@@ -50,49 +52,53 @@ local function on_attach(client, bufnr)
   end
 end
 
--- Add support to get snippets from lsp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
+function M.setup()
+  -- Add support to get snippets from lsp
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.preselectSupport = true
+  capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      'documentation',
+      'detail',
+      'additionalTextEdits',
+    },
+  }
 
--- Gloabally change diagnostic behavior
--- turn them off so that ALE can handle diagnostics
--- exclusively
-vim.diagnostic.config({
-  underline = false,
-  virtual_text = false,
-  signs = false,
-  update_in_insert = false,
-  float = { source = true },
-})
+  -- Gloabally change diagnostic behavior
+  -- turn them off so that ALE can handle diagnostics
+  -- exclusively
+  vim.diagnostic.config({
+    underline = false,
+    virtual_text = false,
+    signs = false,
+    update_in_insert = false,
+    float = { source = true },
+  })
 
--- Add border to hover documentation
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-  width = WIDTH,
-  border = BORDER,
-})
+  -- Add border to hover documentation
+  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+    width = WIDTH,
+    border = BORDER,
+  })
 
--- Add border to signature help
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = BORDER })
+  -- Add border to signature help
+  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = BORDER })
 
--- Check registered LSP info
-vim.keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
+  -- Check registered LSP info
+  vim.keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
 
--- Log debug
--- vim.lsp.set_log_level('debug')
+  -- Log debug
+  -- vim.lsp.set_log_level('debug')
 
--- projectlocal-vim Config
--- ---
-local projectlocal = require('projectlocal.lsp')
-projectlocal.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
+  -- projectlocal-vim Config
+  -- ---
+  local projectlocal = require('projectlocal.lsp')
+  projectlocal.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+  })
+end
+
+return M
