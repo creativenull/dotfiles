@@ -487,11 +487,11 @@ local function packager_setup(packager)
 
   -- AutoCompletion + Sources
   -- ---
-  -- packager.add('hrsh7th/nvim-cmp')
-  -- packager.add('hrsh7th/cmp-nvim-lsp')
-  -- packager.add('hrsh7th/cmp-buffer')
-  -- packager.add('hrsh7th/cmp-vsnip')
-  -- packager.add('onsails/lspkind.nvim')
+  -- packager.add('hrsh7th/nvim-cmp', { commit = 'e94d3489311f941788756953df23ca84f83eec95' })
+  -- packager.add('hrsh7th/cmp-nvim-lsp', { commit = '3cf38d9c957e95c397b66f91967758b31be4abe6' })
+  -- packager.add('hrsh7th/cmp-buffer', { commit = '3022dbc9166796b644a841a02de8dd1cc1d311fa' })
+  -- packager.add('hrsh7th/cmp-vsnip', { commit = '1ae05c6c867d9ad44bce811056e861e0d5c531cb' })
+  -- packager.add('onsails/lspkind.nvim', { commit = 'c68b3a003483cf382428a43035079f78474cd11e' })
 
   -- Snippet Engine + Presets
   -- ---
