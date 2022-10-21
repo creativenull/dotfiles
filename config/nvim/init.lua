@@ -542,6 +542,11 @@ local function packager_setup(packager)
   packager.add('bluz71/vim-moonfly-colors')
   packager.add('fnune/base16-vim')
   packager.add('olimorris/onedarkpro.nvim')
+  packager.add('navarasu/onedark.nvim')
+  packager.add('rmehri01/onenord.nvim')
+  packager.add('tiagovla/tokyodark.nvim')
+  packager.add('catppuccin/nvim', { name = 'catppuccin' })
+  packager.add('Yagua/nebulous.nvim')
 end
 
 local function packager_bootstrap()
@@ -631,10 +636,48 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
 
+-- onedark Config
+-- ---
+pcall(function()
+  require('onedark').setup({ style = 'darker' })
+end)
+
 -- onedarkpro Config
 -- ---
 pcall(function()
   require('onedarkpro').setup({ theme = 'onedark_dark' })
 end)
 
-pcall(vim.cmd, 'colorscheme onedarkpro')
+-- onenord Config
+-- ---
+pcall(function()
+  require('onenord').setup({
+    fade_nc = true,
+    custom_colors = {
+      NormalFloat = { bg = 'NONE' },
+    },
+  })
+end)
+
+-- catppuccin Config
+-- ---
+pcall(function()
+  vim.g.catppuccin_flavour = 'mocha'
+  require('catppuccin').setup()
+end)
+
+-- nebulous Config
+-- ---
+pcall(function()
+  require('nebulous').setup({
+    variant = 'night',
+    italic = {
+      comments = true,
+    },
+    custom_colors = {
+      NormalFloat = { bg = 'NONE' },
+    },
+  })
+end)
+
+pcall(vim.cmd, 'colorscheme catppuccin')
