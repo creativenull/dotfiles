@@ -2,7 +2,7 @@ local M = {}
 
 function M.setup()
   vim.g.lightline = {
-    colorscheme = 'tailwind_cnull',
+    colorscheme = 'catppuccin',
     enable = { statusline = 1, tabline = 1 },
     separator = { left = '', right = '' },
     tabline = { left = { { 'buffers' } }, right = { { 'filetype' } } },
