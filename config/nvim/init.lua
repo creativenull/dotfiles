@@ -290,19 +290,19 @@ vim.keymap.set('n', '<Leader>p', [["+p]])
 -- = Commands (CMD) =
 -- =============================================================================
 
-vim.api.nvim_create_user_command('Config', 'edit $MYVIMRC', {})
-vim.api.nvim_create_user_command('ConfigReload', 'source $MYVIMRC | nohlsearch', {})
+vim.api.nvim_create_user_command('Config', 'edit $MYVIMRC', { desc = 'Open init.lua' })
 
-vim.api.nvim_create_user_command(
-  'ToggleConcealLevel',
-  require('user.utils').toggle_conceal_level,
-  { desc = 'Toggle the conceals in editor' }
-)
-vim.api.nvim_create_user_command(
-  'ToggleCodeshot',
-  require('user.utils').toggle_codeshot,
-  { desc = 'Toggle features to enable copying from terminal' }
-)
+vim.api.nvim_create_user_command('ConfigReload', function()
+  require('user.utils').reload_config()
+end, { desc = 'Reload vim config' })
+
+vim.api.nvim_create_user_command('ToggleConcealLevel', function()
+  require('user.utils').toggle_conceal_level()
+end, { desc = 'Toggle the conceals in editor' })
+
+vim.api.nvim_create_user_command('ToggleCodeshot', function()
+  require('user.utils').toggle_codeshot()
+end, { desc = 'Toggle features to enable copying from terminal' })
 
 vim.api.nvim_create_user_command('MyTodoPersonal', 'edit ~/todofiles/personal/README.md', {})
 vim.api.nvim_create_user_command('MyTodoWork', 'edit ~/todofiles/work/README.md', {})

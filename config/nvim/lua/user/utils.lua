@@ -1,7 +1,8 @@
 local M = {}
 
--- Toggle conceal level of local buffer
--- which is enabled by some syntax plugin
+---Toggle conceal level of local buffer
+---which is enabled by some syntax plugin
+---@return nil
 function M.toggle_conceal_level()
   local win = vim.api.nvim_get_current_win()
   local cl = vim.api.nvim_win_get_option(win, 'conceallevel')
@@ -13,9 +14,10 @@ function M.toggle_conceal_level()
   end
 end
 
--- Toggle the view of the editor, for taking screenshots
--- or for copying code from the editor w/o using "+ register
--- when not accessible, eg from a remote ssh or WSL
+---Toggle the view of the editor, for taking screenshots
+---or for copying code from the editor w/o using "+ register
+---when not accessible, eg from a remote ssh or WSL
+---@return nil
 function M.toggle_codeshot()
   local win = vim.api.nvim_get_current_win()
   local num = vim.api.nvim_win_get_option(win, 'number')
@@ -31,7 +33,8 @@ function M.toggle_codeshot()
   end
 end
 
--- Indent rules given to a filetype, use spaces if needed
+---Indent rules given to a filetype, use spaces if needed
+---@return nil
 function M.indent_size(size, use_spaces)
   local buf = vim.api.nvim_get_current_buf()
 
@@ -44,6 +47,20 @@ function M.indent_size(size, use_spaces)
   else
     vim.bo[buf].expandtab = false
   end
+end
+
+---Reload the config and lua scope
+---@return nil
+function M.reload_config(ns)
+  ns = ns or 'user'
+
+  for name, _ in pairs(package.loaded) do
+    if name:match('^' .. ns) then
+      package.loaded[name] = nil
+    end
+  end
+
+  dofile(vim.env.MYVIMRC)
 end
 
 return M
