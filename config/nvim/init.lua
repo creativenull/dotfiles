@@ -663,7 +663,11 @@ end)
 -- ---
 pcall(function()
   vim.g.catppuccin_flavour = 'mocha'
-  require('catppuccin').setup()
+  require('catppuccin').setup({
+    custom_highlights = {
+      NormalFloat = { bg = 'NONE' },
+    },
+  })
 end)
 
 -- nebulous Config
