@@ -525,16 +525,16 @@ local function packager_setup(packager)
 
   -- FileType Syntax
   -- ---
-  packager.add('pangloss/vim-javascript')
-  packager.add('MaxMEllon/vim-jsx-pretty')
+  -- packager.add('pangloss/vim-javascript')
+  -- packager.add('MaxMEllon/vim-jsx-pretty')
   packager.add('heavenshell/vim-jsdoc', { ['do'] = 'make install' })
-  packager.add('posva/vim-vue')
+  -- packager.add('posva/vim-vue')
   packager.add('jwalton512/vim-blade')
   packager.add('lumiliet/vim-twig')
-  packager.add('elzr/vim-json')
-  packager.add('kevinoid/vim-jsonc')
+  -- packager.add('elzr/vim-json')
+  -- packager.add('kevinoid/vim-jsonc')
   packager.add('junegunn/vader.vim')
-  packager.add('rajasegar/vim-astro')
+  -- packager.add('rajasegar/vim-astro')
   packager.add('MTDL9/vim-log-highlighting')
 
   -- Colorschemes

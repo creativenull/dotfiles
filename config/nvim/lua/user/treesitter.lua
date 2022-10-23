@@ -8,8 +8,10 @@ function M.setup()
       'go',
       'html',
       'javascript',
+      'json',
       'php',
       'typescript',
+      'vue',
       'zig',
     },
     highlight = {
