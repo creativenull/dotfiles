@@ -1,8 +1,5 @@
 local M = {}
 
-local BORDER = 'rounded'
-local WIDTH = 80
-
 ---Statusline component to check if the LSP server connected to the buffer
 ---@return string
 function _G.LspInfoStatusline()
@@ -30,11 +27,7 @@ local function on_attach(client, bufnr)
   vim.keymap.set('n', '<Leader>ls', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer = bufnr })
   vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics', buffer = bufnr })
   vim.keymap.set('n', '<Leader>lw', function()
-    vim.diagnostic.open_float({
-      bufnr = bufnr,
-      width = WIDTH,
-      border = BORDER,
-    })
+    vim.diagnostic.open_float({ bufnr = bufnr, scope = 'line' })
   end, { desc = 'Show LSP Line Diagnostic', buffer = bufnr })
 
   -- LSP Formatting keymap only from the following linter/formatter servers
@@ -44,15 +37,15 @@ local function on_attach(client, bufnr)
   if vim.tbl_contains(allowed_fmt_servers, client.name) then
     local desc = string.format('LSP Formatting with %s', client.name)
 
-    local function client_fmt()
+    vim.keymap.set('n', '<Leader>lf', function()
       client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), nil, bufnr)
-    end
-
-    vim.keymap.set('n', '<Leader>lf', client_fmt, { desc = desc, buffer = bufnr })
+    end, { desc = desc, buffer = bufnr })
   end
 end
 
 function M.setup()
+  vim.keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
+
   -- Add support to get snippets from lsp
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -66,6 +59,10 @@ function M.setup()
     },
   }
 
+  -- UI options
+  local width = 80
+  local border = 'rounded'
+
   -- Gloabally change diagnostic behavior
   -- turn them off so that ALE can handle diagnostics
   -- exclusively
@@ -74,23 +71,21 @@ function M.setup()
     virtual_text = false,
     signs = false,
     update_in_insert = false,
-    float = { source = true },
+    float = {
+      source = true,
+      width = width,
+      border = border,
+    },
   })
 
-  -- Add border to hover documentation
+  -- Hover options
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-    width = WIDTH,
-    border = BORDER,
+    width = width,
+    border = border,
   })
 
-  -- Add border to signature help
-  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = BORDER })
-
-  -- Check registered LSP info
-  vim.keymap.set('n', '<Leader>li', '<Cmd>LspInfo<CR>')
-
-  -- Log debug
-  -- vim.lsp.set_log_level('debug')
+  -- Signature help options
+  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
 
   -- projectlocal-vim Config
   -- ---
@@ -99,6 +94,9 @@ function M.setup()
     on_attach = on_attach,
     capabilities = capabilities,
   })
+
+  -- Log debug
+  -- vim.lsp.set_log_level('DEBUG')
 end
 
 return M
