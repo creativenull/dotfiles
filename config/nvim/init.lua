@@ -363,21 +363,24 @@ end
 
 -- fern.vim Config
 -- ---
-vim.g['fern#renderer'] = 'nerdfont'
 vim.g['fern#hide_cursor'] = 1
+vim.g['fern#default_hidden'] = 1
+vim.g['fern#renderer'] = 'nerdfont'
+vim.g['fern#renderer#nerdfont#leading'] = '  '
 
 vim.keymap.set('n', '<Leader>ff', '<Cmd>Fern . -reveal=%<CR>')
 
-local function set_fern_keymaps(autocmd_args)
-  local buf = autocmd_args.buf
-  vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = buf })
-  vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true, buffer = buf })
+local function fern_keymaps(buffer)
+  vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = buffer })
+  vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true, buffer = buffer })
 end
 
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.g.user.event,
   pattern = 'fern',
-  callback = set_fern_keymaps,
+  callback = function(args)
+    fern_keymaps(args.buf)
+  end,
   desc = 'Set custom fern keymaps',
 })
 vim.api.nvim_create_autocmd('ColorScheme', {
