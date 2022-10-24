@@ -370,23 +370,28 @@ vim.g['fern#renderer#nerdfont#leading'] = '  '
 
 vim.keymap.set('n', '<Leader>ff', '<Cmd>Fern . -reveal=%<CR>')
 
-local function fern_keymaps(buffer)
-  vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = buffer })
-  vim.keymap.set('n', 'D', '<Plug>(fern-action-remove)', { remap = true, buffer = buffer })
+local function init_fern(event_args)
+  vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = event_args.buf, desc = 'Exit fern buffer' })
+  vim.keymap.set(
+    'n',
+    'D',
+    '<Plug>(fern-action-remove)',
+    { remap = true, buffer = event_args.buf, desc = 'Delete file from the directory' }
+  )
+
+  vim.bo[event_args.buf].expandtab = true
+  vim.bo[event_args.buf].shiftwidth = 2
+  vim.bo[event_args.buf].tabstop = 2
 end
 
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.g.user.event,
   pattern = 'fern',
-  callback = function(args)
-    fern_keymaps(args.buf)
-
-    vim.bo[args.buf].expandtab = true
-    vim.bo[args.buf].shiftwidth = 2
-    vim.bo[args.buf].tabstop = 2
-  end,
+  callback = init_fern,
   desc = 'Set custom fern keymaps',
 })
+
+-- Custom cursorline color for fern
 vim.api.nvim_create_autocmd('ColorScheme', {
   group = vim.g.user.event,
   callback = function()
