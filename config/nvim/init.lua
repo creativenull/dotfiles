@@ -380,6 +380,10 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'fern',
   callback = function(args)
     fern_keymaps(args.buf)
+
+    vim.bo[args.buf].expandtab = true
+    vim.bo[args.buf].shiftwidth = 2
+    vim.bo[args.buf].tabstop = 2
   end,
   desc = 'Set custom fern keymaps',
 })
