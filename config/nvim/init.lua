@@ -317,6 +317,11 @@ vim.cmd('cnoreabbrev Wq wq')
 -- = Plugin Pre-Config - before loading plugins (PRE) =
 -- =============================================================================
 
+-- Built-in plugins
+-- ---
+vim.g.vim_json_conceal = 0
+vim.g.vim_markdown_conceal = 0
+
 -- vim-vsnip Config
 -- ---
 require('user.vsnip').setup()
