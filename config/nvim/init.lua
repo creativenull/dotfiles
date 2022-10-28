@@ -489,21 +489,21 @@ local function packager_setup(packager)
   -- Builtin LSP Configs
   -- ---
   packager.add('neovim/nvim-lspconfig')
-  packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.2', ['type'] = 'opt' })
-  packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.7', ['type'] = 'opt' })
+  packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.3' })
+  packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.8' })
   packager.add('jose-elias-alvarez/null-ls.nvim', { commit = '643c67a296711ff40f1a4d1bec232fa20b179b90' })
 
-  -- AutoCompletion + Sources
+  -- AutoCompletion + Sources (ddc.vim)
   -- ---
   packager.add('Shougo/ddc.vim', { tag = 'v2.5.1' })
   packager.add('matsui54/denops-signature_help', { commit = 'f77f9c9b578e425908e34875c58ae2134984acfa' })
   packager.add('tani/ddc-fuzzy', { commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
-  packager.add('Shougo/ddc-nvim-lsp', { commit = 'f0a34fa80fa80091c47b1c22b46a978b4f1dc221' })
-  packager.add('Shougo/ddc-around', { commit = 'c30a1844509c424f2e59550db856dfb1bc0f24eb' })
-  packager.add('matsui54/ddc-buffer', { commit = '9df18ccc37ed8dca6c1523b02ee510df480b9d3a' })
-  packager.add('hrsh7th/vim-vsnip-integ', { commit = '64c2ed66406c58163cf81fb5e13ac2f9fcdfb52b' })
+  packager.add('matsui54/ddc-buffer', { commit = 'f3e800063789fe8c6695f4a7f77373a886fb8328' })
+  packager.add('Shougo/ddc-source-around', { commit = '0a4a62a64cdcf478ed3645e8da69c1198802f71b' })
+  packager.add('Shougo/ddc-source-nvim-lsp', { commit = 'c050eeeca84834ab02929f3df521da9add9eb587' })
+  packager.add('hrsh7th/vim-vsnip-integ', { commit = '4be94fb2a0d51b2fdf1a508d31cf62b3bff48e6d' })
 
-  -- AutoCompletion + Sources
+  -- AutoCompletion + Sources (nvim-cmp)
   -- ---
   -- packager.add('hrsh7th/nvim-cmp', { commit = 'e94d3489311f941788756953df23ca84f83eec95' })
   -- packager.add('hrsh7th/cmp-nvim-lsp', { commit = '3cf38d9c957e95c397b66f91967758b31be4abe6' })
@@ -513,8 +513,8 @@ local function packager_setup(packager)
 
   -- Snippet Engine + Presets
   -- ---
-  packager.add('hrsh7th/vim-vsnip', { commit = '8f199ef690ed26dcbb8973d9a6760d1332449ac9' })
-  packager.add('rafamadriz/friendly-snippets', { commit = '22a99756492a340c161ab122b0ded90ab115a1b3' })
+  packager.add('hrsh7th/vim-vsnip', { commit = '03010115eb8bdda00ce5f845cc2f7025700e33bb' })
+  packager.add('rafamadriz/friendly-snippets', { commit = 'c93311fbcc840210a2c0db574177d84a35a2c9c1' })
 
   -- Fuzzy File/Code Finder
   -- ---
