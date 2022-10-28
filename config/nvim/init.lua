@@ -525,7 +525,8 @@ local function packager_setup(packager)
   -- ---
   packager.add('lambdalisue/gin.vim', { tag = 'v0.2.1' })
   packager.add('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-  packager.add('airblade/vim-gitgutter', { commit = 'f19b6203191d69de955d91467a5707959572119b' })
+  -- packager.add('airblade/vim-gitgutter', { commit = 'f19b6203191d69de955d91467a5707959572119b' })
+  packager.add('lewis6991/gitsigns.nvim', { branch = 'release' })
 
   -- UI/Aesthetics
   -- ---
@@ -626,6 +627,10 @@ require('user.ddc').setup()
 -- ale Config
 -- ---
 require('user.ale').setup()
+
+-- gitsigns.nvim Config
+-- ---
+require('gitsigns').setup()
 
 -- lightline.vim Config
 -- ---
