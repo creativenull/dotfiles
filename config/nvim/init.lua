@@ -359,7 +359,8 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- indentLine Config
 -- ---
-vim.g.indentLine_fileTypeExclude = { 'help', 'fzf' }
+vim.g.indentLine_setConceal = 0
+vim.g.indentLine_fileTypeExclude = { 'help', 'fzf', 'fern' }
 vim.g.indentLine_char = '│'
 
 if vim.g.user.transparent then
