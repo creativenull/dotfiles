@@ -6,7 +6,6 @@ function M.setup()
       'astro',
       'css',
       'go',
-      'help',
       'html',
       'javascript',
       'json',
