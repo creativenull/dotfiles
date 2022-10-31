@@ -1,86 +1,95 @@
 local M = {}
 
-function M.setup()
-  local sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' }
+local sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' }
+local cmdline_sources = { 'cmdline' }
+local cmdline_keymaps = {
+  { lhs = '<Tab>', rhs = '<Cmd>call pum#map#insert_relative(+1)<CR>' },
+  { lhs = '<S-Tab>', rhs = '<Cmd>call pum#map#insert_relative(-1)<CR>' },
+  { lhs = '<C-n>', rhs = '<Cmd>call pum#map#insert_relative(+1)<CR>' },
+  { lhs = '<C-p>', rhs = '<Cmd>call pum#map#insert_relative(-1)<CR>' },
+  { lhs = '<C-y>', rhs = '<Cmd>call pum#map#confirm()<CR>' },
+  { lhs = '<C-e>', rhs = '<Cmd>call pum#map#cancel()<CR>' },
+}
 
-  local sourceOptions = {
-    ['_'] = {
-      matchers = { 'matcher_fuzzy' },
-      sorters = { 'sorter_fuzzy' },
-      converters = { 'converter_fuzzy' },
-    },
-    ['nvim-lsp'] = {
-      mark = 'Language',
-      forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
-      maxCandidates = 10,
-    },
-    vsnip = {
-      mark = 'Snippet',
-      maxCandidates = 5,
-    },
-    around = {
-      mark = 'Local',
-      maxCandidates = 3,
-    },
-    buffer = {
-      mark = 'Buffer',
-      maxCandidates = 3,
-    },
-  }
+---Register keymaps for cmdline
+---@return nil
+local function set_cmdline_keymaps()
+  for _, keymap in pairs(cmdline_keymaps) do
+    vim.keymap.set('c', keymap.lhs, keymap.rhs)
+  end
+end
 
-  local sourceParams = {
-    ['nvim-lsp'] = {
-      kindLabels = {
-        Class = 'ﴯ Class',
-        Color = ' Color',
-        Constant = ' Constant',
-        Constructor = ' New',
-        Enum = ' Enum',
-        EnumMember = ' Enum',
-        Event = ' Event',
-        Field = 'ﰠ Field',
-        File = ' File',
-        Folder = ' Directory',
-        Function = ' Function',
-        Interface = ' Interface',
-        Keyword = ' Key',
-        Method = ' Method',
-        Module = ' Module',
-        Operator = ' Operator',
-        Property = 'ﰠ Property',
-        Reference = ' Reference',
-        Snippet = ' Snippet',
-        Struct = 'פּ Struct',
-        Text = ' Text',
-        TypeParameter = '',
-        Unit = '塞 Unit',
-        Value = ' Value',
-        Variable = ' Variable',
-      },
-    },
-  }
+---Unregister keymaps for cmdline, applied on ddc leave event
+---@return nil
+local function unset_cmdline_keymaps()
+  for _, keymap in pairs(cmdline_keymaps) do
+    vim.keymap.del('c', keymap.lhs, { silent = true })
+  end
+end
 
-  vim.call('ddc#custom#patch_global', {
-    autoCompleteDelay = 100,
-    overwriteCompleteopt = false,
-    backspaceCompletion = true,
-    smartCase = true,
-    sources = sources,
-    sourceOptions = sourceOptions,
-    sourceParams = sourceParams,
+---Callback to unregister cmdline keymaps
+---@return nil
+local function cmdline_post_cb()
+  pcall(unset_cmdline_keymaps)
+
+  -- Restore sources
+  if vim.fn.exists('b:prev_buffer_config') == 1 then
+    vim.call('ddc#custom#set_buffer', vim.b.prev_buffer_config)
+    vim.b.prev_buffer_config = nil
+  else
+    vim.call('ddc#custom#set_buffer', vim.empty_dict())
+  end
+end
+
+---Setup events to register/unregister keymaps, enable cmdline completion,
+---and add cmdline sources
+---@return nil
+local function cmdline_pre()
+  set_cmdline_keymaps()
+
+  if vim.fn.exists('b:prev_buffer_config') == 0 then
+    vim.b.prev_buffer_config = vim.call('ddc#custom#get_buffer')
+  end
+
+  vim.call('ddc#custom#patch_buffer', 'cmdlineSources', cmdline_sources)
+
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'DDCCmdlineLeave',
+    once = true,
+    callback = cmdline_post_cb,
+    desc = '[ddc] Unregister keymaps and restore sources',
   })
 
-  -- Markdown FileType completion sources
-  vim.call('ddc#custom#patch_filetype', 'markdown', { sources = { 'around', 'buffer' } })
+  vim.api.nvim_create_autocmd('InsertEnter', {
+    pattern = '<buffer>',
+    once = true,
+    callback = cmdline_post_cb,
+    desc = '[ddc] Unregister keymaps and restore sources',
+  })
 
-  -- Insert selected completion item and close menu
-  vim.keymap.set('i', '<C-y>', function()
-    if vim.call('ddc#map#pum_visible') == 1 and vim.call('ddc#map#can_complete') == 1 then
-      return vim.call('ddc#map#extend')
-    end
+  vim.call('ddc#enable_cmdline_completion')
+end
 
-    return '<C-y>'
-  end, { expr = true, desc = '[ddc.vim] Insert item from menu provided by ddc' })
+local function register_ui_events()
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = vim.g.user.event,
+    callback = function()
+      vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
+    end,
+    desc = 'No bg color for completion menu',
+  })
+end
+
+local function register_keymaps()
+  vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(+1)<CR>')
+  vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
+  vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
+  vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
+
+  vim.keymap.set('n', ':', function()
+    cmdline_pre()
+    vim.api.nvim_feedkeys(':', 'n', false)
+  end)
 
   -- Manually open the completion menu
   vim.keymap.set(
@@ -89,6 +98,92 @@ function M.setup()
     'ddc#map#manual_complete()',
     { replace_keycodes = false, expr = true, desc = '[ddc.vim] Manually open popup menu' }
   )
+end
+
+function M.setup()
+  vim.call('ddc#custom#patch_global', {
+    sources = sources,
+    cmdlineSources = cmdline_sources,
+    autoCompleteEvents = { 'InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged' },
+    autoCompleteDelay = 100,
+    overwriteCompleteopt = false,
+    backspaceCompletion = true,
+    smartCase = true,
+    completionMenu = 'pum.vim',
+    ui = 'pum',
+    sourceOptions = {
+      ['_'] = {
+        matchers = { 'matcher_fuzzy' },
+        sorters = { 'sorter_fuzzy' },
+        converters = { 'converter_fuzzy' },
+      },
+      ['nvim-lsp'] = {
+        mark = 'Language',
+        forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
+        maxCandidates = 10,
+      },
+      vsnip = {
+        mark = 'Snippet',
+        maxCandidates = 5,
+      },
+      around = {
+        mark = 'Local',
+        maxCandidates = 3,
+      },
+      buffer = {
+        mark = 'Buffer',
+        maxCandidates = 3,
+      },
+    },
+    sourceParams = {
+      ['nvim-lsp'] = {
+        kindLabels = {
+          Class = 'ﴯ Class',
+          Color = ' Color',
+          Constant = ' Constant',
+          Constructor = ' New',
+          Enum = ' Enum',
+          EnumMember = ' Enum',
+          Event = ' Event',
+          Field = 'ﰠ Field',
+          File = ' File',
+          Folder = ' Directory',
+          Function = ' Function',
+          Interface = ' Interface',
+          Keyword = ' Key',
+          Method = ' Method',
+          Module = ' Module',
+          Operator = ' Operator',
+          Property = 'ﰠ Property',
+          Reference = ' Reference',
+          Snippet = ' Snippet',
+          Struct = 'פּ Struct',
+          Text = ' Text',
+          TypeParameter = '',
+          Unit = '塞 Unit',
+          Value = ' Value',
+          Variable = ' Variable',
+        },
+      },
+    },
+  })
+
+  -- Markdown FileType completion sources
+  vim.call('ddc#custom#patch_filetype', 'markdown', { sources = { 'around', 'buffer' } })
+
+  -- pum.vim Config
+  -- ---
+  vim.call('pum#set_option', {
+    border = 'rounded',
+    padding = true,
+    scrollbar_char = '',
+    offset_row = 3,
+    max_height = 10,
+    max_width = 80,
+  })
+
+  register_keymaps()
+  register_ui_events()
 
   vim.call('ddc#enable')
   vim.call('signature_help#enable')

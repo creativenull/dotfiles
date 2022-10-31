@@ -500,9 +500,12 @@ local function packager_setup(packager)
   -- AutoCompletion + Sources (ddc.vim)
   -- ---
   packager.add('Shougo/ddc.vim', { tag = 'v2.5.1' })
+  packager.add('Shougo/pum.vim', { commit = '9e2c1972761b16ddcaf86f78f167216ee950e0e2' })
   packager.add('matsui54/denops-signature_help', { commit = 'f77f9c9b578e425908e34875c58ae2134984acfa' })
+  packager.add('Shougo/ddc-ui-pum', { commit = 'de6e572359d5a896da4a1b30c155979c28de1c2b' })
   packager.add('tani/ddc-fuzzy', { commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
   packager.add('matsui54/ddc-buffer', { commit = 'f3e800063789fe8c6695f4a7f77373a886fb8328' })
+  packager.add('Shougo/ddc-source-cmdline', { commit = 'e98cd97bccb548852b88d751d2dbbb6fac2c237f' })
   packager.add('Shougo/ddc-source-around', { commit = '0a4a62a64cdcf478ed3645e8da69c1198802f71b' })
   packager.add('Shougo/ddc-source-nvim-lsp', { commit = 'c050eeeca84834ab02929f3df521da9add9eb587' })
   packager.add('hrsh7th/vim-vsnip-integ', { commit = '4be94fb2a0d51b2fdf1a508d31cf62b3bff48e6d' })
@@ -614,11 +617,6 @@ require('user.lsp').setup()
 -- fzf.vim Config
 -- ---
 require('user.fzf').setup()
-
--- pum.vim Config
--- ---
--- vim.g.enable_custom_pum = 1
--- require('user.pum').Setup()
 
 -- ddc.vim Config
 -- ---
