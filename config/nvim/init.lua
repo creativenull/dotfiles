@@ -487,7 +487,7 @@ local function packager_setup(packager)
 
   -- Linters + Formatters
   -- ---
-  packager.add('dense-analysis/ale', { tag = 'v3.2.0' })
+  packager.add('dense-analysis/ale')
   packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
 
   -- Builtin LSP Configs
@@ -532,7 +532,6 @@ local function packager_setup(packager)
   -- ---
   packager.add('lambdalisue/gin.vim', { tag = 'v0.2.1' })
   packager.add('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-  -- packager.add('airblade/vim-gitgutter', { commit = 'f19b6203191d69de955d91467a5707959572119b' })
   packager.add('lewis6991/gitsigns.nvim', { branch = 'release' })
 
   -- UI/Aesthetics
@@ -551,16 +550,10 @@ local function packager_setup(packager)
 
   -- FileType Syntax
   -- ---
-  -- packager.add('pangloss/vim-javascript')
-  -- packager.add('MaxMEllon/vim-jsx-pretty')
   packager.add('heavenshell/vim-jsdoc', { ['do'] = 'make install' })
-  -- packager.add('posva/vim-vue')
   packager.add('jwalton512/vim-blade')
   packager.add('lumiliet/vim-twig')
-  -- packager.add('elzr/vim-json')
-  -- packager.add('kevinoid/vim-jsonc')
   packager.add('junegunn/vader.vim')
-  -- packager.add('rajasegar/vim-astro')
   packager.add('MTDL9/vim-log-highlighting')
 
   -- Colorschemes
