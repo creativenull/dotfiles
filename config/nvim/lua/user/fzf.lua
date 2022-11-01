@@ -23,34 +23,41 @@ local function fzf_window_setup()
 end
 
 function M.setup()
-  -- Vars
   vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-  vim.env.FZF_DEFAULT_OPTS = '--reverse'
+  vim.env.FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
   vim.g.fzf_preview_window = {}
 
-  -- Commands
   vim.api.nvim_create_user_command('Rg', function(arg)
     vim_grep(arg.qargs, arg.bang)
   end, { bang = true, nargs = '*' })
 
-  -- Keymaps
   vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
   vim.keymap.set('n', '<C-t>', '<Cmd>Rg<CR>')
 
-  -- Events
   vim.api.nvim_create_autocmd('FileType', {
     group = vim.g.user.event,
     pattern = 'fzf',
     callback = fzf_window_setup,
-    desc = 'Configure fzf window before it is viewed',
+    desc = '(fzf.vim) Adjust settings on enter fzf window',
   })
 
-  vim.api.nvim_create_autocmd('FileType', {
+  vim.api.nvim_create_autocmd('ColorScheme', {
     group = vim.g.user.event,
     callback = function()
-      vim.api.nvim_set_hl(0, 'fzfBorder', { fg = '#aaaaaa' })
+      vim.cmd('highlight! fzf1 guibg=NONE')
+      vim.cmd('highlight! fzf2 guibg=NONE')
+      vim.cmd('highlight! fzf3 guibg=NONE')
+      vim.cmd('highlight! fzfBorder guibg=NONE guifg=#aaaaaa')
     end,
-    desc = 'Change the highlight of fzf border line',
+  })
+
+  vim.api.nvim_create_autocmd('User', {
+    group = vim.g.user.event,
+    pattern = 'FzfStatusLine',
+    callback = function(args)
+      vim.wo[vim.fn.bufwinid(args.buf)].statusline = '%#fzf1# > %#fzf2#fz%#fzf3#f'
+    end,
+    desc = '(fzf.vim) Custom highlights',
   })
 end
 
