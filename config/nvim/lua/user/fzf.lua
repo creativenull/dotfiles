@@ -24,7 +24,10 @@ end
 
 function M.setup()
   vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-  vim.env.FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
+  vim.env.FZF_DEFAULT_OPTS = table.concat({
+    '--reverse',
+    '--color=border:#aaaaaa,gutter:-1,bg+:-1',
+  }, ' ')
   vim.g.fzf_preview_window = {}
 
   vim.api.nvim_create_user_command('Rg', function(arg)
@@ -44,10 +47,9 @@ function M.setup()
   vim.api.nvim_create_autocmd('ColorScheme', {
     group = vim.g.user.event,
     callback = function()
-      vim.cmd('highlight! fzf1 guibg=NONE')
-      vim.cmd('highlight! fzf2 guibg=NONE')
-      vim.cmd('highlight! fzf3 guibg=NONE')
-      vim.cmd('highlight! fzfBorder guibg=NONE guifg=#aaaaaa')
+      vim.api.nvim_set_hl(0, 'fzf1', { bg = 'NONE' })
+      vim.api.nvim_set_hl(0, 'fzf2', { bg = 'NONE' })
+      vim.api.nvim_set_hl(0, 'fzf3', { bg = 'NONE' })
     end,
   })
 
