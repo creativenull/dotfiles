@@ -628,6 +628,10 @@ require('user.ale').setup()
 -- ---
 require('gitsigns').setup()
 
+-- Comment.nvim Config
+-- ---
+require('Comment').setup()
+
 -- lightline.vim Config
 -- ---
 require('user.lightline').setup()
