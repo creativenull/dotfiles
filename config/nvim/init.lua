@@ -488,12 +488,12 @@ local function packager_setup(packager)
 
   -- Linters + Formatters
   -- ---
-  packager.add('dense-analysis/ale')
+  packager.add('dense-analysis/ale', { commit = '4b433e5693ccec8e408504c4b139b8f7cc6a4aa3' })
   packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
 
   -- Builtin LSP Configs
   -- ---
-  packager.add('neovim/nvim-lspconfig')
+  packager.add('neovim/nvim-lspconfig', { commit = '2b802ab1e94d595ca5cc7c55f9d1fb9b17f9754c' })
   packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.3' })
   packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.8' })
   packager.add('jose-elias-alvarez/null-ls.nvim', { commit = '643c67a296711ff40f1a4d1bec232fa20b179b90' })
@@ -544,6 +544,7 @@ local function packager_setup(packager)
   -- TreeSitter
   -- ---
   packager.add('nvim-treesitter/nvim-treesitter', {
+    commit = 'dc27512e0019dcf4b6fbf0e0d5f285b4c9858308',
     ['do'] = function()
       require('nvim-treesitter.install').update({ with_sync = true })
     end,
@@ -551,22 +552,25 @@ local function packager_setup(packager)
 
   -- FileType Syntax
   -- ---
-  packager.add('heavenshell/vim-jsdoc', { ['do'] = 'make install' })
-  packager.add('jwalton512/vim-blade')
-  packager.add('lumiliet/vim-twig')
-  packager.add('junegunn/vader.vim')
-  packager.add('MTDL9/vim-log-highlighting')
+  packager.add('heavenshell/vim-jsdoc', {
+    commit = '71c98ed6eacb4f1c0b9e4950ef679eda6a651cdd',
+    ['do'] = 'make install',
+  })
+  packager.add('jwalton512/vim-blade', { commit = '9534101808cc320eef003129a40cab04b026a20c' })
+  packager.add('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
+  packager.add('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
+  packager.add('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
 
   -- Colorschemes
   -- ---
-  packager.add('bluz71/vim-moonfly-colors')
-  packager.add('fnune/base16-vim')
-  packager.add('olimorris/onedarkpro.nvim')
-  packager.add('navarasu/onedark.nvim')
-  packager.add('rmehri01/onenord.nvim')
-  packager.add('tiagovla/tokyodark.nvim')
-  packager.add('catppuccin/nvim', { name = 'catppuccin' })
-  packager.add('Yagua/nebulous.nvim')
+  packager.add('bluz71/vim-moonfly-colors', { commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
+  packager.add('tinted-theming/base16-vim', { commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
+  packager.add('olimorris/onedarkpro.nvim', { commit = '5e25c890d35c588f00f186623c885b64d98b86f2' })
+  packager.add('navarasu/onedark.nvim', { commit = 'cad3d983e57f467ba8e8252b0567e96dde9a8f0d' })
+  packager.add('rmehri01/onenord.nvim', { commit = '0cd9f681bee019715bfbe928891579a3af3331e8' })
+  packager.add('tiagovla/tokyodark.nvim', { commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
+  packager.add('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', name = 'catppuccin' })
+  packager.add('Yagua/nebulous.nvim', { commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
 end
 
 local function packager_bootstrap()
