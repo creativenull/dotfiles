@@ -672,7 +672,12 @@ end)
 -- onedarkpro Config
 -- ---
 pcall(function()
-  require('onedarkpro').setup({ theme = 'onedark_dark' })
+  require('onedarkpro').setup({
+    theme = 'onedark_dark',
+    options = {
+      transparency = true
+    }
+  })
 end)
 
 -- onenord Config
@@ -711,4 +716,4 @@ pcall(function()
   })
 end)
 
-pcall(vim.cmd, 'colorscheme catppuccin')
+pcall(vim.cmd, 'colorscheme onedarkpro')
