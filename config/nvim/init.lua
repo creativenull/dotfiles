@@ -674,9 +674,15 @@ end)
 pcall(function()
   require('onedarkpro').setup({
     theme = 'onedark_dark',
-    options = {
-      transparency = true
-    }
+    options = { transparency = true, },
+    highlights = {
+      PmenuSel = { bg = '#333333', },
+    },
+    plugins = {
+      all = false,
+      gitsigns = true,
+      treesitter = true,
+    },
   })
 end)
 
