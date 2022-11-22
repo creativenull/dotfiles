@@ -722,4 +722,4 @@ pcall(function()
   })
 end)
 
-pcall(vim.cmd, 'colorscheme onedarkpro')
+pcall(vim.cmd, 'colorscheme moonfly')
