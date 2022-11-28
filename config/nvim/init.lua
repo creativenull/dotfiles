@@ -456,149 +456,138 @@ vim.g.lexima_enable_newline_rules = 0
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
 
-local function packager_setup(packager)
-  packager.add('kristijanhusak/vim-packager', { ['type'] = 'opt' })
+local function ensure_jetpack()
+  -- nvim + Lua
+  local fn = vim.fn
+  local jetpackfile = fn.stdpath('data') .. '/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim'
+  local jetpackurl = 'https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim'
+  if fn.filereadable(jetpackfile) == 0 then
+    print('Downloading plugin manager')
+    fn.system({ 'curl', '-fsSLo', jetpackfile, '--create-dirs', jetpackurl })
+    vim.cmd('source ' .. jetpackfile)
+    return true
+  end
+
+  return false
+end
+
+local is_first_time = ensure_jetpack()
+
+vim.cmd('packadd vim-jetpack')
+require('jetpack.packer').startup(function(use)
+  use({ 'tani/vim-jetpack', opt = 1 })
 
   -- Deps
   -- ---
-  packager.add('vim-denops/denops.vim', { tag = 'v3.2.0' })
-  packager.add('lambdalisue/nerdfont.vim', { tag = 'v1.3.0' })
-  packager.add('nvim-lua/plenary.nvim', { commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' })
+  use({ 'vim-denops/denops.vim', tag = 'v3.2.0' })
+  use({ 'lambdalisue/nerdfont.vim', tag = 'v1.3.0' })
+  use({ 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' })
 
   -- Core
   -- ---
-  packager.add('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
-  packager.add('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
-  packager.add('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
-  packager.add('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
-  packager.add('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
-  packager.add('tpope/vim-abolish', { tag = 'v1.1' })
-  packager.add('tpope/vim-endwise', { commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
-  packager.add('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
-  packager.add('tpope/vim-surround', { tag = 'v2.2' })
-  packager.add('numToStr/Comment.nvim', { commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3d6' })
-  -- packager.add('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
-  -- packager.add('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
+  use({ 'cohama/lexima.vim', commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
+  use({ 'creativenull/projectlocal-vim', tag = 'v0.4.3' })
+  use({ 'editorconfig/editorconfig-vim', commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
+  use({ 'godlygeek/tabular', commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
+  use({ 'mattn/emmet-vim', commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+  use({ 'tpope/vim-abolish', tag = 'v1.1' })
+  use({ 'tpope/vim-endwise', commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
+  use({ 'tpope/vim-repeat', commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
+  use({ 'tpope/vim-surround', tag = 'v2.2' })
+  use({ 'numToStr/Comment.nvim', commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3d6' })
+  -- use('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
+  -- use('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
 
   -- File Explorer + Addons
   -- ---
-  packager.add('antoinemadec/FixCursorHold.nvim', { commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
-  packager.add('lambdalisue/fern.vim', { tag = 'v1.51.1' })
-  packager.add('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
+  use({ 'antoinemadec/FixCursorHold.nvim', commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
+  use({ 'lambdalisue/fern.vim', tag = 'v1.51.1' })
+  use({ 'lambdalisue/fern-renderer-nerdfont.vim', commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
 
   -- Linters + Formatters
   -- ---
-  packager.add('dense-analysis/ale', { commit = '4b433e5693ccec8e408504c4b139b8f7cc6a4aa3' })
-  packager.add('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
+  use({ 'dense-analysis/ale', commit = '4b433e5693ccec8e408504c4b139b8f7cc6a4aa3' })
+  use({ 'creativenull/nvim-ale-diagnostic', branch = 'v2' })
 
   -- Builtin LSP Configs
   -- ---
-  packager.add('neovim/nvim-lspconfig', { commit = '2b802ab1e94d595ca5cc7c55f9d1fb9b17f9754c' })
-  packager.add('creativenull/efmls-configs-nvim', { tag = 'v0.1.3' })
-  packager.add('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.8' })
-  packager.add('jose-elias-alvarez/null-ls.nvim', { commit = '643c67a296711ff40f1a4d1bec232fa20b179b90' })
+  use({ 'neovim/nvim-lspconfig', commit = '2b802ab1e94d595ca5cc7c55f9d1fb9b17f9754c' })
+  use({ 'creativenull/efmls-configs-nvim', tag = 'v0.1.3' })
+  use({ 'creativenull/diagnosticls-configs-nvim', tag = 'v0.1.8' })
+  use({ 'jose-elias-alvarez/null-ls.nvim', commit = '643c67a296711ff40f1a4d1bec232fa20b179b90' })
 
   -- AutoCompletion + Sources (ddc.vim)
   -- ---
-  packager.add('Shougo/ddc.vim', { tag = 'v2.5.1' })
-  packager.add('Shougo/pum.vim', { commit = '9e2c1972761b16ddcaf86f78f167216ee950e0e2' })
-  packager.add('matsui54/denops-signature_help', { commit = 'f77f9c9b578e425908e34875c58ae2134984acfa' })
-  packager.add('Shougo/ddc-ui-pum', { commit = 'de6e572359d5a896da4a1b30c155979c28de1c2b' })
-  packager.add('tani/ddc-fuzzy', { commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
-  packager.add('matsui54/ddc-buffer', { commit = 'f3e800063789fe8c6695f4a7f77373a886fb8328' })
-  packager.add('Shougo/ddc-source-cmdline', { commit = 'e98cd97bccb548852b88d751d2dbbb6fac2c237f' })
-  packager.add('Shougo/ddc-source-around', { commit = '0a4a62a64cdcf478ed3645e8da69c1198802f71b' })
-  packager.add('Shougo/ddc-source-nvim-lsp', { commit = 'c050eeeca84834ab02929f3df521da9add9eb587' })
-  packager.add('hrsh7th/vim-vsnip-integ', { commit = '4be94fb2a0d51b2fdf1a508d31cf62b3bff48e6d' })
-
-  -- AutoCompletion + Sources (nvim-cmp)
-  -- ---
-  -- packager.add('hrsh7th/nvim-cmp', { commit = 'e94d3489311f941788756953df23ca84f83eec95' })
-  -- packager.add('hrsh7th/cmp-nvim-lsp', { commit = '3cf38d9c957e95c397b66f91967758b31be4abe6' })
-  -- packager.add('hrsh7th/cmp-buffer', { commit = '3022dbc9166796b644a841a02de8dd1cc1d311fa' })
-  -- packager.add('hrsh7th/cmp-vsnip', { commit = '1ae05c6c867d9ad44bce811056e861e0d5c531cb' })
-  -- packager.add('onsails/lspkind.nvim', { commit = 'c68b3a003483cf382428a43035079f78474cd11e' })
+  use({ 'Shougo/ddc.vim', tag = 'v2.5.1' })
+  use({ 'Shougo/pum.vim', commit = '9e2c1972761b16ddcaf86f78f167216ee950e0e2' })
+  use({ 'matsui54/denops-signature_help', commit = 'f77f9c9b578e425908e34875c58ae2134984acfa' })
+  use({ 'Shougo/ddc-ui-pum', commit = 'de6e572359d5a896da4a1b30c155979c28de1c2b' })
+  use({ 'tani/ddc-fuzzy', commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
+  use({ 'matsui54/ddc-buffer', commit = 'f3e800063789fe8c6695f4a7f77373a886fb8328' })
+  use({ 'Shougo/ddc-source-cmdline', commit = 'e98cd97bccb548852b88d751d2dbbb6fac2c237f' })
+  use({ 'Shougo/ddc-source-around', commit = '0a4a62a64cdcf478ed3645e8da69c1198802f71b' })
+  use({ 'Shougo/ddc-source-nvim-lsp', commit = 'c050eeeca84834ab02929f3df521da9add9eb587' })
+  use({ 'hrsh7th/vim-vsnip-integ', commit = '4be94fb2a0d51b2fdf1a508d31cf62b3bff48e6d' })
 
   -- Snippet Engine + Presets
   -- ---
-  packager.add('hrsh7th/vim-vsnip', { commit = '03010115eb8bdda00ce5f845cc2f7025700e33bb' })
-  packager.add('rafamadriz/friendly-snippets', { commit = 'c93311fbcc840210a2c0db574177d84a35a2c9c1' })
+  use({ 'hrsh7th/vim-vsnip', commit = '03010115eb8bdda00ce5f845cc2f7025700e33bb' })
+  use({ 'rafamadriz/friendly-snippets', commit = 'c93311fbcc840210a2c0db574177d84a35a2c9c1' })
 
   -- Fuzzy File/Code Finder
   -- ---
-  packager.add('junegunn/fzf', { tag = '0.34.0' })
-  packager.add('junegunn/fzf.vim', { commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
+  use({ 'junegunn/fzf', tag = '0.34.0' })
+  use({ 'junegunn/fzf.vim', commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
 
   -- Git
   -- ---
-  packager.add('lambdalisue/gin.vim', { tag = 'v0.2.1' })
-  packager.add('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-  packager.add('lewis6991/gitsigns.nvim', { branch = 'release' })
+  use({ 'lambdalisue/gin.vim', tag = 'v0.2.1' })
+  use({ 'itchyny/vim-gitbranch', commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
+  use({ 'lewis6991/gitsigns.nvim', branch = 'release' })
 
   -- UI/Aesthetics
   -- ---
-  packager.add('Yggdroot/indentLine', { commit = 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
-  packager.add('itchyny/lightline.vim', { commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
-  packager.add('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
+  use({ 'Yggdroot/indentLine', commit = 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
+  use({ 'itchyny/lightline.vim', commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
+  use({ 'mengelbrecht/lightline-bufferline', commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
 
   -- TreeSitter
   -- ---
-  packager.add('nvim-treesitter/nvim-treesitter', {
+  use({
+    'nvim-treesitter/nvim-treesitter',
     commit = 'dc27512e0019dcf4b6fbf0e0d5f285b4c9858308',
-    ['do'] = function()
+    run = function()
       require('nvim-treesitter.install').update({ with_sync = true })
     end,
   })
 
   -- FileType Syntax
   -- ---
-  packager.add('heavenshell/vim-jsdoc', {
+  use({
+    'heavenshell/vim-jsdoc',
     commit = '71c98ed6eacb4f1c0b9e4950ef679eda6a651cdd',
-    ['do'] = 'make install',
+    run = 'make install',
   })
-  packager.add('jwalton512/vim-blade', { commit = '9534101808cc320eef003129a40cab04b026a20c' })
-  packager.add('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
-  packager.add('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
-  packager.add('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
+  use({ 'jwalton512/vim-blade', commit = '9534101808cc320eef003129a40cab04b026a20c' })
+  use({ 'lumiliet/vim-twig', commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
+  use({ 'junegunn/vader.vim', commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
+  use({ 'MTDL9/vim-log-highlighting', commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
 
   -- Colorschemes
   -- ---
-  packager.add('bluz71/vim-moonfly-colors', { commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
-  packager.add('tinted-theming/base16-vim', { commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
-  packager.add('olimorris/onedarkpro.nvim', { commit = '5e25c890d35c588f00f186623c885b64d98b86f2' })
-  packager.add('navarasu/onedark.nvim', { commit = 'cad3d983e57f467ba8e8252b0567e96dde9a8f0d' })
-  packager.add('rmehri01/onenord.nvim', { commit = '0cd9f681bee019715bfbe928891579a3af3331e8' })
-  packager.add('tiagovla/tokyodark.nvim', { commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
-  packager.add('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', name = 'catppuccin' })
-  packager.add('Yagua/nebulous.nvim', { commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
-end
-
-local function packager_bootstrap()
-  local manager = {
-    git_url = 'https://github.com/kristijanhusak/vim-packager',
-    local_path = string.format('%s/site/pack/packager/opt/vim-packager', vim.fn.stdpath('data')),
-    config = {
-      dir = string.format('%s/site/pack/packager', vim.fn.stdpath('data')),
-    },
-  }
-
-  local is_first_time = false
-
-  if vim.fn.isdirectory(manager.local_path) == 0 then
-    print('Downloading plugin manager...')
-    vim.fn.system({ 'git', 'clone', manager.git_url, manager.local_path })
-    is_first_time = true
-  end
-
-  vim.cmd('packadd vim-packager')
-  require('packager').setup(packager_setup, manager.config)
+  use({ 'bluz71/vim-moonfly-colors', commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
+  use({ 'tinted-theming/base16-vim', commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
+  use({ 'olimorris/onedarkpro.nvim', commit = '5e25c890d35c588f00f186623c885b64d98b86f2' })
+  use({ 'navarasu/onedark.nvim', commit = 'cad3d983e57f467ba8e8252b0567e96dde9a8f0d' })
+  use({ 'rmehri01/onenord.nvim', commit = '0cd9f681bee019715bfbe928891579a3af3331e8' })
+  use({ 'tiagovla/tokyodark.nvim', commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
+  use({ 'catppuccin/nvim', commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
+  use({ 'Yagua/nebulous.nvim', commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
 
   if is_first_time then
-    vim.cmd('PackagerInstall')
+    vim.call('jetpack#sync')
   end
-end
-
-packager_bootstrap()
+end)
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
@@ -674,9 +663,9 @@ end)
 pcall(function()
   require('onedarkpro').setup({
     theme = 'onedark_dark',
-    options = { transparency = true, },
+    options = { transparency = true },
     highlights = {
-      PmenuSel = { bg = '#333333', },
+      PmenuSel = { bg = '#333333' },
     },
     plugins = {
       all = false,
