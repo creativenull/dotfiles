@@ -1,7 +1,11 @@
 local M = {}
 
 function M.setup()
+  local parser_install_dir = vim.fn.stdpath('data') .. '/treesitter'
+  vim.opt.runtimepath:append(parser_install_dir)
+
   require('nvim-treesitter.configs').setup({
+    parser_install_dir = parser_install_dir,
     ensure_installed = {
       'astro',
       'css',
@@ -22,8 +26,13 @@ function M.setup()
     incremental_selection = { enable = false },
   })
 
-  vim.opt.foldmethod = 'expr'
-  vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+  vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'BufWinEnter' }, {
+    group = vim.g.user.event,
+    callback = function()
+      vim.opt.foldmethod = 'expr'
+      vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+    end,
+  })
 end
 
 return M
