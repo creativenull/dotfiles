@@ -10,6 +10,14 @@
 -- = Initialize =
 -- =============================================================================
 
+-- Pre-checks
+-- ---
+if vim.fn.has('nvim-0.7') == 0 then
+  local errmsg = debug.traceback('This config requires nvim >= 0.7')
+  vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
+  return
+end
+
 -- User Config
 -- ---
 vim.g.user = {
@@ -24,17 +32,9 @@ vim.g.user = {
 -- Global user group to register other custom autocmds
 vim.api.nvim_create_augroup(vim.g.user.event, {})
 
--- TODO: remove once upgraded to 0.8
-if vim.fn.has('nvim-0.8') == 0 then
-  vim.g.do_filetype_lua = 1
-end
-
--- Pre-checks
--- ---
-if vim.fn.has('nvim-0.7') == 0 then
-  local errmsg = debug.traceback('This config requires nvim >= 0.7')
-  vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
-  return
+-- Enable treesitter highlights provided by nvim core
+if vim.fn.has('nvim-0.8') == 1 then
+  vim.g.ts_highlight_lua = 1
 end
 
 -- Ensure the following tools are installed in the system
@@ -471,10 +471,12 @@ local function ensure_jetpack()
   return false
 end
 
-local is_first_time = ensure_jetpack()
+local plugins_empty = ensure_jetpack()
 
 vim.cmd('packadd vim-jetpack')
-require('jetpack.packer').startup(function(use)
+local jetpack = require('jetpack')
+local jetpack_packer = require('jetpack.packer')
+jetpack_packer.startup(function(use)
   use({ 'tani/vim-jetpack', opt = 1 })
 
   -- Deps
@@ -511,33 +513,34 @@ require('jetpack.packer').startup(function(use)
 
   -- Builtin LSP Configs
   -- ---
-  use({ 'neovim/nvim-lspconfig', commit = '2b802ab1e94d595ca5cc7c55f9d1fb9b17f9754c' })
+  use({ 'neovim/nvim-lspconfig', commit = 'a2817c9d9500079a0340286a88653b41707a92eb' })
   use({ 'creativenull/efmls-configs-nvim', tag = 'v0.1.3' })
   use({ 'creativenull/diagnosticls-configs-nvim', tag = 'v0.1.8' })
-  use({ 'jose-elias-alvarez/null-ls.nvim', commit = '643c67a296711ff40f1a4d1bec232fa20b179b90' })
+  use({ 'jose-elias-alvarez/null-ls.nvim', commit = 'c51978f546a86a653f4a492b86313f4616412cec' })
+  use({ 'j-hui/fidget.nvim', commit = '44585a0c0085765195e6961c15529ba6c5a2a13b' })
 
   -- AutoCompletion + Sources (ddc.vim)
   -- ---
-  use({ 'Shougo/ddc.vim', tag = 'v2.5.1' })
-  use({ 'Shougo/pum.vim', commit = '9e2c1972761b16ddcaf86f78f167216ee950e0e2' })
-  use({ 'matsui54/denops-signature_help', commit = 'f77f9c9b578e425908e34875c58ae2134984acfa' })
-  use({ 'Shougo/ddc-ui-pum', commit = 'de6e572359d5a896da4a1b30c155979c28de1c2b' })
-  use({ 'tani/ddc-fuzzy', commit = '3339deacff797cc23f79a45c5e72ba0eed0af119' })
-  use({ 'matsui54/ddc-buffer', commit = 'f3e800063789fe8c6695f4a7f77373a886fb8328' })
-  use({ 'Shougo/ddc-source-cmdline', commit = 'e98cd97bccb548852b88d751d2dbbb6fac2c237f' })
-  use({ 'Shougo/ddc-source-around', commit = '0a4a62a64cdcf478ed3645e8da69c1198802f71b' })
-  use({ 'Shougo/ddc-source-nvim-lsp', commit = 'c050eeeca84834ab02929f3df521da9add9eb587' })
-  use({ 'hrsh7th/vim-vsnip-integ', commit = '4be94fb2a0d51b2fdf1a508d31cf62b3bff48e6d' })
+  use({ 'Shougo/ddc.vim', tag = 'v3.3.0' })
+  use({ 'Shougo/pum.vim', commit = '31aae8d39061bcdae755e468e83a3a70b72a0fce' })
+  use({ 'Shougo/ddc-ui-pum', commit = '82c646416d8653988e56b27e68256f01d02f7b1c' })
+  use({ 'matsui54/denops-signature_help', commit = 'f5c6a5a571a1cc00a82245690ada0d5c13903d2f' })
+  use({ 'tani/ddc-fuzzy', commit = '18a8008fd2653eadd00590311d250347abc7a9de' })
+  use({ 'matsui54/ddc-buffer', commit = 'e417e47964788b0211c80252757531f7a3881178' })
+  use({ 'Shougo/ddc-source-cmdline', commit = '6925e7a879ef598a8ddfde0a40c4d3324030535d' })
+  use({ 'Shougo/ddc-source-around', commit = '4da913e4b82d303c2f690b39f2252038c7046221' })
+  use({ 'Shougo/ddc-source-nvim-lsp', commit = '1795bfdbf0879054f3ca9f5ab7025ba68e0338c4' })
+  -- use({ 'hrsh7th/vim-vsnip-integ', commit = '1cf89903f12777b90dd79eb4b3d7fbc0b9a254a1' })
 
   -- Snippet Engine + Presets
   -- ---
-  use({ 'hrsh7th/vim-vsnip', commit = '03010115eb8bdda00ce5f845cc2f7025700e33bb' })
-  use({ 'rafamadriz/friendly-snippets', commit = 'c93311fbcc840210a2c0db574177d84a35a2c9c1' })
+  -- use({ 'hrsh7th/vim-vsnip', commit = '6f873418c4dc601d8ad019a5906eddff5088de9b' })
+  -- use({ 'rafamadriz/friendly-snippets', commit = '03f91a18022964d80a3f0413ed82cf1dbeba247f' })
 
   -- Fuzzy File/Code Finder
   -- ---
-  use({ 'junegunn/fzf', tag = '0.34.0' })
-  use({ 'junegunn/fzf.vim', commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
+  use({ 'junegunn/fzf', tag = '0.34.0', run = 'call fzf#install()' })
+  use({ 'junegunn/fzf.vim', commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7', frozen = true })
 
   -- Git
   -- ---
@@ -555,10 +558,8 @@ require('jetpack.packer').startup(function(use)
   -- ---
   use({
     'nvim-treesitter/nvim-treesitter',
-    commit = 'dc27512e0019dcf4b6fbf0e0d5f285b4c9858308',
-    run = function()
-      require('nvim-treesitter.install').update({ with_sync = true })
-    end,
+    branch = 'v0.8.0',
+    run = ':TSUpdate',
   })
 
   -- FileType Syntax
@@ -583,11 +584,20 @@ require('jetpack.packer').startup(function(use)
   use({ 'tiagovla/tokyodark.nvim', commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
   use({ 'catppuccin/nvim', commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
   use({ 'Yagua/nebulous.nvim', commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
-
-  if is_first_time then
-    vim.call('jetpack#sync')
-  end
 end)
+
+-- Instal if first time
+if plugins_empty then
+  require('jetpack').sync()
+end
+
+-- Auto-install plugins
+for _, name in pairs(jetpack.names()) do
+  if jetpack.tap(name) == 0 then
+    jetpack.sync()
+    break
+  end
+end
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
@@ -600,6 +610,10 @@ require('user.treesitter').setup()
 -- nvim-lspconfig Config
 -- ---
 require('user.lsp').setup()
+
+-- fidget.nvim Config
+-- ---
+require('fidget').setup({})
 
 -- fzf.vim Config
 -- ---
