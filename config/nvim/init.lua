@@ -324,7 +324,7 @@ vim.g.vim_markdown_conceal = 0
 
 -- vim-vsnip Config
 -- ---
-require('user.vsnip').setup()
+-- require('user.vsnip').setup()
 
 -- vim-vue Config
 -- ---

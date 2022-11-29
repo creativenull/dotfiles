@@ -1,7 +1,12 @@
 local M = {}
 
-local sources = { 'nvim-lsp', 'vsnip', 'around', 'buffer' }
-local cmdline_sources = { 'cmdline' }
+local sources = { 'nvim-lsp', 'around', 'buffer' }
+local cmdline_sources = {
+  [':'] = { 'cmdline', 'around' },
+  ['@'] = { 'cmdline' },
+  ['/'] = { 'around' },
+  ['?'] = { 'around' },
+}
 local cmdline_keymaps = {
   { lhs = '<Tab>', rhs = '<Cmd>call pum#map#insert_relative(+1)<CR>' },
   { lhs = '<S-Tab>', rhs = '<Cmd>call pum#map#insert_relative(-1)<CR>' },
@@ -81,10 +86,12 @@ local function register_ui_events()
 end
 
 local function register_keymaps()
-  vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(+1)<CR>')
+  vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
   vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
   vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
-  vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
+  vim.keymap.set('i', '<C-y>', function()
+    vim.call('pum#map#confirm')
+  end, { desc = 'Insert item from snippet or menu item' })
 
   vim.keymap.set('n', ':', function()
     cmdline_pre()
@@ -117,22 +124,32 @@ function M.setup()
         sorters = { 'sorter_fuzzy' },
         converters = { 'converter_fuzzy' },
       },
+      cmdline = {
+        mark = 'CMD',
+        maxCandidates = 10,
+        ignoreCase = true,
+      },
       ['nvim-lsp'] = {
-        mark = 'Language',
+        mark = 'LS',
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
         maxCandidates = 10,
+        ignoreCase = true,
+        minAutoCompleteLength = 1,
       },
       vsnip = {
-        mark = 'Snippet',
+        mark = 'S',
         maxCandidates = 5,
+        ignoreCase = true,
       },
       around = {
-        mark = 'Local',
-        maxCandidates = 3,
+        mark = 'A',
+        maxCandidates = 5,
+        ignoreCase = true,
       },
       buffer = {
-        mark = 'Buffer',
-        maxCandidates = 3,
+        mark = 'B',
+        maxCandidates = 5,
+        ignoreCase = true,
       },
     },
     sourceParams = {
@@ -177,9 +194,8 @@ function M.setup()
     border = 'rounded',
     padding = true,
     scrollbar_char = '',
-    offset_row = 3,
-    max_height = 10,
-    max_width = 80,
+    offset_row = vim.opt.cmdheight:get() + 1, -- cmdheight + statusline height
+    max_height = 15,
   })
 
   register_keymaps()

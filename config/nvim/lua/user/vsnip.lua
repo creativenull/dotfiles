@@ -13,8 +13,8 @@ end
 -- Jump to the previous snippet selection
 -- or perform default key behaviour
 local function jump_prev(default_key)
-  if vim.call('vsnip#jumpable', 1) == 1 then
-    return '<Plug>(vsnip-jump-next)'
+  if vim.call('vsnip#jumpable', -1) == 1 then
+    return '<Plug>(vsnip-jump-prev)'
   else
     return default_key
   end
