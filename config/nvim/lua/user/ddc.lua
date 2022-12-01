@@ -89,9 +89,7 @@ local function register_keymaps()
   vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
   vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
   vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
-  vim.keymap.set('i', '<C-y>', function()
-    vim.call('pum#map#confirm')
-  end, { desc = 'Insert item from snippet or menu item' })
+  vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
 
   vim.keymap.set('n', ':', function()
     cmdline_pre()
@@ -196,6 +194,7 @@ function M.setup()
     scrollbar_char = '',
     offset_row = vim.opt.cmdheight:get() + 1, -- cmdheight + statusline height
     max_height = 15,
+    max_width = 80,
   })
 
   register_keymaps()
