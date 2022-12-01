@@ -540,7 +540,7 @@ jetpack_packer.startup(function(use)
   -- Fuzzy File/Code Finder
   -- ---
   use({ 'junegunn/fzf', tag = '0.34.0', run = 'call fzf#install()' })
-  use({ 'junegunn/fzf.vim', commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7', frozen = true })
+  use({ 'junegunn/fzf.vim', commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
 
   -- Git
   -- ---
