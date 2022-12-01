@@ -34,7 +34,7 @@ vim.api.nvim_create_augroup(vim.g.user.event, {})
 
 -- Enable treesitter highlights provided by nvim core
 if vim.fn.has('nvim-0.8') == 1 then
-  vim.g.ts_highlight_lua = 1
+  vim.g.ts_highlight_lua = true
 end
 
 -- Ensure the following tools are installed in the system
