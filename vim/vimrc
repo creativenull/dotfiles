@@ -1,3 +1,17 @@
+" Name: Arnold Chand
+" Github: https://github.com/creativenull
+" Description: My vimrc works with MacOS, Linux and Windows.
+" Requires:
+"   + curl
+"   + git
+"   + python3
+"   + ripgrep
+" ============================================================================
+" Initialize
+"
+" Tags: CONFIG
+" ============================================================================
+
 let g:config = {}
 let g:config.key = {}
 let g:config.key.leader = "\<Space>"
@@ -358,7 +372,7 @@ call plug#end()
 " ============================================================================
 " Plugin Configurations
 "
-" Tags: CONFIG, PLUGCONFIG
+" Tags: PLUGCONFIG
 " ============================================================================
 
 " fzf.vim Config
