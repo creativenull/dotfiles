@@ -41,7 +41,7 @@ syntax on
 " ============================================================================
 " Functions
 "
-" Tags: FUNC, FUNCTIONS
+" Tags: FUNC
 " ============================================================================
 
 " Check if the vim instance is running on a WSL vm
@@ -84,7 +84,7 @@ endfunction
 " ============================================================================
 " Events
 "
-" Tags: AU, AUG, AUGROUP, AUTOCMD, EVENT
+" Tags: AU
 " ============================================================================
 
 augroup UserGroup
@@ -105,7 +105,7 @@ autocmd UserGroup FileType vue setlocal iskeyword+= softtabstop=2 shiftwidth=2 e
 " ============================================================================
 " Options
 "
-" Tags: OPT, OPTS, OPTIONS
+" Tags: OPT
 " ============================================================================
 
 " Ensure dir for storing undo changes
@@ -183,7 +183,7 @@ endif
 " ============================================================================
 " Keymaps
 "
-" Tags: KEY, KEYS, KEYMAPS
+" Tags: KEY
 " ============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
@@ -258,7 +258,7 @@ nnoremap Q @@
 " ============================================================================
 " User Commands
 "
-" Tags: CMD, CMDS, COMMANDS
+" Tags: CMD
 " ============================================================================
 
 command! Config edit $MYVIMRC
@@ -276,7 +276,7 @@ cnoreabbrev Wq wq
 " ============================================================================
 " Plugins
 "
-" Tags: PLUG, PLUGS, PLUGINS
+" Tags: PLUG
 " ============================================================================
 
 let data_dir = '~/.vim'
@@ -360,7 +360,7 @@ call plug#end()
 " ============================================================================
 " Plugin Configurations
 "
-" Tags: PLUGCONFIG
+" Tags: POST
 " ============================================================================
 
 " fzf.vim Config
@@ -428,12 +428,8 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-git',
   \ 'coc-tsserver',
-  \ 'coc-prettier',
-  \ 'coc-eslint',
   \ '@yaegassy/coc-volar',
   \ 'coc-phpls',
-  \ '@yaegassy/coc-phpstan',
-  \ 'coc-php-cs-fixer',
 \ ]
 
 function! s:CheckBackspace() abort
@@ -531,7 +527,7 @@ let g:lightline = {
     \
     \ 'active': {
         \ 'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'] ],
-        \ 'right': [ ['ale_err', 'ale_warn', 'ale_status'], ['filetype', 'fileencoding'], ['lineinfo'] ],
+        \ 'right': [ ['ale_err', 'ale_warn', 'ale_status'], ['filetype', 'fileencoding'], ['coc_status', 'lineinfo'] ],
     \ },
     \
     \ 'inactive': {
@@ -542,6 +538,7 @@ let g:lightline = {
     \ 'component_function': {
         \ 'gitbranch': 'gitbranch#name',
         \ 'ale_status': 'AleStatus',
+        \ 'coc_status': 'coc#status',
     \ },
     \
     \ 'component_expand': {
@@ -594,7 +591,7 @@ endfunction
 " ============================================================================
 " Theme
 "
-" Tags: THEME, COLORSCHEME
+" Tags: THEME
 " ============================================================================
 
 let g:moonflyNormalFloat = 1
