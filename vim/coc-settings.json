@@ -1,0 +1,17 @@
+{
+  "diagnostic.displayByAle": true,
+  "floatFactory.floatConfig": {
+    "border": true,
+    "rounded": true,
+    "maxWidth": 80,
+    "highlight": "UserCocFloat",
+    "borderhighlight": "UserCocFloatBorder"
+  },
+  "suggest.floatConfig": {
+    "border": true,
+    "rounded": true,
+    "maxWidth": 80,
+    "highlight": "UserCocFloat",
+    "borderhighlight": "UserCocFloatBorder"
+  }
+}

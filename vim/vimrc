@@ -325,20 +325,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 " }}}
 
-" LSP client {{{
-Plug 'prabirshrestha/vim-lsp'
-Plug 'rhysd/vim-lsp-ale'
-" }}}
-
-" Auto-completion {{{
-Plug 'Shougo/ddc.vim'
-Plug 'Shougo/pum.vim'
-Plug 'Shougo/ddc-ui-pum'
-Plug 'tani/ddc-fuzzy'
-Plug 'shun/ddc-source-vim-lsp'
-Plug 'Shougo/ddc-source-around'
-Plug 'matsui54/ddc-buffer'
-Plug 'matsui54/denops-popup-preview.vim'
+" LSP client + auto-completion {{{
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " }}}
 
 " UI {{{
@@ -432,144 +420,60 @@ autocmd UserGroup User ALEJobStarted call lightline#update()
 autocmd UserGroup User ALELintPost call lightline#update()
 autocmd UserGroup User ALEFixPost call lightline#update()
 
-" vim-lsp Config
+" coc.nvim Config
 " ---
-let g:lsp_completion_documentation_enabled = 0
-let g:lsp_document_code_action_signs_enabled = 0
-let g:lsp_document_highlight_enabled = 0
-let g:lsp_hover_ui = 'float'
-
-function! s:OnAttachedBuffer() abort
-  setlocal omnifunc=lsp#complete
-
-  nmap <buffer> <Leader>ld <Plug>(lsp-definition)
-  nmap <buffer> <Leader>lf <Plug>(lsp-document-format)
-  nmap <buffer> <Leader>lr <Plug>(lsp-rename)
-  nmap <buffer> <Leader>lh <Plug>(lsp-hover)
-  nmap <buffer> <Leader>la <Plug>(lsp-code-action)
-  vmap <buffer> <Leader>la <Plug>(lsp-code-action)
-  nmap <buffer> <Leader>le <Plug>(lsp-document-diagnostics)
-  nmap <buffer> <Leader>ln <Plug>(lsp-next-diagnostic)
-  nmap <buffer> <Leader>lp <Plug>(lsp-previous-diagnostic)
-endfunction
-
-function! s:SetLspBorderHighlights() abort
-  highlight UserLspFloatBorder guibg=NONE guifg=#eeeeee
-  highlight UserLspFloat guibg=NONE
-endfunction
-
-function! s:SetLspPopupOptions() abort
-  call popup_setoptions(lsp#document_hover_preview_winid(), {
-    highlight: 'UserLspFloat',
-    borderhighlight: ['UserLspFloatBorder'],
-    borderchars: ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
-    border: [1, 1, 1, 1],
-    padding: [0, 1, 0, 1],
-  })
-endfunction
-
-let s:lsp_servers = [
-  \ {
-    \ 'name': 'typescript-language-server',
-    \ 'cmd': ['typescript-language-server', '--stdio'],
-    \ 'allowlist': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
-    \ 'condition': filereadable(getcwd() .. '/package.json') || 1,
-  \ },
-  \ {
-    \ 'name': 'deno',
-    \ 'cmd': ['deno', 'lsp'],
-    \ 'workspace_config': { 'deno': { 'enable': v:true, 'lint': v:true } },
-    \ 'allowlist': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
-    \ 'condition': filereadable(getcwd() .. '/deno.json') || filereadable(getcwd() .. '/deno.jsonc'),
-  \ },
-  \ {
-    \ 'name': 'vue-language-server',
-    \ 'cmd': ['vue-language-server', '--stdio'],
-    \ 'allowlist': ['vue'],
-  \ },
-  \ {
-    \ 'name': 'intelephense',
-    \ 'cmd': ['intelephense', '--stdio'],
-    \ 'allowlist': ['php'],
-  \ },
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-git',
+  \ 'coc-tsserver',
+  \ 'coc-prettier',
+  \ 'coc-eslint',
+  \ '@yaegassy/coc-volar',
+  \ 'coc-phpls',
+  \ '@yaegassy/coc-phpstan',
+  \ 'coc-php-cs-fixer',
 \ ]
 
-augroup UserLspGroup
+function! s:CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-for s:lsp_server in s:lsp_servers
-  if executable(s:lsp_server.name)
-    if has_key(s:lsp_server, 'condition')
-      if s:lsp_server.condition
-        execute printf("autocmd UserLspGroup User lsp_setup call lsp#register_server(%s)", string(s:lsp_server))
-      endif
+inoremap <silent> <expr> <C-n> coc#pum#visible()
+      \ ? coc#pum#next(1)
+      \ : <SID>CheckBackspace() ? "\<C-n>" : coc#refresh()
+inoremap <expr> <C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-p>"
 
-      continue
-    endif
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <silent><expr> <Tab> coc#pum#visible() ? coc#pum#confirm() : "\<Tab>"
+inoremap <silent><expr> <C-y> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
 
-    execute printf("autocmd UserLspGroup User lsp_setup call lsp#register_server(%s)", string(s:lsp_server))
-  endif
-endfor
+inoremap <silent><expr> <c-@> coc#refresh()
 
-autocmd UserLspGroup User lsp_buffer_enabled call <SID>OnAttachedBuffer()
-autocmd UserLspGroup ColorScheme * call <SID>SetLspBorderHighlights()
-autocmd UserLspGroup User lsp_float_opened call <SID>SetLspPopupOptions()
+nnoremap <Leader>lh <Cmd>if CocAction('hasProvider', 'hover')<Bar>call CocActionAsync('doHover')<Bar>endif<CR>
+nnoremap <Leader>lr <Cmd>call CocActionAsync('format')<CR>
+nmap <Leader>ld <Plug>(coc-definition)
+nmap <Leader>lf <Plug>(lsp-document-format)
+nmap <Leader>la <Plug>(coc-codeaction-cursor)
+nmap <Leader>le <Cmd>CocList diagnostics<CR>
+nmap <Leader>l] <Plug>(coc-diagnostic-next)
+nmap <Leader>l[ <Plug>(coc-diagnostic-prev)
+nnoremap <silent> <expr> <nowait> <Down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Up>"
+nnoremap <silent> <expr> <nowait> <Up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<Down>"
+inoremap <silent> <expr> <nowait> <Down> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(1)\<CR>" : "\<Up>"
+inoremap <silent> <expr> <nowait> <Up> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<CR>" : "\<Down>"
 
-" denops-popup-preview.vim Config
-" ---
-let g:popup_preview_config = {
-  \ 'border': v:false,
-\ }
+" Tsserver
+command! -nargs=0 TSOrganizeImports call CocActionAsync('runCommand', 'editor.action.organizeImports')
 
-" ddc.vim Config
-" ---
-call ddc#custom#patch_global('ui', 'pum')
-call ddc#custom#patch_global('completionMenu', 'pum.vim')
-call ddc#custom#patch_global('autoCompleteDelay', 50)
-call ddc#custom#patch_global('backspaceCompletion', v:true)
-call ddc#custom#patch_global('smartCase', v:true)
-call ddc#custom#patch_global('sources', ['vim-lsp', 'buffer', 'around'])
-call ddc#custom#patch_global('sourceOptions', {
-  \ '_': {
-    \ 'matchers': ['matcher_fuzzy'],
-    \ 'sorters': ['sorter_fuzzy'],
-    \ 'converter_fuzzy': ['converter_fuzzy'],
-  \ },
-  \ 'vim-lsp': {
-    \ 'mark': '「LS」',
-    \ 'maxCandidates': 10,
-    \ 'ignoreCase': v:true,
-  \ },
-  \ 'around': {
-    \ 'mark': '「AR」',
-    \ 'maxCandidates': 5,
-    \ 'ignoreCase': v:true,
-  \ },
-  \ 'buffer': {
-    \ 'mark': '「BF」',
-    \ 'maxCandidates': 5,
-    \ 'ignoreCase': v:true,
-  \ },
-\ })
+augroup UserCocGroup
 
-" Filetype options
-call ddc#custom#patch_filetype('markdown', { 'sources': ['around'] })
-
-inoremap <expr> <C-@> ddc#map#manual_complete()
-
-autocmd UserGroup VimEnter * call popup_preview#enable() | call ddc#enable()
-
-" pum.vim Config
-" ---
-call pum#set_option('padding', v:true)
-call pum#set_option('scrollbar_char', '')
-call pum#set_option('offset_row', 3)
-call pum#set_option('max_height', 15)
-call pum#set_option('max_width', 80)
-
-inoremap <C-n> <Cmd>call pum#map#insert_relative(1)<CR>
-inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
-inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
+autocmd UserCocGroup CursorHold * silent call CocActionAsync('highlight')
+autocmd UserCocGroup User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+autocmd UserCocGroup ColorScheme * highlight UserCocFloat guibg=NONE guifg=#aaaaaa
+autocmd UserCocGroup ColorScheme * highlight UserCocFloatBorder guibg=NONE guifg=#aaaaaa
 
 " vim-gitgutter Config
 " ---
@@ -637,12 +541,12 @@ let g:lightline = {
     \
     \ 'component_function': {
         \ 'gitbranch': 'gitbranch#name',
-        \ 'ale_status': 'user#lightline#AleStatus',
+        \ 'ale_status': 'AleStatus',
     \ },
     \
     \ 'component_expand': {
-        \ 'ale_err': 'user#lightline#AleErrComponent',
-        \ 'ale_warn': 'user#lightline#AleWarnComponent',
+        \ 'ale_err': 'AleErrComponent',
+        \ 'ale_warn': 'AleWarnComponent',
         \ 'buffers': 'lightline#bufferline#buffers',
     \ },
     \
