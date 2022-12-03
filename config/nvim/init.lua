@@ -550,7 +550,7 @@ jetpack_packer.startup(function(use)
 
   -- UI/Aesthetics
   -- ---
-  use({ 'Yggdroot/indentLine', commit = 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
+  use({ 'lukas-reineke/indent-blankline.nvim', commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
   use({ 'itchyny/lightline.vim', commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
   use({ 'mengelbrecht/lightline-bufferline', commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
 
