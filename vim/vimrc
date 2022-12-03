@@ -1,171 +1,105 @@
-" Name: Arnold Chand
-" Github: https://github.com/creativenull
-" Description: My vimrc, currently tested on a Linux machine.
-" Requires:
-"   + git
-"   + curl
-"   + python3
-"   + ripgrep
-"
-" =============================================================================
-" = User Initialize (USER) =
-" =============================================================================
-
-if !has('vim9script')
-  echoerr '[vim] Vim 9 is required for this config!'
-  finish
-endif
-
-let mapleader = "\<Space>"
-
-let g:user = {}
-let g:user.enable_transparent = v:false
-
-" Vim filepaths
-" ---
-
-let g:user.config = {}
+let g:config = {}
+let g:config.key = {}
+let g:config.key.leader = "\<Space>"
 
 if has('win32')
-  let g:user.config.cachedir = expand('$HOME/AppData/Local/Temp/vim')
-  let g:user.config.configdir = expand('$HOME')
-  let g:user.config.datadir = expand('$HOME/vimfiles')
+  let g:config.cachedir = expand('$HOME/AppData/Local/Temp/vim')
+  let g:config.configdir = expand('$HOME')
+  let g:config.datadir = expand('$HOME/vimfiles')
 else
-  let g:user.config.cachedir = expand('$HOME/.cache/vim')
-  let g:user.config.configdir = expand('$HOME')
-  let g:user.config.datadir = expand('$HOME/.vim')
+  let g:config.cachedir = expand('$HOME/.cache/vim')
+  let g:config.configdir = expand('$HOME')
+  let g:config.datadir = expand('$HOME/.vim')
 endif
 
-let g:user.config.undodir = printf('%s/undo', g:user.config.cachedir)
+let g:config.undodir = printf('%s/undo', g:config.cachedir)
+
+let mapleader = g:config.key.leader
 
 " Enable vim features
 " ---
-
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
 filetype plugin indent on
 syntax on
 
-" Hard dependencies
-" ---
+" ============================================================================
+" Functions
+"
+" Tags: FUNC, FUNCTIONS
+" ============================================================================
 
-" Pre-Requisites
-let s:exec_list = ['git', 'curl', 'python3', 'rg', 'deno']
+" Check if the vim instance is running on a WSL vm
+" Ref: https://github.com/neovim/neovim/issues/12642#issuecomment-658944841
+function! s:IsWSL() abort
+  let s:proc_version = '/proc/version'
 
-for s:exec in s:exec_list
-  if !executable(s:exec)
-    echoerr printf('[vim] `%s` is needed!', s:exec)
-    finish
-  endif
-endfor
-
-" OS Specific options
-" ---
-
-" For Windows
-if has('win32')
-  if !executable('pwsh')
-    echoerr '[vim] PowerShell Core >= v6 is required!'
-    finish
+  if !filereadable(s:proc_version)
+    return 0
   endif
 
-  let s:shcmd_flag = [
-    \ '-NoLogo',
-    \ '-NoProfile',
-    \ '-ExecutionPolicy',
-    \ 'RemoteSigned',
-    \ '-Command',
-    \ '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
-  \ ]
+  let s:proc_result = readfile(s:proc_version, '', 1)->filter('v:val =~? "microsoft"')
 
-  let &shellcmdflag = join(s:shcmd_flag, ' ')
-  let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  set shell=pwsh
-  set shellquote=
-  set shellxquote=
-endif
+  return !procFileResult->empty()
+endfunction
 
-" =============================================================================
-" = User Commands (CMD) =
-" =============================================================================
-
-command! Config edit $MYVIMRC
-command! ConfigReload source $MYVIMRC | nohlsearch
-
-command! ToggleConcealLevel call user#utils#ToggleConcealLevel()
-command! ToggleCodeshot call user#utils#ToggleCodeshot()
-
-command! MyTodoPersonal edit ~/todofiles/personal/README.md
-command! MyTodoWork edit ~/todofiles/work/README.md
-
-" Command Abbreviations, I can't release my shift key fast enough 😭
-cnoreabbrev Q  q
-cnoreabbrev Qa qa
-cnoreabbrev W  w
-cnoreabbrev Wq wq
-
-" =============================================================================
-" = Autocmds (AUG) =
-" =============================================================================
-
-function! s:set_transparent_highlights() abort
-  if g:user.enable_transparent
-    " Core highlights to make transparent
-    highlight Normal cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight SignColumn cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight LineNr gui=NONE guibg=NONE guifg=#EEEEEE
-    highlight CursorLineNr cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight EndOfBuffer cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight Visual cterm=NONE gui=NONE guibg=#555555
-
-    " Make tabline bg tranparent
-    highlight TabLineFill cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight TabLine cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-
-    " Float Border
-    highlight NormalFloat cterm=NONE ctermbg=NONE gui=NONE guibg=NONE
-    highlight FloatBorder cterm=NONE ctermbg=NONE gui=NONE guibg=NONE guifg=#EEEEEE
-
-    " Vertical Line
-    highlight ColorColumn cterm=NONE gui=NONE guibg=#999999
+" Strip sign column, number line, etc to be able
+" to copy and paste from a vim instance that has
+" mouse disabled, or not able to use `"+y`.
+"
+" Example of such and instance is running vim in WSL2
+function! s:ToggleCodeshot() abort
+  if &number
+    setlocal nonumber signcolumn=no
+  else
+    setlocal number signcolumn=yes
   endif
 endfunction
 
-augroup transparent_user_events
-  autocmd!
-  autocmd ColorScheme * call s:set_transparent_highlights()
-augroup END
+" Toggle the conceallevel, should any syntax plugin overtake
+" and hide/conceal words
+function! s:ToggleConcealLevel() abort
+  if &conceallevel == 2
+    setlocal conceallevel=0
+  else
+    setlocal conceallevel=2
+  endif
+endfunction
 
-augroup customhl_user_events
-  autocmd!
-  " Different color when confirming selected substitution with `:s`
-  autocmd ColorScheme * highlight IncSearch gui=NONE guibg=#103DA5 guifg=#eeeeee
-augroup END
+" ============================================================================
+" Events
+"
+" Tags: AU, AUG, AUGROUP, AUTOCMD, EVENT
+" ============================================================================
 
-augroup custom_indent_user_events
-  autocmd!
-  autocmd FileType javascript,javascriptreact call user#utils#IndentSize(2, v:true)
-  autocmd FileType json,jsonc call user#utils#IndentSize(2, v:true)
-  autocmd FileType markdown call user#utils#IndentSize(4, v:true) | setlocal spell iskeyword+=-
-  autocmd FileType php,blade,html call user#utils#IndentSize(4, v:true) | setlocal iskeyword+=-
-  autocmd FileType scss,sass,css call user#utils#IndentSize(2, v:true)
-  autocmd FileType typescript,typescriptreact call user#utils#IndentSize(2, v:true)
-  autocmd FileType vim,lua call user#utils#IndentSize(2, v:true)
-  autocmd FileType vue call user#utils#IndentSize(2, v:true) | setlocal iskeyword+=-
-augroup END
+augroup UserGroup
 
-" =============================================================================
-" = Options (OPT) =
-" =============================================================================
+" Different color when confirming selected substitution with `:s`
+autocmd UserGroup ColorScheme * highlight IncSearch gui=NONE guibg=#103DA5 guifg=#eeeeee
+
+" Custom default indent rules
+autocmd UserGroup FileType javascript,javascriptreact setlocal softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType json,jsonc setlocal softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType markdown setlocal iskeyword+= softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType php,blade,html setlocal iskeyword+= softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType scss,sass,css setlocal softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType typescript,typescriptreact setlocal softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType vim,lua setlocal softtabstop=2 shiftwidth=2 expandtab
+autocmd UserGroup FileType vue setlocal iskeyword+= softtabstop=2 shiftwidth=2 expandtab
+
+" ============================================================================
+" Options
+"
+" Tags: OPT, OPTS, OPTIONS
+" ============================================================================
 
 " Ensure dir for storing undo changes
-if !isdirectory(g:user.config.undodir)
+if !isdirectory(g:config.undodir)
   if has('win32')
-    execute printf('silent !mkdir -Recurse %s', g:user.config.undodir)
+    execute printf('silent !mkdir %s', g:config.undodir)
   else
-    execute printf('silent !mkdir -p %s', g:user.config.undodir)
+    execute printf('silent !mkdir -p %s', g:config.undodir)
   endif
 endif
 
@@ -200,7 +134,7 @@ set tabstop=8
 set wildignorecase
 
 " System
-let &undodir=g:user.config.undodir
+let &undodir=g:config.undodir
 set backspace=indent,eol,start
 set encoding=utf-8
 set history=10000
@@ -212,8 +146,10 @@ set undolevels=10000
 set updatetime=250
 set clipboard-=autoselect
 
-if user#utils#IsWSL()
+if <SID>IsWSL()
   set mouse=
+else
+  set mouse=nv
 endif
 
 " UI
@@ -230,9 +166,11 @@ if has('termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" =============================================================================
-" = Keybindings (KEY) =
-" =============================================================================
+" ============================================================================
+" Keymaps
+"
+" Tags: KEY, KEYS, KEYMAPS
+" ============================================================================
 
 " Unbind default bindings for arrow keys, trust me this is for your own good
 noremap  <Up>    <Nop>
@@ -287,167 +225,358 @@ nnoremap <Leader>vs <Cmd>ConfigReload<CR>
 " Reload file
 nnoremap <Leader>r <Cmd>edit!<CR>
 
-" List all maps
-nnoremap <Leader>mn <Cmd>nmap<CR>
-nnoremap <Leader>mv <Cmd>vmap<CR>
-nnoremap <Leader>mi <Cmd>imap<CR>
-nnoremap <Leader>mt <Cmd>tmap<CR>
-nnoremap <Leader>mc <Cmd>cmap<CR>
-
 " Move lines up/down with alt+j/k
-set <M-j>=j
-set <M-k>=k
-nnoremap <M-j> :m .+1<CR>==
-nnoremap <M-k> :m .-2<CR>==
-vnoremap <M-j> :m '>+1<CR>gv=gv
-vnoremap <M-k> :m '<-2<CR>gv=gv
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Copy/Paste system clipboard
-vnoremap p "_dP
 nnoremap <Leader>y "+y
 nnoremap <Leader>p <Cmd>set paste<Bar>"+p<Bar>set nopaste<CR>
 nnoremap Y y$
 
-" Format entire file with =
-nnoremap g= gg=G
-
 " Execute last recorded macro
 nnoremap Q @@
 
-" =============================================================================
-" = Plugin Manager (PLUG) =
-" =============================================================================
+" ============================================================================
+" User Commands
+"
+" Tags: CMD, CMDS, COMMANDS
+" ============================================================================
 
-function! PackagerInit() abort
-  packadd vim-packager
-  call packager#init()
+command! Config edit $MYVIMRC
+command! ConfigReload source $MYVIMRC | nohlsearch
 
-  " Self-care
-  call packager#add('kristijanhusak/vim-packager', #{ type: 'opt' })
+command! ToggleConcealLevel call <SID>ToggleConcealLevel()
+command! ToggleCodeshot call <SID>ToggleCodeshot()
 
-  " Plugin dependencies {{{
-  call packager#add('lambdalisue/nerdfont.vim', #{ tag: 'v1.3.0' })
-  call packager#add('vim-denops/denops.vim', #{ tag: 'v3.2.0' })
-  " }}}
+" Command Abbreviations, I can't release my shift key fast enough 😭
+cnoreabbrev Q  q
+cnoreabbrev Qa qa
+cnoreabbrev W  w
+cnoreabbrev Wq wq
 
-  " Core {{{
-  call packager#add('cohama/lexima.vim', #{ commit: 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
-  call packager#add('creativenull/projectlocal-vim', #{ tag: 'v0.4.3' })
-  call packager#add('editorconfig/editorconfig-vim', #{ commit: 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
-  call packager#add('junegunn/vim-easy-align', #{ commit: '12dd6316974f71ce333e360c0260b4e1f81169c3' })
-  call packager#add('mattn/emmet-vim', #{ commit: 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
-  call packager#add('tpope/vim-abolish', #{ tag: 'v1.1' })
-  call packager#add('tpope/vim-repeat', #{ commit: '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
-  call packager#add('tpope/vim-surround', #{ tag: 'v2.2' })
-  call packager#add('Shougo/context_filetype.vim', #{ commit: '28768168261bca161c3f2599e0ed63c96aab6dea' })
-  call packager#add('tyru/caw.vim', #{ commit: '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
-  " }}}
+" ============================================================================
+" Plugins
+"
+" Tags: PLUG, PLUGS, PLUGINS
+" ============================================================================
 
-  " File Explorer {{{
-  call packager#add('lambdalisue/fern.vim', #{ tag: 'v1.51.1' })
-  call packager#add('lambdalisue/fern-renderer-nerdfont.vim', #{ commit: '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
-  " }}}
+let data_dir = '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-  " Fuzzy Finder {{{
-  call packager#add('junegunn/fzf', #{ tag: '0.32.1' })
-  call packager#add('junegunn/fzf.vim', #{ commit: 'c491d702b76c6b4918abb80be3cfb57d1b618ffa' })
-  " }}}
+call plug#begin()
 
-  " Git {{{
-  call packager#add('lambdalisue/gin.vim', #{ tag: 'v0.2.1' })
-  call packager#add('itchyny/vim-gitbranch', #{ commit: '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-  call packager#add('airblade/vim-gitgutter', #{ commit: 'f19b6203191d69de955d91467a5707959572119b' })
-  " }}}
+" Plugin dependencies {{{
+Plug 'lambdalisue/nerdfont.vim', { 'tag': 'v1.3.0' }
+Plug 'vim-denops/denops.vim', { 'tag': 'v3.2.0' }
+" }}}
 
-  " Linter and formatter configurations {{{
-  call packager#add('dense-analysis/ale', #{ tag: 'v3.2.0' })
-  " }}}
+" Core {{{
+Plug 'cohama/lexima.vim', { 'commit': 'fbc05de53ca98b7f36a82f566db1df49864e58ef' }
+Plug 'creativenull/projectlocal-vim', { 'tag': 'v0.4.3' }
+Plug 'editorconfig/editorconfig-vim', { 'commit': 'd354117b72b3b43b75a29b8e816c0f91af10efe9' }
+Plug 'junegunn/vim-easy-align', { 'commit': '12dd6316974f71ce333e360c0260b4e1f81169c3' }
+Plug 'mattn/emmet-vim', { 'commit': 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' }
+Plug 'tpope/vim-abolish', { 'tag': 'v1.1' }
+Plug 'tpope/vim-repeat', { 'commit': '24afe922e6a05891756ecf331f39a1f6743d3d5a' }
+Plug 'tpope/vim-surround', { 'tag': 'v2.2' }
+Plug 'Shougo/context_filetype.vim', { 'commit': '28768168261bca161c3f2599e0ed63c96aab6dea' }
+Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
+" }}}
 
-  " Auto-completion + LSP client {{{
-  " call packager#add('neoclide/coc.nvim', #{ branch: 'release' })
-  " }}}
+" File Explorer {{{
+Plug 'lambdalisue/fern.vim', { 'tag': 'v1.51.1' }
+Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1a3719f226edc27e7241da7cda4bc4d4c7db889c' }
+" }}}
 
-  " LSP client {{{
-  call packager#add('prabirshrestha/vim-lsp', #{ commit: '4d8a27513daef41915eaf2d315a2662e95d71080' })
-  call packager#add('rhysd/vim-lsp-ale', #{ commit: 'db0f9a8a33c0480988dc420cd2fba8a07743e4a4' })
-  " }}}
+" Fuzzy Finder {{{
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+" }}}
 
-  " Auto-completion {{{
-  call packager#add('Shougo/ddc.vim', #{ tag: 'v2.4.0' })
-  call packager#add('tani/ddc-fuzzy', #{ commit: '3339deacff797cc23f79a45c5e72ba0eed0af119' })
-  call packager#add('matsui54/denops-signature_help', #{ commit: '807226cf698c537c335284f5a9af79067991f930' })
-  call packager#add('shun/ddc-vim-lsp', #{ commit: '8035fe3f7cccbb75686c27e6631361650456d876' })
-  call packager#add('Shougo/ddc-around', #{ commit: '58249707478dbd53bd4eb18c0c42770886a849d7' })
-  call packager#add('matsui54/ddc-buffer', #{ commit: '5cce1b264d83d6cc38c0bbb044da51ec0dd92c12' })
-  " }}}
+" Git {{{
+Plug 'tpope/vim-fugitive', { 'tag': 'v3.7' }
+Plug 'itchyny/vim-gitbranch'
+Plug 'airblade/vim-gitgutter'
+" }}}
 
-  " UI {{{
-  call packager#add('itchyny/lightline.vim', #{ commit: 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' })
-  call packager#add('mengelbrecht/lightline-bufferline', #{ commit: '8b6e29e65e9711b75df289879186ff3888feed00' })
-  call packager#add('Yggdroot/indentLine', #{ commit: 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' })
-  call packager#add('machakann/vim-highlightedyank', #{ commit: 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' })
-  call packager#add('markonm/traces.vim', #{ commit: '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' })
-  " }}}
+" Linter and formatter configurations {{{
+Plug 'dense-analysis/ale'
+" }}}
 
-  " File syntax plugins {{{
-  call packager#add('elzr/vim-json')
-  call packager#add('kevinoid/vim-jsonc')
-  call packager#add('junegunn/vader.vim')
-  call packager#add('jwalton512/vim-blade')
-  call packager#add('pangloss/vim-javascript')
-  call packager#add('MaxMEllon/vim-jsx-pretty')
-  call packager#add('posva/vim-vue')
-  call packager#add('MTDL9/vim-log-highlighting')
-  call packager#add('lacygoill/vim9-syntax')
-  " }}}
+" LSP client {{{
+Plug 'prabirshrestha/vim-lsp'
+Plug 'rhysd/vim-lsp-ale'
+" }}}
 
-  " Colorschemes {{{
-  call packager#add('bluz71/vim-moonfly-colors')
-  call packager#add('bluz71/vim-nightfly-guicolors')
-  call packager#add('fnune/base16-vim')
-  call packager#add('keqizeng/nightelf')
-  call packager#add('nanotech/jellybeans.vim')
-  " }}}
-endfunction
+" Auto-completion {{{
+Plug 'Shougo/ddc.vim'
+Plug 'Shougo/pum.vim'
+Plug 'Shougo/ddc-ui-pum'
+Plug 'tani/ddc-fuzzy'
+Plug 'shun/ddc-source-vim-lsp'
+Plug 'Shougo/ddc-source-around'
+Plug 'matsui54/ddc-buffer'
+Plug 'matsui54/denops-popup-preview.vim'
+" }}}
 
-command! -nargs=* -bar PackagerInstall call PackagerInit() | call packager#install(<args>)
-command! -nargs=* -bar PackagerUpdate call PackagerInit() | call packager#update(<args>)
-command! -bar PackagerClean call PackagerInit() | call packager#clean()
-command! -bar PackagerStatus call PackagerInit() | call packager#status()
+" UI {{{
+Plug 'itchyny/lightline.vim', { 'commit': 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' }
+Plug 'mengelbrecht/lightline-bufferline', { 'commit': '8b6e29e65e9711b75df289879186ff3888feed00' }
+Plug 'Yggdroot/indentLine', { 'commit': 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' }
+Plug 'machakann/vim-highlightedyank', { 'commit': 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' }
+Plug 'markonm/traces.vim', { 'commit': '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
+" }}}
 
-call user#packager#Bootstrap()
+" File syntax plugins {{{
+Plug 'elzr/vim-json'
+Plug 'kevinoid/vim-jsonc'
+Plug 'junegunn/vader.vim'
+Plug 'jwalton512/vim-blade'
+Plug 'pangloss/vim-javascript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'posva/vim-vue'
+Plug 'MTDL9/vim-log-highlighting'
+Plug 'lacygoill/vim9-syntax'
+" }}}
 
-" =============================================================================
-" = Plugin Configurations (POST) =
-" =============================================================================
+" Colorschemes {{{
+Plug 'bluz71/vim-moonfly-colors'
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'fnune/base16-vim'
+" }}}
 
-" gin.vim Config
-" ---
-call user#gin#Setup()
+call plug#end()
 
-" Emmet Config
-" ---
-call user#emmet#Setup()
-
-" fern.vim Config
-" ---
-call user#fern#Setup()
+" ============================================================================
+" Plugin Configurations
+"
+" Tags: CONFIG, PLUGCONFIG
+" ============================================================================
 
 " fzf.vim Config
 " ---
-call user#fzf#Setup()
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+let $FZF_DEFAULT_OPTS = '--reverse'
+let g:fzf_preview_window = []
+
+function! s:VimGrep(qargs, bang) abort
+  let s:sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(a:qargs)
+  call fzf#vim#grep(s:sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
+endfunction
+
+command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
+
+nnoremap <C-p> <Cmd>Files<CR>
+nnoremap <C-t> <Cmd>Rg<CR>
+
+autocmd UserGroup ColorScheme * highlight! fzfBorder guifg=#aaaaaa
+
+" fern.vim Config
+" ---
+let g:fern#renderer = 'nerdfont'
+let g:fern#hide_cursor = 1
+
+function! s:FernKeymaps() abort
+  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
+  nmap <buffer> D <Plug>(fern-action-remove)
+endfunction
+
+nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
+
+autocmd UserGroup FileType fern call <SID>FernKeymaps()
+autocmd UserGroup ColorScheme * highlight CursorLine guibg=#aaaaaa guifg=#222222
+
+" ale Config
+" ---
+let g:ale_completion_enabled = 0
+let g:ale_disable_lsp = 1
+let g:ale_hover_cursor = 0
+let g:ale_echo_msg_error_str = 'Err'
+let g:ale_sign_error = ' '
+let g:ale_echo_msg_warning_str = 'Warn'
+let g:ale_sign_warning = ' '
+let g:ale_echo_msg_info_str = 'Info'
+let g:ale_sign_info = ' '
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_linters_explicit = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+
+nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
+nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
+nnoremap <silent> <Leader>al <Cmd>lopen<CR>
+
+" Update lightline whenever ALE lints or formats the code
+autocmd UserGroup User ALEJobStarted call lightline#update()
+autocmd UserGroup User ALELintPost call lightline#update()
+autocmd UserGroup User ALEFixPost call lightline#update()
+
+" vim-lsp Config
+" ---
+let g:lsp_completion_documentation_enabled = 0
+let g:lsp_document_code_action_signs_enabled = 0
+let g:lsp_document_highlight_enabled = 0
+let g:lsp_hover_ui = 'float'
+
+function! s:OnAttachedBuffer() abort
+  setlocal omnifunc=lsp#complete
+
+  nmap <buffer> <Leader>ld <Plug>(lsp-definition)
+  nmap <buffer> <Leader>lf <Plug>(lsp-document-format)
+  nmap <buffer> <Leader>lr <Plug>(lsp-rename)
+  nmap <buffer> <Leader>lh <Plug>(lsp-hover)
+  nmap <buffer> <Leader>la <Plug>(lsp-code-action)
+  vmap <buffer> <Leader>la <Plug>(lsp-code-action)
+  nmap <buffer> <Leader>le <Plug>(lsp-document-diagnostics)
+  nmap <buffer> <Leader>ln <Plug>(lsp-next-diagnostic)
+  nmap <buffer> <Leader>lp <Plug>(lsp-previous-diagnostic)
+endfunction
+
+function! s:SetLspBorderHighlights() abort
+  highlight UserLspFloatBorder guibg=NONE guifg=#eeeeee
+  highlight UserLspFloat guibg=NONE
+endfunction
+
+function! s:SetLspPopupOptions() abort
+  call popup_setoptions(lsp#document_hover_preview_winid(), {
+    highlight: 'UserLspFloat',
+    borderhighlight: ['UserLspFloatBorder'],
+    borderchars: ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
+    border: [1, 1, 1, 1],
+    padding: [0, 1, 0, 1],
+  })
+endfunction
+
+let s:lsp_servers = [
+  \ {
+    \ 'name': 'typescript-language-server',
+    \ 'cmd': ['typescript-language-server', '--stdio'],
+    \ 'allowlist': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+    \ 'condition': filereadable(getcwd() .. '/package.json') || 1,
+  \ },
+  \ {
+    \ 'name': 'deno',
+    \ 'cmd': ['deno', 'lsp'],
+    \ 'workspace_config': { 'deno': { 'enable': v:true, 'lint': v:true } },
+    \ 'allowlist': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+    \ 'condition': filereadable(getcwd() .. '/deno.json') || filereadable(getcwd() .. '/deno.jsonc'),
+  \ },
+  \ {
+    \ 'name': 'vue-language-server',
+    \ 'cmd': ['vue-language-server', '--stdio'],
+    \ 'allowlist': ['vue'],
+  \ },
+  \ {
+    \ 'name': 'intelephense',
+    \ 'cmd': ['intelephense', '--stdio'],
+    \ 'allowlist': ['php'],
+  \ },
+\ ]
+
+augroup UserLspGroup
+
+for s:lsp_server in s:lsp_servers
+  if executable(s:lsp_server.name)
+    if has_key(s:lsp_server, 'condition')
+      if s:lsp_server.condition
+        execute printf("autocmd UserLspGroup User lsp_setup call lsp#register_server(%s)", string(s:lsp_server))
+      endif
+
+      continue
+    endif
+
+    execute printf("autocmd UserLspGroup User lsp_setup call lsp#register_server(%s)", string(s:lsp_server))
+  endif
+endfor
+
+autocmd UserLspGroup User lsp_buffer_enabled call <SID>OnAttachedBuffer()
+autocmd UserLspGroup ColorScheme * call <SID>SetLspBorderHighlights()
+autocmd UserLspGroup User lsp_float_opened call <SID>SetLspPopupOptions()
+
+" denops-popup-preview.vim Config
+" ---
+let g:popup_preview_config = {
+  \ 'border': v:false,
+\ }
+
+" ddc.vim Config
+" ---
+call ddc#custom#patch_global('ui', 'pum')
+call ddc#custom#patch_global('completionMenu', 'pum.vim')
+call ddc#custom#patch_global('autoCompleteDelay', 50)
+call ddc#custom#patch_global('backspaceCompletion', v:true)
+call ddc#custom#patch_global('smartCase', v:true)
+call ddc#custom#patch_global('sources', ['vim-lsp', 'buffer', 'around'])
+call ddc#custom#patch_global('sourceOptions', {
+  \ '_': {
+    \ 'matchers': ['matcher_fuzzy'],
+    \ 'sorters': ['sorter_fuzzy'],
+    \ 'converter_fuzzy': ['converter_fuzzy'],
+  \ },
+  \ 'vim-lsp': {
+    \ 'mark': '「LS」',
+    \ 'maxCandidates': 10,
+    \ 'ignoreCase': v:true,
+  \ },
+  \ 'around': {
+    \ 'mark': '「AR」',
+    \ 'maxCandidates': 5,
+    \ 'ignoreCase': v:true,
+  \ },
+  \ 'buffer': {
+    \ 'mark': '「BF」',
+    \ 'maxCandidates': 5,
+    \ 'ignoreCase': v:true,
+  \ },
+\ })
+
+" Filetype options
+call ddc#custom#patch_filetype('markdown', { 'sources': ['around'] })
+
+inoremap <expr> <C-@> ddc#map#manual_complete()
+
+autocmd UserGroup VimEnter * call popup_preview#enable() | call ddc#enable()
+
+" pum.vim Config
+" ---
+call pum#set_option('padding', v:true)
+call pum#set_option('scrollbar_char', '')
+call pum#set_option('offset_row', 3)
+call pum#set_option('max_height', 15)
+call pum#set_option('max_width', 80)
+
+inoremap <C-n> <Cmd>call pum#map#insert_relative(1)<CR>
+inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
+inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
+inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
 
 " vim-gitgutter Config
 " ---
 let g:gitgutter_map_keys = 0
 
-" ale Config
+" emmet-vim Config
 " ---
-call user#ale#Setup()
+let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_install_global = 0
+let g:user_emmet_mode = 'i'
 
-" coc.nvim Config
+autocmd UserGroup FileType html,vue,astro EmmetInstall
+autocmd UserGroup FileType javascript,javascriptreact,typescript,typescriptreact EmmetInstall
+autocmd UserGroup FileType php,blade EmmetInstall
+autocmd UserGroup FileType twig,html.twig,htmldjango.twig,xml.twig EmmetInstall
+
+" vim-highlightedyank Config
 " ---
-" call user#coc#Setup()
+let g:highlightedyank_highlight_duration = 300
+
+autocmd UserGroup ColorScheme * highlight! default link HighlightedyankRegion IncSearch
 
 " vim-vue Config
 " ---
@@ -461,36 +590,96 @@ let g:vim_json_syntax_conceal = 0
 " ---
 let g:indentLine_char = '│'
 
-" vim-highlightedyank Config
+" vim-lightline Config
 " ---
-call user#highlightedyank#Setup()
+let g:lightline = {
+    \ 'colorscheme': 'tailwind_cnull',
+    \ 'enable': {
+        \ 'statusline': 1,
+        \ 'tabline': 1,
+    \ },
+    \
+    \ 'tabline': {
+        \ 'left': [ ['buffers'] ],
+        \ 'right': [ ['filetype'] ],
+    \ },
+    \
+    \ 'component': { 'lineinfo': ' %l/%L  %c' },
+    \
+    \ 'separator': {
+        \ 'left': '',
+        \ 'right': '',
+    \ },
+    \
+    \ 'active': {
+        \ 'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'] ],
+        \ 'right': [ ['ale_err', 'ale_warn', 'ale_status'], ['filetype', 'fileencoding'], ['lineinfo'] ],
+    \ },
+    \
+    \ 'inactive': {
+        \ 'left': [ ['filename'], ['gitbranch', 'modified'] ],
+        \ 'right': [ [], [], ['lineinfo'] ],
+    \ },
+    \
+    \ 'component_function': {
+        \ 'gitbranch': 'gitbranch#name',
+        \ 'ale_status': 'user#lightline#AleStatus',
+    \ },
+    \
+    \ 'component_expand': {
+        \ 'ale_err': 'user#lightline#AleErrComponent',
+        \ 'ale_warn': 'user#lightline#AleWarnComponent',
+        \ 'buffers': 'lightline#bufferline#buffers',
+    \ },
+    \
+    \ 'component_type': {
+        \ 'ale_err': 'error',
+        \ 'ale_warn': 'warning',
+        \ 'buffers': 'tabsel',
+    \ },
+\ }
 
-" lightline.vim Config
-" ---
-call user#lightline#Setup()
+function! g:AleErrComponent() abort
+  if exists('g:loaded_ale')
+    let l:info = ale#statusline#Count(bufnr(''))
+    let l:errors = l:info.error
 
-" gitgutter Config
-" ---
-call user#gitgutter#Setup()
+    if l:errors > 0
+      return printf('%d', l:errors)
+    endif
+  endif
 
-" asyncomplete.vim Config
-" ---
-" call user#asyncomplete#Setup()
+  return ''
+endfunction
 
-" ddc.vim Config
-" ---
-call user#ddc#Setup()
+function! g:AleWarnComponent() abort
+  if exists('g:loaded_ale')
+    let l:info = ale#statusline#Count(bufnr(''))
+    let l:warnings = l:info.warning
 
-" vim-lsp Config
-" ---
-call user#lsp#Setup()
+    if l:warnings > 0
+      return printf('%d', l:warnings)
+    endif
+  endif
 
-" =============================================================================
-" = UI/Theme (THEME) =
-" =============================================================================
+  return ''
+endfunction
+
+function! g:AleStatus() abort
+  if exists('g:loaded_ale')
+    return 'ALE'
+  endif
+
+  return ''
+endfunction
+
+" ============================================================================
+" Theme
+"
+" Tags: THEME, COLORSCHEME
+" ============================================================================
 
 let g:moonflyNormalFloat = 1
-let g:moonflyTransparent = 1
 
 set background=dark
 colorscheme moonfly
