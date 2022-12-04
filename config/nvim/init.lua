@@ -370,13 +370,9 @@ end
 -- ---
 vim.g['fern#hide_cursor'] = 1
 vim.g['fern#default_hidden'] = 1
--- vim.g['fern#renderer'] = 'nerdfont'
--- vim.g['fern#renderer#nerdfont#leading'] = '  '
-vim.g['fern#renderer#default#root_symbol'] = ' @@ '
-vim.g['fern#renderer#default#leaf_symbol'] = ' '
-vim.g['fern#renderer#default#collapsed_symbol'] = ' + '
-vim.g['fern#renderer#default#expanded_symbol'] = ' - '
-vim.g['fern#renderer#default#leading'] = '  '
+vim.g['fern#renderer'] = 'nerdfont'
+vim.g['fern#renderer#nerdfont#root_symbol'] = ' '
+vim.g['fern#renderer#nerdfont#indent_markers'] = 1
 
 vim.keymap.set('n', '<Leader>ff', '<Cmd>Fern . -reveal=%<CR>')
 
