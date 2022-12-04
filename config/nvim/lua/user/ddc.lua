@@ -112,7 +112,7 @@ function M.setup()
     autoCompleteEvents = { 'InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged' },
     autoCompleteDelay = 100,
     overwriteCompleteopt = false,
-    backspaceCompletion = true,
+    backspaceCompletion = false,
     smartCase = true,
     completionMenu = 'pum.vim',
     ui = 'pum',
