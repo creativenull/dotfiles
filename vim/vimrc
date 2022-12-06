@@ -312,8 +312,8 @@ Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
 " }}}
 
 " File Explorer {{{
-Plug 'lambdalisue/fern.vim', { 'tag': 'v1.51.1' }
-Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1a3719f226edc27e7241da7cda4bc4d4c7db889c' }
+Plug 'lambdalisue/fern.vim', { 'tag': 'v1.51.3' }
+Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '5d937d53789249c8f61cda44c245886c4c9c000c' }
 " }}}
 
 " Fuzzy Finder {{{
@@ -389,8 +389,10 @@ autocmd UserGroup ColorScheme * highlight! fzfBorder guifg=#aaaaaa
 
 " fern.vim Config
 " ---
-let g:fern#renderer = 'nerdfont'
 let g:fern#hide_cursor = 1
+let g:fern#renderer = 'nerdfont'
+let g:fern#renderer#nerdfont#indent_markers = 1
+let g:fern#renderer#nerdfont#root_symbol = ' '
 
 function! s:FernKeymaps() abort
   nnoremap <buffer> <nowait> q <Cmd>bd<CR>
