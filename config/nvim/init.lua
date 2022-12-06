@@ -454,149 +454,129 @@ vim.g.lexima_enable_newline_rules = 0
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
 
-local function ensure_jetpack()
-  -- nvim + Lua
-  local fn = vim.fn
-  local jetpackfile = fn.stdpath('data') .. '/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim'
-  local jetpackurl = 'https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim'
-  if fn.filereadable(jetpackfile) == 0 then
-    print('Downloading plugin manager')
-    fn.system({ 'curl', '-fsSLo', jetpackfile, '--create-dirs', jetpackurl })
-    vim.cmd('source ' .. jetpackfile)
-    return true
-  end
+local function ensure_plug()
+  local data_dir = vim.fn.stdpath('data') .. '/site'
 
-  return false
-end
+  if vim.fn.empty(vim.fn.glob(data_dir .. '/autoload/plug.vim')) == 1 then
+    print('Installing plugin manager')
 
-local plugins_empty = ensure_jetpack()
+    vim.fn.system({
+      'curl',
+      '-fLo',
+      data_dir .. '/autoload/plug.vim',
+      '--create-dirs',
+      'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim',
+    })
 
-vim.cmd('packadd vim-jetpack')
-local jetpack = require('jetpack')
-local jetpack_packer = require('jetpack.packer')
-jetpack_packer.startup(function(use)
-  use({ 'tani/vim-jetpack', opt = 1 })
-
-  -- Deps
-  -- ---
-  use({ 'vim-denops/denops.vim', tag = 'v3.2.0' })
-  use({ 'lambdalisue/nerdfont.vim', tag = 'v1.3.0' })
-  use({ 'nvim-lua/plenary.nvim', commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' })
-
-  -- Core
-  -- ---
-  use({ 'cohama/lexima.vim', commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
-  use({ 'creativenull/projectlocal-vim', tag = 'v0.4.3' })
-  use({ 'editorconfig/editorconfig-vim', commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
-  use({ 'godlygeek/tabular', commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
-  use({ 'mattn/emmet-vim', commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
-  use({ 'tpope/vim-abolish', tag = 'v1.1' })
-  use({ 'tpope/vim-endwise', commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
-  use({ 'tpope/vim-repeat', commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
-  use({ 'tpope/vim-surround', tag = 'v2.2' })
-  use({ 'numToStr/Comment.nvim', commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3d6' })
-  -- use('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
-  -- use('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
-
-  -- File Explorer + Addons
-  -- ---
-  use({ 'antoinemadec/FixCursorHold.nvim', commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
-  use({ 'lambdalisue/fern.vim', tag = 'v1.51.1' })
-  use({ 'lambdalisue/glyph-palette.vim', tag = 'v1.4.0' })
-  use({ 'lambdalisue/fern-renderer-nerdfont.vim', commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
-
-  -- Linters + Formatters
-  -- ---
-  use({ 'dense-analysis/ale', commit = '4b433e5693ccec8e408504c4b139b8f7cc6a4aa3' })
-  use({ 'creativenull/nvim-ale-diagnostic', branch = 'v2' })
-
-  -- Builtin LSP Configs
-  -- ---
-  use({ 'neovim/nvim-lspconfig', commit = 'a2817c9d9500079a0340286a88653b41707a92eb' })
-  use({ 'creativenull/efmls-configs-nvim', tag = 'v0.1.3' })
-  use({ 'creativenull/diagnosticls-configs-nvim', tag = 'v0.1.8' })
-  use({ 'jose-elias-alvarez/null-ls.nvim', commit = 'c51978f546a86a653f4a492b86313f4616412cec' })
-  use({ 'j-hui/fidget.nvim', commit = '44585a0c0085765195e6961c15529ba6c5a2a13b' })
-
-  -- AutoCompletion + Sources (ddc.vim)
-  -- ---
-  use({ 'Shougo/ddc.vim', tag = 'v3.3.0' })
-  use({ 'Shougo/pum.vim', commit = '31aae8d39061bcdae755e468e83a3a70b72a0fce' })
-  use({ 'Shougo/ddc-ui-pum', commit = '82c646416d8653988e56b27e68256f01d02f7b1c' })
-  use({ 'matsui54/denops-signature_help', commit = 'f5c6a5a571a1cc00a82245690ada0d5c13903d2f' })
-  use({ 'tani/ddc-fuzzy', commit = '18a8008fd2653eadd00590311d250347abc7a9de' })
-  use({ 'matsui54/ddc-buffer', commit = 'e417e47964788b0211c80252757531f7a3881178' })
-  use({ 'Shougo/ddc-source-cmdline', commit = '6925e7a879ef598a8ddfde0a40c4d3324030535d' })
-  use({ 'Shougo/ddc-source-around', commit = '4da913e4b82d303c2f690b39f2252038c7046221' })
-  use({ 'Shougo/ddc-source-nvim-lsp', commit = '1795bfdbf0879054f3ca9f5ab7025ba68e0338c4' })
-  -- use({ 'hrsh7th/vim-vsnip-integ', commit = '1cf89903f12777b90dd79eb4b3d7fbc0b9a254a1' })
-
-  -- Snippet Engine + Presets
-  -- ---
-  -- use({ 'hrsh7th/vim-vsnip', commit = '6f873418c4dc601d8ad019a5906eddff5088de9b' })
-  -- use({ 'rafamadriz/friendly-snippets', commit = '03f91a18022964d80a3f0413ed82cf1dbeba247f' })
-
-  -- Fuzzy File/Code Finder
-  -- ---
-  use({ 'junegunn/fzf', tag = '0.34.0', run = 'call fzf#install()' })
-  use({ 'junegunn/fzf.vim', commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
-
-  -- Git
-  -- ---
-  use({ 'lambdalisue/gin.vim', tag = 'v0.2.1' })
-  use({ 'itchyny/vim-gitbranch', commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-  use({ 'lewis6991/gitsigns.nvim', branch = 'release' })
-
-  -- UI/Aesthetics
-  -- ---
-  use({ 'lukas-reineke/indent-blankline.nvim', commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
-  use({ 'itchyny/lightline.vim', commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
-  use({ 'mengelbrecht/lightline-bufferline', commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
-
-  -- TreeSitter
-  -- ---
-  use({
-    'nvim-treesitter/nvim-treesitter',
-    branch = 'v0.8.0',
-    run = ':TSUpdate',
-  })
-
-  -- FileType Syntax
-  -- ---
-  use({
-    'heavenshell/vim-jsdoc',
-    commit = '71c98ed6eacb4f1c0b9e4950ef679eda6a651cdd',
-    run = 'make install',
-  })
-  use({ 'jwalton512/vim-blade', commit = '9534101808cc320eef003129a40cab04b026a20c' })
-  use({ 'lumiliet/vim-twig', commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
-  use({ 'junegunn/vader.vim', commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
-  use({ 'MTDL9/vim-log-highlighting', commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
-
-  -- Colorschemes
-  -- ---
-  use({ 'bluz71/vim-moonfly-colors', commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
-  use({ 'tinted-theming/base16-vim', commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
-  use({ 'olimorris/onedarkpro.nvim', commit = '5e25c890d35c588f00f186623c885b64d98b86f2' })
-  use({ 'navarasu/onedark.nvim', commit = 'cad3d983e57f467ba8e8252b0567e96dde9a8f0d' })
-  use({ 'rmehri01/onenord.nvim', commit = '0cd9f681bee019715bfbe928891579a3af3331e8' })
-  use({ 'tiagovla/tokyodark.nvim', commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
-  use({ 'catppuccin/nvim', commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
-  use({ 'Yagua/nebulous.nvim', commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
-end)
-
--- Instal if first time
-if plugins_empty then
-  require('jetpack').sync()
-end
-
--- Auto-install plugins
-for _, name in pairs(jetpack.names()) do
-  if jetpack.tap(name) == 0 then
-    jetpack.sync()
-    break
+    vim.cmd('quit')
   end
 end
+
+ensure_plug()
+local Plug = vim.fn['plug#']
+
+vim.call('plug#begin')
+
+-- Deps
+-- ---
+Plug('vim-denops/denops.vim', { tag = 'v3.2.0' })
+Plug('lambdalisue/nerdfont.vim', { tag = 'v1.3.0' })
+Plug('nvim-lua/plenary.nvim', { commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' })
+
+-- Core
+-- ---
+Plug('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
+Plug('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
+Plug('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
+Plug('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
+Plug('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+Plug('tpope/vim-abolish', { tag = 'v1.1' })
+Plug('tpope/vim-endwise', { commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
+Plug('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
+Plug('tpope/vim-surround', { tag = 'v2.2' })
+Plug('numToStr/Comment.nvim', { commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3d6' })
+-- Plug('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
+-- Plug('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
+
+-- File Explorer + Addons
+-- ---
+Plug('antoinemadec/FixCursorHold.nvim', { commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
+Plug('lambdalisue/fern.vim', { tag = 'v1.51.1' })
+Plug('lambdalisue/glyph-palette.vim', { tag = 'v1.4.0' })
+Plug('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
+
+-- Linters + Formatters
+-- ---
+Plug('dense-analysis/ale', { commit = '4b433e5693ccec8e408504c4b139b8f7cc6a4aa3' })
+Plug('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
+
+-- Builtin LSP Configs
+-- ---
+Plug('neovim/nvim-lspconfig', { commit = 'a2817c9d9500079a0340286a88653b41707a92eb' })
+Plug('creativenull/efmls-configs-nvim', { tag = 'v0.1.3' })
+Plug('creativenull/diagnosticls-configs-nvim', { tag = 'v0.1.8' })
+Plug('jose-elias-alvarez/null-ls.nvim', { commit = 'c51978f546a86a653f4a492b86313f4616412cec' })
+Plug('j-hui/fidget.nvim', { commit = '44585a0c0085765195e6961c15529ba6c5a2a13b' })
+
+-- AutoCompletion + Sources (ddc.vim)
+-- ---
+Plug('Shougo/ddc.vim', { tag = 'v3.3.0' })
+Plug('Shougo/pum.vim', { commit = '31aae8d39061bcdae755e468e83a3a70b72a0fce' })
+Plug('Shougo/ddc-ui-pum', { commit = '82c646416d8653988e56b27e68256f01d02f7b1c' })
+Plug('matsui54/denops-signature_help', { commit = 'f5c6a5a571a1cc00a82245690ada0d5c13903d2f' })
+Plug('tani/ddc-fuzzy', { commit = '18a8008fd2653eadd00590311d250347abc7a9de' })
+Plug('matsui54/ddc-buffer', { commit = 'e417e47964788b0211c80252757531f7a3881178' })
+Plug('Shougo/ddc-source-cmdline', { commit = '6925e7a879ef598a8ddfde0a40c4d3324030535d' })
+Plug('Shougo/ddc-source-around', { commit = '4da913e4b82d303c2f690b39f2252038c7046221' })
+Plug('Shougo/ddc-source-nvim-lsp', { commit = '1795bfdbf0879054f3ca9f5ab7025ba68e0338c4' })
+-- Plug('hrsh7th/vim-vsnip-integ', { commit = '1cf89903f12777b90dd79eb4b3d7fbc0b9a254a1' })
+
+-- Snippet Engine + Presets
+-- ---
+-- Plug('hrsh7th/vim-vsnip', { commit = '6f873418c4dc601d8ad019a5906eddff5088de9b' })
+-- Plug('rafamadriz/friendly-snippets', { commit = '03f91a18022964d80a3f0413ed82cf1dbeba247f' })
+
+-- Fuzzy File/Code Finder
+-- ---
+Plug('junegunn/fzf', { tag = '0.34.0' })
+Plug('junegunn/fzf.vim', { commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
+
+-- Git
+-- ---
+Plug('lambdalisue/gin.vim', { tag = 'v0.2.1' })
+Plug('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
+Plug('lewis6991/gitsigns.nvim', { branch = 'release' })
+
+-- UI/Aesthetics
+-- ---
+Plug('lukas-reineke/indent-blankline.nvim', { commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
+Plug('itchyny/lightline.vim', { commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
+Plug('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
+
+-- TreeSitter
+-- ---
+Plug('nvim-treesitter/nvim-treesitter', { branch = 'v0.8.0', ['do'] = ':TSUpdate' })
+
+-- FileType Syntax
+-- ---
+Plug('heavenshell/vim-jsdoc', { commit = '71c98ed6eacb4f1c0b9e4950ef679eda6a651cdd', ['do'] = 'make install' })
+Plug('jwalton512/vim-blade', { commit = '9534101808cc320eef003129a40cab04b026a20c' })
+Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
+Plug('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
+Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
+
+-- Colorschemes
+-- ---
+Plug('bluz71/vim-moonfly-colors', { commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
+Plug('tinted-theming/base16-vim', { commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
+Plug('olimorris/onedarkpro.nvim', { commit = '5e25c890d35c588f00f186623c885b64d98b86f2' })
+Plug('navarasu/onedark.nvim', { commit = 'cad3d983e57f467ba8e8252b0567e96dde9a8f0d' })
+Plug('rmehri01/onenord.nvim', { commit = '0cd9f681bee019715bfbe928891579a3af3331e8' })
+Plug('tiagovla/tokyodark.nvim', { commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
+Plug('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
+Plug('Yagua/nebulous.nvim', { commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
+
+vim.call('plug#end')
 
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
