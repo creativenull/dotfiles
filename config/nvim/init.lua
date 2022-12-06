@@ -388,6 +388,8 @@ local function init_fern(event_args)
   vim.bo[event_args.buf].expandtab = true
   vim.bo[event_args.buf].shiftwidth = 2
   vim.bo[event_args.buf].tabstop = 2
+
+  vim.call('glyph_palette#apply')
 end
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -500,6 +502,7 @@ jetpack_packer.startup(function(use)
   -- ---
   use({ 'antoinemadec/FixCursorHold.nvim', commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
   use({ 'lambdalisue/fern.vim', tag = 'v1.51.1' })
+  use({ 'lambdalisue/glyph-palette.vim', tag = 'v1.4.0' })
   use({ 'lambdalisue/fern-renderer-nerdfont.vim', commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
 
   -- Linters + Formatters
