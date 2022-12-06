@@ -13,5 +13,6 @@
     "maxWidth": 80,
     "highlight": "UserCocFloat",
     "borderhighlight": "UserCocFloatBorder"
-  }
+  },
+  "suggest.maxCompleteItemCount": 10
 }
