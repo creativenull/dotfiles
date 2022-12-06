@@ -81,6 +81,12 @@ function! s:ToggleConcealLevel() abort
   endif
 endfunction
 
+function! s:PasteFromClipboard() abort
+  set paste
+  normal! "+p
+  set nopaste
+endfunction
+
 " ============================================================================
 " Events
 "
@@ -249,7 +255,7 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Copy/Paste system clipboard
 nnoremap <Leader>y "+y
-nnoremap <Leader>p <Cmd>set paste<Bar>"+p<Bar>set nopaste<CR>
+nnoremap <Leader>p <Cmd>call <SID>PasteFromClipboard()<CR>
 nnoremap Y y$
 
 " Execute last recorded macro
