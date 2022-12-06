@@ -503,7 +503,7 @@ Plug('numToStr/Comment.nvim', { commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3
 Plug('antoinemadec/FixCursorHold.nvim', { commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
 Plug('lambdalisue/fern.vim', { tag = 'v1.51.1' })
 Plug('lambdalisue/glyph-palette.vim', { tag = 'v1.4.0' })
-Plug('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1a3719f226edc27e7241da7cda4bc4d4c7db889c' })
+Plug('lambdalisue/fern-renderer-nerdfont.vim', { commit = '5d937d53789249c8f61cda44c245886c4c9c000c' })
 
 -- Linters + Formatters
 -- ---
