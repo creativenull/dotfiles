@@ -314,6 +314,7 @@ Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
 " File Explorer {{{
 Plug 'lambdalisue/fern.vim', { 'tag': 'v1.51.3' }
 Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '5d937d53789249c8f61cda44c245886c4c9c000c' }
+Plug 'lambdalisue/glyph-palette.vim', { 'tag': 'v1.4.0' }
 " }}}
 
 " Fuzzy Finder {{{
@@ -394,15 +395,16 @@ let g:fern#renderer = 'nerdfont'
 let g:fern#renderer#nerdfont#indent_markers = 1
 let g:fern#renderer#nerdfont#root_symbol = ' '
 
-function! s:FernKeymaps() abort
+function! s:InitFern() abort
   nnoremap <buffer> <nowait> q <Cmd>bd<CR>
   nmap <buffer> D <Plug>(fern-action-remove)
+
+  call glyph_palette#apply()
 endfunction
 
 nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
-autocmd UserGroup FileType fern call <SID>FernKeymaps()
-autocmd UserGroup ColorScheme * highlight CursorLine guibg=#aaaaaa guifg=#222222
+autocmd UserGroup FileType fern call <SID>InitFern()
 
 " ale Config
 " ---
