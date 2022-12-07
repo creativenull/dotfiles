@@ -438,6 +438,7 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-flow',
   \ '@yaegassy/coc-volar',
+  \ 'coc-deno',
   \ 'coc-phpls',
 \ ]
 
