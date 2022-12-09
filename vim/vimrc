@@ -309,7 +309,7 @@ Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
 
 " File Explorer {{{
 Plug 'lambdalisue/fern.vim', { 'tag': 'v1.51.3' }
-Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '5d937d53789249c8f61cda44c245886c4c9c000c' }
+Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1e90a78ab5510fbcedc85abeb9a251d978726935' }
 Plug 'lambdalisue/glyph-palette.vim', { 'tag': 'v1.4.0' }
 " }}}
 
