@@ -55,7 +55,7 @@ function! s:IsWSL() abort
 
   let s:proc_result = readfile(s:proc_version, '', 1)->filter('v:val =~? "microsoft"')
 
-  return !procFileResult->empty()
+  return !s:proc_result->empty()
 endfunction
 
 " Strip sign column, number line, etc to be able
@@ -140,17 +140,13 @@ set smartcase
 " Editor
 set autoindent
 set colorcolumn=120
-set expandtab
 set lazyredraw
 set nofoldenable
 set nospell
 set nowrap
 set scrolloff=1
-set shiftwidth=4
 set smartindent
 set smarttab
-set softtabstop=4
-set tabstop=8
 set wildignorecase
 
 " System
@@ -433,16 +429,16 @@ autocmd UserGroup User ALEFixPost call lightline#update()
 " coc.nvim Config
 " ---
 let g:coc_global_extensions = [
-  \ 'coc-json',
-  \ 'coc-html',
-  \ 'coc-css',
-  \ 'coc-git',
-  \ 'coc-tsserver',
-  \ 'coc-flow',
-  \ '@yaegassy/coc-volar',
-  \ 'coc-deno',
-  \ 'coc-phpls',
-\ ]
+\ 'coc-json',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-git',
+\ 'coc-tsserver',
+\ 'coc-flow',
+\ '@yaegassy/coc-volar',
+\ 'coc-deno',
+\ 'coc-phpls',
+\]
 
 function! s:CheckBackspace() abort
   let col = col('.') - 1
@@ -519,52 +515,56 @@ let g:indentLine_char = '│'
 " vim-lightline Config
 " ---
 let g:lightline = {
-    \ 'colorscheme': 'tailwind_cnull',
-    \ 'enable': {
-        \ 'statusline': 1,
-        \ 'tabline': 1,
-    \ },
-    \
-    \ 'tabline': {
-        \ 'left': [ ['buffers'] ],
-        \ 'right': [ ['filetype'] ],
-    \ },
-    \
-    \ 'component': { 'lineinfo': ' %l/%L  %c' },
-    \
-    \ 'separator': {
-        \ 'left': '',
-        \ 'right': '',
-    \ },
-    \
-    \ 'active': {
-        \ 'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'] ],
-        \ 'right': [ ['ale_err', 'ale_warn', 'ale_status'], ['filetype', 'fileencoding'], ['coc_status', 'lineinfo'] ],
-    \ },
-    \
-    \ 'inactive': {
-        \ 'left': [ ['filename'], ['gitbranch', 'modified'] ],
-        \ 'right': [ [], [], ['lineinfo'] ],
-    \ },
-    \
-    \ 'component_function': {
-        \ 'gitbranch': 'gitbranch#name',
-        \ 'ale_status': 'AleStatus',
-        \ 'coc_status': 'coc#status',
-    \ },
-    \
-    \ 'component_expand': {
-        \ 'ale_err': 'AleErrComponent',
-        \ 'ale_warn': 'AleWarnComponent',
-        \ 'buffers': 'lightline#bufferline#buffers',
-    \ },
-    \
-    \ 'component_type': {
-        \ 'ale_err': 'error',
-        \ 'ale_warn': 'warning',
-        \ 'buffers': 'tabsel',
-    \ },
-\ }
+\ 'colorscheme': 'tailwind_cnull',
+\ 'enable': {
+\   'statusline': 1,
+\   'tabline': 1,
+\ },
+\
+\ 'tabline': {
+\   'left': [ ['buffers'] ],
+\   'right': [ ['filetype'] ],
+\ },
+\
+\ 'component': { 'lineinfo': ' %l/%L  %c' },
+\
+\ 'separator': {
+\   'left': '',
+\   'right': '',
+\ },
+\
+\ 'active': {
+\   'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'] ],
+\   'right': [
+\     ['ale_err', 'ale_warn', 'ale_status'],
+\     ['filetype', 'fileencoding'],
+\     ['coc_status', 'lineinfo'],
+\   ],
+\ },
+\
+\ 'inactive': {
+\   'left': [ ['filename'], ['gitbranch', 'modified'] ],
+\   'right': [ [], [], ['lineinfo'] ],
+\ },
+\
+\ 'component_function': {
+\   'gitbranch': 'gitbranch#name',
+\   'ale_status': 'AleStatus',
+\   'coc_status': 'coc#status',
+\ },
+\
+\ 'component_expand': {
+\   'ale_err': 'AleErrComponent',
+\   'ale_warn': 'AleWarnComponent',
+\   'buffers': 'lightline#bufferline#buffers',
+\ },
+\
+\ 'component_type': {
+\   'ale_err': 'error',
+\   'ale_warn': 'warning',
+\   'buffers': 'tabsel',
+\ },
+\}
 
 function! g:AleErrComponent() abort
   if exists('g:loaded_ale')
