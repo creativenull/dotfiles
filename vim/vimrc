@@ -86,6 +86,18 @@ function! s:PasteFromClipboard() abort
   set nopaste
 endfunction
 
+function! s:ResizeHorizontalWindow(amount) abort
+  if getwininfo()->len() > 1
+    execute printf('resize %s%d', a:amount > 0 ? '+' : '', a:amount)
+  endif
+endfunction
+
+function! s:ResizeVerticalWindow(amount) abort
+  if getwininfo()->len() > 1
+    execute printf('vertical resize %s%d', a:amount > 0 ? '+' : '', a:amount)
+  endif
+endfunction
+
 " ============================================================================
 " Events
 "
@@ -199,10 +211,10 @@ inoremap <Right> <Nop>
 
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
-nnoremap <Up>    <Cmd>resize +2<CR>
-nnoremap <Down>  <Cmd>resize -2<CR>
-nnoremap <Left>  <Cmd>vertical resize -2<CR>
-nnoremap <Right> <Cmd>vertical resize +2<CR>
+nnoremap <Up>    <Cmd>call <SID>ResizeHorizontalWindow(+2)<CR>
+nnoremap <Down>  <Cmd>call <SID>ResizeHorizontalWindow(-2)<CR>
+nnoremap <Left>  <Cmd>call <SID>ResizeVerticalWindow(+2)<CR>
+nnoremap <Right> <Cmd>call <SID>ResizeVerticalWindow(-2)<CR>
 
 " Map Esc, to perform quick switching between Normal and Insert mode
 inoremap jk <Esc>
@@ -444,29 +456,27 @@ function! s:CheckBackspace() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-inoremap <silent> <expr> <C-n> coc#pum#visible()
-      \ ? coc#pum#next(1)
-      \ : <SID>CheckBackspace() ? "\<C-n>" : coc#refresh()
+inoremap <expr> <C-n> coc#pum#visible() ? coc#pum#next(1) : <SID>CheckBackspace() ? "\<C-n>" : coc#refresh()
 inoremap <expr> <C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-p>"
-
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-inoremap <silent><expr> <Tab> coc#pum#visible() ? coc#pum#confirm() : "\<Tab>"
-inoremap <silent><expr> <C-y> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
-
-inoremap <silent><expr> <c-@> coc#refresh()
+inoremap <expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#confirm() : "\<Tab>"
+inoremap <expr> <C-y> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
+inoremap <expr> <c-@> coc#refresh()
 
 nnoremap <Leader>lh <Cmd>if CocAction('hasProvider', 'hover')<Bar>call CocActionAsync('doHover')<Bar>endif<CR>
 nnoremap <Leader>lr <Cmd>call CocActionAsync('format')<CR>
-nmap <Leader>ld <Plug>(coc-definition)
-nmap <Leader>lf <Plug>(lsp-document-format)
-nmap <Leader>la <Plug>(coc-codeaction-cursor)
-nmap <Leader>le <Cmd>CocList diagnostics<CR>
-nmap <Leader>l] <Plug>(coc-diagnostic-next)
-nmap <Leader>l[ <Plug>(coc-diagnostic-prev)
-nnoremap <silent> <expr> <nowait> <Down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Up>"
-nnoremap <silent> <expr> <nowait> <Up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<Down>"
-inoremap <silent> <expr> <nowait> <Down> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(1)\<CR>" : "\<Up>"
-inoremap <silent> <expr> <nowait> <Up> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<CR>" : "\<Down>"
+nmap     <Leader>ld <Plug>(coc-definition)
+nmap     <Leader>lf <Plug>(lsp-document-format)
+nmap     <Leader>la <Plug>(coc-codeaction-cursor)
+nmap     <Leader>le <Cmd>CocList diagnostics<CR>
+nmap     <Leader>l] <Plug>(coc-diagnostic-next)
+nmap     <Leader>l[ <Plug>(coc-diagnostic-prev)
+
+" Documentation
+nnoremap <expr> <nowait> <Down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Cmd>call <SID>ResizeHorizontalWindow(-2)\<CR>"
+nnoremap <expr> <nowait> <Up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<Cmd>call <SID>ResizeHorizontalWindow(+2)\<CR>"
+inoremap <expr> <nowait> <Down> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(1)\<CR>" : "\<Cmd>call <SID>ResizeHorizontalWindow(-2)\<CR>"
+inoremap <expr> <nowait> <Up> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<CR>" : "\<Cmd>call <SID>ResizeHorizontalWindow(+2)\<CR>"
 
 " Tsserver
 command! -nargs=0 TSOrganizeImports call CocActionAsync('runCommand', 'editor.action.organizeImports')

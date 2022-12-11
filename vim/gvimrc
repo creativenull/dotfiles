@@ -1,0 +1,6 @@
+" Name: Arnold Chand
+" Github: https://github.com/creativenull
+" ============================================================================
+
+set guifont=JetBrainsMono\ Nerd\ Font:h15
+set guioptions=dMrk
