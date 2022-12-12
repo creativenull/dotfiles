@@ -316,6 +316,7 @@ Plug 'tpope/vim-repeat', { 'commit': '24afe922e6a05891756ecf331f39a1f6743d3d5a' 
 Plug 'tpope/vim-surround', { 'tag': 'v2.2' }
 Plug 'Shougo/context_filetype.vim', { 'commit': '28768168261bca161c3f2599e0ed63c96aab6dea' }
 Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
+Plug 'lambdalisue/suda.vim', { 'tag': 'v0.4.0' }
 " }}}
 
 " File Explorer {{{
