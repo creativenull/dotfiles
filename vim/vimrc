@@ -610,6 +610,14 @@ function! g:AleStatus() abort
   return ''
 endfunction
 
+" lightline-bufferline Config
+" ---
+let g:lightline#bufferline#enable_nerdfont = 1
+let g:lightline#bufferline#modified = ' '
+let g:lightline#bufferline#read_only = ' '
+let g:lightline#bufferline#show_number = 2
+let g:lightline#bufferline#icon_position = 'right'
+
 " ============================================================================
 " Theme
 "
