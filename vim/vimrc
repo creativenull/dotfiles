@@ -464,14 +464,14 @@ inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#confirm() : "\<Tab>"
 inoremap <expr> <C-y> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
 inoremap <expr> <c-@> coc#refresh()
 
-nnoremap <Leader>lh <Cmd>if CocAction('hasProvider', 'hover')<Bar>call CocActionAsync('doHover')<Bar>endif<CR>
-nnoremap <Leader>lr <Cmd>call CocActionAsync('format')<CR>
+nmap     <Leader>lr <Plug>(coc-rename)
 nmap     <Leader>ld <Plug>(coc-definition)
-nmap     <Leader>lf <Plug>(lsp-document-format)
 nmap     <Leader>la <Plug>(coc-codeaction-cursor)
 nmap     <Leader>le <Cmd>CocList diagnostics<CR>
 nmap     <Leader>l] <Plug>(coc-diagnostic-next)
 nmap     <Leader>l[ <Plug>(coc-diagnostic-prev)
+nnoremap <Leader>lf <Cmd>call CocActionAsync('format')<CR>
+nnoremap <Leader>lh <Cmd>if CocAction('hasProvider', 'hover')<Bar>call CocActionAsync('doHover')<Bar>endif<CR>
 
 " Documentation
 nnoremap <expr> <nowait> <Down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Cmd>call <SID>ResizeHorizontalWindow(-2)\<CR>"
