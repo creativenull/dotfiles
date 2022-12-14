@@ -522,6 +522,12 @@ let g:vim_json_syntax_conceal = 0
 " ---
 let g:indentLine_char = '│'
 
+" vim-gitbranch Config
+" ---
+function! g:GitBranch() abort
+  return ' ' . gitbranch#name()
+endfunction
+
 " vim-lightline Config
 " ---
 let g:lightline = {
@@ -558,7 +564,7 @@ let g:lightline = {
 \ },
 \
 \ 'component_function': {
-\   'gitbranch': 'gitbranch#name',
+\   'gitbranch': 'GitBranch',
 \   'ale_status': 'AleStatus',
 \   'coc_status': 'coc#status',
 \ },
