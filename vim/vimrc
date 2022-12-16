@@ -480,7 +480,7 @@ inoremap <expr> <nowait> <Down> coc#float#has_scroll() ? "\<C-r>=coc#float#scrol
 inoremap <expr> <nowait> <Up> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<CR>" : "\<Cmd>call <SID>ResizeHorizontalWindow(+2)\<CR>"
 
 " Tsserver
-command! -nargs=0 TSOrganizeImports call CocActionAsync('runCommand', 'editor.action.organizeImports')
+command! -nargs=0 TSOrganizeImports call CocActionAsync('runCommand', 'editor.action.organizeImport')
 
 augroup UserCocGroup
 
