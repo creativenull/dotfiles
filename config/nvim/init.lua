@@ -55,31 +55,6 @@ for _, exec in pairs(optional_execs) do
   end
 end
 
--- Windows specific settings
-if vim.fn.has('win32') == 1 then
-  if vim.fn.executable('pwsh') == 0 then
-    local errmsg = debug.traceback('[nvim] PowerShell Core >= v6 is required on Windows!')
-    vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
-    return
-  end
-
-  local pwsh_flags = {
-    '-NoLogo',
-    '-NoProfile',
-    '-ExecutionPolicy',
-    'RemoteSigned',
-    '-Command',
-    '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
-  }
-
-  vim.opt.shellcmdflag = table.concat(pwsh_flags, ' ')
-  vim.opt.shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  vim.opt.shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-  vim.opt.shell = 'pwsh'
-  vim.opt.shellquote = ''
-  vim.opt.shellxquote = ''
-end
-
 -- leader and providers settings
 vim.g.mapleader = vim.g.user.leaderkey
 vim.g.python3_host_prog = vim.fn.exepath('python3')
