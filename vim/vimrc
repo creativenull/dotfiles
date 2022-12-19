@@ -260,6 +260,10 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+" Yank/Paste behaviour
+vnoremap p "_dp
+vnoremap P "_dP
+
 " Copy/Paste system clipboard
 nnoremap <Leader>y "+y
 nnoremap <Leader>p <Cmd>call <SID>PasteFromClipboard()<CR>
