@@ -529,7 +529,11 @@ let g:indentLine_char = '│'
 " vim-gitbranch Config
 " ---
 function! g:GitBranch() abort
-  return ' ' . gitbranch#name()
+  if gitbranch#name() != ''
+    return ' ' . gitbranch#name()
+  endif
+
+  return ''
 endfunction
 
 " vim-lightline Config
