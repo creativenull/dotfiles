@@ -32,9 +32,10 @@ vim.g.user = {
 -- Global user group to register other custom autocmds
 vim.api.nvim_create_augroup(vim.g.user.event, {})
 
--- Enable treesitter highlights provided by nvim core
+-- Disable treesitter capabilities for lua files
+-- until it's stable
 if vim.fn.has('nvim-0.8') == 1 then
-  vim.g.ts_highlight_lua = true
+  vim.g.ts_highlight_lua = false
 end
 
 -- Ensure the following tools are installed in the system

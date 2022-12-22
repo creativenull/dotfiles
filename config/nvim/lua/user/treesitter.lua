@@ -22,6 +22,7 @@ function M.setup()
     },
     highlight = {
       enable = true,
+      disable = { 'lua' },
       additional_vim_regex_highlighting = false,
     },
     indent = { enable = true },
