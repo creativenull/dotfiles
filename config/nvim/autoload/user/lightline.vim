@@ -31,7 +31,11 @@ function! user#lightline#StlStatus()
 endfunction
 
 function! user#lightline#GitBranch() abort
-  return printf(' %s', gitbranch#name())
+  if gitbranch#name() != ''
+    return printf(' %s', gitbranch#name())
+  endif
+
+  return ''
 endfunction
 
 function! user#lightline#LspStatus() abort
