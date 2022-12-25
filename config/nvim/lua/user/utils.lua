@@ -63,4 +63,22 @@ function M.reload_config(ns)
   dofile(vim.env.MYVIMRC)
 end
 
+---Horizontally resize window, if there are more than one window
+---@param amount number
+---@return nil
+function M.resize_win_hor(amount)
+  if #vim.api.nvim_list_wins() > 1 then
+    vim.cmd(string.format('resize %s%d', amount > 0 and '+' or '', amount))
+  end
+end
+
+---Vertically resize window, if there are more than one window
+---@param amount number
+---@return nil
+function M.resize_win_vert(amount)
+  if #vim.api.nvim_list_wins() > 1 then
+    vim.cmd(string.format('vertical resize %s%d', amount > 0 and '+' or '', amount))
+  end
+end
+
 return M

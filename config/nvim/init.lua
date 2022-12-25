@@ -191,21 +191,25 @@ vim.opt.laststatus = 3
 -- =============================================================================
 
 -- Unbind default bindings for arrow keys, trust me this is for your own good
-vim.keymap.set('', '<Up>', '')
-vim.keymap.set('', '<Down>', '')
-vim.keymap.set('', '<Left>', '')
-vim.keymap.set('', '<Right>', '')
-vim.keymap.set('i', '<Up>', '')
-vim.keymap.set('i', '<Down>', '')
-vim.keymap.set('i', '<Left>', '')
-vim.keymap.set('i', '<Right>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Up>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Down>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Left>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Right>', '')
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
-vim.keymap.set('n', '<Up>', '<Cmd>resize +2<CR>')
-vim.keymap.set('n', '<Down>', '<Cmd>resize -2<CR>')
-vim.keymap.set('n', '<Left>', '<Cmd>vertical resize -2<CR>')
-vim.keymap.set('n', '<Right>', '<Cmd>vertical resize +2<CR>')
+vim.keymap.set('n', '<Up>', function()
+  require('user.utils').resize_win_hor(2)
+end, { desc = 'Resize window horizontally (inc)' })
+vim.keymap.set('n', '<Down>', function()
+  require('user.utils').resize_win_hor(-2)
+end, { desc = 'Resize window horizontally (dec)' })
+vim.keymap.set('n', '<Left>', function()
+  require('user.utils').resize_win_vert(-2)
+end, { desc = 'Resize window vertically (inc)' })
+vim.keymap.set('n', '<Right>', function()
+  require('user.utils').resize_win_vert(2)
+end, { desc = 'Resize window vertically (dec)' })
 
 -- Map Esc, to perform quick switching between Normal and Insert mode
 vim.keymap.set('i', 'jk', '<Esc>')
