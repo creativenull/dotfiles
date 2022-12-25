@@ -213,8 +213,8 @@ inoremap <Right> <Nop>
 " to help use resize windows - at least we give them some purpose
 nnoremap <Up>    <Cmd>call <SID>ResizeHorizontalWindow(+2)<CR>
 nnoremap <Down>  <Cmd>call <SID>ResizeHorizontalWindow(-2)<CR>
-nnoremap <Left>  <Cmd>call <SID>ResizeVerticalWindow(+2)<CR>
-nnoremap <Right> <Cmd>call <SID>ResizeVerticalWindow(-2)<CR>
+nnoremap <Left>  <Cmd>call <SID>ResizeVerticalWindow(-2)<CR>
+nnoremap <Right> <Cmd>call <SID>ResizeVerticalWindow(+2)<CR>
 
 " Map Esc, to perform quick switching between Normal and Insert mode
 inoremap jk <Esc>
