@@ -413,7 +413,6 @@ vim.keymap.set('n', '<Leader>gpp', ':Gin push origin ')
 vim.keymap.set('n', '<Leader>gl', gin.pull_origin, { desc = 'Git pull from origin from default branch' })
 vim.keymap.set('n', '<Leader>gll', ':Gin pull origin ')
 vim.keymap.set('n', '<Leader>gb', '<Cmd>GinBranch<CR>')
-vim.keymap.set('n', '<Leader>gc', '<Cmd>Gin commit<CR>')
 
 -- vim-json Config
 -- ---
