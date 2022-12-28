@@ -39,7 +39,7 @@ if vim.fn.has('nvim-0.8') == 1 then
 end
 
 -- Ensure the following tools are installed in the system
-local required_execs = { 'git', 'curl', 'rg', 'deno' }
+local required_execs = { 'git', 'curl', 'rg', 'fzf', 'deno' }
 local optional_execs = { 'python3', 'stylua', 'luacheck' }
 
 for _, exec in pairs(required_execs) do
