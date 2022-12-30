@@ -639,4 +639,4 @@ let g:lightline#bufferline#read_only = ' '
 let g:moonflyNormalFloat = 1
 
 set background=dark
-colorscheme moonfly
+colorscheme nightfly
