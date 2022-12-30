@@ -1,6 +1,7 @@
 local M = {}
 
 function M.setup()
+  local disabled = { 'lua', 'vim', 'help' }
   local parser_install_dir = vim.fn.stdpath('data') .. '/treesitter'
   vim.opt.runtimepath:append(parser_install_dir)
 
@@ -21,12 +22,18 @@ function M.setup()
     },
     highlight = {
       enable = true,
-      disable = function(_, buf)
+      disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
         local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
         if ok and stats and stats.size > max_filesize then
           return true
         end
+
+        if vim.tbl_contains(disabled, lang) then
+          return true
+        end
+
+        return false
       end,
     },
     indent = { enable = true },

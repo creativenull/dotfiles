@@ -34,9 +34,9 @@ vim.api.nvim_create_augroup(vim.g.user.event, {})
 
 -- Disable treesitter capabilities for lua files
 -- until it's stable
-if vim.fn.has('nvim-0.8') == 1 then
-  vim.g.ts_highlight_lua = false
-end
+-- if vim.fn.has('nvim-0.8') == 1 then
+--   vim.g.ts_highlight_lua = true
+-- end
 
 -- Ensure the following tools are installed in the system
 local required_execs = { 'git', 'curl', 'rg', 'fzf', 'deno' }
