@@ -546,12 +546,9 @@ Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336d
 -- ---
 Plug('bluz71/vim-moonfly-colors', { commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
 Plug('tinted-theming/base16-vim', { commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
-Plug('olimorris/onedarkpro.nvim', { commit = '5e25c890d35c588f00f186623c885b64d98b86f2' })
-Plug('navarasu/onedark.nvim', { commit = 'cad3d983e57f467ba8e8252b0567e96dde9a8f0d' })
-Plug('rmehri01/onenord.nvim', { commit = '0cd9f681bee019715bfbe928891579a3af3331e8' })
-Plug('tiagovla/tokyodark.nvim', { commit = '9e940a11935b61da2fc2a170adca7b67eebcdc45' })
+Plug('folke/tokyonight.nvim', { commit = '95c88be515550bd519ffe54eeaa2df5b9af62cc5' })
 Plug('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
-Plug('Yagua/nebulous.nvim', { commit = '9599c2da4d234b78506ce30c6544595fac25e9ca' })
+Plug('bluz71/vim-nightfly-colors', { commit = '3ca232533b2bd58cc486552e9f4a9da7f7458bdd' })
 
 vim.call('plug#end')
 
@@ -622,39 +619,9 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
 
--- onedark Config
+-- nightfly Config
 -- ---
-pcall(function()
-  require('onedark').setup({ style = 'darker' })
-end)
-
--- onedarkpro Config
--- ---
-pcall(function()
-  require('onedarkpro').setup({
-    theme = 'onedark_dark',
-    options = { transparency = true },
-    highlights = {
-      PmenuSel = { bg = '#333333' },
-    },
-    plugins = {
-      all = false,
-      gitsigns = true,
-      treesitter = true,
-    },
-  })
-end)
-
--- onenord Config
--- ---
-pcall(function()
-  require('onenord').setup({
-    fade_nc = true,
-    custom_colors = {
-      NormalFloat = { bg = 'NONE' },
-    },
-  })
-end)
+vim.g.nightflyNormalFloat = 1
 
 -- catppuccin Config
 -- ---
@@ -667,18 +634,12 @@ pcall(function()
   })
 end)
 
--- nebulous Config
+-- tokyonight.nvim Config
 -- ---
 pcall(function()
-  require('nebulous').setup({
-    variant = 'night',
-    italic = {
-      comments = true,
-    },
-    custom_colors = {
-      NormalFloat = { bg = 'NONE' },
-    },
+  require('tokyonight').setup({
+    style = 'night',
   })
 end)
 
-pcall(vim.cmd, 'colorscheme moonfly')
+pcall(vim.cmd, 'colorscheme nightfly')
