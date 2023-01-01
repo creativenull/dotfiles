@@ -181,7 +181,7 @@ end
 vim.opt.cmdheight = 2
 vim.opt.guicursor = { 'n-v-c-sm:block', 'i-ci-ve:block', 'r-cr-o:hor20' }
 vim.opt.number = true
-vim.opt.showtabline = 2
+vim.opt.showtabline = 0
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.laststatus = 3
@@ -226,21 +226,21 @@ vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>')
 
 -- List all buffers
-vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>')
+-- vim.keymap.set('n', '<Leader>bl', '<Cmd>buffers<CR>')
 
 -- Go to next buffer
-vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>')
-vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>')
+-- vim.keymap.set('n', '<C-l>', '<Cmd>bnext<CR>')
+-- vim.keymap.set('n', '<Leader>bn', '<Cmd>bnext<CR>')
 
 -- Go to previous buffer
-vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>')
-vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>')
+-- vim.keymap.set('n', '<C-h>', '<Cmd>bprevious<CR>')
+-- vim.keymap.set('n', '<Leader>bp', '<Cmd>bprevious<CR>')
 
 -- Close the current buffer, and more?
-vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>')
+-- vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>')
 
 -- Close all buffer, except current
-vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>')
+-- vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>')
 
 -- Move a line of text Alt+[j/k]
 vim.keymap.set('n', '<M-j>', 'mz:m+<CR>`z')
@@ -521,6 +521,7 @@ Plug('Shougo/ddc-source-nvim-lsp', { commit = '1795bfdbf0879054f3ca9f5ab7025ba68
 -- ---
 Plug('junegunn/fzf', { tag = '0.34.0' })
 Plug('junegunn/fzf.vim', { commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
+Plug('vim-ctrlspace/vim-ctrlspace', { commit = '5e444c6af06de58d5ed7d7bd0dcbb958f292cd2e' })
 
 -- Git
 -- ---
@@ -559,6 +560,12 @@ vim.call('plug#end')
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
+
+-- vim-ctrlspace Config
+-- ---
+vim.g.CtrlSpaceDefaultMappingKey = '<C-space> '
+vim.g.CtrlSpaceSymbols = { File = '', Tabs = '', BM = '' }
+vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
 
 --- nvim-treesitter Config
 -- ---
