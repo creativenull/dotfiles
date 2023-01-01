@@ -195,6 +195,10 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<Up>', '')
 vim.keymap.set({ 'n', 'i', 'v' }, '<Down>', '')
 vim.keymap.set({ 'n', 'i', 'v' }, '<Left>', '')
 vim.keymap.set({ 'n', 'i', 'v' }, '<Right>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-h>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-j>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-k>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-l>', '')
 
 -- Resize window panes, we can use those arrow keys
 -- to help use resize windows - at least we give them some purpose
