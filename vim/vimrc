@@ -119,6 +119,12 @@ autocmd UserGroup FileType typescript,typescriptreact setlocal softtabstop=2 shi
 autocmd UserGroup FileType vim,lua setlocal softtabstop=2 shiftwidth=2 expandtab
 autocmd UserGroup FileType vue setlocal iskeyword+= softtabstop=2 shiftwidth=2 expandtab
 
+" Custom ftdetect
+autocmd UserGroup BufEnter,BufRead *.mdx setlocal filetype=markdown
+autocmd UserGroup BufEnter,BufRead *.podspec setlocal filetype=ruby
+autocmd UserGroup BufEnter,BufRead Podfile setlocal filetype=ruby
+autocmd UserGroup BufEnter,BufRead .env.* setlocal filetype=sh
+
 " ============================================================================
 " Options
 "
