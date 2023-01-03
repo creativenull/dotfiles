@@ -215,6 +215,19 @@ inoremap <Down>  <Nop>
 inoremap <Left>  <Nop>
 inoremap <Right> <Nop>
 
+noremap  <C-h> <Nop>
+noremap  <C-j> <Nop>
+noremap  <C-k> <Nop>
+noremap  <C-l> <Nop>
+inoremap <C-h> <Nop>
+inoremap <C-j> <Nop>
+inoremap <C-k> <Nop>
+inoremap <C-l> <Nop>
+vnoremap <C-h> <Nop>
+vnoremap <C-j> <Nop>
+vnoremap <C-k> <Nop>
+vnoremap <C-l> <Nop>
+
 " Resize window panes, we can use those arrow keys
 " to help use resize windows - at least we give them some purpose
 nnoremap <Up>    <Cmd>call <SID>ResizeHorizontalWindow(+2)<CR>
@@ -233,21 +246,21 @@ tnoremap <C-[> <C-\><C-n>
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
 " List all buffers
-nnoremap <Leader>bb <Cmd>buffers<CR>
+" nnoremap <Leader>bb <Cmd>buffers<CR>
 
 " Go to next buffer
-nnoremap <C-l> <Cmd>bnext<CR>
-nnoremap <Leader>bn <Cmd>bnext<CR>
+" nnoremap <C-l> <Cmd>bnext<CR>
+" nnoremap <Leader>bn <Cmd>bnext<CR>
 
 " Go to previous buffer
-nnoremap <C-h> <Cmd>bprevious<CR>
-nnoremap <Leader>bp <Cmd>bprevious<CR>
+" nnoremap <C-h> <Cmd>bprevious<CR>
+" nnoremap <Leader>bp <Cmd>bprevious<CR>
 
 " Close the current buffer, and more?
-nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
+" nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
 
 " Close all buffer, except current
-nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
+" nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
 
 " Edit vimrc
 nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
@@ -338,6 +351,7 @@ Plug 'lambdalisue/glyph-palette.vim', { 'tag': 'v1.4.0' }
 " Fuzzy Finder {{{
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'vim-ctrlspace/vim-ctrlspace'
 " }}}
 
 " Git {{{
@@ -387,6 +401,11 @@ call plug#end()
 "
 " Tags: POST
 " ============================================================================
+
+" vim-ctrlspace Config
+" ---
+let g:CtrlSpaceSymbols = { 'File': '', 'Tabs': '', 'BM': '' }
+let g:CtrlSpaceSaveWorkspaceOnExit = 1
 
 " fzf.vim Config
 " ---
