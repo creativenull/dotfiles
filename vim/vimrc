@@ -457,6 +457,8 @@ let g:ale_sign_info = ' '
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters_explicit = 1
 let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
+let g:ale_virtualtext_cursor = 'disabled'
+let g:ale_virtualtext_prefix = ''
 
 nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
 nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
