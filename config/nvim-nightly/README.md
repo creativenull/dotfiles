@@ -2,7 +2,10 @@
 
 > DO NOT USE THIS CONFIG
 
-> Check out my [original config][nvim] or [my lua config][nvim-config] if you want to check the lua version.
+> Check out my [original config I use for workd][nvim] or [my lua config that I experiment with modularity][nvim-config]
+if you want to check try out a full stable lua version of nvim config.
+
+[Adapted from my nvim-oneconfig][nvim-oneconfig] guide.
 
 [Taken from my post on having two separate versions of neovim][post]
 
@@ -90,6 +93,7 @@ cp -rv $HOME/cnull-dotfiles/config/nvim-nightly $HOME/.config/nvim-nightly
 Executing `nv` from any directory should start to install plugins and setup nvim from the `nvim-nightly` config
 directory.
 
+[nvim-oneconfig]: https://github.com/creativenull/nvim-oneconfig
 [nvim-config]: https://github.com/creativenull/nvim-config
 [nvim]: https://github.com/creativenull/dotfiles/tree/main/.config/nvim
 [nvim-prereq]: https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites
