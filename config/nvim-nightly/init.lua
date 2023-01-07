@@ -45,12 +45,12 @@ local config = {
 	treesitter = {
 		parser_install_dir = string.format('%s/treesitter', data_path),
 		ensure_installed = {
-			'graphql',
+			'go',
 			'help',
 			'javascript',
 			'json',
 			'lua',
-			'prisma',
+			'php',
 			'tsx',
 			'typescript',
 			'vim',
@@ -73,29 +73,25 @@ local config = {
 		-- don't need to add null-ls here.
 		fmt_allowed_servers = {
 			'denols',
-			'pylsp',
+			'gopls',
 		},
 
 		-- For mason.nvim
 		servers = {
-			-- 'cssls',
-			-- 'gopls',
-			-- 'graphql',
-			-- 'html',
-			-- 'jsonls',
-			-- 'prismals',
-			-- 'pylsp',
-			-- 'rust_analyzer',
+			'gopls',
+			'jsonls',
 			'sumneko_lua',
-			-- 'svelte',
-			'tailwindcss',
 			'tsserver',
 			'volar',
+			'intelephense',
 		},
 		tools = {
 			'eslint_d',
 			'prettier',
 			'stylua',
+			'php-cs-fixer',
+			'phpstan',
+			'pint',
 		},
 	},
 }
@@ -648,10 +644,6 @@ require('lazy').setup({
 				return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
 			end
 
-			local function feedkey(key, mode)
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-			end
-
 			cmp.setup {
 				completion = {
 					keyword_length = 2,
@@ -733,7 +725,12 @@ require('lazy').setup({
 		end,
 	},
 
-	'bluz71/vim-mistfly-statusline',
+	{
+		'feline-nvim/feline.nvim',
+		config = function()
+			require('feline').setup()
+		end,
+	},
 
 	{
 		'lukas-reineke/indent-blankline.nvim',
@@ -907,16 +904,12 @@ local lspconfig_node_options = {
 	root_dir = require('lspconfig.util').root_pattern { 'package.json', 'jsconfig.json', 'tsconfig.json' },
 }
 
--- lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.cssls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.graphql.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.html.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.jsonls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.prismals.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.svelte.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
--- lspconfig.tailwindcss.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
-lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options, {
+lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.jsonls.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
+lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
+	-- Take over mode
 	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+	root_dir = require('lspconfig.util').root_pattern { 'vite.config.js', 'vite.config.ts' },
 	init_options = {
 		typescript = {
 			tsdk = string.format('%s/node_modules/typescript/lib', vim.fn.getcwd()),
@@ -924,16 +917,32 @@ lspconfig.volar.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfi
 	},
 }))
 
--- We want to only attach to a deno project when it matches only
--- deno.json or deno.jsonc file
 local lspconfig_deno_options = { root_dir = require('lspconfig.util').root_pattern { 'deno.json', 'deno.jsonc' } }
 lspconfig.denols.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_deno_options))
+
+lspconfig.intelephense.setup(lspconfig_setup_defaults)
+
+-- Go development
+-- ---
+lspconfig.gopls.setup(lspconfig_setup_defaults)
 
 -- Null-ls Config
 -- ---
 local nls_node_options = {
 	condition = function(utils)
 		return utils.root_has_file { 'package.json', 'tsconfig.json', 'jsconfig.json' }
+	end,
+}
+
+local nls_phpcsfixer_options = {
+	condition = function(utils)
+		return utils.root_has_file { '.php-cs-fixer.php' }
+	end,
+}
+
+local nls_pint_options = {
+	condition = function(utils)
+		return utils.root_has_file { 'pint.json' }
 	end,
 }
 
@@ -944,6 +953,11 @@ nls.setup {
 		-- a root file
 		-- nls.builtins.diagnostics.eslint_d.with(nls_node_options),
 		nls.builtins.formatting.prettier.with(nls_node_options),
+
+        -- php
+		nls.builtins.diagnostics.phpstan,
+		nls.builtins.formatting.phpcsfixer.with(nls_phpcsfixer_options),
+		nls.builtins.formatting.pint.with(nls_pint_options),
 
 		-- Custom stylua just for this init.lua file
 		nls.builtins.formatting.stylua.with {
