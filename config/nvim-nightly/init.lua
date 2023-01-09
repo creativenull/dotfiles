@@ -1067,7 +1067,7 @@ nls.setup {
 		-- nls.builtins.diagnostics.eslint_d.with(nls_node_options),
 		nls.builtins.formatting.prettier.with(nls_node_options),
 
-        -- php
+		-- php
 		nls.builtins.diagnostics.phpstan,
 		nls.builtins.formatting.phpcsfixer.with(nls_phpcsfixer_options),
 		nls.builtins.formatting.pint.with(nls_pint_options),
