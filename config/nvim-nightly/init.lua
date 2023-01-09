@@ -526,18 +526,13 @@ require('lazy').setup({
 		},
 	},
 
-	{
-		'editorconfig/editorconfig-vim',
-		init = function()
-			vim.g.user_emmet_leader_key = '<C-q>'
-			vim.g.user_emmet_mode = 'i'
-		end,
-	},
+	'editorconfig/editorconfig-vim',
 
 	{
 		'mattn/emmet-vim',
 		config = function()
 			vim.g.user_emmet_leader_key = '<C-q>'
+			vim.g.user_emmet_mode = 'i'
 		end,
 	},
 
