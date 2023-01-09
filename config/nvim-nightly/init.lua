@@ -722,8 +722,126 @@ require('lazy').setup({
 
 	{
 		'feline-nvim/feline.nvim',
+		dependencies = { 'nvim-tree/nvim-web-devicons' },
 		config = function()
-			require('feline').setup()
+			local hl_dark = '#262626'
+			local hl_light = '#e5e5e5'
+			local hl_text_light = hl_light
+			local hl_text_dark = hl_dark
+			local mode = {
+				n = hl_dark,
+				i = '#7f1d1d',
+				v = '#14532d',
+				V = '#14532d',
+				[''] = '#14532d',
+				c = '#4c1d95',
+				R = '#7f1d1d',
+			}
+
+			local function get_mode_bg()
+				local v = vim.api.nvim_get_mode()
+				return mode[v.mode]
+			end
+
+			local components = {
+				active = {},
+				inactive = {},
+			}
+
+			table.insert(components.active, {})
+			table.insert(components.active, {})
+			table.insert(components.active, {})
+
+			-- Left
+			table.insert(components.active[1], {
+				provider = 'file_info',
+				left_sep = {
+					str = ' ',
+					hl = { bg = '#0c4a6e' },
+				},
+				right_sep = {
+					{
+						str = ' ',
+						hl = { bg = '#0c4a6e' },
+					},
+					{
+						str = 'slant_right',
+						hl = { fg = '#0c4a6e', bg = hl_dark },
+					},
+				},
+				hl = { fg = hl_text_light, bg = '#0c4a6e' },
+			})
+			table.insert(components.active[1], {
+				provider = ' ',
+				left_sep = { str = 'slant_right', hl = { fg = hl_dark, bg = '#075985' } },
+				hl = { bg = '#075985' },
+			})
+			table.insert(components.active[1], {
+				provider = 'git_branch',
+				right_sep = {
+					{ str = ' ', hl = { bg = '#075985' } },
+					{ str = 'slant_right', hl = { fg = '#075985', bg = hl_dark } },
+				},
+				hl = { fg = hl_text_light, bg = '#075985' },
+			})
+			table.insert(components.active[1], {
+				provider = ' ',
+				left_sep = {
+					str = 'slant_right',
+					hl = function()
+						local mode_color = get_mode_bg()
+						return { fg = hl_dark, bg = mode_color }
+					end,
+				},
+				hl = function()
+					local mode_color = get_mode_bg()
+					return { fg = hl_dark, bg = mode_color }
+				end,
+			})
+
+			-- Middle
+			-- table.insert(components.active[2], { })
+
+			-- Right
+			table.insert(components.active[3], {
+				provider = 'diagnostic_errors',
+				left_sep = {
+					{ str = 'slant_left', hl = { fg = '#ef4444', bg = hl_dark } },
+					{ str = ' ', hl = { fg = hl_dark, bg = '#ef4444' } },
+				},
+				right_sep = {
+					{ str = ' ', hl = { bg = '#ef4444' } },
+					{ str = 'slant_left', hl = { fg = hl_dark,  bg = '#ef4444' } },
+				},
+				hl = { fg = hl_text_dark, bg = '#ef4444' },
+				icon = '',
+			})
+			table.insert(components.active[3], {
+				provider = 'diagnostic_warnings',
+				left_sep = {
+					{ str = 'slant_left', hl = { fg = '#eab308', bg = hl_dark } },
+					{ str = ' ', hl = { fg = hl_dark, bg = '#eab308' } },
+				},
+				right_sep = {
+					{ str = ' ', hl = { bg = '#eab308' } },
+					{ str = 'slant_left', hl = { fg = hl_dark,  bg = '#eab308' } },
+				},
+				hl = { fg = hl_text_dark, bg = '#eab308' },
+				icon = '',
+			})
+			table.insert(components.active[3], {
+				provider = 'diagnostic_hints',
+				left_sep = {
+					{ str = 'slant_left', hl = { fg = '#10b981', bg = hl_dark } },
+					{ str = ' ', hl = { fg = hl_dark, bg = '#10b981' } },
+				},
+				hl = { fg = hl_text_dark, bg = '#10b981' },
+				icon = '',
+			})
+
+			require('feline').setup {
+				components = components,
+			}
 		end,
 	},
 
