@@ -722,6 +722,7 @@ require('lazy').setup({
 		end,
 	},
 
+	-- Tag: STL
 	{
 		'feline-nvim/feline.nvim',
 		dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -813,7 +814,29 @@ require('lazy').setup({
 				},
 				right_sep = {
 					{ str = ' ', hl = { bg = '#ef4444' } },
-					{ str = 'slant_left', hl = { fg = hl_dark, bg = '#ef4444' } },
+					-- { str = 'slant_left', hl = { fg = hl_dark, bg = '#ef4444' } },
+					function()
+						local bufnr = vim.api.nvim_get_current_buf()
+						local diagnostic_infos = vim.diagnostic.get(bufnr)
+						local result_hints = vim.tbl_filter(function(diagnostic)
+							return diagnostic.severity == vim.diagnostic.severity.HINT
+						end, diagnostic_infos)
+						local result_warnings = vim.tbl_filter(function(diagnostic)
+							return diagnostic.severity == vim.diagnostic.severity.WARN
+						end, diagnostic_infos)
+
+						if #result_hints > 0 or #result_warnings > 0 then
+							return {
+								str = 'slant_left',
+								hl = {
+									fg = hl_dark,
+									bg = '#ef4444',
+								},
+							}
+						else
+							return {}
+						end
+					end,
 				},
 				hl = { fg = hl_text_dark, bg = '#ef4444' },
 				icon = '',
@@ -826,7 +849,25 @@ require('lazy').setup({
 				},
 				right_sep = {
 					{ str = ' ', hl = { bg = '#eab308' } },
-					{ str = 'slant_left', hl = { fg = hl_dark, bg = '#eab308' } },
+					function()
+						local bufnr = vim.api.nvim_get_current_buf()
+						local diagnostic_infos = vim.diagnostic.get(bufnr)
+						local result = vim.tbl_filter(function(diagnostic)
+							return diagnostic.severity == vim.diagnostic.severity.HINT
+						end, diagnostic_infos)
+
+						if #result > 0 then
+							return {
+								str = 'slant_left',
+								hl = {
+									fg = hl_dark,
+									bg = '#eab308',
+								},
+							}
+						else
+							return {}
+						end
+					end,
 				},
 				hl = { fg = hl_text_dark, bg = '#eab308' },
 				icon = '',
@@ -835,6 +876,9 @@ require('lazy').setup({
 				provider = 'diagnostic_hints',
 				left_sep = {
 					{ str = 'slant_left', hl = { fg = '#10b981', bg = hl_dark } },
+					{ str = ' ', hl = { fg = hl_dark, bg = '#10b981' } },
+				},
+				right_sep = {
 					{ str = ' ', hl = { fg = hl_dark, bg = '#10b981' } },
 				},
 				hl = { fg = hl_text_dark, bg = '#10b981' },
@@ -1020,6 +1064,7 @@ lspconfig.sumneko_lua.setup(vim.tbl_extend('force', lspconfig_setup_defaults, {
 -- package.json, jsconfig.json or tsconfig.json file
 local lspconfig_node_options = {
 	root_dir = require('lspconfig.util').root_pattern { 'package.json', 'jsconfig.json', 'tsconfig.json' },
+	single_file_support = false,
 }
 
 lspconfig.tsserver.setup(vim.tbl_extend('force', lspconfig_setup_defaults, lspconfig_node_options))
@@ -1057,7 +1102,7 @@ dls.setup {
 	javascript = { linter = eslint, formatter = prettier },
 	javascriptreact = { linter = eslint, formatter = prettier },
 	typescript = { linter = eslint, formatter = prettier },
-	typescriptreact = { linter = eslint, formatter = prettier, },
+	typescriptreact = { linter = eslint, formatter = prettier },
 	lua = { formatter = stylua },
 }
 
