@@ -308,6 +308,14 @@ vim.filetype.add {
 		js = 'javascriptreact',
 		podspec = 'ruby',
 		mdx = 'markdown',
+		lua = function(_, _)
+			return 'lua',
+				function(bufnr)
+					vim.bo[bufnr].expandtab = true
+					vim.bo[bufnr].tabstop = 2
+					vim.bo[bufnr].shiftwidth = 2
+				end
+		end,
 	},
 	filename = {
 		Podfile = 'ruby',
@@ -347,10 +355,7 @@ vim.opt.foldenable = false
 vim.opt.spell = false
 vim.opt.wrap = false
 vim.opt.scrolloff = 1
-vim.opt.shiftwidth = 4
 vim.opt.smartindent = true
-vim.opt.softtabstop = 4
-vim.opt.tabstop = 4
 vim.opt.wildignorecase = true
 
 -- System
