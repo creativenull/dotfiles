@@ -61,7 +61,7 @@ local config = {
 		},
 	},
 	lsp = {
-		fmt_on_save = false,
+		fmt_on_save = { 'diagnosticls' },
 		fmt_opts = { async = false, timeout = 2500 },
 
 		-- Use this to conditionally set a keybind for formatting
@@ -74,6 +74,7 @@ local config = {
 		fmt_allowed_servers = {
 			'denols',
 			'gopls',
+			'diagnosticls',
 		},
 
 		-- For mason.nvim
@@ -84,6 +85,7 @@ local config = {
 			'tsserver',
 			'volar',
 			'intelephense',
+			'diagnosticls',
 		},
 		tools = {
 			'eslint_d',
@@ -595,7 +597,7 @@ require('lazy').setup({
 		'neovim/nvim-lspconfig',
 		dependencies = {
 			-- Linter/Formatter
-			'jose-elias-alvarez/null-ls.nvim',
+			'creativenull/diagnosticls-configs-nvim',
 			-- Tool installer
 			'williamboman/mason.nvim',
 			'williamboman/mason-lspconfig.nvim',
@@ -811,7 +813,7 @@ require('lazy').setup({
 				},
 				right_sep = {
 					{ str = ' ', hl = { bg = '#ef4444' } },
-					{ str = 'slant_left', hl = { fg = hl_dark,  bg = '#ef4444' } },
+					{ str = 'slant_left', hl = { fg = hl_dark, bg = '#ef4444' } },
 				},
 				hl = { fg = hl_text_dark, bg = '#ef4444' },
 				icon = '',
@@ -824,7 +826,7 @@ require('lazy').setup({
 				},
 				right_sep = {
 					{ str = ' ', hl = { bg = '#eab308' } },
-					{ str = 'slant_left', hl = { fg = hl_dark,  bg = '#eab308' } },
+					{ str = 'slant_left', hl = { fg = hl_dark, bg = '#eab308' } },
 				},
 				hl = { fg = hl_text_dark, bg = '#eab308' },
 				icon = '',
@@ -977,7 +979,10 @@ local function on_attach(client, bufnr)
 	then
 		register_lsp_fmt_keymap('<Leader>lf', client.name, bufnr)
 
-		if config.lsp.fmt_on_save then
+		if
+			(type(config.lsp.fmt_on_save) == 'boolean' and config.lsp.fmt_on_save)
+			or (vim.tbl_islist(config.lsp.fmt_on_save) and vim.tbl_contains(config.lsp.fmt_on_save, client.name))
+		then
 			register_lsp_fmt_autosave(client.name, bufnr)
 		end
 	end
@@ -1039,8 +1044,25 @@ lspconfig.intelephense.setup(lspconfig_setup_defaults)
 -- ---
 lspconfig.gopls.setup(lspconfig_setup_defaults)
 
--- Null-ls Config
+-- DiagnosticLS Config
 -- ---
+local dls = require 'diagnosticls-configs'
+dls.init(lspconfig_setup_defaults)
+
+local eslint_d = require 'diagnosticls-configs.linters.eslint_d'
+local prettier = require 'diagnosticls-configs.formatters.prettier'
+local stylua = require 'diagnosticls-configs.formatters.stylua'
+
+dls.setup {
+	javascript = { linter = eslint, formatter = prettier },
+	javascriptreact = { linter = eslint, formatter = prettier },
+	typescript = { linter = eslint, formatter = prettier },
+	typescriptreact = { linter = eslint, formatter = prettier, },
+	lua = { formatter = stylua },
+}
+
+-- Null-ls Config
+--[[
 local nls_node_options = {
 	condition = function(utils)
 		return utils.root_has_file { 'package.json', 'tsconfig.json', 'jsconfig.json' }
@@ -1096,6 +1118,7 @@ nls.setup {
 		end
 	end,
 }
+--]]
 
 -- ============================================================================
 -- Theme
