@@ -467,10 +467,10 @@ Plug('nvim-lua/plenary.nvim', { commit = '4b7e52044bbb84242158d977a50c4cbcd85070
 -- Core
 -- ---
 Plug('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
-Plug('creativenull/projectlocal-vim', { tag = 'v0.4.3' })
+Plug('creativenull/projectlocal-vim', { tag = 'v0.5.0' })
 Plug('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
 Plug('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
-Plug('mattn/emmet-vim', { commit = 'def5d57a1ae5afb1b96ebe83c4652d1c03640f4d' })
+Plug('mattn/emmet-vim')
 Plug('tpope/vim-abolish', { tag = 'v1.1' })
 Plug('tpope/vim-endwise', { commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
 Plug('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
@@ -527,7 +527,7 @@ Plug('vim-ctrlspace/vim-ctrlspace', { commit = '5e444c6af06de58d5ed7d7bd0dcbb958
 -- ---
 Plug('lambdalisue/gin.vim', { tag = 'v0.2.1' })
 Plug('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
-Plug('lewis6991/gitsigns.nvim', { branch = 'release' })
+Plug('lewis6991/gitsigns.nvim', { tag = 'v0.6' })
 
 -- UI/Aesthetics
 -- ---
