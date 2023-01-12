@@ -14,5 +14,6 @@
     "highlight": "UserCocFloat",
     "borderhighlight": "UserCocFloatBorder"
   },
-  "suggest.maxCompleteItemCount": 10
+  "suggest.maxCompleteItemCount": 10,
+  "intelephense.environment.phpVersion": "8.1"
 }
