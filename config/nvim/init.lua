@@ -537,7 +537,7 @@ Plug('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df2898791
 
 -- TreeSitter
 -- ---
-Plug('nvim-treesitter/nvim-treesitter', { branch = 'v0.8.0', ['do'] = ':TSUpdate' })
+Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
 
 -- FileType Syntax
 -- ---
