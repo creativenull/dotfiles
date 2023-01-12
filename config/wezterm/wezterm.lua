@@ -14,4 +14,7 @@ return {
     cursor_bg = '#e5e5e5',
     cursor_fg = '#171717',
   },
+  window_frame = {
+    font = wezterm.font('JetBrainsMono Nerd Font'),
+  },
 }
