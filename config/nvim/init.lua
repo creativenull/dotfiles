@@ -454,22 +454,22 @@ vim.call('plug#begin')
 
 -- Deps
 -- ---
-Plug('vim-denops/denops.vim', { tag = 'v3.2.0' })
-Plug('lambdalisue/nerdfont.vim', { tag = 'v1.3.0' })
-Plug('nvim-lua/plenary.nvim', { commit = '4b7e52044bbb84242158d977a50c4cbcd85070c7' })
+Plug('vim-denops/denops.vim')
+Plug('lambdalisue/nerdfont.vim')
+Plug('nvim-lua/plenary.nvim')
 
 -- Core
 -- ---
-Plug('cohama/lexima.vim', { commit = 'fbc05de53ca98b7f36a82f566db1df49864e58ef' })
 Plug('creativenull/projectlocal-vim', { tag = 'v0.5.0' })
-Plug('editorconfig/editorconfig-vim', { commit = 'd354117b72b3b43b75a29b8e816c0f91af10efe9' })
-Plug('godlygeek/tabular', { commit = '339091ac4dd1f17e225fe7d57b48aff55f99b23a' })
+Plug('cohama/lexima.vim')
+Plug('editorconfig/editorconfig-vim')
+Plug('godlygeek/tabular')
 Plug('mattn/emmet-vim')
-Plug('tpope/vim-abolish', { tag = 'v1.1' })
-Plug('tpope/vim-endwise', { commit = '4e5c8358d751625bb040b187b9fe430c2b769f0a' })
-Plug('tpope/vim-repeat', { commit = '24afe922e6a05891756ecf331f39a1f6743d3d5a' })
-Plug('tpope/vim-surround', { tag = 'v2.2' })
-Plug('numToStr/Comment.nvim', { commit = 'ad7ffa8ed2279f1c8a90212c7d3851f9b783a3d6' })
+Plug('tpope/vim-abolish')
+Plug('tpope/vim-endwise')
+Plug('tpope/vim-repeat')
+Plug('tpope/vim-surround')
+Plug('numToStr/Comment.nvim')
 -- Plug('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
 -- Plug('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
 
