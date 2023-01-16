@@ -15,6 +15,7 @@ function M.setup()
       'html',
       'javascript',
       'json',
+      'lua',
       'php',
       'typescript',
       'vue',
