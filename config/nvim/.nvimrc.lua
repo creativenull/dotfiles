@@ -11,7 +11,6 @@ local function setup()
     group = 'ALEUserEvents',
     pattern = 'lua',
     callback = function(args)
-      vim.b[args.buf].ale_linters = { 'luacheck' }
       vim.b[args.buf].ale_fixers = { 'stylua' }
     end,
   })
