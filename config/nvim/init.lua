@@ -495,16 +495,16 @@ Plug('j-hui/fidget.nvim', { commit = '44585a0c0085765195e6961c15529ba6c5a2a13b' 
 
 -- AutoCompletion + Sources (ddc.vim)
 -- ---
-Plug('Shougo/ddc.vim', { tag = 'v3.3.0' })
-Plug('Shougo/pum.vim', { commit = '31aae8d39061bcdae755e468e83a3a70b72a0fce' })
-Plug('Shougo/ddc-ui-pum', { commit = '82c646416d8653988e56b27e68256f01d02f7b1c' })
-Plug('matsui54/denops-signature_help', { commit = 'f5c6a5a571a1cc00a82245690ada0d5c13903d2f' })
-Plug('tani/ddc-fuzzy', { commit = '18a8008fd2653eadd00590311d250347abc7a9de' })
-Plug('matsui54/ddc-buffer', { commit = 'e417e47964788b0211c80252757531f7a3881178' })
-Plug('Shougo/ddc-source-cmdline', { commit = '6925e7a879ef598a8ddfde0a40c4d3324030535d' })
-Plug('Shougo/ddc-source-around', { commit = '4da913e4b82d303c2f690b39f2252038c7046221' })
-Plug('Shougo/ddc-source-nvim-lsp', { commit = '1795bfdbf0879054f3ca9f5ab7025ba68e0338c4' })
--- Plug('hrsh7th/vim-vsnip-integ', { commit = '1cf89903f12777b90dd79eb4b3d7fbc0b9a254a1' })
+Plug('Shougo/ddc.vim')
+Plug('Shougo/pum.vim')
+Plug('Shougo/ddc-ui-pum')
+Plug('matsui54/denops-signature_help')
+Plug('tani/ddc-fuzzy')
+Plug('matsui54/ddc-buffer')
+Plug('Shougo/ddc-source-cmdline')
+Plug('Shougo/ddc-source-around')
+Plug('Shougo/ddc-source-nvim-lsp')
+-- Plug('hrsh7th/vim-vsnip-integ')
 
 -- Snippet Engine + Presets
 -- ---
