@@ -23,14 +23,12 @@ return {
     bottom = 0,
     left = 0,
   },
-  -- colors = {
-  --   cursor_bg = '#e5e5e5',
-  --   cursor_fg = '#171717',
-  -- },
   window_frame = {
     font = wezterm.font('JetBrainsMono Nerd Font'),
   },
   colors = {
+    cursor_bg = '#e5e5e5',
+    cursor_fg = '#171717',
     tab_bar = {
       -- The color of the strip that goes along the top of the window
       -- (does not apply when fancy tab bar is in use)
