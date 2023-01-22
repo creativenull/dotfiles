@@ -125,11 +125,17 @@ vim.api.nvim_create_autocmd('FileType', {
 -- =============================================================================
 
 if vim.fn.isdirectory(vim.g.user.config.undodir) == 0 then
-  if vim.fn.has('win32') == 1 then
-    vim.cmd(string.format('silent !mkdir -Recurse %s', vim.g.user.config.undodir))
+  local cmd = { 'mkdir' }
+
+  if vim.fn.has('win32') == 1 and vim.opt.shell:get() == 'pwsh' or vim.opt.shell:get() == 'powershell' then
+    table.insert(cmd, '-Recurse')
   else
-    vim.cmd(string.format('silent !mkdir -p %s', vim.g.user.config.undodir))
+    table.insert(cmd, '-p')
   end
+
+  table.insert(cmd, vim.g.user.config.undodir)
+
+  vim.fn.system(cmd)
 end
 
 -- Completion
