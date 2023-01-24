@@ -240,7 +240,7 @@ vim.keymap.set('n', '<Leader><CR>', '<Cmd>noh<CR>')
 -- vim.keymap.set('n', '<Leader>bd', '<Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>')
 
 -- Close all buffer, except current
--- vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>')
+vim.keymap.set('n', '<Leader>bx', '<Cmd>%bd<Bar>e#<Bar>bd#<CR>')
 
 -- Move a line of text Alt+[j/k]
 vim.keymap.set('n', '<M-j>', 'mz:m+<CR>`z')
