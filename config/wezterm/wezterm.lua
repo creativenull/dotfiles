@@ -6,7 +6,7 @@ wezterm.on('gui-startup', function()
   window:gui_window():maximize()
 end)
 
-local font_size = 12
+local font_size = 11
 
 -- Something something retina displays makes text smol
 if string.find(wezterm.target_triple, 'darwin') ~= nil then
