@@ -53,12 +53,14 @@ local function on_attach(client, bufnr)
       group = pumgroup,
       pattern = 'PumCompleteDone',
       callback = function()
-        local completed_item = vim.g['pum#completed_item']
-        client.request('completionItem/resolve', vim.fn.json_decode(completed_item.user_data.lspitem), function(_, res)
-          if res.additionalTextEdits then
-            vim.lsp.util.apply_text_edits(res.additionalTextEdits, bufnr, 'utf-8')
+        local completed_item = vim.fn.json_decode(vim.g['pum#completed_item'].user_data.lspitem)
+        local resolve_fn = function(_, response)
+          if response.additionalTextEdits then
+            vim.lsp.util.apply_text_edits(response.additionalTextEdits, bufnr, 'utf-8')
           end
-        end)
+        end
+
+        client.request('completionItem/resolve', completed_item, resolve_fn, bufnr)
       end,
     })
   end
