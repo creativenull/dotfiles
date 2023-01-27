@@ -52,16 +52,18 @@ local function on_attach(client, bufnr)
     vim.api.nvim_create_autocmd('User', {
       group = pumgroup,
       pattern = 'PumCompleteDone',
-      callback = function()
+      callback = function(auopts)
+        local buf = auopts.buf
         local completed_item = vim.fn.json_decode(vim.g['pum#completed_item'].user_data.lspitem)
         local resolve_fn = function(_, response)
           if response and response.additionalTextEdits then
-            vim.lsp.util.apply_text_edits(response.additionalTextEdits, bufnr, 'utf-8')
+            vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
           end
         end
 
-        client.request('completionItem/resolve', completed_item, resolve_fn, bufnr)
+        client.request('completionItem/resolve', completed_item, resolve_fn, buf)
       end,
+      desc = 'Autoimport via pum.vim'
     })
   end
 end
