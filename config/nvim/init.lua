@@ -481,10 +481,10 @@ Plug('numToStr/Comment.nvim')
 
 -- File Explorer + Addons
 -- ---
-Plug('antoinemadec/FixCursorHold.nvim', { commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' })
-Plug('lambdalisue/fern.vim', { tag = 'v1.51.1' })
-Plug('lambdalisue/glyph-palette.vim', { tag = 'v1.4.0' })
-Plug('lambdalisue/fern-renderer-nerdfont.vim', { commit = '1e90a78ab5510fbcedc85abeb9a251d978726935' })
+Plug('antoinemadec/FixCursorHold.nvim')
+Plug('lambdalisue/fern.vim')
+Plug('lambdalisue/glyph-palette.vim')
+Plug('lambdalisue/fern-renderer-nerdfont.vim')
 
 -- Linters + Formatters
 -- ---
