@@ -111,10 +111,7 @@ function M.setup()
     cmdlineSources = cmdline_sources,
     autoCompleteEvents = { 'InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged' },
     autoCompleteDelay = 100,
-    overwriteCompleteopt = false,
     backspaceCompletion = false,
-    smartCase = true,
-    completionMenu = 'pum.vim',
     ui = 'pum',
     sourceOptions = {
       ['_'] = {
@@ -124,29 +121,29 @@ function M.setup()
       },
       cmdline = {
         mark = 'CMD',
-        maxCandidates = 10,
+        maxItems = 10,
         ignoreCase = true,
       },
       ['nvim-lsp'] = {
         mark = 'LS',
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
-        maxCandidates = 10,
+        maxItems = 10,
         ignoreCase = true,
         minAutoCompleteLength = 1,
       },
       vsnip = {
         mark = 'S',
-        maxCandidates = 5,
+        maxItems = 5,
         ignoreCase = true,
       },
       around = {
         mark = 'A',
-        maxCandidates = 5,
+        maxItems = 5,
         ignoreCase = true,
       },
       buffer = {
         mark = 'B',
-        maxCandidates = 5,
+        maxItems = 5,
         ignoreCase = true,
       },
     },
