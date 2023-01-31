@@ -488,8 +488,8 @@ Plug('lambdalisue/fern-renderer-nerdfont.vim')
 
 -- Linters + Formatters
 -- ---
-Plug('dense-analysis/ale', { commit = '4b433e5693ccec8e408504c4b139b8f7cc6a4aa3' })
-Plug('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
+Plug('dense-analysis/ale')
+-- Plug('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
 
 -- Builtin LSP Configs
 -- ---

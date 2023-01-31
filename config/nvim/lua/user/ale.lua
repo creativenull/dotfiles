@@ -2,9 +2,10 @@ local M = {}
 
 function M.setup()
   -- Vars
+  vim.g.ale_use_neovim_diagnostics_api = 1
   vim.g.ale_disable_lsp = 1
   vim.g.ale_completion_enabled = 0
-  vim.g.ale_completion_autoimport = 1
+  vim.g.ale_completion_autoimport = 0
   vim.g.ale_hover_cursor = 0
   vim.g.ale_echo_msg_error_str = 'Err'
   vim.g.ale_sign_error = ' '

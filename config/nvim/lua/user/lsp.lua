@@ -88,13 +88,18 @@ function M.setup()
   local width = 80
   local border = 'rounded'
 
+  -- Custom signs
+  local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+  for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  end
+
   -- Gloabally change diagnostic behavior
   -- turn them off so that ALE can handle diagnostics
   -- exclusively
   vim.diagnostic.config({
-    underline = false,
     virtual_text = false,
-    signs = false,
     update_in_insert = false,
     float = {
       source = true,
