@@ -525,7 +525,6 @@ Plug('vim-ctrlspace/vim-ctrlspace', { commit = '5e444c6af06de58d5ed7d7bd0dcbb958
 -- Git
 -- ---
 Plug('lambdalisue/gin.vim', { tag = 'v0.2.1' })
-Plug('itchyny/vim-gitbranch', { commit = '1a8ba866f3eaf0194783b9f8573339d6ede8f1ed' })
 Plug('lewis6991/gitsigns.nvim', { tag = 'v0.6' })
 
 -- UI/Aesthetics
