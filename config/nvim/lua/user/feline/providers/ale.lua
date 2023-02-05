@@ -1,18 +1,24 @@
 local lsp = require('user.feline.providers.lsp')
 local M = {}
 
-function M.has_ale_linters()
-  return vim.fn.exists('b:ale_linters') == 1
+function M.has_registered_linters()
+  local buf = vim.api.nvim_get_current_buf()
+  return vim.b[buf].ale_linters ~= nil
 end
 
-function M.has_ale_fixers()
-  return vim.fn.exists('b:ale_fixers') == 1
+function M.has_registered_fixers()
+  local buf = vim.api.nvim_get_current_buf()
+  return vim.b[buf].ale_fixers ~= nil
+end
+
+function M.is_registered()
+  return M.has_registered_linters() or M.has_registered_fixers()
 end
 
 M.status_provider = function(component, opts)
   if component.enabled == nil then
     component.enabled = function()
-      return M.has_ale_linters() or M.has_ale_fixers()
+      return M.is_registered()
     end
   end
 
@@ -31,8 +37,8 @@ M.status_provider = function(component, opts)
     text = opts.text
   end
 
-  local linter_attached_icon = M.has_ale_linters() and linter_icon or ''
-  local fixer_attached_icon = M.has_ale_fixers() and fixer_icon or ''
+  local linter_attached_icon = M.has_registered_linters() and linter_icon or ''
+  local fixer_attached_icon = M.has_registered_fixers() and fixer_icon or ''
 
   return string.format(' %s%s%s ', text, linter_attached_icon, fixer_attached_icon)
 end
