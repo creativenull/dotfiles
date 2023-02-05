@@ -165,16 +165,23 @@ function M.setup()
 
   table.insert(components.active[3], {
     provider = function()
-      local count = #vim.lsp.get_active_clients()
+      local bufnr = vim.api.nvim_get_current_buf()
+      local count = #vim.lsp.get_active_clients({ bufnr = bufnr })
       return string.format(' LSP [%s] ', count)
     end,
     enabled = function()
-      return #vim.lsp.get_active_clients() > 0
+      local bufnr = vim.api.nvim_get_current_buf()
+      return #vim.lsp.get_active_clients({ bufnr = bufnr }) > 0
     end,
     hl = { fg = colors.neutral100, bg = colors.teal900 },
     left_sep = {
       str = 'slant_left',
-      hl = { fg = colors.teal900, bg = colors.emerald800 },
+      hl = function()
+        if not ale.is_registered() then
+          return { fg = colors.teal900, bg = colors.green700 }
+        end
+        return { fg = colors.teal900, bg = colors.emerald800 }
+      end,
     },
   })
 
