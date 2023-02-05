@@ -463,6 +463,7 @@ vim.call('plug#begin')
 Plug('vim-denops/denops.vim')
 Plug('lambdalisue/nerdfont.vim')
 Plug('nvim-lua/plenary.nvim')
+Plug('lambdalisue/glyph-palette.vim')
 
 -- Core
 -- ---
@@ -483,13 +484,11 @@ Plug('numToStr/Comment.nvim')
 -- ---
 Plug('antoinemadec/FixCursorHold.nvim')
 Plug('lambdalisue/fern.vim')
-Plug('lambdalisue/glyph-palette.vim')
 Plug('lambdalisue/fern-renderer-nerdfont.vim')
 
 -- Linters + Formatters
 -- ---
 Plug('dense-analysis/ale')
--- Plug('creativenull/nvim-ale-diagnostic', { branch = 'v2' })
 
 -- Builtin LSP Configs
 -- ---
@@ -532,8 +531,7 @@ Plug('lewis6991/gitsigns.nvim', { tag = 'v0.6' })
 -- UI/Aesthetics
 -- ---
 Plug('lukas-reineke/indent-blankline.nvim', { commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
-Plug('itchyny/lightline.vim', { commit = 'b1e91b41f5028d65fa3d31a425ff21591d5d957f' })
-Plug('mengelbrecht/lightline-bufferline', { commit = '8b6e29e65e9711b75df289879186ff3888feed00' })
+Plug('feline-nvim/feline.nvim', { commit = 'd48b6f92c6ccdd6654c956f437be49ea160b5b0c' })
 
 -- TreeSitter
 -- ---
@@ -603,9 +601,9 @@ require('gitsigns').setup()
 -- ---
 require('Comment').setup()
 
--- lightline.vim Config
+-- feline.nvim Config
 -- ---
-require('user.lightline').setup()
+require('user.feline').setup()
 
 -- =============================================================================
 -- = Colorscheme =
