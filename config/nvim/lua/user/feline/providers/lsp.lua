@@ -22,6 +22,23 @@ function M.get_diagnostic_count(attr)
   return #items
 end
 
+function M.is_registered()
+  local bufnr = vim.api.nvim_get_current_buf()
+  return #vim.lsp.get_active_clients({ bufnr = bufnr }) > 0
+end
+
+function M.status_provider(component)
+  if component.enabled == nil then
+    component.enabled = function()
+      return M.is_registered()
+    end
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  local count = #vim.lsp.get_active_clients({ bufnr = bufnr })
+  return string.format(' LSP [%s] ', count)
+end
+
 function M.diagnostic_error_provider(component)
   local key = 'error'
   if component.enabled == nil then

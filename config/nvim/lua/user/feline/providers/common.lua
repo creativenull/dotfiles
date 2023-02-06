@@ -8,13 +8,7 @@ function M.is_empty_buffer()
   return vim.fn.expand('%:t') == ''
 end
 
-function M.filename_provider(component, opts)
-  if component.enabled == nil then
-    component.enabled = function()
-      return M.is_not_empty_buffer()
-    end
-  end
-
+function M.filename_provider(_, opts)
   local modified_icon = ' 󰲶'
   if opts.modified_icon then
     modified_icon = opts.modified_icon

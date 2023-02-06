@@ -1,7 +1,7 @@
 local common = require('user.feline.providers.common')
 local gitsigns = require('user.feline.providers.gitsigns')
 local lsp = require('user.feline.providers.lsp')
-local ale = require('user.feline.providers.ale')
+local ale = require('feline.custom_providers.ale')
 local M = {}
 
 local colors = {
@@ -47,15 +47,6 @@ function M.setup()
     active = { {}, {}, {} },
     inactive = { {}, {} },
   }
-
-  -- Placeholder to darken the statusline
-  table.insert(components.active[1], {
-    provider = ' ',
-    enabled = function()
-      return common.is_empty_buffer()
-    end,
-    hl = { fg = colors.neutral900, bg = colors.neutral900 },
-  })
 
   -- Left
   -- ---
@@ -159,20 +150,18 @@ function M.setup()
     hl = { fg = colors.neutral100, bg = colors.emerald800 },
     left_sep = {
       str = 'slant_left',
-      hl = { fg = colors.emerald800, bg = colors.green700 },
+      -- hl = { fg = colors.emerald800, bg = colors.green700 },
+      hl = function()
+        if common.is_not_empty_buffer() then
+          return { fg = colors.emerald800, bg = colors.green700 }
+        end
+        return { fg = colors.emerald800, bg = colors.neutral900 }
+      end,
     },
   })
 
   table.insert(components.active[3], {
-    provider = function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local count = #vim.lsp.get_active_clients({ bufnr = bufnr })
-      return string.format(' LSP [%s] ', count)
-    end,
-    enabled = function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      return #vim.lsp.get_active_clients({ bufnr = bufnr }) > 0
-    end,
+    provider = 'lsp_status',
     hl = { fg = colors.neutral100, bg = colors.teal900 },
     left_sep = {
       str = 'slant_left',
@@ -186,16 +175,23 @@ function M.setup()
   })
 
   table.insert(components.active[3], {
-    provider = 'lsp_diagnostic_error',
+    provider = 'nvim_diagnostic_error',
     hl = { fg = colors.neutral100, bg = colors.red600 },
     left_sep = {
       str = 'slant_left',
-      hl = { fg = colors.red600, bg = colors.teal900 },
+      hl = function()
+        if not ale.is_registered() and not lsp.is_registered() then
+          return { fg = colors.red600, bg = colors.green700 }
+        elseif ale.is_registered() and not lsp.is_registered() then
+          return { fg = colors.red600, bg = colors.emerald800 }
+        end
+        return { fg = colors.red600, bg = colors.teal900 }
+      end,
     },
   })
 
   table.insert(components.active[3], {
-    provider = 'lsp_diagnostic_warning',
+    provider = 'nvim_diagnostic_warning',
     hl = { fg = colors.neutral100, bg = colors.yellow600 },
     left_sep = {
       str = 'slant_left',
@@ -209,7 +205,7 @@ function M.setup()
   })
 
   table.insert(components.active[3], {
-    provider = 'lsp_diagnostic_info',
+    provider = 'nvim_diagnostic_info',
     hl = { fg = colors.neutral100, bg = colors.sky800 },
     left_sep = {
       str = 'slant_left',
@@ -272,9 +268,10 @@ function M.setup()
       gitsigns_removed = gitsigns.gitsigns_removed_provider,
 
       -- lsp
-      lsp_diagnostic_error = lsp.diagnostic_error_provider,
-      lsp_diagnostic_warning = lsp.diagnostic_warning_provider,
-      lsp_diagnostic_info = lsp.diagnostic_info_provider,
+      lsp_status = lsp.status_provider,
+      nvim_diagnostic_error = lsp.diagnostic_error_provider,
+      nvim_diagnostic_warning = lsp.diagnostic_warning_provider,
+      nvim_diagnostic_info = lsp.diagnostic_info_provider,
 
       -- ALE
       ale_status = ale.status_provider,
