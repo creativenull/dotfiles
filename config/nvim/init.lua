@@ -531,6 +531,7 @@ Plug('lewis6991/gitsigns.nvim', { tag = 'v0.6' })
 -- ---
 Plug('lukas-reineke/indent-blankline.nvim', { commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
 Plug('feline-nvim/feline.nvim', { commit = 'd48b6f92c6ccdd6654c956f437be49ea160b5b0c' })
+Plug('creativenull/feline-provider-ale.nvim')
 
 -- TreeSitter
 -- ---
