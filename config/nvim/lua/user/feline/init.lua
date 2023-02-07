@@ -1,46 +1,9 @@
 local common = require('user.feline.providers.common')
+local colors = common.colors
 local gitsigns = require('user.feline.providers.gitsigns')
 local lsp = require('user.feline.providers.lsp')
 local ale = require('feline.custom_providers.ale')
 local M = {}
-
-local colors = {
-  neutral100 = '#f5f5f5',
-  neutral200 = '#e5e5e5',
-  neutral300 = '#d4d4d4',
-  neutral400 = '#a1a1aa',
-  neutral500 = '#737373',
-  neutral800 = '#262626',
-  neutral900 = '#171717',
-
-  emerald600 = '#059669',
-  emerald800 = '#065f46',
-  emerald900 = '#064e3b',
-  rose500 = '#f43f5e',
-  rose900 = '#881337',
-  amber300 = '#fcd34d',
-  amber800 = '#92400e',
-
-  sky800 = '#075985',
-
-  violet700 = '#6d28d9',
-  violet800 = '#5b21b6',
-
-  purple700 = '#7e22ce',
-  purple800 = '#6b21a8',
-
-  fuchia700 = '#a21caf',
-  fuchia800 = '#86198f',
-  fuchia900 = '#701a75',
-
-  red600 = '#dc2626',
-  yellow600 = '#ca8a04',
-  cyan800 = '#0e7490',
-
-  green700 = '#15803d',
-
-  teal900 = '#134e4a',
-}
 
 function M.setup()
   local components = {
@@ -122,6 +85,36 @@ function M.setup()
         hl = { fg = colors.neutral300, bg = colors.neutral900 },
       },
     },
+  })
+
+  -- Middle
+  -- ---
+  table.insert(components.active[2], {
+    provider = function()
+      local mode = common.get_vim_mode()
+      return string.format('   %s   ', mode.text)
+    end,
+    hl = function()
+      return common.get_vim_mode().hl
+    end,
+    left_sep = {
+      str = 'slant_right',
+      hl = function()
+        return { fg = colors.neutral900, bg = common.get_vim_mode().hl.bg }
+      end,
+    },
+    right_sep = {
+      str = 'slant_left',
+      hl = function()
+        return { fg = colors.neutral900, bg = common.get_vim_mode().hl.bg }
+      end,
+    },
+  })
+  table.insert(components.active[2], {
+    provider = function()
+      return ''
+    end,
+    hl = { bg = colors.neutral900 },
   })
 
   -- Right
