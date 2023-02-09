@@ -1,5 +1,20 @@
 local M = {}
 
+local function get_digits(num)
+  return #tostring(num)
+end
+
+local function get_lpadding(digits)
+  local pad = ''
+  local i = 0
+  while i < digits do
+    pad = pad .. ' '
+    i = i + 1
+  end
+
+  return pad
+end
+
 M.colors = {
   neutral100 = '#f5f5f5',
   neutral200 = '#e5e5e5',
@@ -90,6 +105,24 @@ function M.filename_provider(_, opts)
   local filename = vim.fn.expand('%:t')
 
   return string.format(' %s %s%s%s ', nerdfont, filename, modified, readonly)
+end
+
+function M.line_info_provider(component)
+  if component.enabled == nil then
+    component.enabled = function()
+      return M.is_not_empty_buffer()
+    end
+  end
+
+  local curpos = vim.fn.getcurpos()
+  local col = curpos[3]
+  local lnum = curpos[2]
+  local digits = get_digits(lnum)
+  local total_lnum = vim.fn.line('$')
+  local total_digits = get_digits(total_lnum)
+  local padding = get_lpadding(total_digits - digits)
+
+  return string.format('  %s/%s  %s ', padding .. lnum, total_lnum, col)
 end
 
 return M

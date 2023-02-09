@@ -120,17 +120,7 @@ function M.setup()
   -- Right
   -- ---
   table.insert(components.active[3], {
-    provider = function()
-      local curpos = vim.fn.getcurpos()
-      local lnum = curpos[2]
-      local col = curpos[3]
-      local total_lunm = vim.fn.line('$')
-
-      return string.format('  %s/%s  %s ', lnum, total_lunm, col)
-    end,
-    enabled = function()
-      return common.is_not_empty_buffer()
-    end,
+    provider = 'line_info',
     hl = { fg = colors.neutral100, bg = colors.green700 },
     left_sep = {
       str = 'slant_left',
@@ -231,17 +221,7 @@ function M.setup()
   -- Inactive Right
   -- ---
   table.insert(components.inactive[2], {
-    provider = function()
-      local curpos = vim.fn.getcurpos()
-      local lnum = curpos[2]
-      local col = curpos[3]
-      local total_lunm = vim.fn.line('$')
-
-      return string.format('  %s/%s  %s ', lnum, total_lunm, col)
-    end,
-    enabled = function()
-      return common.is_not_empty_buffer()
-    end,
+    provider = 'line_info',
     hl = { fg = colors.neutral100, bg = colors.green700 },
     left_sep = {
       str = 'slant_left',
@@ -253,6 +233,7 @@ function M.setup()
     components = components,
     custom_providers = {
       filename = common.filename_provider,
+      line_info = common.line_info_provider,
 
       -- gitsigns
       gitsigns_status = gitsigns.gitsigns_status_provider,
