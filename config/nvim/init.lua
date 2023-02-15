@@ -397,7 +397,8 @@ local gin = {}
 
 -- Push from git repo, notify user since this is async
 gin.push_origin = function()
-  local branch = vim.call('gitbranch#name')
+  -- local branch = vim.call('gitbranch#name')
+  local branch = vim.g.gitsigns_head
   local cmd = string.format('Gin push origin %s', branch)
   print(cmd)
   vim.cmd(cmd)
@@ -405,7 +406,8 @@ end
 
 -- Pull from git repo, notify user since this is async
 gin.pull_origin = function()
-  local branch = vim.call('gitbranch#name')
+  -- local branch = vim.call('gitbranch#name')
+  local branch = vim.g.gitsigns_head
   local cmd = string.format('Gin pull origin %s', branch)
   print(cmd)
   vim.cmd(cmd)
