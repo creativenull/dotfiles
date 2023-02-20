@@ -61,7 +61,9 @@ local function on_attach(client, bufnr)
           end
         end
 
-        client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+        if buf == bufnr then
+          client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+        end
       end,
       desc = 'Autoimport via pum.vim'
     })
