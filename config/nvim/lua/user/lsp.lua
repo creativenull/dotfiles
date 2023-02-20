@@ -65,7 +65,7 @@ local function on_attach(client, bufnr)
           client.request('completionItem/resolve', completed_item, resolve_fn, buf)
         end
       end,
-      desc = 'Autoimport via pum.vim'
+      desc = 'Autoimport via pum.vim',
     })
   end
 end
@@ -91,9 +91,9 @@ function M.setup()
   local border = 'rounded'
 
   -- Custom signs
-  local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+  local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
   for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
+    local hl = 'DiagnosticSign' .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
 
