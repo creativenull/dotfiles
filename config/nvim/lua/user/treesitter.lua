@@ -17,6 +17,7 @@ function M.setup()
       'json',
       'lua',
       'php',
+      'svelte',
       'typescript',
       'vue',
       'zig',
