@@ -523,7 +523,7 @@ Plug('Shougo/ddc-source-nvim-lsp')
 -- ---
 Plug('junegunn/fzf', { tag = '0.38.0' })
 Plug('junegunn/fzf.vim', { commit = 'dc71692255b62d1f67dc55c8e51ab1aa467b1d46' })
-Plug('vim-ctrlspace/vim-ctrlspace', { commit = '5e444c6af06de58d5ed7d7bd0dcbb958f292cd2e' })
+Plug('vim-ctrlspace/vim-ctrlspace', { commit = 'b8303e459304f7f46c8955f5dc5a5fc190503e7d' })
 
 -- Git
 -- ---
