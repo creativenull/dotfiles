@@ -521,8 +521,8 @@ Plug('Shougo/ddc-source-nvim-lsp')
 
 -- Fuzzy File/Code Finder
 -- ---
-Plug('junegunn/fzf', { tag = '0.34.0' })
-Plug('junegunn/fzf.vim', { commit = '9ceac718026fd39498d95ff04fa04d3e40c465d7' })
+Plug('junegunn/fzf', { tag = '0.38.0' })
+Plug('junegunn/fzf.vim', { commit = 'dc71692255b62d1f67dc55c8e51ab1aa467b1d46' })
 Plug('vim-ctrlspace/vim-ctrlspace', { commit = '5e444c6af06de58d5ed7d7bd0dcbb958f292cd2e' })
 
 -- Git
