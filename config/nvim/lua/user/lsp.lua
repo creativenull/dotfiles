@@ -54,15 +54,19 @@ local function on_attach(client, bufnr)
       pattern = 'PumCompleteDone',
       callback = function(auopts)
         local buf = auopts.buf
-        local completed_item = vim.fn.json_decode(vim.g['pum#completed_item'].user_data.lspitem)
-        local resolve_fn = function(_, response)
-          if response and response.additionalTextEdits then
-            vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
-          end
-        end
+        if vim.g['pum#completed_item'].user_data and vim.g['pum#completed_item'].user_data.lspitem then
+          local lspitem = vim.g['pum#completed_item'].user_data.lspitem
+          local completed_item = vim.fn.json_decode(lspitem)
 
-        if buf == bufnr then
-          client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+          local resolve_fn = function(_, response)
+            if response and response.additionalTextEdits then
+              vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
+            end
+          end
+
+          if buf == bufnr then
+            client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+          end
         end
       end,
       desc = 'Autoimport via pum.vim',
