@@ -22,8 +22,6 @@ alias ll="lsd -lA"
 
 # Make built-in commands with verbose, if possible
 alias mkdir="mkdir -pv"
-alias rm="rm -v"
-alias cp="cp -v"
 
 # Vim
 export PYTHON3_HOST_PROG=/usr/bin/python3
