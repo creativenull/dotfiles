@@ -89,33 +89,33 @@ function M.setup()
 
   -- Middle
   -- ---
-  table.insert(components.active[2], {
-    provider = function()
-      local mode = common.get_vim_mode()
-      return string.format('   %s   ', mode.text)
-    end,
-    hl = function()
-      return common.get_vim_mode().hl
-    end,
-    left_sep = {
-      str = 'slant_right',
-      hl = function()
-        return { fg = colors.neutral900, bg = common.get_vim_mode().hl.bg }
-      end,
-    },
-    right_sep = {
-      str = 'slant_left',
-      hl = function()
-        return { fg = colors.neutral900, bg = common.get_vim_mode().hl.bg }
-      end,
-    },
-  })
-  table.insert(components.active[2], {
-    provider = function()
-      return ''
-    end,
-    hl = { bg = colors.neutral900 },
-  })
+  -- table.insert(components.active[2], {
+  --   provider = function()
+  --     local mode = common.get_vim_mode()
+  --     return string.format('   %s   ', mode.text)
+  --   end,
+  --   hl = function()
+  --     return common.get_vim_mode().hl
+  --   end,
+  --   left_sep = {
+  --     str = 'slant_right',
+  --     hl = function()
+  --       return { fg = colors.neutral900, bg = common.get_vim_mode().hl.bg }
+  --     end,
+  --   },
+  --   right_sep = {
+  --     str = 'slant_left',
+  --     hl = function()
+  --       return { fg = colors.neutral900, bg = common.get_vim_mode().hl.bg }
+  --     end,
+  --   },
+  -- })
+  -- table.insert(components.active[2], {
+  --   provider = function()
+  --     return ''
+  --   end,
+  --   hl = { bg = colors.neutral900 },
+  -- })
 
   -- Right
   -- ---
