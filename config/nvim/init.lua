@@ -557,6 +557,7 @@ Plug('tinted-theming/base16-vim', { commit = '3cdd12bca750e8c41a9e8912c142b45cd8
 Plug('folke/tokyonight.nvim', { commit = '95c88be515550bd519ffe54eeaa2df5b9af62cc5' })
 Plug('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
 Plug('bluz71/vim-nightfly-colors', { commit = '3ca232533b2bd58cc486552e9f4a9da7f7458bdd' })
+Plug('rafamadriz/neon', { commit = '7765aaa7d1cd3804176140644640766e4411c766' })
 
 vim.call('plug#end')
 
@@ -624,6 +625,10 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     -- Custom window separator line color
     vim.api.nvim_set_hl(0, 'WinSeparator', {})
     vim.api.nvim_set_hl(0, 'WinSeparator', { bg = 'NONE', fg = '#eeeeee' })
+
+    -- Float border transparent
+    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+    vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
   end,
   desc = 'Custom user highlights',
 })
@@ -642,18 +647,18 @@ vim.g.nightflyNormalFloat = 1
 pcall(function()
   vim.g.catppuccin_flavour = 'mocha'
   require('catppuccin').setup({
-    custom_highlights = {
-      NormalFloat = { bg = 'NONE' },
-    },
+    custom_highlights = { NormalFloat = { bg = 'NONE' } },
   })
 end)
 
 -- tokyonight.nvim Config
 -- ---
 pcall(function()
-  require('tokyonight').setup({
-    style = 'night',
-  })
+  require('tokyonight').setup({ style = 'night' })
 end)
 
-pcall(vim.cmd, 'colorscheme nightfly')
+-- neon Config
+-- ---
+vim.g.neon_style = 'dark'
+
+pcall(vim.cmd, 'colorscheme neon')
