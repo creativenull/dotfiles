@@ -629,6 +629,9 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     -- Float border transparent
     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
     vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
+
+    -- Disable inverse visual
+    vim.api.nvim_set_hl(0, 'Visual', { bg = '#dddddd', fg = '#333333' })
   end,
   desc = 'Custom user highlights',
 })
