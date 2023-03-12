@@ -346,6 +346,7 @@ vim.api.nvim_create_autocmd('FileType', {
 -- ---
 vim.g.indentLine_fileTypeExclude = { 'help', 'fzf', 'fern' }
 vim.g.indentLine_char = '│'
+vim.g.indent_blankline_show_first_indent_level = false
 
 vim.g.indentLine_color_gui = '#333333'
 
