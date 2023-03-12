@@ -121,11 +121,7 @@ function M.setup()
   -- ---
   table.insert(components.active[3], {
     provider = 'line_info',
-    hl = { fg = colors.neutral100, bg = colors.green700 },
-    left_sep = {
-      str = 'slant_left',
-      hl = { fg = colors.green700, bg = colors.neutral900 },
-    },
+    hl = { bg = colors.neutral900, fg = colors.neutral100 },
   })
 
   table.insert(components.active[3], {
@@ -136,7 +132,7 @@ function M.setup()
       -- hl = { fg = colors.emerald800, bg = colors.green700 },
       hl = function()
         if common.is_not_empty_buffer() then
-          return { fg = colors.emerald800, bg = colors.green700 }
+          return { fg = colors.emerald800, bg = colors.neutral900 }
         end
         return { fg = colors.emerald800, bg = colors.neutral900 }
       end,
@@ -150,7 +146,7 @@ function M.setup()
       str = 'slant_left',
       hl = function()
         if not ale.is_registered() then
-          return { fg = colors.teal900, bg = colors.green700 }
+          return { fg = colors.teal900, bg = colors.neutral900 }
         end
         return { fg = colors.teal900, bg = colors.emerald800 }
       end,
@@ -164,7 +160,7 @@ function M.setup()
       str = 'slant_left',
       hl = function()
         if not ale.is_registered() and not lsp.is_registered() then
-          return { fg = colors.red600, bg = colors.green700 }
+          return { fg = colors.red600, bg = colors.neutral900 }
         elseif ale.is_registered() and not lsp.is_registered() then
           return { fg = colors.red600, bg = colors.emerald800 }
         end
