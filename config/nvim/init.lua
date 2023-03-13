@@ -435,6 +435,12 @@ vim.g.javascript_plugin_jsdoc = 1
 vim.g.lexima_enable_endwise_rules = 0
 vim.g.lexima_enable_newline_rules = 0
 
+-- vim-doge Config
+-- ---
+vim.g.doge_enable_mappings = 0
+
+vim.keymap.set('n', '<Leader>dg', '<CMD>DogeGenerate<CR>')
+
 -- =============================================================================
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
@@ -548,7 +554,7 @@ Plug('jwalton512/vim-blade', { commit = '9534101808cc320eef003129a40cab04b026a20
 Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
 Plug('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
 Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
-Plug('kkoomen/vim-doge', { tag = 'v3.19.1' })
+Plug('kkoomen/vim-doge', { tag = 'v3.19.1', ['do'] = 'npm i --no-save && npm run build:binary:unix' })
 
 -- Colorschemes
 -- ---
