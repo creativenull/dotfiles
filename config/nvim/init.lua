@@ -637,7 +637,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
 
     -- Disable inverse visual
-    vim.api.nvim_set_hl(0, 'Visual', { bg = '#dddddd', fg = '#333333' })
+    vim.api.nvim_set_hl(0, 'Visual', { bg = '#222222' })
   end,
   desc = 'Custom user highlights',
 })
