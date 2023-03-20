@@ -471,6 +471,7 @@ vim.call('plug#begin')
 -- Deps
 -- ---
 Plug('vim-denops/denops.vim')
+Plug('vim-denops/denops-shared-server.vim')
 Plug('lambdalisue/nerdfont.vim')
 Plug('nvim-lua/plenary.nvim')
 Plug('lambdalisue/glyph-palette.vim')
@@ -570,6 +571,10 @@ vim.call('plug#end')
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
+
+-- denops.vim Config
+-- ---
+vim.g.denops_server_addr = '127.0.0.1:2390'
 
 -- vim-ctrlspace Config
 -- ---
