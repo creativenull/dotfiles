@@ -633,11 +633,11 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'WinSeparator', { bg = 'NONE', fg = '#eeeeee' })
 
     -- Float border transparent
-    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-    vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
+    -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+    -- vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
 
     -- Disable inverse visual
-    vim.api.nvim_set_hl(0, 'Visual', { bg = '#222222' })
+    -- vim.api.nvim_set_hl(0, 'Visual', { bg = '#aaaaaa', fg = '#222222' })
   end,
   desc = 'Custom user highlights',
 })
@@ -657,6 +657,14 @@ pcall(function()
   vim.g.catppuccin_flavour = 'mocha'
   require('catppuccin').setup({
     custom_highlights = { NormalFloat = { bg = 'NONE' } },
+    term_colors = true,
+    color_overrides = {
+      mocha = {
+        base = "#111111",
+        mantle = "#111111",
+        crust = "#111111",
+      },
+    },
   })
 end)
 
@@ -670,4 +678,4 @@ end)
 -- ---
 vim.g.neon_style = 'dark'
 
-pcall(vim.cmd, 'colorscheme neon')
+pcall(vim.cmd, 'colorscheme catppuccin')
