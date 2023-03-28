@@ -463,6 +463,10 @@ local function ensure_plug()
   end
 end
 
+-- For development
+-- vim.g['denops#debug'] = 1
+-- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/projectlocal.vim'))
+
 ensure_plug()
 local Plug = vim.fn['plug#']
 
@@ -478,7 +482,7 @@ Plug('lambdalisue/glyph-palette.vim')
 
 -- Core
 -- ---
-Plug('creativenull/projectlocal-vim', { tag = 'v0.5.0' })
+Plug('creativenull/projectlocal.vim', { tag = 'v1.*' })
 Plug('cohama/lexima.vim')
 Plug('editorconfig/editorconfig-vim')
 Plug('godlygeek/tabular')
