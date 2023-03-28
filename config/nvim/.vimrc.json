@@ -1,0 +1,23 @@
+{
+  "projectlocal": {
+    "nvim-lsp": [{
+      "name": "lua_ls",
+      "config": {
+        "settings": {
+          "Lua": {
+            "runtime": { "version": "LuaJIT" },
+            "diagnostics": { "globals": ["vim"] },
+            "workspace": { "checkThirdParty": false },
+            "telemetry": { "enable": false }
+          }
+        }
+      }
+    }],
+    "ale": {
+      "fixers": {
+        "lua": ["stylua"]
+      }
+    }
+  }
+}
+
