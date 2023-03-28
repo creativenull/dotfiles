@@ -114,6 +114,9 @@ function M.setup()
     },
   })
 
+  -- lspconfig LspInfo border
+  require('lspconfig.ui.windows').default_options.border = border
+
   -- Hover options
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
     width = width,
