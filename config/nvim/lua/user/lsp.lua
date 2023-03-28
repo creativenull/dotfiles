@@ -131,6 +131,9 @@ function M.setup()
     capabilities = capabilities,
   })
 
+  require('efmls-configs').init({ on_attach = on_attach })
+  require('diagnosticls-configs').init({ on_attach = on_attach })
+
   -- Log debug
   -- vim.lsp.set_log_level('DEBUG')
 end
