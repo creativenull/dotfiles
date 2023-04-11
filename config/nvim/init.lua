@@ -18,6 +18,10 @@ if vim.fn.has('nvim-0.7') == 0 then
   return
 end
 
+if vim.fn.has('nvim-0.9') == 1 then
+  vim.g.editorconfig = false
+end
+
 -- User Config
 -- ---
 vim.g.user = {
