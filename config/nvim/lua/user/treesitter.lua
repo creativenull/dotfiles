@@ -11,7 +11,7 @@ function M.setup()
       'astro',
       'css',
       'go',
-      'help',
+      'vimdoc',
       'html',
       'javascript',
       'json',
