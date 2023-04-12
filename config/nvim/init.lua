@@ -528,6 +528,7 @@ Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-cmdline')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-nvim-lsp')
+Plug('gelguy/wilder.nvim')
 -- Plug('hrsh7th/vim-vsnip-integ')
 
 -- Snippet Engine + Presets
@@ -579,6 +580,21 @@ vim.call('plug#end')
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
+
+-- wilder.nvim Config
+-- ---
+local wilder = require('wilder')
+wilder.setup({ modes = { ':', '/', '?' } })
+wilder.set_option(
+  'renderer',
+  wilder.popupmenu_renderer(wilder.popupmenu_border_theme({
+    border = 'rounded',
+    empty_message = wilder.popupmenu_empty_message_with_spinner(),
+    highlighter = wilder.basic_highlighter(),
+    left = { ' ', wilder.popupmenu_devicons() },
+    right = { ' ', wilder.popupmenu_scrollbar() },
+  }))
+)
 
 -- denops.vim Config
 -- ---
@@ -692,3 +708,9 @@ end)
 vim.g.neon_style = 'dark'
 
 pcall(vim.cmd, 'colorscheme catppuccin')
+
+vim.api.nvim_create_autocmd('BufNewFile', {
+  group = vim.g.user.event,
+  pattern = '*.vue',
+  command = '0r ~/.config/nvim/templates/skeleton.vue',
+})
