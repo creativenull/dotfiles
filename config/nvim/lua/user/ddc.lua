@@ -1,12 +1,12 @@
 local M = {}
 
 local sources = { 'nvim-lsp', 'around', 'buffer' }
-local cmdline_sources = {
-  [':'] = { 'cmdline', 'around' },
-  ['@'] = { 'cmdline' },
-  ['/'] = { 'around' },
-  ['?'] = { 'around' },
-}
+-- local cmdline_sources = {
+--   [':'] = { 'cmdline', 'around' },
+--   ['@'] = { 'cmdline' },
+--   ['/'] = { 'around' },
+--   ['?'] = { 'around' },
+-- }
 local cmdline_keymaps = {
   { lhs = '<Tab>', rhs = '<Cmd>call pum#map#insert_relative(+1)<CR>' },
   { lhs = '<S-Tab>', rhs = '<Cmd>call pum#map#insert_relative(-1)<CR>' },
@@ -91,10 +91,10 @@ local function register_keymaps()
   vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
   vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
 
-  vim.keymap.set('n', ':', function()
-    cmdline_pre()
-    vim.api.nvim_feedkeys(':', 'n', false)
-  end)
+  -- vim.keymap.set('n', ':', function()
+  --   cmdline_pre()
+  --   vim.api.nvim_feedkeys(':', 'n', false)
+  -- end)
 
   -- Manually open the completion menu
   vim.keymap.set(
@@ -108,7 +108,7 @@ end
 function M.setup()
   vim.call('ddc#custom#patch_global', {
     sources = sources,
-    cmdlineSources = cmdline_sources,
+    -- cmdlineSources = cmdline_sources,
     autoCompleteEvents = { 'InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged' },
     autoCompleteDelay = 100,
     backspaceCompletion = false,
