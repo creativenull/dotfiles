@@ -75,13 +75,52 @@ local function cmdline_pre()
   vim.call('ddc#enable_cmdline_completion')
 end
 
-local function register_ui_events()
+---Register autoimporting feature from LSP server routed to pum.vim
+local function on_pum_completion(ev)
+  local buf = ev.buf
+  local active_clients = vim.lsp.get_active_clients({ bufnr = buf })
+
+  for _, client in pairs(active_clients) do
+    local pum_completeditem = vim.g['pum#completed_item']
+
+    if
+      client.server_capabilities.completionProvider
+      and client.server_capabilities.completionProvider.resolveProvider
+      and pum_completeditem.user_data
+      and pum_completeditem.user_data.lspitem
+    then
+      -- Only if there is lspitem property inside g:pum#completed_item
+      -- we parse the json data
+      local lspitem = pum_completeditem.user_data.lspitem
+      local completed_item = vim.fn.json_decode(lspitem)
+
+      -- Apply text edits if it's available
+      local resolve_fn = function(_, response)
+        if response and response.additionalTextEdits then
+          vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
+        end
+      end
+
+      client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+      break
+    end
+  end
+end
+
+local function register_events()
   vim.api.nvim_create_autocmd('ColorScheme', {
     group = vim.g.user.event,
     callback = function()
       vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
     end,
     desc = 'No bg color for completion menu',
+  })
+
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'PumCompleteDone',
+    group = vim.g.user.event,
+    callback = on_pum_completion,
+    desc = 'Autoimport via pum.vim',
   })
 end
 
@@ -195,7 +234,7 @@ function M.setup()
   })
 
   register_keymaps()
-  register_ui_events()
+  register_events()
 
   vim.call('ddc#enable')
   vim.call('signature_help#enable')

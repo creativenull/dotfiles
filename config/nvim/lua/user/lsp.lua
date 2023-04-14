@@ -1,7 +1,5 @@
 local M = {}
 
-local pumgroup = vim.api.nvim_create_augroup('UserPumLspGroup', {})
-
 ---Statusline component to check if the LSP server connected to the buffer
 ---@return string
 function _G.LspInfoStatusline()
@@ -42,35 +40,6 @@ local function on_attach(client, bufnr)
     vim.keymap.set('n', '<Leader>lf', function()
       client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), nil, bufnr)
     end, { desc = desc, buffer = bufnr })
-  end
-
-  -- pum.vim Configuration for completion item resolve
-  -- ---
-  if
-    client.server_capabilities.completionProvider and client.server_capabilities.completionProvider.resolveProvider
-  then
-    vim.api.nvim_create_autocmd('User', {
-      group = pumgroup,
-      pattern = 'PumCompleteDone',
-      callback = function(auopts)
-        local buf = auopts.buf
-        if vim.g['pum#completed_item'].user_data and vim.g['pum#completed_item'].user_data.lspitem then
-          local lspitem = vim.g['pum#completed_item'].user_data.lspitem
-          local completed_item = vim.fn.json_decode(lspitem)
-
-          local resolve_fn = function(_, response)
-            if response and response.additionalTextEdits then
-              vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
-            end
-          end
-
-          if buf == bufnr then
-            client.request('completionItem/resolve', completed_item, resolve_fn, buf)
-          end
-        end
-      end,
-      desc = 'Autoimport via pum.vim',
-    })
   end
 end
 
