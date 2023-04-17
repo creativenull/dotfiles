@@ -529,7 +529,6 @@ Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-cmdline')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-nvim-lsp')
-Plug('gelguy/wilder.nvim')
 -- Plug('hrsh7th/vim-vsnip-integ')
 
 -- Snippet Engine + Presets
@@ -542,6 +541,7 @@ Plug('gelguy/wilder.nvim')
 Plug('junegunn/fzf', { tag = '0.38.0' })
 Plug('junegunn/fzf.vim', { commit = 'dc71692255b62d1f67dc55c8e51ab1aa467b1d46' })
 Plug('vim-ctrlspace/vim-ctrlspace', { commit = 'b8303e459304f7f46c8955f5dc5a5fc190503e7d' })
+Plug('gelguy/wilder.nvim')
 
 -- Git
 -- ---
@@ -584,18 +584,7 @@ vim.call('plug#end')
 
 -- wilder.nvim Config
 -- ---
-local wilder = require('wilder')
-wilder.setup({ modes = { ':', '/', '?' } })
-wilder.set_option(
-  'renderer',
-  wilder.popupmenu_renderer(wilder.popupmenu_border_theme({
-    border = 'rounded',
-    empty_message = wilder.popupmenu_empty_message_with_spinner(),
-    highlighter = wilder.basic_highlighter(),
-    left = { ' ', wilder.popupmenu_devicons() },
-    right = { ' ', wilder.popupmenu_scrollbar() },
-  }))
-)
+require('user.wilder').setup()
 
 -- denops.vim Config
 -- ---
