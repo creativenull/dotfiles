@@ -709,9 +709,3 @@ end)
 vim.g.neon_style = 'dark'
 
 pcall(vim.cmd, 'colorscheme catppuccin')
-
-vim.api.nvim_create_autocmd('BufNewFile', {
-  group = vim.g.user.event,
-  pattern = '*.vue',
-  command = '0r ~/.config/nvim/templates/skeleton.vue',
-})
