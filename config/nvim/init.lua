@@ -529,12 +529,14 @@ Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-cmdline')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-nvim-lsp')
+Plug('matsui54/ddc-ultisnips')
 -- Plug('hrsh7th/vim-vsnip-integ')
 
 -- Snippet Engine + Presets
 -- ---
 -- Plug('hrsh7th/vim-vsnip', { commit = '6f873418c4dc601d8ad019a5906eddff5088de9b' })
 -- Plug('rafamadriz/friendly-snippets', { commit = '03f91a18022964d80a3f0413ed82cf1dbeba247f' })
+Plug('SirVer/ultisnips', { commit = '0ad238b1910d447476b2d98f593322c1cdb71285' })
 
 -- Fuzzy File/Code Finder
 -- ---
@@ -582,7 +584,11 @@ vim.call('plug#end')
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
 
--- wilder.nvim Config
+-- ultisnips Config
+-- ---
+vim.g.UltiSnipsExpandTrigger = '<C-x><C-u>'
+vim.g.UltiSnipsListSnippets = ''
+
 -- ---
 require('user.wilder').setup()
 
