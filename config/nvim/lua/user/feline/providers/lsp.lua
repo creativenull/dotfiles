@@ -36,6 +36,11 @@ function M.status_provider(component)
 
   local bufnr = vim.api.nvim_get_current_buf()
   local count = #vim.lsp.get_active_clients({ bufnr = bufnr })
+
+  if count == 0 then
+    return ''
+  end
+
   return string.format(' LSP [%s] ', count)
 end
 
@@ -50,6 +55,10 @@ function M.diagnostic_error_provider(component)
   local icon = ''
   if component.icon then
     icon = component.icon
+  end
+
+  if M.get_diagnostic_count(key) == 0 then
+    return ''
   end
 
   return string.format(' %s%s ', icon, M.get_diagnostic_count(key))
@@ -68,6 +77,10 @@ function M.diagnostic_warning_provider(component)
     icon = component.icon
   end
 
+  if M.get_diagnostic_count(key) == 0 then
+    return ''
+  end
+
   return string.format(' %s%s ', icon, M.get_diagnostic_count(key))
 end
 
@@ -82,6 +95,10 @@ function M.diagnostic_info_provider(component)
   local icon = ''
   if component.icon then
     icon = component.icon
+  end
+
+  if M.get_diagnostic_count(key) == 0 then
+    return ''
   end
 
   return string.format(' %s%s ', icon, M.get_diagnostic_count(key))

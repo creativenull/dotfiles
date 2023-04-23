@@ -87,6 +87,11 @@ function M.setup()
     },
   })
 
+  table.insert(components.active[1], {
+    provider = '',
+    hl = { bg = colors.neutral900 },
+  })
+
   -- Middle
   -- ---
   -- table.insert(components.active[2], {

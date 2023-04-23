@@ -29,6 +29,10 @@ function M.gitsigns_status_provider(component)
   local buf = vim.api.nvim_get_current_buf()
   local head = vim.b[buf].gitsigns_head
 
+  if head == nil then
+    return ''
+  end
+
   return string.format(' 󰘬 %s ', head)
 end
 
@@ -43,6 +47,10 @@ function M.gitsigns_added_provider(component)
 
   local buf = vim.api.nvim_get_current_buf()
   local dict = vim.b[buf].gitsigns_status_dict or { [key] = 0 }
+
+  if dict[key] == 0 then
+    return ''
+  end
 
   return string.format('%s%s', prefix_icon, dict[key])
 end
@@ -59,6 +67,10 @@ function M.gitsigns_changed_provider(component)
   local buf = vim.api.nvim_get_current_buf()
   local dict = vim.b[buf].gitsigns_status_dict or { [key] = 0 }
 
+  if dict[key] == 0 then
+    return ''
+  end
+
   return string.format('%s%s', prefix_icon, dict[key])
 end
 
@@ -73,6 +85,10 @@ function M.gitsigns_removed_provider(component)
 
   local buf = vim.api.nvim_get_current_buf()
   local dict = vim.b[buf].gitsigns_status_dict or { [key] = 0 }
+
+  if dict[key] == 0 then
+    return ''
+  end
 
   return string.format('%s%s', prefix_icon, dict[key])
 end
