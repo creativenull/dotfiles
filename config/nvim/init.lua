@@ -497,8 +497,6 @@ Plug('tpope/vim-endwise')
 Plug('tpope/vim-repeat')
 Plug('tpope/vim-surround')
 Plug('numToStr/Comment.nvim')
--- Plug('Shougo/context_filetype.vim', { commit = '28768168261bca161c3f2599e0ed63c96aab6dea' })
--- Plug('tyru/caw.vim', { commit = '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' })
 
 -- File Explorer + Addons
 -- ---
@@ -534,8 +532,6 @@ Plug('matsui54/ddc-ultisnips')
 
 -- Snippet Engine + Presets
 -- ---
--- Plug('hrsh7th/vim-vsnip', { commit = '6f873418c4dc601d8ad019a5906eddff5088de9b' })
--- Plug('rafamadriz/friendly-snippets', { commit = '03f91a18022964d80a3f0413ed82cf1dbeba247f' })
 Plug('SirVer/ultisnips', { commit = '0ad238b1910d447476b2d98f593322c1cdb71285' })
 
 -- Fuzzy File/Code Finder
