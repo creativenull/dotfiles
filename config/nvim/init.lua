@@ -696,11 +696,17 @@ end)
 -- tokyonight.nvim Config
 -- ---
 pcall(function()
-  require('tokyonight').setup({ style = 'night' })
+  require('tokyonight').setup({
+    style = 'night',
+    on_highlights = function(hi, _)
+      hi.NormalFloat = { bg = 'NONE' }
+      hi.FloatBorder = { bg = 'NONE' }
+    end,
+  })
 end)
 
 -- neon Config
 -- ---
 vim.g.neon_style = 'dark'
 
-pcall(vim.cmd, 'colorscheme catppuccin')
+pcall(vim.cmd, 'colorscheme tokyonight')
