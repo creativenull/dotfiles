@@ -524,11 +524,9 @@ Plug('Shougo/ddc-ui-pum')
 Plug('matsui54/denops-signature_help')
 Plug('tani/ddc-fuzzy')
 Plug('matsui54/ddc-buffer')
-Plug('Shougo/ddc-source-cmdline')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-nvim-lsp')
 Plug('matsui54/ddc-ultisnips')
--- Plug('hrsh7th/vim-vsnip-integ')
 
 -- Snippet Engine + Presets
 -- ---
@@ -543,7 +541,7 @@ Plug('gelguy/wilder.nvim')
 
 -- Git
 -- ---
-Plug('lambdalisue/gin.vim', { tag = 'v0.2.1' })
+Plug('lambdalisue/gin.vim')
 Plug('lewis6991/gitsigns.nvim')
 
 -- UI/Aesthetics
