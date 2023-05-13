@@ -1,9 +1,9 @@
 local M = {}
 
-local function vim_grep(qargs, bang)
-  local query = '""'
-  if qargs ~= nil then
-    query = vim.fn.shellescape(qargs)
+local function vim_grep(args, bang)
+  local query = ''
+  if args ~= nil then
+    query = vim.fn.shellescape(args)
   end
 
   local sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. query
@@ -30,8 +30,8 @@ function M.setup()
   }, ' ')
   vim.g.fzf_preview_window = {}
 
-  vim.api.nvim_create_user_command('Rg', function(arg)
-    vim_grep(arg.qargs, arg.bang)
+  vim.api.nvim_create_user_command('Rg', function(c)
+    vim_grep(c.args, c.bang)
   end, { bang = true, nargs = '*' })
 
   vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
