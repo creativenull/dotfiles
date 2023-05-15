@@ -189,6 +189,8 @@ vim.opt.showtabline = 0
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.laststatus = 3
+vim.opt.title = true
+vim.opt.titlestring = string.format('%s - nvim', vim.fn.fnamemodify(vim.fn.getcwd(), ':t'))
 
 -- =============================================================================
 -- = Keybindings (KEY) =
