@@ -396,10 +396,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   desc = 'Set custom line highlight in fern',
 })
 
--- gin.vim Config
--- ---
--- require('user.gin').setup()
-
 -- vim-json Config
 -- ---
 vim.g.vim_json_syntax_conceal = 0
