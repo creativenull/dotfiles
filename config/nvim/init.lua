@@ -531,6 +531,7 @@ Plug('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a'
 Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
 Plug('kkoomen/vim-doge', { tag = 'v3.19.1', ['do'] = 'npm i --no-save && npm run build:binary:unix' })
 Plug('neovimhaskell/haskell-vim')
+Plug('gbprod/php-enhanced-treesitter.nvim')
 
 -- Colorschemes
 -- ---
