@@ -505,7 +505,7 @@ Plug('SirVer/ultisnips', { commit = '0ad238b1910d447476b2d98f593322c1cdb71285' }
 Plug('junegunn/fzf', { tag = '0.38.0' })
 Plug('junegunn/fzf.vim', { commit = 'dc71692255b62d1f67dc55c8e51ab1aa467b1d46' })
 Plug('vim-ctrlspace/vim-ctrlspace', { commit = 'b8303e459304f7f46c8955f5dc5a5fc190503e7d' })
-Plug('gelguy/wilder.nvim')
+Plug('gelguy/wilder.nvim', { commit = '679f348dc90d80ff9ba0e7c470c40a4d038dcecf' })
 
 -- Git
 -- ---
@@ -531,7 +531,7 @@ Plug('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a'
 Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
 Plug('kkoomen/vim-doge', { tag = 'v3.19.1', ['do'] = 'npm i --no-save && npm run build:binary:unix' })
 Plug('neovimhaskell/haskell-vim')
-Plug('gbprod/php-enhanced-treesitter.nvim')
+Plug('gbprod/php-enhanced-treesitter.nvim', { commit = 'e36e487a63b90b298450c9206e2281dcc1dcf747' })
 
 -- Colorschemes
 -- ---
