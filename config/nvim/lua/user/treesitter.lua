@@ -16,8 +16,10 @@ function M.setup()
       'json',
       'lua',
       'php',
+      'prisma',
       'sql',
       'svelte',
+      'tsx',
       'typescript',
       'vimdoc',
       'vue',
@@ -41,6 +43,7 @@ function M.setup()
     },
     indent = { enable = true },
     incremental_selection = { enable = false },
+    context_commentstring = { enable = true, enable_autocmd = false },
   })
 
   vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'BufWinEnter' }, {
