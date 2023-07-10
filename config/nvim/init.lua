@@ -404,11 +404,6 @@ vim.g.vim_json_syntax_conceal = 0
 -- ---
 vim.g.javascript_plugin_jsdoc = 1
 
--- lexima Config
--- ---
-vim.g.lexima_enable_endwise_rules = 0
-vim.g.lexima_enable_newline_rules = 0
-
 -- vim-doge Config
 -- ---
 vim.g.doge_enable_mappings = 0
@@ -461,7 +456,6 @@ Plug('cohama/lexima.vim')
 Plug('godlygeek/tabular')
 Plug('mattn/emmet-vim')
 Plug('tpope/vim-abolish')
-Plug('tpope/vim-endwise')
 Plug('tpope/vim-repeat')
 Plug('tpope/vim-surround')
 Plug('numToStr/Comment.nvim')
@@ -548,6 +542,10 @@ vim.call('plug#end')
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
+
+-- lexima.vim Config
+-- ---
+require('user.lexima').setup()
 
 -- ultisnips Config
 -- ---
