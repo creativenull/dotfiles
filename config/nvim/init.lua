@@ -499,7 +499,7 @@ Plug('SirVer/ultisnips', { commit = '0ad238b1910d447476b2d98f593322c1cdb71285' }
 -- ---
 Plug('junegunn/fzf', { tag = '0.38.0' })
 Plug('junegunn/fzf.vim', { commit = 'dc71692255b62d1f67dc55c8e51ab1aa467b1d46' })
-Plug('vim-ctrlspace/vim-ctrlspace', { commit = 'b8303e459304f7f46c8955f5dc5a5fc190503e7d' })
+Plug('dominickng/fzf-session.vim', { commit = 'b23069ad17352cbf55fde3d274dd172f3f40d6a9' })
 Plug('gelguy/wilder.nvim', { commit = '679f348dc90d80ff9ba0e7c470c40a4d038dcecf' })
 
 -- Git
@@ -559,11 +559,17 @@ require('user.wilder').setup()
 -- ---
 vim.g.denops_server_addr = '127.0.0.1:2390'
 
--- vim-ctrlspace Config
+-- fzf-session.vim Config
 -- ---
-vim.g.CtrlSpaceDefaultMappingKey = '<C-space> '
-vim.g.CtrlSpaceSymbols = { File = '', Tabs = '', BM = '' }
-vim.g.CtrlSpaceSaveWorkspaceOnExit = 1
+local fzf_session = string.format('%s/sessions', vim.fn.stdpath('cache'))
+if vim.fn.isdirectory(fzf_session) == 0 then
+  vim.fn.mkdir(fzf_session)
+end
+
+vim.g.fzf_session_path = fzf_session
+
+vim.keymap.set('n', '<Leader>ss', '<Cmd>Sessions<CR>')
+vim.keymap.set('n', '<Leader>sc', ':Session ')
 
 --- nvim-treesitter Config
 -- ---
