@@ -533,7 +533,7 @@ Plug('gbprod/php-enhanced-treesitter.nvim', { commit = 'e36e487a63b90b298450c920
 -- ---
 Plug('bluz71/vim-moonfly-colors', { commit = 'fe16eed4e61cbc178e6bb2b7d77e868f8602505d' })
 Plug('tinted-theming/base16-vim', { commit = '3cdd12bca750e8c41a9e8912c142b45cd821c03e' })
-Plug('folke/tokyonight.nvim', { commit = '95c88be515550bd519ffe54eeaa2df5b9af62cc5' })
+Plug('folke/tokyonight.nvim', { commit = '1ee11019f8a81dac989ae1db1a013e3d582e2033' })
 Plug('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', as = 'catppuccin' })
 Plug('bluz71/vim-nightfly-colors', { commit = '3ca232533b2bd58cc486552e9f4a9da7f7458bdd' })
 Plug('rafamadriz/neon', { commit = '7765aaa7d1cd3804176140644640766e4411c766' })
