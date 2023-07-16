@@ -36,6 +36,7 @@ function M.setup()
 
   vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
   vim.keymap.set('n', '<C-t>', '<Cmd>Rg<CR>')
+  vim.keymap.set('n', '<C-Space>', '<Cmd>FzfxBuffers<CR>')
 
   vim.api.nvim_create_autocmd('FileType', {
     group = vim.g.user.event,

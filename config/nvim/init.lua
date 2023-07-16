@@ -500,6 +500,7 @@ Plug('SirVer/ultisnips', { commit = '0ad238b1910d447476b2d98f593322c1cdb71285' }
 Plug('junegunn/fzf', { tag = '0.38.0' })
 Plug('junegunn/fzf.vim', { commit = 'dc71692255b62d1f67dc55c8e51ab1aa467b1d46' })
 Plug('dominickng/fzf-session.vim', { commit = 'b23069ad17352cbf55fde3d274dd172f3f40d6a9' })
+Plug('linrongbin16/fzfx.vim', { commit = '8610252e27855731275709e0e62b2e2738aebfbd' })
 Plug('gelguy/wilder.nvim', { commit = '679f348dc90d80ff9ba0e7c470c40a4d038dcecf' })
 
 -- Git
