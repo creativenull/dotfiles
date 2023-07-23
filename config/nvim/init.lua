@@ -82,40 +82,25 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.g.user.event,
   pattern = {
+    'blade',
+    'css',
+    'html',
     'javascript',
     'javascriptreact',
     'json',
     'jsonc',
-    'scss',
-    'sass',
-    'css',
+    'lua',
+    'markdown',
     'typescript',
     'typescriptreact',
     'vim',
-    'lua',
+    'vue',
   },
   callback = function()
-    require('user.utils').indent_size(2, true)
-  end,
-  desc = 'Set code indents',
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  group = vim.g.user.event,
-  pattern = { 'markdown', 'php', 'blade', 'html' },
-  callback = function()
-    require('user.utils').indent_size(4, true)
-    vim.opt.iskeyword:append('-')
-  end,
-  desc = 'Set code indents',
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  group = vim.g.user.event,
-  pattern = { 'vue' },
-  callback = function()
-    require('user.utils').indent_size(2, true)
-    vim.opt.iskeyword:append('-')
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 0
+    vim.opt_local.expandtab = true
   end,
   desc = 'Set code indents',
 })
@@ -151,7 +136,7 @@ vim.opt.wildignore = { '*.git/*', '*node_modules/*', '*vendor/*', '*dist/*', '*b
 
 -- Editor
 vim.opt.colorcolumn = '120'
-vim.opt.expandtab = true
+vim.opt.expandtab = false
 vim.opt.lazyredraw = true
 vim.opt.foldenable = false
 vim.opt.spell = false
@@ -160,6 +145,7 @@ vim.opt.scrolloff = 1
 vim.opt.shiftwidth = 4
 vim.opt.smartindent = true
 vim.opt.softtabstop = 4
+vim.opt.tabstop = 8
 vim.opt.wildignorecase = true
 
 -- System

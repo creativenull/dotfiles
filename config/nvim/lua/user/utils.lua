@@ -33,22 +33,6 @@ function M.toggle_codeshot()
   end
 end
 
----Indent rules given to a filetype, use spaces if needed
----@return nil
-function M.indent_size(size, use_spaces)
-  local buf = vim.api.nvim_get_current_buf()
-
-  vim.bo[buf].tabstop = size
-  vim.bo[buf].softtabstop = size
-  vim.bo[buf].shiftwidth = 0
-
-  if use_spaces ~= nil then
-    vim.bo[buf].expandtab = true
-  else
-    vim.bo[buf].expandtab = false
-  end
-end
-
 ---Reload the config and lua scope
 ---@return nil
 function M.reload_config(ns)
