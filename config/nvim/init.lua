@@ -305,31 +305,9 @@ vim.g.vue_pre_processors = { 'typescript' }
 -- emmet-vim Config
 -- ---
 vim.g.user_emmet_leader_key = '<C-q>'
-vim.g.user_emmet_mode = 'i'
-vim.g.user_emmet_install_global = 0
+vim.g.user_emmet_mode = 'in'
 vim.keymap.set('i', '<C-x><C-y>', '<Plug>(emmet-expand-abbr)', { remap = false })
-
-vim.api.nvim_create_autocmd('FileType', {
-  group = vim.g.user.event,
-  pattern = {
-    'astro',
-    'blade',
-    'html',
-    'html.twig',
-    'htmldjango.twig',
-    'javascript',
-    'javascriptreact',
-    'php',
-    'svelte',
-    'twig',
-    'typescript',
-    'typescriptreact',
-    'vue',
-    'xml.twig',
-  },
-  command = 'EmmetInstall',
-  desc = 'Enable emmet for the listed filetypes',
-})
+vim.keymap.set('n', '<Leader>er', '<Plug>(emmet-update-tag)', { remap = false })
 
 -- indentLine Config
 -- ---
