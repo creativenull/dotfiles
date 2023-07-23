@@ -475,7 +475,7 @@ Plug('tpope/vim-fugitive')
 -- UI/Aesthetics
 -- ---
 Plug('lukas-reineke/indent-blankline.nvim', { commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
-Plug('cretivenull/feline.nvim')
+Plug('creativenull/feline.nvim')
 Plug('creativenull/feline-provider-ale.nvim')
 
 -- TreeSitter
