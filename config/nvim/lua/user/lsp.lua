@@ -37,8 +37,28 @@ local function on_attach(client, bufnr)
   if vim.tbl_contains(allowed_fmt_servers, client.name) then
     local desc = string.format('LSP Formatting with %s', client.name)
 
+    local function efmls_fmt(_, result)
+      local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+      local formatters = client.config.settings.languages[ft]
+
+      -- Get the format option from the last config set from efmls
+      local isStdin = formatters[#formatters].formatStdin
+
+      if result and isStdin then
+        -- Changes were applied from the server
+        vim.lsp.util.apply_text_edits(result, bufnr, client and client.offset_encoding or 'utf-16')
+      else
+        -- Changes were applied externally
+        vim.cmd('silent edit!')
+      end
+    end
+
     vim.keymap.set('n', '<Leader>lf', function()
-      client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), nil, bufnr)
+      if client.name == 'efm' then
+        client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), efmls_fmt, bufnr)
+      else
+        client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), nil, bufnr)
+      end
     end, { desc = desc, buffer = bufnr })
   end
 end
@@ -103,7 +123,10 @@ function M.setup()
     capabilities = capabilities,
   })
 
-  require('efmls-configs').init({ on_attach = on_attach })
+  require('efmls-configs').init({
+    on_attach = on_attach,
+    init_options = { documentFormatting = true, documentRangeFormatting = true },
+  })
   require('diagnosticls-configs').init({ on_attach = on_attach })
 
   -- Log debug
