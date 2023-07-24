@@ -95,11 +95,6 @@ function M.setup()
         sorters = { 'sorter_fuzzy' },
         converters = { 'converter_fuzzy' },
       },
-      cmdline = {
-        mark = 'CMD',
-        maxItems = 10,
-        ignoreCase = true,
-      },
       ['nvim-lsp'] = {
         mark = 'LS',
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
