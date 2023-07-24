@@ -327,18 +327,18 @@ vim.g['fern#renderer#nerdfont#indent_markers'] = 1
 
 vim.keymap.set('n', '<Leader>ff', '<Cmd>Fern . -reveal=%<CR>')
 
-local function init_fern(event_args)
-  vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = event_args.buf, desc = 'Exit fern buffer' })
+local function init_fern(ev)
+  vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = ev.buf, desc = 'Exit fern buffer' })
   vim.keymap.set(
     'n',
     'D',
     '<Plug>(fern-action-remove)',
-    { remap = true, buffer = event_args.buf, desc = 'Delete file from the directory' }
+    { remap = true, buffer = ev.buf, desc = 'Delete file from the directory' }
   )
 
-  vim.bo[event_args.buf].expandtab = true
-  vim.bo[event_args.buf].shiftwidth = 2
-  vim.bo[event_args.buf].tabstop = 2
+  vim.bo[ev.buf].expandtab = true
+  vim.bo[ev.buf].shiftwidth = 2
+  vim.bo[ev.buf].tabstop = 2
 
   vim.call('glyph_palette#apply')
 end
