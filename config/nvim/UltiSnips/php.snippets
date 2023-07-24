@@ -8,42 +8,55 @@ namespace $1;
 $0
 endsnippet
 
-snippet pubf "Public method" b
+snippet pubf "public method" b
 public function $1($3): $2
 {
     $0
 }
 endsnippet
 
-snippet prif "Private method" b
+snippet prif "private method" b
 private function $1($3): $2
 {
     $0
 }
 endsnippet
 
-snippet prof "Protected method" b
+snippet prof "protected method" b
 protected function $1($3): $2
 {
     $0
 }
 endsnippet
 
-snippet pubv "Public variable" b
+snippet pubv "public variable" b
 public ${1:type} ${2:$var}$0;
 endsnippet
 
-snippet priv "Private variable" b
+snippet priv "private variable" b
 private ${1:type} ${2:$var}$0;
 endsnippet
 
-snippet prov "Protected variable" b
+snippet prov "protected variable" b
 protected ${1:type} ${2:$var}$0;
 endsnippet
 
-snippet enum "Enum" b
+snippet pubvc "public const" b
+public const ${1:VAR}$0;
+endsnippet
+
+snippet privc "private const" b
+private const ${1:VAR}$0;
+endsnippet
+
+snippet provc "protected const" b
+protected const ${1:VAR}$0;
+endsnippet
+
+snippet enum "enum" b
 enum $1 : ${2:type}
 {
     case $3;
+    $0
 }
 endsnippet
