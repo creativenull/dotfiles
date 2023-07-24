@@ -438,7 +438,6 @@ Plug('dense-analysis/ale')
 -- Builtin LSP Configs
 -- ---
 Plug('neovim/nvim-lspconfig', { commit = '95b7a69bc6da2a6a740584ea3c555e5327638b7d' })
-Plug('j-hui/fidget.nvim', { commit = '44585a0c0085765195e6961c15529ba6c5a2a13b' })
 Plug('creativenull/efmls-configs-nvim')
 Plug('creativenull/diagnosticls-configs-nvim')
 Plug('jose-elias-alvarez/null-ls.nvim')
