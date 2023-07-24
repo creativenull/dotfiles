@@ -543,10 +543,6 @@ require('user.treesitter').setup()
 -- ---
 require('user.lsp').setup()
 
--- fidget.nvim Config
--- ---
-require('user.fidget').setup()
-
 -- fzf.vim Config
 -- ---
 require('user.fzf').setup()
