@@ -1,36 +1,49 @@
-snippet pub "public function" b
-/**
- * ${4:undocumented method}
- *
- * @return $3
- */
-public function $1(${2:$param}): $3
+snippet decl "Open php tags" b
+<?php
+
+declare(strict_types=1);
+
+namespace $1;
+
+$0
+endsnippet
+
+snippet pubf "Public method" b
+public function $1($3): $2
 {
     $0
 }
 endsnippet
 
-snippet pri "private function" b
-/**
- * ${4:undocumented method}
- *
- * @return $3
- */
-private function $1(${2:$param}): $3
+snippet prif "Private method" b
+private function $1($3): $2
 {
     $0
 }
 endsnippet
 
-snippet pro "protected function" b
-/**
- * ${4:undocumented method}
- *
- * @return $3
- */
-protected function $1(${2:$param}): $3
+snippet prof "Protected method" b
+protected function $1($3): $2
 {
     $0
 }
 endsnippet
 
+snippet pubv "Public variable" b
+public ${1:type} ${2:$var}$0;
+endsnippet
+
+snippet priv "Private variable" b
+private ${1:type} ${2:$var}$0;
+endsnippet
+
+snippet prov "Protected variable" b
+protected ${1:type} ${2:$var}$0;
+endsnippet
+
+snippet enum "Enum" b
+enum $1 : ${2:type}
+{
+    case $3;
+}
+endsnippet
