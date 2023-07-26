@@ -164,6 +164,7 @@ else
 end
 
 -- UI
+vim.opt.conceallevel = 2
 vim.opt.cmdheight = 2
 vim.opt.guicursor = { 'n-v-c-sm:block', 'i-ci-ve:block', 'r-cr-o:hor20' }
 vim.opt.number = true
