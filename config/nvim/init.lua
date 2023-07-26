@@ -502,6 +502,10 @@ Plug('catppuccin/nvim', { commit = '0184121f9d6565610ddffa8284512b7643ee723e', a
 Plug('bluz71/vim-nightfly-colors', { commit = '3ca232533b2bd58cc486552e9f4a9da7f7458bdd' })
 Plug('rafamadriz/neon', { commit = '7765aaa7d1cd3804176140644640766e4411c766' })
 
+-- Misc
+-- ---
+Plug('creativenull/dotfyle-metadata.nvim')
+
 vim.call('plug#end')
 
 -- =============================================================================
