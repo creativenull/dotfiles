@@ -1,1 +1,760 @@
-{"lspServers":["lua_ls"],"masonTools":[],"treesitterParsers":["astro","css","go","html","javascript","json","lua","php","prisma","sql","svelte","tsx","typescript","vimdoc","vue","zig"],"plugins":["Shougo\/ddc-ui-pum","nvim-treesitter\/nvim-treesitter","tpope\/vim-surround","vim-denops\/denops.vim","neovim\/nvim-lspconfig","mattn\/emmet-vim","dominickng\/fzf-session.vim","bluz71\/vim-nightfly-colors","jwalton512\/vim-blade","catppuccin\/nvim","tpope\/vim-repeat","vim-denops\/denops-shared-server.vim","neovimhaskell\/haskell-vim","tani\/ddc-fuzzy","creativenull\/efmls-configs-nvim","creativenull\/projectlocal.vim","heavenshell\/vim-jsdoc","jose-elias-alvarez\/null-ls.nvim","tinted-theming\/base16-vim","junegunn\/fzf","junegunn\/fzf.vim","lambdalisue\/fern-renderer-nerdfont.vim","tpope\/vim-abolish","dense-analysis\/ale","nvim-lua\/plenary.nvim","folke\/tokyonight.nvim","Shougo\/pum.vim","bluz71\/vim-moonfly-colors","lewis6991\/gitsigns.nvim","cohama\/lexima.vim","lambdalisue\/glyph-palette.vim","lukas-reineke\/indent-blankline.nvim","Shougo\/ddc-source-around","creativenull\/feline.nvim","creativenull\/feline-provider-ale.nvim","gelguy\/wilder.nvim","creativenull\/diagnosticls-configs-nvim","matsui54\/ddc-buffer","lumiliet\/vim-twig","Shougo\/ddc-source-nvim-lsp","creativenull\/dotfyle-metadata.nvim","rafamadriz\/neon","matsui54\/denops-signature_help","lambdalisue\/fern.vim","numToStr\/Comment.nvim","linrongbin16\/fzfx.vim","Shougo\/ddc.vim","JoosepAlviste\/nvim-ts-context-commentstring","MTDL9\/vim-log-highlighting","matsui54\/ddc-ultisnips","SirVer\/ultisnips","gbprod\/php-enhanced-treesitter.nvim","kkoomen\/vim-doge","tpope\/vim-fugitive","lambdalisue\/nerdfont.vim","antoinemadec\/FixCursorHold.nvim","godlygeek\/tabular","junegunn\/vader.vim"],"pluginManager":"vim-plug","leaderKey":"<Space>","keymaps":[{"desc":"","rhs":"<Cmd>ALEInfo<CR>","lhs":"<Space>ai","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>ALEFix<CR>","lhs":"<Space>af","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>LspInfo<CR>","lhs":"<Space>li","mode":"n","noremap":true},{"desc":"","rhs":":Session ","lhs":"<Space>sc","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>Sessions<CR>","lhs":"<Space>ss","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>DogeGenerate<CR>","lhs":"<Space>dg","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>Fern . -reveal=%<CR>","lhs":"<Space>ff","mode":"n","noremap":true},{"desc":"","rhs":"<Plug>(emmet-update-tag)","lhs":"<Space>er","mode":"n","noremap":true},{"desc":"","rhs":"\"+p","lhs":"<Space>p","mode":"n","noremap":true},{"desc":"","rhs":"\"+y","lhs":"<Space>y","mode":"n","noremap":true},{"desc":"","rhs":"\"+y","lhs":"<Space>y","mode":"v","noremap":true},{"desc":"","rhs":"<Cmd>cmap<CR>","lhs":"<Space>mc","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>tmap<CR>","lhs":"<Space>mt","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>imap<CR>","lhs":"<Space>mi","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>vmap<CR>","lhs":"<Space>mv","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>nmap<CR>","lhs":"<Space>mn","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>edit!<CR>","lhs":"<Space>r","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>ConfigReload<CR>","lhs":"<Space>vs","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>edit $MYVIMRC<CR>","lhs":"<Space>ve","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>%bd|e#|bd#<CR>","lhs":"<Space>bx","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>noh<CR>","lhs":"<Space><CR>","mode":"n","noremap":true},{"desc":"Nvim builtin","rhs":"y?\\V<C-R>\"<CR>","lhs":"#","mode":"x","noremap":true},{"desc":"","rhs":"<Plug>(MatchitVisualForward)","lhs":"%","mode":"x","noremap":false},{"desc":"","rhs":"<Plug>(MatchitNormalForward)","lhs":"%","mode":"n","noremap":false},{"desc":"Nvim builtin","rhs":":&&<CR>","lhs":"&","mode":"n","noremap":true},{"desc":"Nvim builtin","rhs":"y\/\\V<C-R>\"<CR>","lhs":"*","mode":"x","noremap":true},{"desc":"","rhs":"<Plug>VSurround","lhs":"S","mode":"x","noremap":false},{"desc":"Nvim builtin","rhs":"y$","lhs":"Y","mode":"n","noremap":true},{"desc":"","rhs":"<Plug>(MatchitVisualMultiBackward)","lhs":"[%","mode":"x","noremap":false},{"desc":"","rhs":"<Plug>(MatchitNormalMultiBackward)","lhs":"[%","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(MatchitVisualMultiForward)","lhs":"]%","mode":"x","noremap":false},{"desc":"","rhs":"<Plug>(MatchitNormalMultiForward)","lhs":"]%","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(MatchitVisualTextObject)","lhs":"a%","mode":"x","noremap":false},{"desc":"","rhs":"<Plug>CSurround","lhs":"cS","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>Csurround","lhs":"cs","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(abolish-coerce-word)","lhs":"cr","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>Dsurround","lhs":"ds","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>NetrwBrowseXVis","lhs":"gx","mode":"x","noremap":false},{"desc":"","rhs":"<Plug>NetrwBrowseX","lhs":"gx","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(MatchitVisualBackward)","lhs":"g%","mode":"x","noremap":false},{"desc":"","rhs":"<Plug>(MatchitNormalBackward)","lhs":"g%","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>VgSurround","lhs":"gS","mode":"x","noremap":false},{"desc":"Comment insert end of line","rhs":"<function>","lhs":"gcA","mode":"n","noremap":true},{"desc":"Comment insert above","rhs":"<function>","lhs":"gcO","mode":"n","noremap":true},{"desc":"Comment insert below","rhs":"<function>","lhs":"gco","mode":"n","noremap":true},{"desc":"Comment toggle blockwise (visual)","rhs":"<Plug>(comment_toggle_blockwise_visual)","lhs":"gb","mode":"x","noremap":true},{"desc":"Comment toggle linewise (visual)","rhs":"<Plug>(comment_toggle_linewise_visual)","lhs":"gc","mode":"x","noremap":true},{"desc":"Comment toggle current block","rhs":"<function>","lhs":"gbc","mode":"n","noremap":true},{"desc":"Comment toggle current line","rhs":"<function>","lhs":"gcc","mode":"n","noremap":true},{"desc":"Comment toggle blockwise","rhs":"<Plug>(comment_toggle_blockwise)","lhs":"gb","mode":"n","noremap":true},{"desc":"Comment toggle linewise","rhs":"<Plug>(comment_toggle_linewise)","lhs":"gc","mode":"n","noremap":true},{"desc":"","rhs":"\"_dP","lhs":"p","mode":"v","noremap":true},{"desc":"","rhs":":<C-U>call setreg(v:register, fugitive#Object(@%))<CR>","lhs":"y<C-G>","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>YSsurround","lhs":"ySS","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>YSsurround","lhs":"ySs","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>Yssurround","lhs":"yss","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>YSurround","lhs":"yS","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>Ysurround","lhs":"ys","mode":"n","noremap":false},{"desc":"","rhs":":call UltiSnips#SaveLastVisualSelection()<CR>gvs","lhs":"<C-X><C-U>","mode":"x","noremap":true},{"desc":"","rhs":"<Plug>(emmet-merge-lines)","lhs":"<C-Q>m","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-anchorize-summary)","lhs":"<C-Q>A","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-anchorize-url)","lhs":"<C-Q>a","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-remove-tag)","lhs":"<C-Q>k","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-split-join-tag)","lhs":"<C-Q>j","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-toggle-comment)","lhs":"<C-Q>\/","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-image-encode)","lhs":"<C-Q>I","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-image-size)","lhs":"<C-Q>i","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-move-prev)","lhs":"<C-Q>N","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-move-next)","lhs":"<C-Q>n","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-balance-tag-outword)","lhs":"<C-Q>D","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-balance-tag-inward)","lhs":"<C-Q>d","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-expand-word)","lhs":"<C-Q>;","mode":"n","noremap":false},{"desc":"","rhs":"<Plug>(emmet-expand-abbr)","lhs":"<C-Q>,","mode":"n","noremap":false},{"desc":"","rhs":"<Cmd>FzfxBuffers<CR>","lhs":"<C-Space>","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>Rg<CR>","lhs":"<C-T>","mode":"n","noremap":true},{"desc":"","rhs":"<Cmd>Files<CR>","lhs":"<C-P>","mode":"n","noremap":true},{"desc":"","rhs":":m'<lt>-2<CR>`>my`<lt>mzgv`yo`z","lhs":"<M-k>","mode":"v","noremap":true},{"desc":"","rhs":":m'>+<CR>`<lt>my`>mzgv`yo`z","lhs":"<M-j>","mode":"v","noremap":true},{"desc":"","rhs":"mz:m-2<CR>`z","lhs":"<M-k>","mode":"n","noremap":true},{"desc":"","rhs":"mz:m+<CR>`z","lhs":"<M-j>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-L>","mode":"v","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-K>","mode":"v","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-K>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-J>","mode":"v","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-J>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-H>","mode":"x","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-H>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<Right>","mode":"v","noremap":true},{"desc":"Resize window vertically (dec)","rhs":"<function>","lhs":"<Right>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<Left>","mode":"v","noremap":true},{"desc":"Resize window vertically (inc)","rhs":"<function>","lhs":"<Left>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<Down>","mode":"v","noremap":true},{"desc":"Resize window horizontally (dec)","rhs":"<function>","lhs":"<Down>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<Up>","mode":"v","noremap":true},{"desc":"Resize window horizontally (inc)","rhs":"<function>","lhs":"<Up>","mode":"n","noremap":true},{"desc":"","rhs":"<Nop>","lhs":"<C-L>","mode":"n","noremap":true}]}
+{
+  "lspServers": [
+    "lua_ls"
+  ],
+  "masonTools": [],
+  "treesitterParsers": [
+    "astro",
+    "css",
+    "go",
+    "html",
+    "javascript",
+    "json",
+    "lua",
+    "php",
+    "prisma",
+    "sql",
+    "svelte",
+    "tsx",
+    "typescript",
+    "vimdoc",
+    "vue",
+    "zig"
+  ],
+  "plugins": [
+    "Shougo/ddc-ui-pum",
+    "nvim-treesitter/nvim-treesitter",
+    "tpope/vim-surround",
+    "vim-denops/denops.vim",
+    "neovim/nvim-lspconfig",
+    "mattn/emmet-vim",
+    "dominickng/fzf-session.vim",
+    "bluz71/vim-nightfly-colors",
+    "jwalton512/vim-blade",
+    "catppuccin/nvim",
+    "tpope/vim-repeat",
+    "vim-denops/denops-shared-server.vim",
+    "neovimhaskell/haskell-vim",
+    "tani/ddc-fuzzy",
+    "creativenull/efmls-configs-nvim",
+    "creativenull/projectlocal.vim",
+    "heavenshell/vim-jsdoc",
+    "jose-elias-alvarez/null-ls.nvim",
+    "tinted-theming/base16-vim",
+    "junegunn/fzf",
+    "junegunn/fzf.vim",
+    "lambdalisue/fern-renderer-nerdfont.vim",
+    "tpope/vim-abolish",
+    "dense-analysis/ale",
+    "nvim-lua/plenary.nvim",
+    "folke/tokyonight.nvim",
+    "Shougo/pum.vim",
+    "bluz71/vim-moonfly-colors",
+    "lewis6991/gitsigns.nvim",
+    "cohama/lexima.vim",
+    "lambdalisue/glyph-palette.vim",
+    "lukas-reineke/indent-blankline.nvim",
+    "Shougo/ddc-source-around",
+    "creativenull/feline.nvim",
+    "creativenull/feline-provider-ale.nvim",
+    "gelguy/wilder.nvim",
+    "creativenull/diagnosticls-configs-nvim",
+    "matsui54/ddc-buffer",
+    "lumiliet/vim-twig",
+    "Shougo/ddc-source-nvim-lsp",
+    "creativenull/dotfyle-metadata.nvim",
+    "rafamadriz/neon",
+    "matsui54/denops-signature_help",
+    "lambdalisue/fern.vim",
+    "numToStr/Comment.nvim",
+    "linrongbin16/fzfx.vim",
+    "Shougo/ddc.vim",
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    "MTDL9/vim-log-highlighting",
+    "matsui54/ddc-ultisnips",
+    "SirVer/ultisnips",
+    "gbprod/php-enhanced-treesitter.nvim",
+    "kkoomen/vim-doge",
+    "tpope/vim-fugitive",
+    "lambdalisue/nerdfont.vim",
+    "antoinemadec/FixCursorHold.nvim",
+    "godlygeek/tabular",
+    "junegunn/vader.vim"
+  ],
+  "pluginManager": "vim-plug",
+  "leaderKey": "<Space>",
+  "keymaps": [
+    {
+      "desc": "",
+      "rhs": "<Cmd>ALEInfo<CR>",
+      "lhs": "<Space>ai",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>ALEFix<CR>",
+      "lhs": "<Space>af",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>LspInfo<CR>",
+      "lhs": "<Space>li",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": ":Session ",
+      "lhs": "<Space>sc",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>Sessions<CR>",
+      "lhs": "<Space>ss",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>DogeGenerate<CR>",
+      "lhs": "<Space>dg",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>Fern . -reveal=%<CR>",
+      "lhs": "<Space>ff",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-update-tag)",
+      "lhs": "<Space>er",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "\"+p",
+      "lhs": "<Space>p",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "\"+y",
+      "lhs": "<Space>y",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "\"+y",
+      "lhs": "<Space>y",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>cmap<CR>",
+      "lhs": "<Space>mc",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>tmap<CR>",
+      "lhs": "<Space>mt",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>imap<CR>",
+      "lhs": "<Space>mi",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>vmap<CR>",
+      "lhs": "<Space>mv",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>nmap<CR>",
+      "lhs": "<Space>mn",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>edit!<CR>",
+      "lhs": "<Space>r",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>ConfigReload<CR>",
+      "lhs": "<Space>vs",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>edit $MYVIMRC<CR>",
+      "lhs": "<Space>ve",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>%bd|e#|bd#<CR>",
+      "lhs": "<Space>bx",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>noh<CR>",
+      "lhs": "<Space><CR>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Nvim builtin",
+      "rhs": "y?\\V<C-R>\"<CR>",
+      "lhs": "#",
+      "mode": "x",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitVisualForward)",
+      "lhs": "%",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitNormalForward)",
+      "lhs": "%",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "Nvim builtin",
+      "rhs": ":&&<CR>",
+      "lhs": "&",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Nvim builtin",
+      "rhs": "y/\\V<C-R>\"<CR>",
+      "lhs": "*",
+      "mode": "x",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>VSurround",
+      "lhs": "S",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "Nvim builtin",
+      "rhs": "y$",
+      "lhs": "Y",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitVisualMultiBackward)",
+      "lhs": "[%",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitNormalMultiBackward)",
+      "lhs": "[%",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitVisualMultiForward)",
+      "lhs": "]%",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitNormalMultiForward)",
+      "lhs": "]%",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitVisualTextObject)",
+      "lhs": "a%",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>CSurround",
+      "lhs": "cS",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>Csurround",
+      "lhs": "cs",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(abolish-coerce-word)",
+      "lhs": "cr",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>Dsurround",
+      "lhs": "ds",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>NetrwBrowseXVis",
+      "lhs": "gx",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>NetrwBrowseX",
+      "lhs": "gx",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitVisualBackward)",
+      "lhs": "g%",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(MatchitNormalBackward)",
+      "lhs": "g%",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>VgSurround",
+      "lhs": "gS",
+      "mode": "x",
+      "noremap": false
+    },
+    {
+      "desc": "Comment insert end of line",
+      "rhs": "<function>",
+      "lhs": "gcA",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Comment insert above",
+      "rhs": "<function>",
+      "lhs": "gcO",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Comment insert below",
+      "rhs": "<function>",
+      "lhs": "gco",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Comment toggle blockwise (visual)",
+      "rhs": "<Plug>(comment_toggle_blockwise_visual)",
+      "lhs": "gb",
+      "mode": "x",
+      "noremap": true
+    },
+    {
+      "desc": "Comment toggle linewise (visual)",
+      "rhs": "<Plug>(comment_toggle_linewise_visual)",
+      "lhs": "gc",
+      "mode": "x",
+      "noremap": true
+    },
+    {
+      "desc": "Comment toggle current block",
+      "rhs": "<function>",
+      "lhs": "gbc",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Comment toggle current line",
+      "rhs": "<function>",
+      "lhs": "gcc",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Comment toggle blockwise",
+      "rhs": "<Plug>(comment_toggle_blockwise)",
+      "lhs": "gb",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "Comment toggle linewise",
+      "rhs": "<Plug>(comment_toggle_linewise)",
+      "lhs": "gc",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "\"_dP",
+      "lhs": "p",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": ":<C-U>call setreg(v:register, fugitive#Object(@%))<CR>",
+      "lhs": "y<C-G>",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>YSsurround",
+      "lhs": "ySS",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>YSsurround",
+      "lhs": "ySs",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>Yssurround",
+      "lhs": "yss",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>YSurround",
+      "lhs": "yS",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>Ysurround",
+      "lhs": "ys",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": ":call UltiSnips#SaveLastVisualSelection()<CR>gvs",
+      "lhs": "<C-X><C-U>",
+      "mode": "x",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-merge-lines)",
+      "lhs": "<C-Q>m",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-anchorize-summary)",
+      "lhs": "<C-Q>A",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-anchorize-url)",
+      "lhs": "<C-Q>a",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-remove-tag)",
+      "lhs": "<C-Q>k",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-split-join-tag)",
+      "lhs": "<C-Q>j",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-toggle-comment)",
+      "lhs": "<C-Q>/",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-image-encode)",
+      "lhs": "<C-Q>I",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-image-size)",
+      "lhs": "<C-Q>i",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-move-prev)",
+      "lhs": "<C-Q>N",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-move-next)",
+      "lhs": "<C-Q>n",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-balance-tag-outword)",
+      "lhs": "<C-Q>D",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-balance-tag-inward)",
+      "lhs": "<C-Q>d",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-expand-word)",
+      "lhs": "<C-Q>;",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Plug>(emmet-expand-abbr)",
+      "lhs": "<C-Q>,",
+      "mode": "n",
+      "noremap": false
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>FzfxBuffers<CR>",
+      "lhs": "<C-Space>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>Rg<CR>",
+      "lhs": "<C-T>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Cmd>Files<CR>",
+      "lhs": "<C-P>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": ":m'<lt>-2<CR>`>my`<lt>mzgv`yo`z",
+      "lhs": "<M-k>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": ":m'>+<CR>`<lt>my`>mzgv`yo`z",
+      "lhs": "<M-j>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "mz:m-2<CR>`z",
+      "lhs": "<M-k>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "mz:m+<CR>`z",
+      "lhs": "<M-j>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-L>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-K>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-K>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-J>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-J>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-H>",
+      "mode": "x",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-H>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<Right>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "Resize window vertically (dec)",
+      "rhs": "<function>",
+      "lhs": "<Right>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<Left>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "Resize window vertically (inc)",
+      "rhs": "<function>",
+      "lhs": "<Left>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<Down>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "Resize window horizontally (dec)",
+      "rhs": "<function>",
+      "lhs": "<Down>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<Up>",
+      "mode": "v",
+      "noremap": true
+    },
+    {
+      "desc": "Resize window horizontally (inc)",
+      "rhs": "<function>",
+      "lhs": "<Up>",
+      "mode": "n",
+      "noremap": true
+    },
+    {
+      "desc": "",
+      "rhs": "<Nop>",
+      "lhs": "<C-L>",
+      "mode": "n",
+      "noremap": true
+    }
+  ]
+}
