@@ -1,18 +1,5 @@
 local M = {}
 
----Statusline component to check if the LSP server connected to the buffer
----@return string
-function _G.LspInfoStatusline()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local results = vim.lsp.buf_get_clients(bufnr)
-
-  if #results > 0 then
-    return 'LSP '
-  else
-    return ''
-  end
-end
-
 ---@param client table
 ---@param bufnr number
 local function on_attach(client, bufnr)
