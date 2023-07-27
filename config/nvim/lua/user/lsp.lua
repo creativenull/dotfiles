@@ -24,7 +24,7 @@ local function on_attach(client, bufnr)
   vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'LSP Go-to Definition', buffer = bufnr })
   vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { desc = 'LSP Hover Information', buffer = bufnr })
   vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'LSP Rename', buffer = bufnr })
-  vim.keymap.set('n', '<Leader>ls', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer = bufnr })
+  vim.keymap.set('i', '<C-o>', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer = bufnr })
   vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics', buffer = bufnr })
   vim.keymap.set('n', '<Leader>lw', function()
     vim.diagnostic.open_float({ bufnr = bufnr, scope = 'line' })
@@ -113,7 +113,10 @@ function M.setup()
   })
 
   -- Signature help options
-  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
+  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = border,
+    width = width,
+  })
 
   -- projectlocal-vim Config
   -- ---

@@ -170,6 +170,13 @@ function M.setup()
   register_events()
 
   vim.call('ddc#enable')
+
+  vim.g.signature_help_config = {
+    border = true,
+    contentsStyle = 'labels',
+    maxwidth = 80,
+  }
+
   vim.call('signature_help#enable')
 end
 
