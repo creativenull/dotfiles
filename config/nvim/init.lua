@@ -397,7 +397,7 @@ local function ensure_plug()
   end
 end
 
--- For development
+-- For development (DEV)
 -- vim.g['denops#debug'] = 1
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/projectlocal.vim'))
 
