@@ -290,6 +290,16 @@ vim.cmd('cnoreabbrev Wq wq')
 -- = Plugin Pre-Config - before loading plugins (PRE) =
 -- =============================================================================
 
+-- neural Config
+-- ---
+vim.g.neural = {
+  source = {
+    openai = {
+      api_key = vim.env.OPENAI_API_NEURAL_KEY,
+    },
+  },
+}
+
 -- Built-in plugins
 -- ---
 vim.g.vim_json_conceal = 0
@@ -413,6 +423,7 @@ Plug('vim-denops/denops-shared-server.vim')
 Plug('lambdalisue/nerdfont.vim')
 Plug('nvim-lua/plenary.nvim')
 Plug('lambdalisue/glyph-palette.vim')
+Plug('muniftanjim/nui.nvim')
 
 -- Core
 -- ---
@@ -425,6 +436,10 @@ Plug('tpope/vim-repeat')
 Plug('tpope/vim-surround')
 Plug('numToStr/Comment.nvim')
 Plug('JoosepAlviste/nvim-ts-context-commentstring')
+
+-- AI
+-- ---
+Plug('dense-analysis/neural')
 
 -- File Explorer + Addons
 -- ---
