@@ -161,9 +161,6 @@ function M.setup()
     border = 'rounded',
     padding = true,
     scrollbar_char = '',
-    offset_row = vim.opt.cmdheight:get() + 1, -- cmdheight + statusline height
-    max_height = 15,
-    max_width = 80,
   })
 
   register_keymaps()
