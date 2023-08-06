@@ -498,7 +498,6 @@ Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
 
 -- FileType Syntax
 -- ---
-Plug('heavenshell/vim-jsdoc', { commit = '71c98ed6eacb4f1c0b9e4950ef679eda6a651cdd', ['do'] = 'make install' })
 Plug('jwalton512/vim-blade', { commit = '9534101808cc320eef003129a40cab04b026a20c' })
 Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
 Plug('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
