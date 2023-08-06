@@ -293,10 +293,9 @@ vim.cmd('cnoreabbrev Wq wq')
 -- neural Config
 -- ---
 vim.g.neural = {
+  ui = { prompt_icon = '>' },
   source = {
-    openai = {
-      api_key = vim.env.OPENAI_API_NEURAL_KEY,
-    },
+    openai = { api_key = vim.env.OPENAI_API_NEURAL_KEY },
   },
 }
 
