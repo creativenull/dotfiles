@@ -19,7 +19,7 @@ local function on_attach(client, bufnr)
 
   -- LSP Formatting keymap only from the following linter/formatter servers
   -- Ref: https://github.com/neovim/nvim-lspconfig/wiki/Multiple-language-servers-FAQ
-  local allowed_fmt_servers = { 'diagnosticls', 'efm', 'null-ls', 'denols' }
+  local allowed_fmt_servers = { 'diagnosticls', 'efm', 'null-ls', 'denols', 'astro' }
 
   if vim.tbl_contains(allowed_fmt_servers, client.name) then
     local desc = string.format('LSP Formatting with %s', client.name)
