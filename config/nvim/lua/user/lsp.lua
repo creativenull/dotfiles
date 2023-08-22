@@ -113,10 +113,6 @@ function M.setup()
     capabilities = capabilities,
   })
 
-  require('efmls-configs').init({
-    on_attach = on_attach,
-    init_options = { documentFormatting = true, documentRangeFormatting = true },
-  })
   require('diagnosticls-configs').init({ on_attach = on_attach })
 
   -- Log debug
