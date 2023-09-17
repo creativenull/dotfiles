@@ -494,7 +494,7 @@ Plug('creativenull/feline-provider-ale.nvim')
 
 -- TreeSitter
 -- ---
-Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
+Plug('nvim-treesitter/nvim-treesitter', { tag = 'v0.9.1', ['do'] = ':TSUpdate' })
 
 -- FileType Syntax
 -- ---
