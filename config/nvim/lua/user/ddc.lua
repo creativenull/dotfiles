@@ -1,6 +1,6 @@
 local M = {}
 
-local function expand_snippet()
+local function expand_snippet(ev)
   local completeditem = vim.api.nvim_get_var('pum#completed_item')
 
   if completeditem.__sourceName == 'ultisnips' and vim.call('UltiSnips#CanExpandSnippet') == 1 then
@@ -8,43 +8,43 @@ local function expand_snippet()
   end
 end
 
-local function autoimport_nvim_lsp(buf)
-  local completeditem = vim.api.nvim_get_var('pum#completed_item')
-  local active_clients = vim.lsp.get_active_clients({ bufnr = buf })
-
-  if completeditem.__sourceName == 'nvim-lsp' then
-    for _, client in pairs(active_clients) do
-      if
-        client.server_capabilities.completionProvider
-        and client.server_capabilities.completionProvider.resolveProvider
-        and completeditem.user_data
-        and completeditem.user_data.lspitem
-      then
-        -- Only if there is lspitem property inside g:pum#completed_item
-        -- we parse the json data
-        local lspitem = completeditem.user_data.lspitem
-        local completed_item = vim.fn.json_decode(lspitem)
-
-        -- Apply text edits if it's available
-        local resolve_fn = function(_, response)
-          if response and response.additionalTextEdits then
-            vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
-          end
-        end
-
-        client.request('completionItem/resolve', completed_item, resolve_fn, buf)
-        break
-      end
-    end
-  end
-end
+-- local function autoimport_nvim_lsp(buf)
+--   local completeditem = vim.api.nvim_get_var('pum#completed_item')
+--   local active_clients = vim.lsp.get_active_clients({ bufnr = buf })
+--
+--   if completeditem.__sourceName == 'nvim-lsp' then
+--     for _, client in pairs(active_clients) do
+--       if
+--         client.server_capabilities.completionProvider
+--         and client.server_capabilities.completionProvider.resolveProvider
+--         and completeditem.user_data
+--         and completeditem.user_data.lspitem
+--       then
+--         -- Only if there is lspitem property inside g:pum#completed_item
+--         -- we parse the json data
+--         local lspitem = completeditem.user_data.lspitem
+--         local completed_item = vim.fn.json_decode(lspitem)
+--
+--         -- Apply text edits if it's available
+--         local resolve_fn = function(_, response)
+--           if response and response.additionalTextEdits then
+--             vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
+--           end
+--         end
+--
+--         client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+--         break
+--       end
+--     end
+--   end
+-- end
 
 ---Register autoimporting feature from LSP server routed to pum.vim
 ---@param ev table
 ---@return nil
 local function on_pum_completion(ev)
-  expand_snippet()
-  autoimport_nvim_lsp(ev.buf)
+  expand_snippet(ev)
+  -- autoimport_nvim_lsp(ev.buf)
 end
 
 ---Register events related to ddc.vim/pum.vim
@@ -117,6 +117,15 @@ function M.setup()
         mark = 'B',
         maxItems = 5,
         ignoreCase = true,
+      },
+    },
+    sourceParams = {
+      ['nvim-lsp'] = {
+        -- snippetEngine = vim.call('denops#callback#register', function(body)
+        --   return vim.call('UltiSnips#Anon', body)
+        -- end),
+        enableResolveItem = true,
+        enableAdditionalTextEdit = true,
       },
     },
     filterParams = {
