@@ -496,16 +496,22 @@ Plug('creativenull/feline-provider-ale.nvim')
 -- ---
 Plug('nvim-treesitter/nvim-treesitter', { tag = 'v0.9.1', ['do'] = ':TSUpdate' })
 
+-- Doc Generation
+-- ---
+Plug('kkoomen/vim-doge', { tag = 'v4.*', ['do'] = ':call doge#install()' })
+
 -- FileType Syntax
 -- ---
-Plug('jwalton512/vim-blade', { commit = '9534101808cc320eef003129a40cab04b026a20c' })
-Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
-Plug('junegunn/vader.vim', { commit = '6fff477431ac3191c69a3a5e5f187925466e275a' })
+-- Log
 Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
-Plug('kkoomen/vim-doge', { tag = 'v4.*', ['do'] = ':call doge#install()' })
+-- Haskell
 Plug('neovimhaskell/haskell-vim')
+-- PHP
+Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
+Plug('jwalton512/vim-blade')
 Plug('gbprod/php-enhanced-treesitter.nvim')
 Plug('captbaritone/better-indent-support-for-php-with-html')
+-- Plant UML
 Plug('aklt/plantuml-syntax')
 
 -- Colorschemes
