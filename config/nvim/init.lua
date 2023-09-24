@@ -547,7 +547,7 @@ require('user.wilder').setup()
 
 -- denops.vim Config
 -- ---
--- vim.g.denops_server_addr = '127.0.0.1:2390'
+vim.g.denops_server_addr = '127.0.0.1:2390'
 
 -- fzf-session.vim Config
 -- ---
