@@ -8,6 +8,10 @@ function M.setup()
     previous_key = '<C-p>',
   })
 
+  -- Additional overrides
+  vim.keymap.set('c', '<Tab>', 'wilder#in_context() ? wilder#next() : "\\<Tab>"', { expr = true })
+  vim.keymap.set('c', '<S-Tab>', 'wilder#in_context() ? wilder#previous() : "\\<S-Tab>"', { expr = true })
+
   wilder.set_option('pipeline', {
     wilder.branch(
       wilder.cmdline_pipeline({
