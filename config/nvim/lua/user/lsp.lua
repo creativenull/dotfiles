@@ -1,5 +1,21 @@
 local M = {}
 
+local function register_format_on_save()
+  local lsp_group = vim.api.nvim_create_augroup('LspFormattingGroup', {})
+  vim.api.nvim_create_autocmd('BufWritePost', {
+    group = lsp_group,
+    callback = function()
+      local efm = vim.lsp.get_active_clients({ name = 'efm' })
+
+      if vim.tbl_isempty(efm) then
+        return
+      end
+
+      vim.lsp.buf.format({ name = 'efm' })
+    end,
+  })
+end
+
 ---@param client table
 ---@param bufnr number
 local function on_attach(client, bufnr)
@@ -114,6 +130,8 @@ function M.setup()
   })
 
   require('diagnosticls-configs').init({ on_attach = on_attach })
+
+  register_format_on_save()
 
   -- Log debug
   -- vim.lsp.set_log_level('DEBUG')
