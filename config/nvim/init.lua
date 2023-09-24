@@ -488,7 +488,7 @@ Plug('tpope/vim-fugitive')
 
 -- UI/Aesthetics
 -- ---
-Plug('lukas-reineke/indent-blankline.nvim', { tag = 'v2.20.8' })
+Plug('lukas-reineke/indent-blankline.nvim', { tag = 'v2.*' })
 Plug('creativenull/feline.nvim')
 Plug('creativenull/feline-provider-ale.nvim')
 
