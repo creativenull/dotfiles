@@ -488,7 +488,7 @@ Plug('tpope/vim-fugitive')
 
 -- UI/Aesthetics
 -- ---
-Plug('lukas-reineke/indent-blankline.nvim', { commit = 'db7cbcb40cc00fc5d6074d7569fb37197705e7f6' })
+Plug('lukas-reineke/indent-blankline.nvim', { tag = 'v2.20.8' })
 Plug('creativenull/feline.nvim')
 Plug('creativenull/feline-provider-ale.nvim')
 
@@ -540,7 +540,7 @@ require('user.wilder').setup()
 
 -- denops.vim Config
 -- ---
-vim.g.denops_server_addr = '127.0.0.1:2390'
+-- vim.g.denops_server_addr = '127.0.0.1:2390'
 
 -- fzf-session.vim Config
 -- ---
