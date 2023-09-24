@@ -510,7 +510,7 @@ Plug('neovimhaskell/haskell-vim')
 Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
 Plug('jwalton512/vim-blade')
 Plug('gbprod/php-enhanced-treesitter.nvim')
-Plug('captbaritone/better-indent-support-for-php-with-html')
+Plug('creativenull/better-indent-support-for-php-with-html')
 -- Plant UML
 Plug('aklt/plantuml-syntax')
 
