@@ -13,10 +13,8 @@
         }
       }
     }],
-    "ale": {
-      "fixers": {
-        "lua": ["stylua"]
-      }
+    "efmls": {
+      "lua": ["stylua"]
     }
   }
 }
