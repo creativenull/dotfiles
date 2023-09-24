@@ -505,6 +505,7 @@ Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336d
 Plug('kkoomen/vim-doge', { tag = 'v4.0.0', ['do'] = ':call doge#install()' })
 Plug('neovimhaskell/haskell-vim')
 Plug('gbprod/php-enhanced-treesitter.nvim', { commit = 'e36e487a63b90b298450c9206e2281dcc1dcf747' })
+Plug('aklt/plantuml-syntax')
 
 -- Colorschemes
 -- ---
