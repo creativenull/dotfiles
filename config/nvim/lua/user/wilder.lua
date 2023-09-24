@@ -2,7 +2,11 @@ local wilder = require('wilder')
 local M = {}
 
 function M.setup()
-  wilder.setup({ modes = { ':', '/', '?' } })
+  wilder.setup({
+    modes = { ':', '/', '?' },
+    next_key = '<C-n>',
+    previous_key = '<C-p>',
+  })
 
   wilder.set_option('pipeline', {
     wilder.branch(
