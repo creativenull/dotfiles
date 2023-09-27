@@ -503,11 +503,11 @@ Plug('kkoomen/vim-doge', { tag = 'v4.*', ['do'] = ':call doge#install()' })
 -- FileType Syntax
 -- ---
 -- Log
-Plug('MTDL9/vim-log-highlighting', { commit = '1037e26f3120e6a6a2c0c33b14a84336dee2a78f' })
+Plug('MTDL9/vim-log-highlighting')
 -- Haskell
 Plug('neovimhaskell/haskell-vim')
 -- PHP
-Plug('lumiliet/vim-twig', { commit = 'ad115512725bcc156f7f89b72ff563b9fa44933b' })
+Plug('lumiliet/vim-twig')
 Plug('jwalton512/vim-blade')
 Plug('gbprod/php-enhanced-treesitter.nvim')
 Plug('creativenull/better-indent-support-for-php-with-html')
