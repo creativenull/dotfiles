@@ -12,8 +12,8 @@
 
 -- Pre-checks
 -- ---
-if vim.fn.has('nvim-0.7') == 0 then
-  local errmsg = debug.traceback('This config requires nvim >= 0.7')
+if vim.fn.has('nvim-0.9') == 0 then
+  local errmsg = debug.traceback('This config requires nvim >= 0.9')
   vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
   return
 end
