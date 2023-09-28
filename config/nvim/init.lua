@@ -471,7 +471,7 @@ Plug('matsui54/ddc-ultisnips')
 
 -- Snippet Engine + Presets
 -- ---
-Plug('SirVer/ultisnips', { commit = '0ad238b1910d447476b2d98f593322c1cdb71285' })
+Plug('SirVer/ultisnips')
 
 -- Fuzzy File/Code Finder
 -- ---
