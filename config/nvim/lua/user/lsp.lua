@@ -1,17 +1,42 @@
 local M = {}
 
+local function fmt_with_edit()
+  local win_state = vim.call('winsaveview')
+
+  vim.lsp.buf.format({ name = 'efm' })
+
+  vim.cmd('edit!')
+  vim.call('winrestview', win_state)
+end
+
+local function efm_fmt(buf)
+  local matched_clients = vim.lsp.get_active_clients({ name = 'efm', bufnr = buf })
+
+  if vim.tbl_isempty(matched_clients) then
+    return
+  end
+
+  local efm = matched_clients[1]
+  local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+  local formatters = efm.config.settings.languages[ft]
+
+  local matches = vim.tbl_filter(function(fmt)
+    return not fmt.formatStdin
+  end, formatters)
+
+  if not vim.tbl_isempty(matches) then
+    fmt_with_edit()
+  else
+    vim.lsp.buf.format({ name = 'efm' })
+  end
+end
+
 local function register_format_on_save()
   local lsp_group = vim.api.nvim_create_augroup('LspFormattingGroup', {})
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = lsp_group,
     callback = function(ev)
-      local efm = vim.lsp.get_active_clients({ name = 'efm', bufnr = ev.buf })
-
-      if vim.tbl_isempty(efm) then
-        return
-      end
-
-      vim.lsp.buf.format({ name = 'efm' })
+      efm_fmt(ev.buf)
     end,
   })
 end
@@ -40,27 +65,11 @@ local function on_attach(client, bufnr)
   if vim.tbl_contains(allowed_fmt_servers, client.name) then
     local desc = string.format('LSP Formatting with %s', client.name)
 
-    local function efmls_fmt(_, result)
-      local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
-      local formatters = client.config.settings.languages[ft]
-
-      -- Get the format option from the last config set from efmls
-      local isStdin = formatters[#formatters].formatStdin
-
-      if result and isStdin then
-        -- Changes were applied from the server
-        vim.lsp.util.apply_text_edits(result, bufnr, client and client.offset_encoding or 'utf-16')
-      else
-        -- Changes were applied externally
-        vim.cmd('silent edit!')
-      end
-    end
-
     vim.keymap.set('n', '<Leader>lf', function()
       if client.name == 'efm' then
-        client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), efmls_fmt, bufnr)
+        efm_fmt(bufnr)
       else
-        client.request('textDocument/formatting', vim.lsp.util.make_formatting_params({}), nil, bufnr)
+        vim.buf.lsp.format()
       end
     end, { desc = desc, buffer = bufnr })
   end
