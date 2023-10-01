@@ -405,6 +405,8 @@ end
 -- For development (DEV)
 -- vim.g['denops#debug'] = 1
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/projectlocal.vim'))
+-- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/efmls-configs-nvim'))
+-- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/diagnosticls-configs-nvim'))
 
 ensure_plug()
 local Plug = vim.fn['plug#']
