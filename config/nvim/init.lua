@@ -304,10 +304,6 @@ vim.g.neural = {
 vim.g.vim_json_conceal = 0
 vim.g.vim_markdown_conceal = 0
 
--- vim-vsnip Config
--- ---
--- require('user.vsnip').setup()
-
 -- vim-vue Config
 -- ---
 vim.g.vue_pre_processors = { 'typescript' }
@@ -574,10 +570,6 @@ require('user.fzf').setup()
 -- ddc.vim Config
 -- ---
 require('user.ddc').setup()
-
--- nvim-cmp Config
--- ---
--- require('user.cmp').setup()
 
 -- ale Config
 -- ---
