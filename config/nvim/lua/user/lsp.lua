@@ -36,7 +36,8 @@ local function register_format_on_save()
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = lsp_group,
     callback = function(ev)
-      efm_fmt(ev.buf)
+      -- efm_fmt(ev.buf)
+      pcall(efm_fmt, ev.buf)
     end,
   })
 end
