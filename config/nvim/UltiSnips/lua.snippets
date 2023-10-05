@@ -15,3 +15,33 @@ for _,{$1:value} in pairs($2) do
   $3
 end
 endsnippet
+
+snippet vim_user_command "nvim api create user command"
+vim.api.nvim_create_user_command("$1", function(cmd)
+  $2
+end, {})
+endsnippet
+
+snippet vim_augroup "nvim api create augroup"
+local $1 = vim.api.nvim_create_augroup("$2", {})
+endsnippet
+
+snippet vim_autocmd "nvim api create autocmd"
+vim.api.nvim_create_autocmd("$1", {
+  desc = "$2",
+  group = $3,
+  callback = function(ev)
+    $0
+  end,
+  })
+endsnippet
+
+snippet vim_autocmd "nvim api create autocmd"
+vim.api.nvim_create_autocmd("$1", {
+  desc = "$2",
+  group = $3,
+  callback = function(ev)
+    $0
+  end,
+  })
+endsnippet
