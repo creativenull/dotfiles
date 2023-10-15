@@ -41,10 +41,7 @@ function M.setup()
         return false
       end,
     },
-    indent = {
-      enable = true,
-      disable = { 'php' },
-    },
+    indent = { enable = true },
     incremental_selection = { enable = false },
     context_commentstring = { enable = true, enable_autocmd = false },
     textobjects = {
