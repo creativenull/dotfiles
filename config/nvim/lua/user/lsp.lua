@@ -1,15 +1,20 @@
 local M = {}
 
-local function fmt_with_edit()
+local function fmt_with_edit(state)
+  state = state or 'manual'
   local win_state = vim.call('winsaveview')
 
-  vim.lsp.buf.format({ name = 'efm' })
+  if state == 'manual' then
+    vim.cmd('write')
+  end
+
+  vim.lsp.buf.format({ name = 'efm', async = false, timeout = 2500 })
 
   vim.cmd('edit!')
   vim.call('winrestview', win_state)
 end
 
-local function efm_fmt(buf)
+local function efm_fmt(buf, state)
   local matched_clients = vim.lsp.get_active_clients({ name = 'efm', bufnr = buf })
 
   if vim.tbl_isempty(matched_clients) then
@@ -25,9 +30,9 @@ local function efm_fmt(buf)
   end, formatters)
 
   if not vim.tbl_isempty(matches) then
-    fmt_with_edit()
+    fmt_with_edit(state)
   else
-    vim.lsp.buf.format({ name = 'efm' })
+    vim.lsp.buf.format({ name = 'efm', async = false, timeout = 2500 })
   end
 end
 
@@ -37,7 +42,7 @@ local function register_format_on_save()
     group = lsp_group,
     callback = function(ev)
       -- efm_fmt(ev.buf)
-      pcall(efm_fmt, ev.buf)
+      pcall(efm_fmt, ev.buf, 'auto')
     end,
   })
 end
@@ -68,7 +73,7 @@ local function on_attach(client, bufnr)
 
     vim.keymap.set('n', '<Leader>lf', function()
       if client.name == 'efm' then
-        efm_fmt(bufnr)
+        efm_fmt(bufnr, 'manual')
       else
         vim.buf.lsp.format()
       end
