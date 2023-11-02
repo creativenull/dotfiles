@@ -41,7 +41,6 @@ local function register_format_on_save()
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = lsp_group,
     callback = function(ev)
-      -- efm_fmt(ev.buf)
       pcall(efm_fmt, ev.buf, 'auto')
     end,
   })
@@ -75,7 +74,7 @@ local function on_attach(client, bufnr)
       if client.name == 'efm' then
         efm_fmt(bufnr, 'manual')
       else
-        vim.buf.lsp.format()
+        vim.buf.lsp.format({ name = client.name })
       end
     end, { desc = desc, buffer = bufnr })
   end
@@ -146,7 +145,7 @@ function M.setup()
 
   require('diagnosticls-configs').init({ on_attach = on_attach })
 
-  register_format_on_save()
+  -- register_format_on_save()
 
   -- Log debug
   -- vim.lsp.set_log_level('DEBUG')
