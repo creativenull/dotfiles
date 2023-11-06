@@ -511,6 +511,7 @@ Plug('creativenull/feline-provider-ale.nvim')
 -- ---
 Plug('nvim-treesitter/nvim-treesitter', { tag = 'v0.9.1', ['do'] = ':TSUpdate' })
 Plug('nvim-treesitter/nvim-treesitter-textobjects')
+Plug('nvim-treesitter/playground')
 
 -- Doc Generation
 -- ---
