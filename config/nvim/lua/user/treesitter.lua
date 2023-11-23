@@ -43,7 +43,7 @@ function M.setup()
     },
     indent = { enable = true },
     incremental_selection = { enable = false },
-    context_commentstring = { enable = true, enable_autocmd = false },
+    -- context_commentstring = { enable = true, enable_autocmd = false },
     textobjects = {
       select = {
         enable = true,
@@ -107,6 +107,9 @@ function M.setup()
       },
     },
   })
+
+  vim.g.skip_ts_context_commentstring_module = true
+  require('ts_context_commentstring').setup({})
 
   vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'BufWinEnter' }, {
     group = vim.g.user.event,
