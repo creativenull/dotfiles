@@ -245,22 +245,8 @@ tnoremap <C-[> <C-\><C-n>
 " Disable highlights
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
-" List all buffers
-" nnoremap <Leader>bb <Cmd>buffers<CR>
-
-" Go to next buffer
-" nnoremap <C-l> <Cmd>bnext<CR>
-" nnoremap <Leader>bn <Cmd>bnext<CR>
-
-" Go to previous buffer
-" nnoremap <C-h> <Cmd>bprevious<CR>
-" nnoremap <Leader>bp <Cmd>bprevious<CR>
-
-" Close the current buffer, and more?
-" nnoremap <Leader>bd <Cmd>bp<Bar>sp<Bar>bn<Bar>bd<CR>
-
 " Close all buffer, except current
-" nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
+nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
 
 " Edit vimrc
 nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
@@ -330,7 +316,7 @@ Plug 'vim-denops/denops.vim'
 
 " Core {{{
 Plug 'cohama/lexima.vim', { 'commit': '36781e59099b9b46eed564283b95938f90cd852d' }
-Plug 'creativenull/projectlocal-vim', { 'tag': 'v0.5.0' }
+Plug 'creativenull/projectlocal-vim', { 'tag': 'v1.*' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim'
@@ -339,20 +325,18 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'Shougo/context_filetype.vim', { 'commit': 'e276626e441eee2c624b9192113f1484bc2bc0f3' }
 Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
-Plug 'lambdalisue/suda.vim', { 'tag': 'v0.4.0' }
 " }}}
 
 " File Explorer {{{
-Plug 'lambdalisue/fern.vim', { 'tag': 'v1.51.4' }
-Plug 'lambdalisue/fern-renderer-nerdfont.vim', { 'commit': '1e90a78ab5510fbcedc85abeb9a251d978726935' }
-Plug 'lambdalisue/glyph-palette.vim', { 'tag': 'v1.4.0' }
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/glyph-palette.vim'
 " }}}
 
 " Fuzzy Finder {{{
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'linrongbin16/fzfx.vim', { 'commit': '8610252e27855731275709e0e62b2e2738aebfbd'  }
-" Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'linrongbin16/fzfx.vim'
 " }}}
 
 " Git {{{
@@ -405,11 +389,6 @@ let &runtimepath.=expand(',$HOME/Projects/github.com/creativenull/aoc-vim9script
 "
 " Tags: POST
 " ============================================================================
-
-" vim-ctrlspace Config
-" ---
-" let g:CtrlSpaceSymbols = { 'File': '', 'Tabs': '', 'BM': '' }
-" let g:CtrlSpaceSaveWorkspaceOnExit = 1
 
 " fzf.vim Config
 " ---
@@ -671,4 +650,4 @@ let g:lightline#bufferline#read_only = ' '
 let g:moonflyNormalFloat = 1
 
 set background=dark
-colorscheme nightfly
+colorscheme moonfly
