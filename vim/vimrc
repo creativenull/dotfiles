@@ -351,7 +351,8 @@ Plug 'lambdalisue/glyph-palette.vim', { 'tag': 'v1.4.0' }
 " Fuzzy Finder {{{
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'linrongbin16/fzfx.vim', { 'commit': '8610252e27855731275709e0e62b2e2738aebfbd'  }
+" Plug 'vim-ctrlspace/vim-ctrlspace'
 " }}}
 
 " Git {{{
@@ -404,8 +405,8 @@ call plug#end()
 
 " vim-ctrlspace Config
 " ---
-let g:CtrlSpaceSymbols = { 'File': '', 'Tabs': '', 'BM': '' }
-let g:CtrlSpaceSaveWorkspaceOnExit = 1
+" let g:CtrlSpaceSymbols = { 'File': '', 'Tabs': '', 'BM': '' }
+" let g:CtrlSpaceSaveWorkspaceOnExit = 1
 
 " fzf.vim Config
 " ---
@@ -422,6 +423,7 @@ command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
 
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
+nnoremap <C-Space> <Cmd>FzfxBuffers<CR>
 
 autocmd UserGroup ColorScheme * highlight! fzfBorder guifg=#aaaaaa
 
