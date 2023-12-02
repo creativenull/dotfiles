@@ -397,6 +397,9 @@ Plug 'fnune/base16-vim'
 
 call plug#end()
 
+" Advent of Code 2023
+let &runtimepath.=expand(',$HOME/Projects/github.com/creativenull/aoc-vim9script-2023')
+
 " ============================================================================
 " Plugin Configurations
 "
