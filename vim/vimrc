@@ -354,8 +354,7 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 " }}}
 
 " UI {{{
-Plug 'itchyny/lightline.vim', { 'commit': 'b02ef0d9f253dfc1cbb3f340b74998d7a4db0bf6' }
-Plug 'mengelbrecht/lightline-bufferline', { 'commit': '8b6e29e65e9711b75df289879186ff3888feed00' }
+Plug 'itchyny/lightline.vim'
 Plug 'Yggdroot/indentLine', { 'commit': 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' }
 Plug 'machakann/vim-highlightedyank', { 'commit': 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' }
 Plug 'markonm/traces.vim', { 'commit': '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
@@ -557,7 +556,6 @@ let g:lightline = {
 \ },
 \
 \ 'tabline': {
-\   'left': [ ['buffers'] ],
 \   'right': [ ['filetype'] ],
 \ },
 \
@@ -591,13 +589,11 @@ let g:lightline = {
 \ 'component_expand': {
 \   'ale_err': 'AleErrComponent',
 \   'ale_warn': 'AleWarnComponent',
-\   'buffers': 'lightline#bufferline#buffers',
 \ },
 \
 \ 'component_type': {
 \   'ale_err': 'error',
 \   'ale_warn': 'warning',
-\   'buffers': 'tabsel',
 \ },
 \}
 
@@ -635,19 +631,14 @@ function! g:AleStatus() abort
   return ''
 endfunction
 
-" lightline-bufferline Config
-" ---
-let g:lightline#bufferline#enable_nerdfont = 1
-let g:lightline#bufferline#modified = ' '
-let g:lightline#bufferline#read_only = ' '
-
 " ============================================================================
 " Theme
 "
 " Tags: THEME
 " ============================================================================
 
-let g:moonflyNormalFloat = 1
+let g:moonflyNormalFloat = v:true
+let g:moonflyTransparent = v:true
 
 set background=dark
 colorscheme moonfly
