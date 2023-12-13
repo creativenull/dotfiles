@@ -156,7 +156,7 @@ set smartcase
 
 " Editor
 set autoindent
-set colorcolumn=120
+set colorcolumn=80,120
 set lazyredraw
 set nofoldenable
 set nospell
