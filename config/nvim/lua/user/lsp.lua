@@ -74,7 +74,7 @@ local function on_attach(client, bufnr)
       if client.name == 'efm' then
         efm_fmt(bufnr, 'manual')
       else
-        vim.buf.lsp.format({ name = client.name })
+        vim.lsp.buf.format({ name = client.name })
       end
     end, { desc = desc, buffer = bufnr })
   end
