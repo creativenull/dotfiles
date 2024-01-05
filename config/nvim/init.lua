@@ -481,7 +481,7 @@ Plug('matsui54/denops-signature_help', { commit = 'e4522f5fe18adf014058d6cde5d55
 Plug('tani/ddc-fuzzy', { commit = 'ee205bba8011a941380412a34e47ca67bb5fa41f' })
 Plug('matsui54/ddc-buffer', { commit = '0c5a378d418c8c771d4946425369afbb8b8c5301' })
 Plug('Shougo/ddc-source-around', { commit = '68999df051a6fb2cbad57941a2c96e42149b6384' })
-Plug('Shougo/ddc-source-nvim-lsp', { commit = 'a5620bcf08ad8f694c64c1659ce6e895aa88e8ce' })
+Plug('Shougo/ddc-source-lsp', { commit = 'a5620bcf08ad8f694c64c1659ce6e895aa88e8ce' })
 Plug('matsui54/ddc-ultisnips', { commit = '74b2d1614b91c897bf6a6081df613217c438d02c' })
 
 -- Snippet Engine + Presets
