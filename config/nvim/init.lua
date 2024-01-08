@@ -668,4 +668,4 @@ pcall(function()
   })
 end)
 
-pcall(vim.cmd, 'colorscheme tokyonight')
+pcall(vim.cmd, 'colorscheme moonfly')
