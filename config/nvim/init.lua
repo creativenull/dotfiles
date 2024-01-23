@@ -509,9 +509,8 @@ Plug('creativenull/feline-provider-ale.nvim')
 
 -- TreeSitter
 -- ---
-Plug('nvim-treesitter/nvim-treesitter', { tag = 'v0.9.2', ['do'] = ':TSUpdate' })
+Plug('nvim-treesitter/nvim-treesitter', { tag = 'v0.9.1', ['do'] = ':TSUpdate' })
 Plug('nvim-treesitter/nvim-treesitter-textobjects')
-Plug('nvim-treesitter/playground')
 
 -- Doc Generation
 -- ---
@@ -533,7 +532,7 @@ Plug('aklt/plantuml-syntax')
 
 -- Colorschemes
 -- ---
-Plug('bluz71/vim-moonfly-colors')
+Plug('bluz71/vim-moonfly-colors', { commit = 'fb27da9cf29c56e8031adc4df6674bac6373d7c3' })
 Plug('folke/tokyonight.nvim')
 Plug('catppuccin/nvim', { as = 'catppuccin' })
 
