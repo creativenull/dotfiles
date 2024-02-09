@@ -510,7 +510,7 @@ Plug('creativenull/feline-provider-ale.nvim')
 -- TreeSitter
 -- ---
 Plug('nvim-treesitter/nvim-treesitter', { tag = 'v0.9.1', ['do'] = ':TSUpdate' })
-Plug('nvim-treesitter/nvim-treesitter-textobjects')
+Plug('nvim-treesitter/nvim-treesitter-textobjects', { commit = '19a91a38b02c1c28c14e0ba468d20ae1423c39b2' })
 
 -- Doc Generation
 -- ---
