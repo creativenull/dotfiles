@@ -408,6 +408,7 @@ end
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/efmls-configs-nvim'))
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/diagnosticls-configs-nvim'))
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/web-tools.nvim'))
+-- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/dotfyle-metadata.nvim'))
 
 -- require('web-tools').setup({
 --   on_attach = function(client, bufnr)
