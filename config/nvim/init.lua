@@ -473,7 +473,7 @@ Plug('tani/ddc-fuzzy')
 Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-lsp')
-Plug('matsui54/ddc-ultisnips')
+Plug('matsui54/ddc-ultisnips') -- TODO: fix `too old source` issue
 Plug('matsui54/denops-signature_help')
 
 -- Snippet Engine + Presets
@@ -510,16 +510,8 @@ Plug('kkoomen/vim-doge', { tag = 'v4.*', ['do'] = ':call doge#install()' })
 
 -- FileType Syntax
 -- ---
--- Log
 Plug('MTDL9/vim-log-highlighting')
--- Haskell
-Plug('neovimhaskell/haskell-vim')
--- PHP
-Plug('lumiliet/vim-twig')
 Plug('jwalton512/vim-blade')
-Plug('gbprod/php-enhanced-treesitter.nvim')
-Plug('creativenull/better-indent-support-for-php-with-html')
--- Plant UML
 Plug('aklt/plantuml-syntax')
 
 -- Colorschemes
