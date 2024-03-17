@@ -172,11 +172,11 @@ function M.setup()
 
   -- pum.vim Config
   -- ---
-  vim.call('pum#set_option', {
-    border = 'rounded',
-    padding = true,
-    scrollbar_char = '',
-  })
+  -- vim.call('pum#set_option', {
+  --   border = 'rounded',
+  --   padding = true,
+  --   scrollbar_char = '',
+  -- })
 
   register_keymaps()
   register_events()
