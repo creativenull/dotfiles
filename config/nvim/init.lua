@@ -315,14 +315,6 @@ vim.g.user_emmet_mode = 'in'
 vim.keymap.set('i', '<C-x><C-y>', '<Plug>(emmet-expand-abbr)', { remap = false })
 vim.keymap.set('n', '<Leader>er', '<Plug>(emmet-update-tag)', { remap = false })
 
--- indentLine Config
--- ---
-vim.g.indentLine_fileTypeExclude = { 'help', 'fzf', 'fern' }
-vim.g.indentLine_char = '│'
-vim.g.indent_blankline_show_first_indent_level = false
-
-vim.g.indentLine_color_gui = '#333333'
-
 -- fern.vim Config
 -- ---
 vim.g['fern#hide_cursor'] = 1
@@ -503,7 +495,7 @@ Plug('tpope/vim-fugitive')
 
 -- UI/Aesthetics
 -- ---
-Plug('lukas-reineke/indent-blankline.nvim', { tag = 'v2.*' })
+Plug('lukas-reineke/indent-blankline.nvim', { tag = 'v3.*' })
 Plug('creativenull/feline.nvim')
 Plug('creativenull/feline-provider-ale.nvim')
 
@@ -607,6 +599,14 @@ require('Comment').setup({
 -- feline.nvim Config
 -- ---
 require('user.feline').setup()
+
+-- indent-blanklint.nvim Config
+-- ---
+require('ibl').setup({
+  indent = { char = '│' },
+  scope = { enabled = false },
+  exclude = { filetypes = { 'help', 'fzf', 'fern' } },
+})
 
 -- =============================================================================
 -- = Colorscheme =
