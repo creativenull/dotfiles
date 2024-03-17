@@ -475,15 +475,14 @@ Plug('jose-elias-alvarez/null-ls.nvim')
 -- AutoCompletion + Sources (ddc.vim)
 -- Lock core and plugins to on/before September 2023
 -- ---
-Plug('Shougo/ddc.vim', { tag = 'v4.0.5' })
-Plug('Shougo/pum.vim', { commit = '9e48032b59f06ef9d6a0bfdefcc03b7e8f4ee2a1' })
-Plug('Shougo/ddc-ui-pum', { commit = '32ef2f3d52a624d55c1af489bad4865615fc6532' })
-Plug('matsui54/denops-signature_help', { commit = 'e4522f5fe18adf014058d6cde5d553565b5290ba' })
-Plug('tani/ddc-fuzzy', { commit = 'ee205bba8011a941380412a34e47ca67bb5fa41f' })
-Plug('matsui54/ddc-buffer', { commit = '0c5a378d418c8c771d4946425369afbb8b8c5301' })
-Plug('Shougo/ddc-source-around', { commit = '68999df051a6fb2cbad57941a2c96e42149b6384' })
-Plug('Shougo/ddc-source-lsp', { commit = 'a5620bcf08ad8f694c64c1659ce6e895aa88e8ce' })
-Plug('matsui54/ddc-ultisnips', { commit = '74b2d1614b91c897bf6a6081df613217c438d02c' })
+Plug('Shougo/ddc.vim')
+Plug('Shougo/ddc-ui-native')
+Plug('tani/ddc-fuzzy')
+Plug('matsui54/ddc-buffer')
+Plug('Shougo/ddc-source-around')
+Plug('Shougo/ddc-source-lsp')
+Plug('matsui54/ddc-ultisnips')
+Plug('matsui54/denops-signature_help')
 
 -- Snippet Engine + Presets
 -- ---

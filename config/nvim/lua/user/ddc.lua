@@ -1,12 +1,12 @@
 local M = {}
 
-local function expand_snippet(ev)
-  local completeditem = vim.api.nvim_get_var('pum#completed_item')
-
-  if completeditem.__sourceName == 'ultisnips' and vim.call('UltiSnips#CanExpandSnippet') == 1 then
-    vim.call('UltiSnips#ExpandSnippet')
-  end
-end
+-- local function expand_snippet(ev)
+--   local completeditem = vim.api.nvim_get_var('pum#completed_item')
+--
+--   if completeditem.__sourceName == 'ultisnips' and vim.call('UltiSnips#CanExpandSnippet') == 1 then
+--     vim.call('UltiSnips#ExpandSnippet')
+--   end
+-- end
 
 -- local function autoimport_nvim_lsp(buf)
 --   local completeditem = vim.api.nvim_get_var('pum#completed_item')
@@ -43,7 +43,7 @@ end
 ---@param ev table
 ---@return nil
 local function on_pum_completion(ev)
-  expand_snippet(ev)
+  -- expand_snippet(ev)
   -- autoimport_nvim_lsp(ev.buf)
 end
 
@@ -58,21 +58,21 @@ local function register_events()
     desc = 'Transparent bg for completion menu',
   })
 
-  vim.api.nvim_create_autocmd('User', {
-    pattern = 'PumCompleteDone',
-    group = vim.g.user.event,
-    callback = on_pum_completion,
-    desc = 'Autoimport/Expand snippet via pum.vim',
-  })
+  -- vim.api.nvim_create_autocmd('User', {
+  --   pattern = 'PumCompleteDone',
+  --   group = vim.g.user.event,
+  --   callback = on_pum_completion,
+  --   desc = 'Autoimport/Expand snippet via pum.vim',
+  -- })
 end
 
 ---Register keymaps related to ddc.vim/pum.vim
 ---@return nil
 local function register_keymaps()
-  vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
-  vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
-  vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
-  vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
+  -- vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
+  -- vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
+  -- vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
+  -- vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
 
   -- Manually open the completion menu
   vim.keymap.set(
@@ -85,29 +85,32 @@ end
 
 function M.setup()
   vim.call('ddc#custom#patch_global', {
-    sources = { 'nvim-lsp', 'around', 'buffer', 'ultisnips' },
+    sources = {
+      'lsp',
+      'around',
+      'buffer', --[['ultisnips']]
+    },
     autoCompleteDelay = 100,
     backspaceCompletion = true,
-    ui = 'pum',
+    ui = 'native',
     sourceOptions = {
       ['_'] = {
         matchers = { 'matcher_fuzzy' },
         sorters = { 'sorter_fuzzy' },
         converters = { 'converter_fuzzy' },
       },
-      ['nvim-lsp'] = {
+      lsp = {
         mark = 'LS',
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
         maxItems = 10,
         ignoreCase = true,
-        minAutoCompleteLength = 1,
         converters = { 'converter_kind_labels' },
       },
-      ultisnips = {
-        mark = 'S',
-        maxItems = 5,
-        ignoreCase = true,
-      },
+      -- ultisnips = {
+      --   mark = 'S',
+      --   maxItems = 5,
+      --   ignoreCase = true,
+      -- },
       around = {
         mark = 'A',
         maxItems = 5,
@@ -120,12 +123,15 @@ function M.setup()
       },
     },
     sourceParams = {
-      ['nvim-lsp'] = {
+      lsp = {
         -- snippetEngine = vim.call('denops#callback#register', function(body)
         --   return vim.call('UltiSnips#Anon', body)
         -- end),
         enableResolveItem = true,
         enableAdditionalTextEdit = true,
+      },
+      buffer = {
+        requireSameFiletype = false,
       },
     },
     filterParams = {
