@@ -516,7 +516,7 @@ Plug('aklt/plantuml-syntax')
 
 -- Colorschemes
 -- ---
-Plug('bluz71/vim-moonfly-colors', { commit = 'fb27da9cf29c56e8031adc4df6674bac6373d7c3' })
+Plug('bluz71/vim-moonfly-colors')
 Plug('folke/tokyonight.nvim')
 Plug('catppuccin/nvim', { as = 'catppuccin' })
 
