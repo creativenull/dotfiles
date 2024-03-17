@@ -462,7 +462,7 @@ Plug('dense-analysis/ale')
 Plug('neovim/nvim-lspconfig')
 Plug('creativenull/efmls-configs-nvim')
 Plug('creativenull/diagnosticls-configs-nvim')
-Plug('jose-elias-alvarez/null-ls.nvim')
+Plug('nvimtools/none-ls.nvim')
 
 -- AutoCompletion + Sources (ddc.vim)
 -- Lock core and plugins to on/before September 2023
