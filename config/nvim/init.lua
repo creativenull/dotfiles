@@ -475,6 +475,7 @@ Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-lsp')
 Plug('matsui54/ddc-ultisnips') -- TODO: fix `too old source` issue
 Plug('matsui54/denops-signature_help')
+Plug('LumaKernel/ddc-source-file')
 
 -- Snippet Engine + Presets
 -- ---

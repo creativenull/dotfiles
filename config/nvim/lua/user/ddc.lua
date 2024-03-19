@@ -88,6 +88,7 @@ function M.setup()
     sources = {
       'lsp',
       'around',
+      'file',
       'buffer', --[['ultisnips']]
     },
     autoCompleteDelay = 100,
@@ -105,6 +106,12 @@ function M.setup()
         maxItems = 10,
         ignoreCase = true,
         converters = { 'converter_kind_labels' },
+      },
+      file = {
+        mark = 'F',
+        maxItems = 5,
+        isVolatile = true,
+        forceCompletionPattern = [[\S/\S*]],
       },
       -- ultisnips = {
       --   mark = 'S',
