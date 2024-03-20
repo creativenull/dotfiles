@@ -469,6 +469,8 @@ Plug('nvimtools/none-ls.nvim')
 -- ---
 Plug('Shougo/ddc.vim')
 Plug('Shougo/ddc-ui-native')
+Plug('Shougo/ddc-ui-pum')
+Plug('Shougo/pum.vim')
 Plug('tani/ddc-fuzzy')
 Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-around')
