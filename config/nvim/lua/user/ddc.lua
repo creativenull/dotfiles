@@ -192,6 +192,8 @@ function M.setup()
 
   vim.call('ddc#enable')
 
+  -- denops-signature_help config
+  -- ---
   vim.g.signature_help_config = {
     border = true,
     contentsStyle = 'labels',
