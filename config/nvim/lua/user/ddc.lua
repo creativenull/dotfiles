@@ -45,7 +45,7 @@ end
 ---@param ev table
 ---@return nil
 local function on_pum_completion(ev)
-  expand_snippet(ev)
+  -- expand_snippet(ev)
   autoimport_nvim_lsp(ev.buf)
 end
 
@@ -87,12 +87,7 @@ end
 
 function M.setup()
   vim.call('ddc#custom#patch_global', {
-    sources = {
-      'lsp',
-      'around',
-      'file',
-      'buffer', --[['ultisnips']]
-    },
+    sources = { 'lsp', 'around', 'file', 'buffer', 'ultisnips' },
     autoCompleteDelay = 100,
     backspaceCompletion = true,
     ui = 'pum',
@@ -115,11 +110,11 @@ function M.setup()
         isVolatile = true,
         forceCompletionPattern = [[\S/\S*]],
       },
-      -- ultisnips = {
-      --   mark = 'S',
-      --   maxItems = 5,
-      --   ignoreCase = true,
-      -- },
+      ultisnips = {
+        mark = 'S',
+        maxItems = 5,
+        ignoreCase = true,
+      },
       around = {
         mark = 'A',
         maxItems = 5,
@@ -142,6 +137,7 @@ function M.setup()
       buffer = {
         requireSameFiletype = false,
       },
+      ultisnips = { expandSnippets = true },
     },
     filterParams = {
       converter_kind_labels = {

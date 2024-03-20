@@ -401,6 +401,7 @@ end
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/diagnosticls-configs-nvim'))
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/web-tools.nvim'))
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/dotfyle-metadata.nvim'))
+-- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/ddc-ultisnips'))
 
 -- require('web-tools').setup({
 --   on_attach = function(client, bufnr)
@@ -475,7 +476,8 @@ Plug('tani/ddc-fuzzy')
 Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-lsp')
-Plug('matsui54/ddc-ultisnips') -- TODO: fix `too old source` issue
+-- Plug('matsui54/ddc-ultisnips') -- TODO: fix `too old source` issue
+Plug('creativenull/ddc-ultisnips') -- TODO: remove this once above merges
 Plug('matsui54/denops-signature_help')
 Plug('LumaKernel/ddc-source-file')
 
