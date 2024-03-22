@@ -85,7 +85,7 @@ end
 
 function M.setup()
   vim.call('ddc#custom#patch_global', {
-    sources = { 'lsp', 'around', 'file', 'buffer', 'ultisnips' },
+    sources = { 'lsp', 'file', 'ultisnips', 'around', 'buffer' },
     autoCompleteDelay = 100,
     backspaceCompletion = true,
     ui = 'pum',
