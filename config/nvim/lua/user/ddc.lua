@@ -103,13 +103,13 @@ function M.setup()
         converters = { 'converter_kind_labels' },
       },
       file = {
-        mark = 'F',
+        mark = 'FILE',
         maxItems = 5,
         isVolatile = true,
         forceCompletionPattern = [[\S/\S*]],
       },
       ultisnips = {
-        mark = 'S',
+        mark = 'SNIP',
         maxItems = 5,
         ignoreCase = true,
       },
