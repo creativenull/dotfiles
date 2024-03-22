@@ -476,8 +476,7 @@ Plug('tani/ddc-fuzzy')
 Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-around')
 Plug('Shougo/ddc-source-lsp')
--- Plug('matsui54/ddc-ultisnips') -- TODO: fix `too old source` issue
-Plug('creativenull/ddc-ultisnips') -- TODO: remove this once above merges
+Plug('matsui54/ddc-ultisnips')
 Plug('matsui54/denops-signature_help')
 Plug('LumaKernel/ddc-source-file')
 
