@@ -10,3 +10,7 @@
 	defaultBranch = main
 [pull]
 	ff = only
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
