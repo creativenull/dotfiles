@@ -2,6 +2,7 @@ local M = {}
 
 local matches = { 'components.d.ts', 'auto-imports.d.ts' }
 
+---Check if the targetUri matches the files listed above
 local function result_match(results)
   for _, res in pairs(results) do
     for _, fname in pairs(matches) do
@@ -14,13 +15,14 @@ local function result_match(results)
   return nil
 end
 
+---Open the file only if it's a vue/js/ts file
 local function open_filename(targetUri_fname, matched_fname)
   local target_fname = string.format('%s/%s', vim.fs.dirname(targetUri_fname), matched_fname)
 
   if vim.endswith(target_fname, '.vue') then
     vim.cmd(string.format('edit %s', target_fname))
   else
-    -- Assume it's a js/ts filename instead
+    -- Assume js/ts filename instead
     local ext = '.js'
     if vim.fn.filereadable(target_fname .. ext) == 0 then
       ext = '.ts'
@@ -42,6 +44,8 @@ function M.create_definition(default_cb)
       return
     end
 
+    -- Take the start line as the index and get only that
+    -- line as content_line for the match
     local fname = vim.uri_to_fname(res.targetUri)
     local sline = res.targetRange.start.line
     local contents = vim.fn.readfile(fname)
