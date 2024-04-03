@@ -466,7 +466,6 @@ Plug('creativenull/diagnosticls-configs-nvim')
 Plug('nvimtools/none-ls.nvim')
 
 -- AutoCompletion + Sources (ddc.vim)
--- Lock core and plugins to on/before September 2023
 -- ---
 Plug('Shougo/ddc.vim')
 Plug('Shougo/ddc-ui-native')
