@@ -86,7 +86,7 @@ end
 function M.setup()
   vim.call('ddc#custom#patch_global', {
     sources = { 'lsp', 'file', 'ultisnips', 'around', 'buffer' },
-    autoCompleteDelay = 100,
+    -- autoCompleteDelay = 50,
     backspaceCompletion = true,
     ui = 'pum',
     sourceOptions = {
@@ -126,9 +126,9 @@ function M.setup()
     },
     sourceParams = {
       lsp = {
-        -- snippetEngine = vim.call('denops#callback#register', function(body)
-        --   return vim.call('UltiSnips#Anon', body)
-        -- end),
+        snippetEngine = vim.call('denops#callback#register', function(body)
+          vim.call('UltiSnips#Anon', body)
+        end),
         enableResolveItem = false,
         enableAdditionalTextEdit = false,
       },
