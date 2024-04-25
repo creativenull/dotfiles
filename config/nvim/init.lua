@@ -397,25 +397,6 @@ end
 -- For development (DEV)
 -- vim.g['denops#debug'] = 1
 -- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/projectlocal.vim'))
--- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/efmls-configs-nvim'))
--- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/diagnosticls-configs-nvim'))
--- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/web-tools.nvim'))
--- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/dotfyle-metadata.nvim'))
--- vim.opt.runtimepath:append(vim.fn.expand('~/projects/github.com/creativenull/ddc-ultisnips'))
-
--- require('web-tools').setup({
---   on_attach = function(client, bufnr)
---     vim.keymap.set({ 'n', 'v' }, '<Leader>la', vim.lsp.buf.code_action, { desc = 'LSP Code Actions', buffer = bufnr })
---     vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, { desc = 'LSP Go-to Definition', buffer = bufnr })
---     vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, { desc = 'LSP Hover Information', buffer = bufnr })
---     vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, { desc = 'LSP Rename', buffer = bufnr })
---     vim.keymap.set('i', '<C-o>', vim.lsp.buf.signature_help, { desc = 'LSP Signature Help', buffer = bufnr })
---     vim.keymap.set('n', '<Leader>le', vim.diagnostic.setloclist, { desc = 'LSP Show All Diagnostics', buffer = bufnr })
---     vim.keymap.set('n', '<Leader>lw', function()
---       vim.diagnostic.open_float({ bufnr = bufnr, scope = 'line' })
---     end, { desc = 'Show LSP Line Diagnostic', buffer = bufnr })
---   end,
--- })
 
 ensure_plug()
 local Plug = vim.fn['plug#']
