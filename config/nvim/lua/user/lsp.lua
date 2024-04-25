@@ -147,6 +147,11 @@ function M.setup()
 
   -- register_format_on_save()
 
+  -- require('web').setup({
+  --   on_attach = on_attach,
+  --   capabilities = capabilities,
+  -- })
+
   -- Log debug
   -- vim.lsp.set_log_level('DEBUG')
 end
