@@ -1,6 +1,18 @@
 local M = {}
 
+local function register_events()
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    group = vim.g.user.event,
+    callback = function()
+      vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
+    end,
+    desc = 'Transparent bg for completion menu',
+  })
+end
+
 function M.setup()
+  register_events()
+
   local cmp = require('cmp')
 
   cmp.setup({
