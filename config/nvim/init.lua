@@ -460,6 +460,13 @@ Plug('matsui54/ddc-ultisnips')
 Plug('matsui54/denops-signature_help')
 Plug('LumaKernel/ddc-source-file')
 
+-- Autocompletion + Sources (nvim-cmp)
+Plug('hrsh7th/nvim-cmp')
+Plug('hrsh7th/cmp-nvim-lsp')
+Plug('hrsh7th/cmp-buffer')
+Plug('hrsh7th/cmp-path')
+Plug('quangnguyen30192/cmp-nvim-ultisnips')
+
 -- Snippet Engine + Presets
 -- ---
 Plug('SirVer/ultisnips')
@@ -560,7 +567,11 @@ require('user.fzf').setup()
 
 -- ddc.vim Config
 -- ---
-require('user.ddc').setup()
+-- require('user.ddc').setup()
+
+-- nvim-cmp Config
+-- ---
+require('user.cmp').setup()
 
 -- ale Config
 -- ---
