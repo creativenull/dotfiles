@@ -16,9 +16,11 @@ function M.setup()
   local cmp = require('cmp')
 
   cmp.setup({
-    snippet = function(args)
-      vim.fn['UltiSnips#Anon'](args.body)
-    end,
+    snippet = {
+      expand = function(args)
+        vim.fn['UltiSnips#Anon'](args.body)
+      end,
+    },
 
     window = {
       completion = cmp.config.window.bordered(),
