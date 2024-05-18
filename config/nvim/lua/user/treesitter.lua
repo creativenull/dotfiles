@@ -19,7 +19,6 @@ function M.setup()
       'prisma',
       'sql',
       'svelte',
-      'tsx',
       'typescript',
       'vimdoc',
       'vue',
