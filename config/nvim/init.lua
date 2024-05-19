@@ -445,6 +445,7 @@ Plug('neovim/nvim-lspconfig')
 Plug('creativenull/efmls-configs-nvim')
 Plug('creativenull/diagnosticls-configs-nvim')
 Plug('nvimtools/none-ls.nvim')
+Plug('creativenull/web.nvim')
 
 -- AutoCompletion + Sources (ddc.vim)
 -- ---
