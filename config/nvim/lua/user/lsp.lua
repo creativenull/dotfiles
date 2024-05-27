@@ -150,6 +150,10 @@ function M.setup()
   require('web').setup({
     on_attach = on_attach,
     capabilities = capabilities,
+    lsp = {
+      volar = { inlay_hints = false },
+      tsserver = { inlay_hints = false },
+    },
   })
 
   -- Log debug
