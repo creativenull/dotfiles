@@ -29,7 +29,10 @@ function M.setup()
     '--color=border:#aaaaaa,gutter:-1,bg+:-1',
   }, ' ')
 
-  vim.g.fzf_vim = { grep_multi_line = 1 }
+  vim.g.fzf_vim = {
+    preview_window = {},
+    grep_multi_line = 1,
+  }
 
   vim.api.nvim_create_user_command('Rg', function(c)
     vim_grep(c.args, c.bang)
