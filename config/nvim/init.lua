@@ -33,12 +33,12 @@ vim.g.user = {
 vim.api.nvim_create_augroup(vim.g.user.event, {})
 
 -- Ensure the following tools are installed in the system
-local required_execs = { 'git', 'curl', 'rg', 'fzf', 'deno', 'python3' }
+local required_execs = { 'git', 'curl', 'rg', 'deno', 'python3' }
 local optional_execs = { 'stylua' }
 
 for _, exec in pairs(required_execs) do
   if vim.fn.executable(exec) == 0 then
-    local errmsg = debug.traceback(string.format('[nvim] `%s` is needed!', exec))
+    local errmsg = debug.traceback(string.format('[nvim] `%s` is required!', exec))
     vim.api.nvim_echo({ { errmsg, 'ErrorMsg' } }, true, {})
     return
   end
