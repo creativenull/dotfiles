@@ -428,6 +428,7 @@ Plug('williamboman/mason.nvim')
 -- AI
 -- ---
 Plug('dense-analysis/neural')
+Plug('Exafunction/codeium.vim')
 
 -- File Explorer + Addons
 -- ---
