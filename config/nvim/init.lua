@@ -524,6 +524,12 @@ vim.call('plug#end')
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
 
+-- codeium.vim Config
+-- ---
+vim.g.codeium_filetypes = {
+  ['fern-replacer'] = false,
+}
+
 -- lexima.vim Config
 -- ---
 require('user.lexima').setup()
