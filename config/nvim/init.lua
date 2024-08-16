@@ -526,9 +526,7 @@ vim.call('plug#end')
 
 -- codeium.vim Config
 -- ---
-vim.g.codeium_filetypes = {
-  ['fern-replacer'] = false,
-}
+require('user.codeium').setup()
 
 -- lexima.vim Config
 -- ---
