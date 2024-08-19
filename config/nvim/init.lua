@@ -204,9 +204,6 @@ vim.keymap.set('n', '<Right>', function()
   require('user.utils').resize_win_vert(2)
 end, { desc = 'Resize window vertically (dec)' })
 
--- Map Esc, to perform quick switching between Normal and Insert mode
-vim.keymap.set('i', 'jk', '<Esc>')
-
 -- Map escape from terminal input to Normal mode
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
