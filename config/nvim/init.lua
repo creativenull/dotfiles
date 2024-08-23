@@ -311,6 +311,9 @@ vim.g.user_emmet_leader_key = '<C-q>'
 vim.g.user_emmet_mode = 'in'
 vim.keymap.set('i', '<C-x><C-y>', '<Plug>(emmet-expand-abbr)', { remap = false })
 vim.keymap.set('n', '<Leader>er', '<Plug>(emmet-update-tag)', { remap = false })
+vim.g.user_emmet_settings = {
+  blade = { extends = 'html' },
+}
 
 -- fern.vim Config
 -- ---
