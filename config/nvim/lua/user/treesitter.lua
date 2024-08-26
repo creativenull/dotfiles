@@ -20,6 +20,7 @@ function M.setup()
       'sql',
       'svelte',
       'typescript',
+      'tsx',
       'vimdoc',
       'vue',
       'zig',
