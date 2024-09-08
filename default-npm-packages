@@ -1,0 +1,10 @@
+@antfu/ni
+@astrojs/language-server
+@vue/language-server
+diagnostic-languageserver
+intelephense
+prettier
+typescript-language-server
+vscode-langservers-extracted
+svelte-language-server
+@tailwindcss/language-server
