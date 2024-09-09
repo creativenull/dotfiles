@@ -151,6 +151,7 @@ function M.setup()
     on_attach = on_attach,
     capabilities = capabilities,
     lsp = {
+      astro = { inlay_hints = false },
       volar = { inlay_hints = false },
       tsserver = { inlay_hints = false },
     },
