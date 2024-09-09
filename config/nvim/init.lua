@@ -1,7 +1,7 @@
 -- Name: Arnold Chand
 -- Github: https://github.com/creativenull
--- Description: My vimrc works with MacOS, Linux and Windows.
--- Requires:
+-- Description: My vimrc, works with MacOS, Linux and Windows.
+-- Required:
 --   + curl
 --   + git
 --   + python3
