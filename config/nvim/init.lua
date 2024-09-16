@@ -430,6 +430,11 @@ Plug('williamboman/mason.nvim')
 Plug('dense-analysis/neural')
 Plug('Exafunction/codeium.vim')
 
+-- Database
+-- ---
+Plug('tpope/vim-dadbod')
+Plug('kristijanhusak/vim-dadbod-ui')
+
 -- File Explorer + Addons
 -- ---
 Plug('antoinemadec/FixCursorHold.nvim')
