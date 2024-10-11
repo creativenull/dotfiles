@@ -41,6 +41,10 @@ function M.setup()
       { name = 'buffer' },
       { name = 'path' },
     }),
+
+    completion = {
+      keyword_length = 2,
+    },
   })
 end
 
