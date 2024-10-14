@@ -429,7 +429,6 @@ Plug('williamboman/mason.nvim')
 -- ---
 Plug('dense-analysis/neural')
 Plug('Exafunction/codeium.vim')
--- Plug('monkoose/neocodeium')
 
 -- Database
 -- ---
@@ -529,10 +528,6 @@ vim.call('plug#end')
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
-
--- neocodium Config
--- ---
--- require('user.neocodeium').setup()
 
 -- codeium.vim Config
 -- ---
