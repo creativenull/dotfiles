@@ -287,15 +287,6 @@ vim.cmd('cnoreabbrev Wq wq')
 -- = Plugin Pre-Config - before loading plugins (PRE) =
 -- =============================================================================
 
--- neural Config
--- ---
-vim.g.neural = {
-  ui = { prompt_icon = '>' },
-  source = {
-    openai = { api_key = vim.env.OPENAI_API_NEURAL_KEY },
-  },
-}
-
 -- Built-in plugins
 -- ---
 vim.g.vim_json_conceal = 0
@@ -427,7 +418,6 @@ Plug('williamboman/mason.nvim')
 
 -- AI
 -- ---
-Plug('dense-analysis/neural')
 Plug('Exafunction/codeium.vim')
 
 -- Database
