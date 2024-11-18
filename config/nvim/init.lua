@@ -406,14 +406,12 @@ Plug('lambdalisue/glyph-palette.vim')
 -- ---
 Plug('creativenull/projectlocal.vim', { tag = 'v1.*' })
 Plug('cohama/lexima.vim')
-Plug('godlygeek/tabular')
 Plug('mattn/emmet-vim')
 Plug('tpope/vim-abolish')
 Plug('tpope/vim-repeat')
 Plug('tpope/vim-surround')
 Plug('numToStr/Comment.nvim')
 Plug('JoosepAlviste/nvim-ts-context-commentstring')
-Plug('williamboman/mason.nvim')
 
 -- AI
 -- ---
@@ -441,6 +439,7 @@ Plug('creativenull/efmls-configs-nvim')
 Plug('creativenull/diagnosticls-configs-nvim')
 Plug('nvimtools/none-ls.nvim')
 Plug('creativenull/web.nvim')
+Plug('williamboman/mason.nvim')
 
 -- AutoCompletion + Sources (ddc.vim)
 -- ---
