@@ -401,7 +401,6 @@ Plug('vim-denops/denops-shared-server.vim')
 Plug('lambdalisue/nerdfont.vim')
 Plug('nvim-lua/plenary.nvim')
 Plug('lambdalisue/glyph-palette.vim')
-Plug('muniftanjim/nui.nvim')
 
 -- Core
 -- ---
