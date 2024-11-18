@@ -38,7 +38,7 @@ function M.setup()
     vim_grep(c.args, c.bang)
   end, { bang = true, nargs = '*' })
 
-  -- vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
+  vim.keymap.set('n', '<C-p>', '<Cmd>Files<CR>')
   vim.keymap.set('n', '<C-t>', '<Cmd>Rg<CR>')
   vim.keymap.set('n', '<C-Space>', '<Cmd>FzfxBuffers<CR>')
 

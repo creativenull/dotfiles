@@ -580,7 +580,7 @@ require('user.fzf').setup()
 
 -- fall.vim Config
 -- ---
-vim.keymap.set('n', '<C-p>', '<Cmd>Fall file<CR>')
+-- vim.keymap.set('n', '<C-p>', '<Cmd>Fall file<CR>')
 
 -- ddc.vim Config
 -- ---
