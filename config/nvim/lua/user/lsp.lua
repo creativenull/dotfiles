@@ -154,6 +154,7 @@ function M.setup()
       astro = { inlay_hints = false },
       volar = { inlay_hints = false },
       tsserver = { inlay_hints = false },
+      tailwindcss = { additional_filetypes = { 'blade' } },
     },
   })
 
