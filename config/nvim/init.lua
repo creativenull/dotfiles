@@ -448,12 +448,16 @@ Plug('Shougo/ddc-ui-native')
 Plug('Shougo/ddc-ui-pum')
 Plug('Shougo/pum.vim')
 Plug('tani/ddc-fuzzy')
+Plug('Shougo/ddc-filter-matcher_head')
+Plug('Shougo/ddc-filter-sorter_rank')
+Plug('haxibami/ddc-filter-converter_color')
+Plug('Shougo/ddc-source-lsp')
 Plug('matsui54/ddc-buffer')
 Plug('Shougo/ddc-source-around')
-Plug('Shougo/ddc-source-lsp')
 Plug('matsui54/ddc-ultisnips')
-Plug('matsui54/denops-signature_help')
 Plug('LumaKernel/ddc-source-file')
+Plug('matsui54/denops-signature_help')
+Plug('uga-rosa/ddc-previewer-floating')
 
 -- Autocompletion + Sources (nvim-cmp)
 Plug('hrsh7th/nvim-cmp')
@@ -572,11 +576,11 @@ require('user.fzf').setup()
 
 -- ddc.vim Config
 -- ---
--- require('user.ddc').setup()
+require('user.ddc').setup()
 
 -- nvim-cmp Config
 -- ---
-require('user.cmp').setup()
+-- require('user.cmp').setup()
 
 -- ale Config
 -- ---

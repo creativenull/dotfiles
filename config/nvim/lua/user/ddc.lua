@@ -86,7 +86,6 @@ end
 function M.setup()
   vim.call('ddc#custom#patch_global', {
     sources = { 'lsp', 'file', 'ultisnips', 'around', 'buffer' },
-    -- autoCompleteDelay = 50,
     backspaceCompletion = true,
     ui = 'pum',
     sourceOptions = {
@@ -98,9 +97,10 @@ function M.setup()
       lsp = {
         mark = 'LS',
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
-        maxItems = 10,
-        ignoreCase = true,
-        converters = { 'converter_kind_labels' },
+        maxItems = 20,
+        dup = 'keep',
+        converters = { 'converter_kind_labels', 'converter_color' },
+        sorters = { 'sorter_lsp-kind' },
       },
       file = {
         mark = 'FILE',
@@ -126,11 +126,12 @@ function M.setup()
     },
     sourceParams = {
       lsp = {
+        lspEngine = 'nvim-lsp',
         snippetEngine = vim.call('denops#callback#register', function(body)
           vim.call('UltiSnips#Anon', body)
         end),
-        enableResolveItem = false,
-        enableAdditionalTextEdit = false,
+        -- enableResolveItem = true,
+        -- enableAdditionalTextEdit = true,
       },
       buffer = {
         requireSameFiletype = false,
@@ -140,7 +141,7 @@ function M.setup()
     filterParams = {
       converter_kind_labels = {
         kindLabels = {
-          Class = '󰠱 Cass',
+          Class = '󰠱 Class',
           Color = '󱥚 Color',
           Constant = '󰏿 Const',
           Constructor = ' New',
@@ -191,10 +192,22 @@ function M.setup()
   vim.g.signature_help_config = {
     border = true,
     contentsStyle = 'labels',
+    viewStyle = 'floating',
     maxwidth = 80,
   }
 
   vim.call('signature_help#enable')
+
+  -- ddc-previewer-floating Config
+  -- ---
+  local ddc_previewer_floating = require('ddc_previewer_floating')
+  ddc_previewer_floating.setup({
+    ui = 'native',
+    border = 'rounded',
+    max_width = 80,
+  })
+
+  ddc_previewer_floating.enable()
 end
 
 return M
