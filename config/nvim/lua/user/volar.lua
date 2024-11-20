@@ -1,6 +1,6 @@
 local M = {}
 
-local matches = { 'components.d.ts', 'auto-imports.d.ts' }
+local matches = { "components.d.ts", "auto-imports.d.ts" }
 
 ---Check if the targetUri matches the files listed above
 local function result_match(results)
@@ -17,18 +17,18 @@ end
 
 ---Open the file only if it's a vue/js/ts file
 local function open_filename(targetUri_fname, matched_fname)
-  local target_fname = string.format('%s/%s', vim.fs.dirname(targetUri_fname), matched_fname)
+  local target_fname = string.format("%s/%s", vim.fs.dirname(targetUri_fname), matched_fname)
 
-  if vim.endswith(target_fname, '.vue') then
-    vim.cmd(string.format('edit %s', target_fname))
+  if vim.endswith(target_fname, ".vue") then
+    vim.cmd(string.format("edit %s", target_fname))
   else
     -- Assume js/ts filename instead
-    local ext = '.js'
+    local ext = ".js"
     if vim.fn.filereadable(target_fname .. ext) == 0 then
-      ext = '.ts'
+      ext = ".ts"
     end
 
-    vim.cmd(string.format('edit %s%s', target_fname, ext))
+    vim.cmd(string.format("edit %s%s", target_fname, ext))
   end
 end
 
@@ -50,7 +50,7 @@ function M.create_definition(default_cb)
     local sline = res.targetRange.start.line
     local contents = vim.fn.readfile(fname)
     local content_line = vim.trim(contents[sline + 1])
-    local matched_filename = vim.fn.matchlist(content_line, 'typeof import([\'"]\\(\\.*/.*\\)[\'"])')
+    local matched_filename = vim.fn.matchlist(content_line, "typeof import(['\"]\\(\\.*/.*\\)['\"])")
 
     if not vim.tbl_isempty(matched_filename) then
       open_filename(fname, matched_filename[2])

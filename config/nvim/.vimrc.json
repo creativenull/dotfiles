@@ -14,8 +14,8 @@
       }
     }],
     "efmls": {
-      "lua": ["stylua"]
+      "lua": ["stylua"],
+      "json": ["deno_fmt"]
     }
   }
 }
-

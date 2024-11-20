@@ -6,7 +6,7 @@ function M.has_changes(attr)
   if vim.b[buf].gitsigns_status_dict ~= nil then
     local git_status = vim.b[buf].gitsigns_status_dict
 
-    if attr == 'added' or attr == 'changed' or attr == 'removed' then
+    if attr == "added" or attr == "changed" or attr == "removed" then
       return git_status[attr] ~= nil and git_status[attr] > 0 or false
     end
   end
@@ -30,15 +30,15 @@ function M.gitsigns_status_provider(component)
   local head = vim.b[buf].gitsigns_head
 
   if head == nil then
-    return ''
+    return ""
   end
 
-  return string.format(' 󰘬 %s ', head)
+  return string.format(" 󰘬 %s ", head)
 end
 
 function M.gitsigns_added_provider(component)
-  local prefix_icon = '+'
-  local key = 'added'
+  local prefix_icon = "+"
+  local key = "added"
   if component.enabled == nil then
     component.enabled = function()
       return M.has_changes(key)
@@ -49,15 +49,15 @@ function M.gitsigns_added_provider(component)
   local dict = vim.b[buf].gitsigns_status_dict or { [key] = 0 }
 
   if dict[key] == 0 then
-    return ''
+    return ""
   end
 
-  return string.format('%s%s', prefix_icon, dict[key])
+  return string.format("%s%s", prefix_icon, dict[key])
 end
 
 function M.gitsigns_changed_provider(component)
-  local prefix_icon = '~'
-  local key = 'changed'
+  local prefix_icon = "~"
+  local key = "changed"
   if component.enabled == nil then
     component.enabled = function()
       return M.has_changes(key)
@@ -68,15 +68,15 @@ function M.gitsigns_changed_provider(component)
   local dict = vim.b[buf].gitsigns_status_dict or { [key] = 0 }
 
   if dict[key] == 0 then
-    return ''
+    return ""
   end
 
-  return string.format('%s%s', prefix_icon, dict[key])
+  return string.format("%s%s", prefix_icon, dict[key])
 end
 
 function M.gitsigns_removed_provider(component)
-  local prefix_icon = '-'
-  local key = 'removed'
+  local prefix_icon = "-"
+  local key = "removed"
   if component.enabled == nil then
     component.enabled = function()
       return M.has_changes(key)
@@ -87,10 +87,10 @@ function M.gitsigns_removed_provider(component)
   local dict = vim.b[buf].gitsigns_status_dict or { [key] = 0 }
 
   if dict[key] == 0 then
-    return ''
+    return ""
   end
 
-  return string.format('%s%s', prefix_icon, dict[key])
+  return string.format("%s%s", prefix_icon, dict[key])
 end
 
 return M

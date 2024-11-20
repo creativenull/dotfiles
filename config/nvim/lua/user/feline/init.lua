@@ -1,8 +1,8 @@
-local common = require('user.feline.providers.common')
+local common = require("user.feline.providers.common")
 local colors = common.colors
-local gitsigns = require('user.feline.providers.gitsigns')
-local lsp = require('user.feline.providers.lsp')
-local ale = require('feline.custom_providers.ale')
+local gitsigns = require("user.feline.providers.gitsigns")
+local lsp = require("user.feline.providers.lsp")
+local ale = require("feline.custom_providers.ale")
 local M = {}
 
 function M.setup()
@@ -14,10 +14,10 @@ function M.setup()
   -- Left
   -- ---
   table.insert(components.active[1], {
-    provider = 'filename',
+    provider = "filename",
     hl = { fg = colors.neutral900, bg = colors.neutral200 },
     right_sep = {
-      str = 'slant_right',
+      str = "slant_right",
       hl = function()
         if gitsigns.has_branch() then
           return { fg = colors.neutral200, bg = colors.neutral300 }
@@ -28,12 +28,12 @@ function M.setup()
   })
 
   table.insert(components.active[1], {
-    provider = 'gitsigns_status',
+    provider = "gitsigns_status",
     hl = { fg = colors.neutral800, bg = colors.neutral300 },
     right_sep = {
-      str = 'slant_right',
+      str = "slant_right",
       hl = function()
-        if gitsigns.has_changes('added') or gitsigns.has_changes('removed') or gitsigns.has_changes('changed') then
+        if gitsigns.has_changes("added") or gitsigns.has_changes("removed") or gitsigns.has_changes("changed") then
           return { fg = colors.neutral300, bg = colors.neutral300 }
         end
         return { fg = colors.neutral300, bg = colors.neutral900 }
@@ -42,14 +42,14 @@ function M.setup()
   })
 
   table.insert(components.active[1], {
-    provider = 'gitsigns_added',
+    provider = "gitsigns_added",
     hl = { fg = colors.emerald900, bg = colors.neutral300 },
     right_sep = {
-      'block',
+      "block",
       {
-        str = 'slant_right',
+        str = "slant_right",
         hl = function()
-          if gitsigns.has_changes('changed') or gitsigns.has_changes('removed') then
+          if gitsigns.has_changes("changed") or gitsigns.has_changes("removed") then
             return { fg = colors.neutral300, bg = colors.neutral300 }
           end
           return { fg = colors.neutral300, bg = colors.neutral900 }
@@ -59,14 +59,14 @@ function M.setup()
   })
 
   table.insert(components.active[1], {
-    provider = 'gitsigns_changed',
+    provider = "gitsigns_changed",
     hl = { fg = colors.amber800, bg = colors.neutral300 },
     right_sep = {
-      'block',
+      "block",
       {
-        str = 'slant_right',
+        str = "slant_right",
         hl = function()
-          if gitsigns.has_changes('removed') then
+          if gitsigns.has_changes("removed") then
             return { fg = colors.neutral300, bg = colors.neutral300 }
           end
           return { fg = colors.neutral300, bg = colors.neutral900 }
@@ -76,19 +76,19 @@ function M.setup()
   })
 
   table.insert(components.active[1], {
-    provider = 'gitsigns_removed',
+    provider = "gitsigns_removed",
     hl = { fg = colors.rose900, bg = colors.neutral300 },
     right_sep = {
-      'block',
+      "block",
       {
-        str = 'slant_right',
+        str = "slant_right",
         hl = { fg = colors.neutral300, bg = colors.neutral900 },
       },
     },
   })
 
   table.insert(components.active[1], {
-    provider = '',
+    provider = "",
     hl = { bg = colors.neutral900 },
   })
 
@@ -125,15 +125,15 @@ function M.setup()
   -- Right
   -- ---
   table.insert(components.active[3], {
-    provider = 'line_info',
+    provider = "line_info",
     hl = { bg = colors.neutral900, fg = colors.neutral100 },
   })
 
   table.insert(components.active[3], {
-    provider = 'ale_status',
+    provider = "ale_status",
     hl = { fg = colors.neutral100, bg = colors.emerald800 },
     left_sep = {
-      str = 'slant_left',
+      str = "slant_left",
       -- hl = { fg = colors.emerald800, bg = colors.green700 },
       hl = function()
         if common.is_not_empty_buffer() then
@@ -145,10 +145,10 @@ function M.setup()
   })
 
   table.insert(components.active[3], {
-    provider = 'lsp_status',
+    provider = "lsp_status",
     hl = { fg = colors.neutral100, bg = colors.teal900 },
     left_sep = {
-      str = 'slant_left',
+      str = "slant_left",
       hl = function()
         if not ale.is_registered() then
           return { fg = colors.teal900, bg = colors.neutral900 }
@@ -159,10 +159,10 @@ function M.setup()
   })
 
   table.insert(components.active[3], {
-    provider = 'nvim_diagnostic_error',
+    provider = "nvim_diagnostic_error",
     hl = { fg = colors.neutral100, bg = colors.red600 },
     left_sep = {
-      str = 'slant_left',
+      str = "slant_left",
       hl = function()
         if not ale.is_registered() and not lsp.is_registered() then
           return { fg = colors.red600, bg = colors.neutral900 }
@@ -175,12 +175,12 @@ function M.setup()
   })
 
   table.insert(components.active[3], {
-    provider = 'nvim_diagnostic_warning',
+    provider = "nvim_diagnostic_warning",
     hl = { fg = colors.neutral100, bg = colors.yellow600 },
     left_sep = {
-      str = 'slant_left',
+      str = "slant_left",
       hl = function()
-        if lsp.get_diagnostic_count('error') == 0 then
+        if lsp.get_diagnostic_count("error") == 0 then
           return { fg = colors.yellow600, bg = colors.teal900 }
         end
         return { fg = colors.yellow600, bg = colors.red600 }
@@ -189,18 +189,18 @@ function M.setup()
   })
 
   table.insert(components.active[3], {
-    provider = 'nvim_diagnostic_info',
+    provider = "nvim_diagnostic_info",
     hl = { fg = colors.neutral100, bg = colors.sky800 },
     left_sep = {
-      str = 'slant_left',
+      str = "slant_left",
       hl = function()
-        if lsp.get_diagnostic_count('error') > 0 and lsp.get_diagnostic_count('warning') == 0 then
+        if lsp.get_diagnostic_count("error") > 0 and lsp.get_diagnostic_count("warning") == 0 then
           return { fg = colors.sky800, bg = colors.red600 }
-        elseif lsp.get_diagnostic_count('error') == 0 and lsp.get_diagnostic_count('warning') > 0 then
+        elseif lsp.get_diagnostic_count("error") == 0 and lsp.get_diagnostic_count("warning") > 0 then
           return { fg = colors.sky800, bg = colors.yellow600 }
-        elseif lsp.get_diagnostic_count('error') == 0 and lsp.get_diagnostic_count('warning') == 0 then
+        elseif lsp.get_diagnostic_count("error") == 0 and lsp.get_diagnostic_count("warning") == 0 then
           return { fg = colors.sky800, bg = colors.teal900 }
-        elseif lsp.get_diagnostic_count('error') > 0 and lsp.get_diagnostic_count('warning') > 0 then
+        elseif lsp.get_diagnostic_count("error") > 0 and lsp.get_diagnostic_count("warning") > 0 then
           return { fg = colors.sky800, bg = colors.yellow600 }
         end
         return { fg = colors.sky800, bg = colors.teal900 }
@@ -211,10 +211,10 @@ function M.setup()
   -- Inactive Left
   -- ---
   table.insert(components.inactive[1], {
-    provider = 'filename',
+    provider = "filename",
     hl = { fg = colors.neutral900, bg = colors.neutral200 },
     right_sep = {
-      str = 'slant_right',
+      str = "slant_right",
       hl = { fg = colors.neutral200, bg = colors.neutral900 },
     },
   })
@@ -222,15 +222,15 @@ function M.setup()
   -- Inactive Right
   -- ---
   table.insert(components.inactive[2], {
-    provider = 'line_info',
+    provider = "line_info",
     hl = { fg = colors.neutral100, bg = colors.green700 },
     left_sep = {
-      str = 'slant_left',
+      str = "slant_left",
       hl = { fg = colors.green700, bg = colors.neutral900 },
     },
   })
 
-  require('feline').setup({
+  require("feline").setup({
     components = components,
     custom_providers = {
       filename = common.filename_provider,

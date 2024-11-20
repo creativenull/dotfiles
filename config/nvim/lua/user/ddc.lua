@@ -1,18 +1,18 @@
 local M = {}
 
 local function expand_snippet(ev)
-  local completeditem = vim.api.nvim_get_var('pum#completed_item')
+  local completeditem = vim.api.nvim_get_var("pum#completed_item")
 
-  if completeditem.__sourceName == 'ultisnips' and vim.call('UltiSnips#CanExpandSnippet') == 1 then
-    vim.call('UltiSnips#ExpandSnippet')
+  if completeditem.__sourceName == "ultisnips" and vim.call("UltiSnips#CanExpandSnippet") == 1 then
+    vim.call("UltiSnips#ExpandSnippet")
   end
 end
 
 local function autoimport_nvim_lsp(buf)
-  local completeditem = vim.api.nvim_get_var('pum#completed_item')
+  local completeditem = vim.api.nvim_get_var("pum#completed_item")
   local active_clients = vim.lsp.get_active_clients({ bufnr = buf })
 
-  if completeditem.__sourceName == 'lsp' then
+  if completeditem.__sourceName == "lsp" then
     for _, client in pairs(active_clients) do
       if
         client.server_capabilities.completionProvider
@@ -28,11 +28,11 @@ local function autoimport_nvim_lsp(buf)
         -- Apply text edits if it's available
         local resolve_fn = function(_, response)
           if response and response.additionalTextEdits then
-            vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, 'utf-8')
+            vim.lsp.util.apply_text_edits(response.additionalTextEdits, buf, "utf-8")
           end
         end
 
-        client.request('completionItem/resolve', completed_item, resolve_fn, buf)
+        client.request("completionItem/resolve", completed_item, resolve_fn, buf)
         break
       end
     end
@@ -50,85 +50,85 @@ end
 ---Register events related to ddc.vim/pum.vim
 ---@return nil
 local function register_events()
-  vim.api.nvim_create_autocmd('ColorScheme', {
+  vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.g.user.event,
     callback = function()
-      vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
+      vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" })
     end,
-    desc = 'Transparent bg for completion menu',
+    desc = "Transparent bg for completion menu",
   })
 
-  vim.api.nvim_create_autocmd('User', {
-    pattern = 'PumCompleteDone',
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "PumCompleteDone",
     group = vim.g.user.event,
     callback = on_pum_completion,
-    desc = 'Autoimport/Expand snippet via pum.vim',
+    desc = "Autoimport/Expand snippet via pum.vim",
   })
 end
 
 ---Register keymaps related to ddc.vim/pum.vim
 ---@return nil
 local function register_keymaps()
-  vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
-  vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
-  vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
-  vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
+  vim.keymap.set("i", "<C-n>", "<Cmd>call pum#map#insert_relative(1)<CR>")
+  vim.keymap.set("i", "<C-p>", "<Cmd>call pum#map#insert_relative(-1)<CR>")
+  vim.keymap.set("i", "<C-e>", "<Cmd>call pum#map#cancel()<CR>")
+  vim.keymap.set("i", "<C-y>", "<Cmd>call pum#map#confirm()<CR>")
 
   -- Manually open the completion menu
   vim.keymap.set(
-    'i',
-    '<C-Space>',
-    'ddc#map#manual_complete()',
-    { replace_keycodes = false, expr = true, desc = '[ddc.vim] Manually open popup menu' }
+    "i",
+    "<C-Space>",
+    "ddc#map#manual_complete()",
+    { replace_keycodes = false, expr = true, desc = "[ddc.vim] Manually open popup menu" }
   )
 end
 
 function M.setup()
-  vim.call('ddc#custom#patch_global', {
-    sources = { 'lsp', 'file', 'ultisnips', 'around', 'buffer' },
+  vim.call("ddc#custom#patch_global", {
+    sources = { "lsp", "file", "ultisnips", "around", "buffer" },
     backspaceCompletion = true,
-    ui = 'pum',
+    ui = "pum",
     sourceOptions = {
-      ['_'] = {
-        matchers = { 'matcher_fuzzy' },
-        sorters = { 'sorter_fuzzy' },
-        converters = { 'converter_fuzzy' },
+      ["_"] = {
+        matchers = { "matcher_fuzzy" },
+        sorters = { "sorter_fuzzy" },
+        converters = { "converter_fuzzy" },
       },
       lsp = {
-        mark = 'LS',
+        mark = "LS",
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
         maxItems = 20,
-        dup = 'keep',
-        converters = { 'converter_kind_labels', 'converter_color' },
-        sorters = { 'sorter_lsp-kind' },
+        dup = "keep",
+        converters = { "converter_kind_labels", "converter_color" },
+        sorters = { "sorter_lsp-kind" },
       },
       file = {
-        mark = 'FILE',
+        mark = "FILE",
         maxItems = 5,
         isVolatile = true,
         forceCompletionPattern = [[\S/\S*]],
       },
       ultisnips = {
-        mark = 'SNIP',
+        mark = "SNIP",
         maxItems = 5,
         ignoreCase = true,
       },
       around = {
-        mark = 'A',
+        mark = "A",
         maxItems = 5,
         ignoreCase = true,
       },
       buffer = {
-        mark = 'B',
+        mark = "B",
         maxItems = 5,
         ignoreCase = true,
       },
     },
     sourceParams = {
       lsp = {
-        lspEngine = 'nvim-lsp',
-        snippetEngine = vim.call('denops#callback#register', function(body)
-          vim.call('UltiSnips#Anon', body)
+        lspEngine = "nvim-lsp",
+        snippetEngine = vim.call("denops#callback#register", function(body)
+          vim.call("UltiSnips#Anon", body)
         end),
         -- enableResolveItem = true,
         -- enableAdditionalTextEdit = true,
@@ -141,69 +141,69 @@ function M.setup()
     filterParams = {
       converter_kind_labels = {
         kindLabels = {
-          Class = '󰠱 Class',
-          Color = '󱥚 Color',
-          Constant = '󰏿 Const',
-          Constructor = ' New',
-          Enum = ' Enum',
-          EnumMember = ' Enum',
-          Event = ' Event',
-          Field = '󰜢 Field',
-          File = '󰈙 File',
-          Folder = '󰉋 Dir',
-          Function = '󰊕 Func',
-          Interface = ' Interface',
-          Keyword = '󰌆 Key',
-          Method = '  Method',
-          Module = ' Mod',
-          Operator = '󰆕 Op',
-          Property = '󰜢 Prop',
-          Reference = '󰈇 Ref',
-          Snippet = ' Snip',
-          Struct = '󰙅 Struct',
-          Text = '󰉿 Text',
-          TypeParameter = '',
-          Unit = ' Unit',
-          Value = '󰎠 Value',
-          Variable = '󰫧 Var',
+          Class = "󰠱 Class",
+          Color = "󱥚 Color",
+          Constant = "󰏿 Const",
+          Constructor = " New",
+          Enum = " Enum",
+          EnumMember = " Enum",
+          Event = " Event",
+          Field = "󰜢 Field",
+          File = "󰈙 File",
+          Folder = "󰉋 Dir",
+          Function = "󰊕 Func",
+          Interface = " Interface",
+          Keyword = "󰌆 Key",
+          Method = "  Method",
+          Module = " Mod",
+          Operator = "󰆕 Op",
+          Property = "󰜢 Prop",
+          Reference = "󰈇 Ref",
+          Snippet = " Snip",
+          Struct = "󰙅 Struct",
+          Text = "󰉿 Text",
+          TypeParameter = "",
+          Unit = " Unit",
+          Value = "󰎠 Value",
+          Variable = "󰫧 Var",
         },
       },
     },
   })
 
   -- Markdown FileType completion sources
-  vim.call('ddc#custom#patch_filetype', 'markdown', { sources = { 'around', 'buffer' } })
+  vim.call("ddc#custom#patch_filetype", "markdown", { sources = { "around", "buffer" } })
 
   -- pum.vim Config
   -- ---
-  vim.call('pum#set_option', {
-    border = 'rounded',
+  vim.call("pum#set_option", {
+    border = "rounded",
     padding = true,
-    scrollbar_char = '',
+    scrollbar_char = "",
   })
 
   register_keymaps()
   register_events()
 
-  vim.call('ddc#enable')
+  vim.call("ddc#enable")
 
   -- denops-signature_help config
   -- ---
   vim.g.signature_help_config = {
     border = true,
-    contentsStyle = 'labels',
-    viewStyle = 'floating',
+    contentsStyle = "labels",
+    viewStyle = "floating",
     maxwidth = 80,
   }
 
-  vim.call('signature_help#enable')
+  vim.call("signature_help#enable")
 
   -- ddc-previewer-floating Config
   -- ---
-  local ddc_previewer_floating = require('ddc_previewer_floating')
+  local ddc_previewer_floating = require("ddc_previewer_floating")
   ddc_previewer_floating.setup({
-    ui = 'pum',
-    border = 'rounded',
+    ui = "pum",
+    border = "rounded",
     max_width = 80,
   })
 

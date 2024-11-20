@@ -1,24 +1,24 @@
 local M = {}
 
 local function register_events()
-  vim.api.nvim_create_autocmd('ColorScheme', {
+  vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.g.user.event,
     callback = function()
-      vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' })
+      vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" })
     end,
-    desc = 'Transparent bg for completion menu',
+    desc = "Transparent bg for completion menu",
   })
 end
 
 function M.setup()
   register_events()
 
-  local cmp = require('cmp')
+  local cmp = require("cmp")
 
   cmp.setup({
     snippet = {
       expand = function(args)
-        vim.fn['UltiSnips#Anon'](args.body)
+        vim.fn["UltiSnips#Anon"](args.body)
       end,
     },
 
@@ -28,18 +28,18 @@ function M.setup()
     },
 
     mapping = cmp.mapping.preset.insert({
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<C-Space>"] = cmp.mapping.complete(),
+      ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
       -- ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
 
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'ultisnips' }, -- For vsnip users.
+      { name = "nvim_lsp" },
+      { name = "ultisnips" }, -- For vsnip users.
     }, {
-      { name = 'nvim_lsp_signature_help' },
-      { name = 'buffer' },
-      { name = 'path' },
+      { name = "nvim_lsp_signature_help" },
+      { name = "buffer" },
+      { name = "path" },
     }),
 
     completion = {
