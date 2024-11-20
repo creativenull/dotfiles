@@ -202,7 +202,7 @@ function M.setup()
   -- ---
   local ddc_previewer_floating = require('ddc_previewer_floating')
   ddc_previewer_floating.setup({
-    ui = 'native',
+    ui = 'pum',
     border = 'rounded',
     max_width = 80,
   })
