@@ -309,58 +309,56 @@ endif
 
 call plug#begin()
 
-" Plugin dependencies {{{
+" Deps
+" ---
 Plug 'lambdalisue/nerdfont.vim'
 Plug 'vim-denops/denops.vim'
-" }}}
+Plug 'vim-denops/denops-shared-server.vim'
 
-" Core {{{
+" Core
+" ---
 Plug 'cohama/lexima.vim', { 'commit': '36781e59099b9b46eed564283b95938f90cd852d' }
 Plug 'creativenull/projectlocal-vim', { 'tag': 'v1.*' }
 Plug 'editorconfig/editorconfig-vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'Shougo/context_filetype.vim', { 'commit': 'e276626e441eee2c624b9192113f1484bc2bc0f3' }
 Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
-" }}}
+Plug 'markonm/traces.vim', { 'commit': '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
 
-" File Explorer {{{
+" File explorer
+" ---
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'lambdalisue/glyph-palette.vim'
-" }}}
 
-" Fuzzy Finder {{{
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Fuzzy finder/Code finder
+" ---
+Plug 'junegunn/fzf', #{ tag: 'v0.56.3', do: { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'linrongbin16/fzfx.vim'
-" }}}
+Plug 'dominickng/fzf-session.vim'
+Plug 'linrongbin16/fzfx.vim', #{ commit: '9bd93e78f22c734751688cefd3ee2c475cd85ccd' }
+Plug 'gelguy/wilder.nvim', #{ commit: '679f348dc90d80ff9ba0e7c470c40a4d038dcecf' }
 
-" Git {{{
+" Git
+" ---
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
-" }}}
 
-" Linter and formatter configurations {{{
+" Linters + Formatters
+" ---
 Plug 'dense-analysis/ale'
-" }}}
 
-" LSP client + auto-completion {{{
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-" }}}
-
-" UI {{{
-Plug 'itchyny/lightline.vim'
+" UI/Aeshetics
+" ---
 Plug 'Yggdroot/indentLine', { 'commit': 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' }
 Plug 'machakann/vim-highlightedyank', { 'commit': 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' }
-Plug 'markonm/traces.vim', { 'commit': '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
-" }}}
 
-" File syntax plugins {{{
+" File syntax plugins
+" ---
 Plug 'elzr/vim-json'
 Plug 'kevinoid/vim-jsonc'
 Plug 'junegunn/vader.vim'
@@ -370,18 +368,13 @@ Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'posva/vim-vue'
 Plug 'MTDL9/vim-log-highlighting'
 Plug 'lacygoill/vim9-syntax'
-" }}}
 
-" Colorschemes {{{
+" Colorschemes
+" ---
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'fnune/base16-vim'
-" }}}
 
 call plug#end()
-
-" Advent of Code 2023
-let &runtimepath.=expand(',$HOME/Projects/github.com/creativenull/aoc-vim9script-2023')
 
 " ============================================================================
 " Plugin Configurations
@@ -392,8 +385,11 @@ let &runtimepath.=expand(',$HOME/Projects/github.com/creativenull/aoc-vim9script
 " fzf.vim Config
 " ---
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS = '--reverse'
-let g:fzf_preview_window = []
+let $FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
+let g:fzf_vim = #{
+  \preview_window: [],
+  \grep_multi_line: 1
+\}
 
 function! s:VimGrep(qargs, bang) abort
   let s:sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(a:qargs)
@@ -406,230 +402,36 @@ nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
 nnoremap <C-Space> <Cmd>FzfxBuffers<CR>
 
-autocmd UserGroup ColorScheme * highlight! fzfBorder guifg=#aaaaaa
+
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 guibg=NONE
+  setlocal statusline=%#fzf1#\ >\ fzf
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+autocmd! ColorScheme * highlight! fzfBorder guifg=#aaaaaa
 
 " fern.vim Config
 " ---
 let g:fern#hide_cursor = 1
+let g:fern#default_hidden = 1
 let g:fern#renderer = 'nerdfont'
-let g:fern#renderer#nerdfont#indent_markers = 1
 let g:fern#renderer#nerdfont#root_symbol = ' '
+let g:fern#renderer#nerdfont#indent_markers = 1
 
-function! s:InitFern() abort
-  nnoremap <buffer> <nowait> q <Cmd>bd<CR>
+nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
+
+function! s:FernInit() abort
+  nnoremap q <Cmd>bd<CR>
   nmap <buffer> D <Plug>(fern-action-remove)
+
+  setlocal expandtab shiftwidth=2 tabstop=2
 
   call glyph_palette#apply()
 endfunction
 
-nnoremap <silent> <Leader>ff <Cmd>Fern . -reveal=%<CR>
-
-autocmd UserGroup FileType fern call <SID>InitFern()
-
-" ale Config
-" ---
-let g:ale_completion_enabled = 0
-let g:ale_disable_lsp = 1
-let g:ale_hover_cursor = 0
-let g:ale_echo_msg_error_str = 'Err'
-let g:ale_sign_error = ' '
-let g:ale_echo_msg_warning_str = 'Warn'
-let g:ale_sign_warning = ' '
-let g:ale_echo_msg_info_str = 'Info'
-let g:ale_sign_info = ' '
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_linters_explicit = 1
-let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
-let g:ale_virtualtext_cursor = 'disabled'
-let g:ale_virtualtext_prefix = ''
-
-nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
-nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
-nnoremap <silent> <Leader>al <Cmd>lopen<CR>
-
-" Update lightline whenever ALE lints or formats the code
-autocmd UserGroup User ALEJobStarted call lightline#update()
-autocmd UserGroup User ALELintPost call lightline#update()
-autocmd UserGroup User ALEFixPost call lightline#update()
-
-" coc.nvim Config
-" ---
-let g:coc_global_extensions = [
-\ 'coc-json',
-\ 'coc-html',
-\ 'coc-css',
-\ 'coc-git',
-\ 'coc-tsserver',
-\ 'coc-flow',
-\ '@yaegassy/coc-volar',
-\ 'coc-deno',
-\ 'coc-phpls',
-\]
-
-function! s:CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <expr> <C-n> coc#pum#visible() ? coc#pum#next(1) : <SID>CheckBackspace() ? "\<C-n>" : coc#refresh()
-inoremap <expr> <C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-p>"
-inoremap <expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#confirm() : "\<Tab>"
-inoremap <expr> <C-y> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
-inoremap <expr> <c-@> coc#refresh()
-
-nmap     <Leader>lr <Plug>(coc-rename)
-nmap     <Leader>ld <Plug>(coc-definition)
-nmap     <Leader>la <Plug>(coc-codeaction-cursor)
-nmap     <Leader>le <Cmd>CocList diagnostics<CR>
-nmap     <Leader>l] <Plug>(coc-diagnostic-next)
-nmap     <Leader>l[ <Plug>(coc-diagnostic-prev)
-nnoremap <Leader>lf <Cmd>call CocActionAsync('format')<CR>
-nnoremap <Leader>lh <Cmd>if CocAction('hasProvider', 'hover')<Bar>call CocActionAsync('doHover')<Bar>endif<CR>
-
-" Documentation
-nnoremap <expr> <nowait> <Down> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Cmd>call <SID>ResizeHorizontalWindow(-2)\<CR>"
-nnoremap <expr> <nowait> <Up> coc#float#has_scroll() ? coc#float#scroll(0) : "\<Cmd>call <SID>ResizeHorizontalWindow(+2)\<CR>"
-inoremap <expr> <nowait> <Down> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(1)\<CR>" : "\<Cmd>call <SID>ResizeHorizontalWindow(-2)\<CR>"
-inoremap <expr> <nowait> <Up> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<CR>" : "\<Cmd>call <SID>ResizeHorizontalWindow(+2)\<CR>"
-
-" Tsserver
-command! -nargs=0 TSOrganizeImports call CocActionAsync('runCommand', 'editor.action.organizeImport')
-
-augroup UserCocGroup
-
-autocmd UserCocGroup CursorHold * silent call CocActionAsync('highlight')
-autocmd UserCocGroup User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-autocmd UserCocGroup ColorScheme * highlight UserCocFloat guibg=NONE guifg=#aaaaaa
-autocmd UserCocGroup ColorScheme * highlight UserCocFloatBorder guibg=NONE guifg=#aaaaaa
-
-" vim-gitgutter Config
-" ---
-let g:gitgutter_map_keys = 0
-
-" emmet-vim Config
-" ---
-let g:user_emmet_leader_key = '<C-q>'
-let g:user_emmet_install_global = 0
-let g:user_emmet_mode = 'i'
-
-autocmd UserGroup FileType html,vue,astro EmmetInstall
-autocmd UserGroup FileType javascript,javascriptreact,typescript,typescriptreact EmmetInstall
-autocmd UserGroup FileType php,blade EmmetInstall
-autocmd UserGroup FileType twig,html.twig,htmldjango.twig,xml.twig EmmetInstall
-
-" vim-highlightedyank Config
-" ---
-let g:highlightedyank_highlight_duration = 300
-
-autocmd UserGroup ColorScheme * highlight! default link HighlightedyankRegion IncSearch
-
-" vim-vue Config
-" ---
-let g:vue_pre_processors = []
-
-" vim-json Config
-" ---
-let g:vim_json_syntax_conceal = 0
-
-" indentLine Config
-" ---
-let g:indentLine_char = '│'
-
-" vim-gitbranch Config
-" ---
-function! g:GitBranch() abort
-  if gitbranch#name() != ''
-    return ' ' . gitbranch#name()
-  endif
-
-  return ''
-endfunction
-
-" vim-lightline Config
-" ---
-let g:lightline = {
-\ 'colorscheme': 'tailwind_cnull',
-\ 'enable': {
-\   'statusline': 1,
-\   'tabline': 1,
-\ },
-\
-\ 'tabline': {
-\   'right': [ ['filetype'] ],
-\ },
-\
-\ 'component': { 'lineinfo': ' %l/%L  %c' },
-\
-\ 'separator': {
-\   'left': '',
-\   'right': '',
-\ },
-\
-\ 'active': {
-\   'left': [ ['filename'], ['gitbranch', 'readonly', 'modified'] ],
-\   'right': [
-\     ['ale_err', 'ale_warn', 'ale_status'],
-\     ['filetype', 'fileencoding'],
-\     ['coc_status', 'lineinfo'],
-\   ],
-\ },
-\
-\ 'inactive': {
-\   'left': [ ['filename'], ['gitbranch', 'modified'] ],
-\   'right': [ [], [], ['lineinfo'] ],
-\ },
-\
-\ 'component_function': {
-\   'gitbranch': 'GitBranch',
-\   'ale_status': 'AleStatus',
-\   'coc_status': 'coc#status',
-\ },
-\
-\ 'component_expand': {
-\   'ale_err': 'AleErrComponent',
-\   'ale_warn': 'AleWarnComponent',
-\ },
-\
-\ 'component_type': {
-\   'ale_err': 'error',
-\   'ale_warn': 'warning',
-\ },
-\}
-
-function! g:AleErrComponent() abort
-  if exists('g:loaded_ale')
-    let l:info = ale#statusline#Count(bufnr(''))
-    let l:errors = l:info.error
-
-    if l:errors > 0
-      return printf('%d', l:errors)
-    endif
-  endif
-
-  return ''
-endfunction
-
-function! g:AleWarnComponent() abort
-  if exists('g:loaded_ale')
-    let l:info = ale#statusline#Count(bufnr(''))
-    let l:warnings = l:info.warning
-
-    if l:warnings > 0
-      return printf('%d', l:warnings)
-    endif
-  endif
-
-  return ''
-endfunction
-
-function! g:AleStatus() abort
-  if exists('g:loaded_ale')
-    return 'ALE'
-  endif
-
-  return ''
-endfunction
+autocmd! FileType fern call <SID>FernInit()
 
 " ============================================================================
 " Theme
