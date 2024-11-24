@@ -53,8 +53,6 @@ function M.setup()
     group = vim.g.user.event,
     callback = function()
       vim.api.nvim_set_hl(0, "fzf1", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "fzf2", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "fzf3", { bg = "NONE" })
     end,
   })
 
@@ -62,7 +60,7 @@ function M.setup()
     group = vim.g.user.event,
     pattern = "FzfStatusLine",
     callback = function(args)
-      vim.wo[vim.fn.bufwinid(args.buf)].statusline = "%#fzf1# > %#fzf2#fz%#fzf3#f"
+      vim.wo[vim.fn.bufwinid(args.buf)].statusline = "%#fzf1# > fzf"
     end,
     desc = "(fzf.vim) Custom highlights",
   })
