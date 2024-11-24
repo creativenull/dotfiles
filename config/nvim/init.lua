@@ -470,7 +470,7 @@ Plug("SirVer/ultisnips")
 
 -- Fuzzy File/Code Finder
 -- ---
-Plug("junegunn/fzf", { tag = "v0.54.1" })
+Plug("junegunn/fzf", { tag = "v0.56.3" })
 Plug("junegunn/fzf.vim")
 Plug("dominickng/fzf-session.vim")
 Plug("linrongbin16/fzfx.vim", { commit = "9bd93e78f22c734751688cefd3ee2c475cd85ccd" })
