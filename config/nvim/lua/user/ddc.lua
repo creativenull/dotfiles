@@ -85,8 +85,7 @@ end
 
 function M.setup()
   vim.call("ddc#custom#patch_global", {
-    sources = { "lsp", "file", "ultisnips", "around", "buffer" },
-    backspaceCompletion = true,
+    sources = { "lsp", "around", "buffer", "ultisnips", "file" },
     ui = "pum",
     sourceOptions = {
       ["_"] = {
@@ -99,7 +98,7 @@ function M.setup()
         forceCompletionPattern = [[\.\w*|:\w*|->\w*]],
         maxItems = 20,
         dup = "keep",
-        converters = { "converter_kind_labels", "converter_color" },
+        converters = { "converter_kind_labels" },
         sorters = { "sorter_lsp-kind" },
       },
       file = {
