@@ -475,7 +475,7 @@ Plug("junegunn/fzf.vim")
 Plug("dominickng/fzf-session.vim")
 Plug("linrongbin16/fzfx.vim", { commit = "9bd93e78f22c734751688cefd3ee2c475cd85ccd" })
 Plug("gelguy/wilder.nvim", { commit = "679f348dc90d80ff9ba0e7c470c40a4d038dcecf" })
-Plug("vim-fall/fall.vim")
+-- Plug("vim-fall/fall.vim")
 
 -- Git
 -- ---
