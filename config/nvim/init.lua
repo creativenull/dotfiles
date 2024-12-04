@@ -266,6 +266,14 @@ vim.api.nvim_create_user_command("ConfigReload", function()
   require("user.utils").reload_config()
 end, { desc = "Reload vim config" })
 
+vim.api.nvim_create_user_command("ConfigSnapshot", function()
+  local datetime = os.date("%Y%m%d%H%M%S")
+  local filename = string.format("snapshot_%s.vim", datetime)
+  local filepath = string.format("%s/snapshots/%s", vim.fn.stdpath("config"), filename)
+
+  vim.cmd("PlugSnapshot " .. filepath)
+end, { desc = "Create a vim-plug snapshot" })
+
 vim.api.nvim_create_user_command("ToggleConcealLevel", function()
   require("user.utils").toggle_conceal_level()
 end, { desc = "Toggle the conceals in editor" })
@@ -577,7 +585,7 @@ require("user.fzf").setup()
 
 -- nvim-cmp Config
 -- ---
-require('user.cmp').setup()
+require("user.cmp").setup()
 
 -- ale Config
 -- ---
