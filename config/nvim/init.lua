@@ -267,8 +267,8 @@ vim.api.nvim_create_user_command("ConfigReload", function()
 end, { desc = "Reload vim config" })
 
 vim.api.nvim_create_user_command("ConfigSnapshot", function()
-  local datetime = os.date("%Y%m%d%H%M%S")
-  local filename = string.format("snapshot_%s.vim", datetime)
+  local timestamp = os.time()
+  local filename = string.format("snapshot_%s.vim", timestamp)
   local filepath = string.format("%s/snapshots/%s", vim.fn.stdpath("config"), filename)
 
   vim.cmd("PlugSnapshot " .. filepath)
