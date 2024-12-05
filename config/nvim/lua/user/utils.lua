@@ -25,11 +25,11 @@ function M.toggle_codeshot()
   if num then
     vim.opt.number = false
     vim.opt.signcolumn = "no"
-    vim.cmd("IndentLinesDisable")
+    vim.cmd("IBLDisable")
   else
     vim.opt.number = true
     vim.opt.signcolumn = "yes"
-    vim.cmd("IndentLinesEnable")
+    vim.cmd("IBLEnable")
   end
 end
 
