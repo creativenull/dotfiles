@@ -40,6 +40,9 @@ function M.setup()
 
   vim.keymap.set("n", "<C-p>", "<Cmd>Files<CR>")
   vim.keymap.set("n", "<C-t>", "<Cmd>Rg<CR>")
+  vim.keymap.set("n", "<C-y>", function()
+    vim_grep(vim.fn.expand("<cword>"), false)
+  end)
   vim.keymap.set("n", "<C-Space>", "<Cmd>FzfxBuffers<CR>")
 
   vim.api.nvim_create_autocmd("FileType", {
