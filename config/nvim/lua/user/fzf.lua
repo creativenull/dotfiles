@@ -38,12 +38,12 @@ function M.setup()
     vim_grep(c.args, c.bang)
   end, { bang = true, nargs = "*" })
 
-  vim.keymap.set("n", "<C-p>", "<Cmd>Files<CR>")
-  vim.keymap.set("n", "<C-t>", "<Cmd>Rg<CR>")
+  vim.keymap.set("n", "<C-p>", "<Cmd>Files<CR>", { desc = "List files in the current directory" })
+  vim.keymap.set("n", "<C-t>", "<Cmd>Rg<CR>", { desc = "Open the grep interface in the current directory" })
   vim.keymap.set("n", "<C-y>", function()
     vim_grep(vim.fn.expand("<cword>"), false)
-  end)
-  vim.keymap.set("n", "<C-Space>", "<Cmd>FzfxBuffers<CR>")
+  end, { desc = "Grep for the word under the cursor in the current directory" })
+  vim.keymap.set("n", "<C-Space>", "<Cmd>FzfxBuffers<CR>", { desc = "List open buffers" })
 
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.g.user.event,
