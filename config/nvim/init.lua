@@ -460,7 +460,6 @@ Plug("Shougo/ddc-source-lsp")
 Plug("matsui54/ddc-buffer")
 Plug("Shougo/ddc-source-around")
 Plug("matsui54/ddc-ultisnips")
-Plug("LumaKernel/ddc-source-file")
 Plug("matsui54/denops-signature_help")
 Plug("uga-rosa/ddc-previewer-floating")
 

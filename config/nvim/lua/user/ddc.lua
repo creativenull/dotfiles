@@ -85,7 +85,7 @@ end
 
 function M.setup()
   vim.call("ddc#custom#patch_global", {
-    sources = { "lsp", "around", "buffer", "ultisnips", "file" },
+    sources = { "lsp", "around", "buffer", "ultisnips" },
     ui = "pum",
     sourceOptions = {
       ["_"] = {
@@ -100,12 +100,6 @@ function M.setup()
         dup = "keep",
         converters = { "converter_kind_labels" },
         sorters = { "sorter_lsp-kind" },
-      },
-      file = {
-        mark = "FILE",
-        maxItems = 5,
-        isVolatile = true,
-        forceCompletionPattern = [[\S/\S*]],
       },
       ultisnips = {
         mark = "SNIP",
