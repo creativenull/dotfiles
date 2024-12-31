@@ -1,4 +1,4 @@
-# Configs for my development environment
+# dotfiles for my development environment
 
 + [git](https://git-scm.com/)
 + [kitty](https://sw.kovidgoyal.net/kitty/)
