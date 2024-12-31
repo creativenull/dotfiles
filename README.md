@@ -1,15 +1,10 @@
 # Configs for my development environment
 
-+ [SpaceVim](https://github.com/SpaceVim/SpaceVim)
-+ [alacritty](https://github.com/alacritty/alacritty)
-+ [emacs (Doom)](https://github.com/hlissner/doom-emacs)
 + [git](https://git-scm.com/)
 + [kitty](https://sw.kovidgoyal.net/kitty/)
 + [lsd](https://github.com/Peltoche/lsd)
-+ [neovim (nightly)](https://github.com/neovim/neovim)
 + [neovim](https://neovim.io/)
 + [tmux](https://github.com/tmux/tmux)
 + [vim](https://github.com/vim/vim)
 + [vscode](https://code.visualstudio.com/)
-+ [wezterm](https://wezfurlong.org/wezterm/)
 + [zsh](https://www.zsh.org/)
