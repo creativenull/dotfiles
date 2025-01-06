@@ -116,6 +116,9 @@ function M.setup()
     callback = function()
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+      vim.opt.foldlevel = 99
+      vim.opt.foldlevelstart = 1
+      vim.opt.foldtext = ""
     end,
   })
 end
