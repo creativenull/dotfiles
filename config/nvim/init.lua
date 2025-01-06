@@ -633,6 +633,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
     -- Disable inverse visual
     -- vim.api.nvim_set_hl(0, 'Visual', { bg = '#aaaaaa', fg = '#222222' })
+
+    -- Fold
+    vim.api.nvim_set_hl(0, "Folded", { bg = "NONE", fg = "#555555" })
   end,
   desc = "Custom user highlights",
 })
