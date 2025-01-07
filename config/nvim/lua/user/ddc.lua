@@ -85,7 +85,12 @@ end
 
 function M.setup()
   vim.call("ddc#custom#patch_global", {
-    sources = { "lsp", "around", "buffer", "ultisnips" },
+    sources = {
+      "lsp",
+      "around",
+      "buffer",
+      "ultisnips",
+    },
     ui = "pum",
     sourceOptions = {
       ["_"] = {
