@@ -294,6 +294,16 @@ cnoreabbrev Q  q
 cnoreabbrev Qa qa
 cnoreabbrev W  w
 cnoreabbrev Wq wq
+" ============================================================================
+" Vim built-in packages
+"
+" Tags: PACK
+" ============================================================================
+
+packadd! matchit
+packadd! editorconfig
+packadd! comment
+packadd! nohlsearch
 
 " ============================================================================
 " Plugins
@@ -314,19 +324,20 @@ call plug#begin()
 Plug 'lambdalisue/nerdfont.vim'
 Plug 'vim-denops/denops.vim'
 Plug 'vim-denops/denops-shared-server.vim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
 " Core
 " ---
-Plug 'cohama/lexima.vim', { 'commit': '36781e59099b9b46eed564283b95938f90cd852d' }
+Plug 'cohama/lexima.vim'
 Plug 'creativenull/projectlocal-vim', { 'tag': 'v1.*' }
-Plug 'editorconfig/editorconfig-vim'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'Shougo/context_filetype.vim', { 'commit': 'e276626e441eee2c624b9192113f1484bc2bc0f3' }
-Plug 'tyru/caw.vim', { 'commit': '3aefcb5a752a599a9200dd801d6bcb0b7606bf29' }
-Plug 'markonm/traces.vim', { 'commit': '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
+Plug 'Shougo/context_filetype.vim'
+" Plug 'tyru/caw.vim'
+Plug 'markonm/traces.vim', #{ commit: '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
 
 " File explorer
 " ---
@@ -336,7 +347,7 @@ Plug 'lambdalisue/glyph-palette.vim'
 
 " Fuzzy finder/Code finder
 " ---
-Plug 'junegunn/fzf', #{ tag: 'v0.56.3', do: { -> fzf#install() } }
+Plug 'junegunn/fzf', #{ tag: 'v0.57.*', do: { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'dominickng/fzf-session.vim'
 Plug 'linrongbin16/fzfx.vim', #{ commit: '9bd93e78f22c734751688cefd3ee2c475cd85ccd' }
@@ -354,20 +365,16 @@ Plug 'dense-analysis/ale'
 
 " UI/Aeshetics
 " ---
-Plug 'Yggdroot/indentLine', { 'commit': 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' }
-Plug 'machakann/vim-highlightedyank', { 'commit': 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' }
+Plug 'Yggdroot/indentLine', #{ commit: 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' }
+Plug 'machakann/vim-highlightedyank', #{ commit: 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' }
 
 " File syntax plugins
 " ---
-Plug 'elzr/vim-json'
-Plug 'kevinoid/vim-jsonc'
-Plug 'junegunn/vader.vim'
 Plug 'jwalton512/vim-blade'
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'posva/vim-vue'
 Plug 'MTDL9/vim-log-highlighting'
-Plug 'lacygoill/vim9-syntax'
 
 " Colorschemes
 " ---
@@ -400,8 +407,8 @@ command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
 
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
+nnoremap <C-y> <Cmd>call <SID>VimGrep(expand('<cword>'), 0)<CR>
 nnoremap <C-Space> <Cmd>FzfxBuffers<CR>
-
 
 function! s:fzf_statusline()
   " Override statusline as you like
@@ -432,6 +439,50 @@ function! s:FernInit() abort
 endfunction
 
 autocmd! FileType fern call <SID>FernInit()
+
+" emmet-vim Config
+" ---
+let g:user_emmet_leader_key = "<C-q>"
+let g:user_emmet_mode = "in"
+imap <C-x><C-y> <Plug>(emmet-expand-abbr)
+nmap <Leader>er <Plug>(emmet-update-tag)
+let g:user_emmet_settings = #{
+  \blade: #{ extends: 'html' },
+\}
+
+" indentLine Config
+" ---
+let g:indentLine_char = '│'
+let g:indentLine_fileTypeExclude = ['help', 'fern', 'fzf']
+
+" wilder.nvim Config
+" ---
+call wilder#setup(#{
+  \modes: [':', '/', '?'],
+  \next_key: '<C-n>',
+  \previous_key: '<C-p>',
+\})
+
+cnoremap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
+cnoremap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+
+call wilder#set_option('pipeline', [
+  \wilder#branch(
+    \wilder#cmdline_pipeline(#{ fuzzy: 1, set_pcre2_pattern: 1 }),
+    \wilder#python_search_pipeline(#{ pattern: 'fuzzy' })
+  \),
+\])
+
+call wilder#set_option(
+  \'renderer',
+  \wilder#popupmenu_renderer(wilder#popupmenu_border_theme(#{
+    \border: 'rounded',
+    \empty_message: wilder#popupmenu_empty_message_with_spinner(),
+    \highlighter: wilder#basic_highlighter(),
+    \left: [' ', wilder#popupmenu_devicons()],
+    \right: [' ', wilder#popupmenu_scrollbar()],
+  \}))
+\)
 
 " ============================================================================
 " Theme
