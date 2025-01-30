@@ -580,11 +580,11 @@ require("user.fzf").setup()
 
 -- ddc.vim Config
 -- ---
-require("user.ddc").setup()
+-- require("user.ddc").setup()
 
 -- nvim-cmp Config
 -- ---
--- require("user.cmp").setup()
+require("user.cmp").setup()
 
 -- ale Config
 -- ---
