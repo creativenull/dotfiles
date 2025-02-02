@@ -30,3 +30,7 @@ truncation_length = 1
 
 [os]
 disabled = false
+[os.symbols]
+Macos = "\uf302 "
+Mint = "\uf30e "
+Ubuntu = "\ue73a "
