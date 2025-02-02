@@ -1,12 +1,5 @@
-# Oh my zsh configs
-export ZSH=$HOME/.oh-my-zsh
-
-plugins=(artisan composer asdf)
-
-ZSH_THEME="robbyrussell"
-
-source $ZSH/oh-my-zsh.sh
-
+# Custom settings
+# ---
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
@@ -54,3 +47,32 @@ alias gt="git tag"
 # PHP
 alias art="php artisan"
 alias sf="php bin/console"
+
+# zsh settings
+# ---
+autoload -Uz compinit
+compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+HISTFILE=~/.zsh_history
+
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt SHARE_HISTORY
+
+source ~/.config/zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+bindkey '^ ' autosuggest-accept
+
+source ~/.config/zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+
+source ~/.config/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+
+source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
+
+# Starship
+# ---
+eval "$(starship init zsh)"
