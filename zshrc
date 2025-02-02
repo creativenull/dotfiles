@@ -62,6 +62,8 @@ SAVEHIST=10000
 
 setopt SHARE_HISTORY
 
+source ~/.config/zsh-plugins/zsh-deno/deno.plugin.zsh
+
 source ~/.config/zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 bindkey '^ ' autosuggest-accept
 
