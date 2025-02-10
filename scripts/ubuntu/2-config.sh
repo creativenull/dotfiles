@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo 'Symlinking dotfiles'
-ln -s ~/dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/dotfiles/.zshrc ~/.zshrc
+ln -s ~/dotfiles/gitconfig ~/.gitconfig
+ln -s ~/dotfiles/zshrc ~/.zshrc
 ln -s ~/dotfiles/config/zsh-plugins ~/.config/
 ln -s ~/dotfiles/config/starship.toml ~/.config/starship.toml
 ln -s ~/dotfiles/config/kitty ~/.config/
