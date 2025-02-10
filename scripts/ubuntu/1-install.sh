@@ -38,12 +38,6 @@ mkdir -p ~/.local/bin
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zprofile
 export PATH="$HOME/.local/bin:$PATH"
 
-echo 'Installing asdf'
-ASDF_RELEASE_URL="https://github.com/asdf-vm/asdf/releases/download/v0.16.2/asdf-v0.16.2-linux-amd64.tar.gz"
-wget "$ASDF_RELEASE_URL" -O ~/.local/bin/asdf.tar.gz
-tar -xzf ~/.local/bin/asdf.tar.gz -C ~/.local/bin
-rm ~/.local/bin/asdf.tar.gz
-
 echo 'Installing kitty'
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
@@ -53,6 +47,17 @@ cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/appli
 sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
 sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
 echo 'kitty.desktop' > ~/.config/xdg-terminals.list
+
+echo 'Installing asdf'
+ASDF_RELEASE_URL="https://github.com/asdf-vm/asdf/releases/download/v0.16.2/asdf-v0.16.2-linux-amd64.tar.gz"
+wget "$ASDF_RELEASE_URL" -O ~/.local/bin/asdf.tar.gz
+tar -xzf ~/.local/bin/asdf.tar.gz -C ~/.local/bin
+rm ~/.local/bin/asdf.tar.gz
+echo '' >> ~/.zprofile
+echo 'export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.zprofile
+echo 'fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)' >> ~/.zprofile
+echo 'autoload -Uz compinit && compinit' >> ~/.zprofile
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 echo 'Installing deno'
 DENO_VER="2.1.9"
