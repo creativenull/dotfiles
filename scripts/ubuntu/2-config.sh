@@ -10,6 +10,7 @@ ln -s ~/dotfiles/config/lsd ~/.config/
 ln -s ~/dotfiles/config/nvim ~/.config/
 
 echo 'Installing npm packages'
+ln -s ~/dotfiles/npmrc ~/.npmrc
 ln -s ~/dotfiles/default-npm-packages ~/.default-npm-packages
 npm install -g $(cat ~/.default-npm-packages)
 
