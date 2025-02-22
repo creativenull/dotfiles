@@ -76,7 +76,7 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 echo '---'
 echo 'Installing deno'
 echo '---'
-DENO_VER="2.1.9"
+DENO_VER="2.2.0"
 asdf plugin add deno https://github.com/asdf-community/asdf-deno.git
 asdf install deno $DENO_VER
 asdf set -u deno $DENO_VER
@@ -84,7 +84,7 @@ asdf set -u deno $DENO_VER
 echo '---'
 echo 'Installing nodejs'
 echo '---'
-NODE_VER="20.18.0"
+NODE_VER="20.18.3"
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf install nodejs $NODE_VER
 asdf set -u nodejs $NODE_VER
@@ -92,7 +92,7 @@ asdf set -u nodejs $NODE_VER
 echo '---'
 echo 'Installing php'
 echo '---'
-PHP_VER="8.4.3"
+PHP_VER="8.4.4"
 asdf plugin add php https://github.com/asdf-community/asdf-php.git
 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
 asdf set -u php $PHP_VER
