@@ -16,6 +16,7 @@ sudo apt-get install -y \
     zsh \
     ripgrep \
     lsd \
+    bat \
     zip \
     unzip \
     python3-pip \
