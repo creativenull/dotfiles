@@ -121,6 +121,14 @@ unzip ~/.local/bin/stylua.zip -d ~/.local/bin
 rm ~/.local/bin/stylua.zip
 
 echo '---'
+echo 'Install lua-language-server'
+echo '---'
+LUA_LANGUAGE_SERVER_VER="3.13.6"
+asdf plugin add lua-language-server
+asdf install lua-language-server $LUA_LANGUAGE_SERVER_VER
+asdf set -u lua-language-server $LUA_LANGUAGE_SERVER_VER
+
+echo '---'
 echo 'Installing neovim'
 echo '---'
 NVIM_VER="v0.10.4"
