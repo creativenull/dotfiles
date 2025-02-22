@@ -14,7 +14,6 @@ sudo apt-get install -y \
     curl \
     wget \
     zsh \
-    fzf \
     ripgrep \
     lsd \
     zip \
