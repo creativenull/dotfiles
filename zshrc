@@ -49,6 +49,10 @@ alias sf="php bin/console"
 
 # zsh settings
 # ---
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 autoload -Uz compinit
 compinit
 zstyle ':completion:*' menu select
