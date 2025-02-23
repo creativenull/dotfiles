@@ -78,6 +78,10 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 
 source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
 
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+autoload -Uz compinit && compinit
+
 # Starship
 # ---
 eval "$(starship init zsh)"
