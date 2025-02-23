@@ -53,8 +53,10 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-autoload -Uz compinit
-compinit
+bindkey '^I' complete-word
+bindkey '^[[Z' reverse-menu-complete
+
+autoload -Uz compinit; compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
@@ -80,7 +82,6 @@ source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
-autoload -Uz compinit && compinit
 
 # Starship
 # ---
