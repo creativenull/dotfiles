@@ -1,0 +1,10 @@
+./1-system.sh
+./2-mysql.sh
+./3-starship.sh
+./4-asdf.sh
+./5-stylua.sh
+./6-efm-langserver.sh
+./7-kitty.sh
+./8-neovim.sh
+./9-jetbrains.sh
+./99-config.sh
