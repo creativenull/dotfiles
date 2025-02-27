@@ -7,3 +7,4 @@ intelephense
 prettier
 typescript-language-server
 vscode-langservers-extracted
+blade-formatter
