@@ -21,7 +21,7 @@ asdf set -u deno $DENO_VER
 echo '---'
 echo 'Installing nodejs'
 echo '---'
-NODE_VER="20.18.3"
+NODE_VER="22.14.0"
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf install nodejs $NODE_VER
 asdf set -u nodejs $NODE_VER
