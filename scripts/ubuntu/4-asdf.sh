@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Make local bin directory available
 export PATH="$HOME/.local/bin:$PATH"
 

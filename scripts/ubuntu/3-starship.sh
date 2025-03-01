@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo '---'
 echo 'Installing starship'
 echo '---'
