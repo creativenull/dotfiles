@@ -14,7 +14,7 @@ echo '---'
 echo 'Installing deno'
 echo '---'
 DENO_VER="2.2.0"
-asdf plugin add deno https://github.com/asdf-community/asdf-deno.git
+asdf plugin add deno
 asdf install deno $DENO_VER
 asdf set -u deno $DENO_VER
 
@@ -22,7 +22,7 @@ echo '---'
 echo 'Installing nodejs'
 echo '---'
 NODE_VER="22.14.0"
-asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf plugin add nodejs
 asdf install nodejs $NODE_VER
 asdf set -u nodejs $NODE_VER
 
@@ -30,7 +30,7 @@ echo '---'
 echo 'Installing php'
 echo '---'
 PHP_VER="8.4.4"
-asdf plugin add php https://github.com/asdf-community/asdf-php.git
+asdf plugin add php
 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
 asdf set -u php $PHP_VER
 
