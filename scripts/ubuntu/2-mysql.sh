@@ -6,7 +6,7 @@ echo '---'
 sudo apt-get install -y mysql-server
 
 # Secure the MySQL installation (remove anonymous users, disallow remote root login, etc.)
-mysql_secure_installation <<EOF
+sudo mysql_secure_installation <<EOF
 
 n # Change the password? No
 n # Remove anonymous users? Yes
