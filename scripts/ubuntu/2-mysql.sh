@@ -17,7 +17,7 @@ EOF
 
 # Login to MySQL and create the user and grant privileges
 sudo mysql <<EOF
-CREATE USER 'creativenull'@'%' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON *.* TO 'creativenull'@'%' WITH GRANT OPTION;
+CREATE USER 'creativenull'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'creativenull'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOF
