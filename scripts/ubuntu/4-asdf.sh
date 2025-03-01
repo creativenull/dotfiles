@@ -1,3 +1,6 @@
+# Make local bin directory available
+export PATH="$HOME/.local/bin:$PATH"
+
 echo '---'
 echo 'Installing asdf'
 echo '---'
@@ -5,10 +8,6 @@ ASDF_RELEASE_URL="https://github.com/asdf-vm/asdf/releases/download/v0.16.2/asdf
 wget "$ASDF_RELEASE_URL" -O ~/.local/bin/asdf.tar.gz
 tar -xzf ~/.local/bin/asdf.tar.gz -C ~/.local/bin
 rm ~/.local/bin/asdf.tar.gz
-echo '' >> ~/.zprofile
-echo 'export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.zprofile
-echo 'fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)' >> ~/.zprofile
-echo 'autoload -Uz compinit && compinit' >> ~/.zprofile
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 echo '---'
