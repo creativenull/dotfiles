@@ -31,7 +31,7 @@ echo 'Installing php'
 echo '---'
 PHP_VER="8.4.4"
 asdf plugin add php
-PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
+ASDF_CONCURRENCY=4 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
 asdf set -u php $PHP_VER
 
 echo '---'
