@@ -15,7 +15,6 @@ sudo apt-get install -y \
     wget \
     zsh \
     ripgrep \
-    lsd \
     bat \
     zip \
     unzip \
@@ -24,8 +23,6 @@ sudo apt-get install -y \
     python3-pynvim
 
 echo '---'
-echo 'Adding ~/.local/bin to $PATH'
+echo 'Creating local bin directory'
 echo '---'
 mkdir -p ~/.local/bin
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.profile
-export PATH="$HOME/.local/bin:$PATH"
