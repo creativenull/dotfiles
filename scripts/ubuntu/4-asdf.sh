@@ -13,14 +13,6 @@ rm ~/.local/bin/asdf.tar.gz
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 echo '---'
-echo 'Installing deno'
-echo '---'
-DENO_VER="2.2.0"
-asdf plugin add deno
-asdf install deno $DENO_VER
-asdf set -u deno $DENO_VER
-
-echo '---'
 echo 'Installing nodejs'
 echo '---'
 NODE_VER="22.14.0"
