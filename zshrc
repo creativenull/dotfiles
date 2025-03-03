@@ -53,6 +53,10 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+if [ -d "$HOME/.deno/bin" ] ; then
+    PATH="$HOME/.deno/bin:$PATH"
+fi
+
 bindkey '^I' complete-word
 bindkey '^[[Z' reverse-menu-complete
 
