@@ -43,10 +43,6 @@ alias gs="git status"
 alias gst="git stash"
 alias gt="git tag"
 
-# PHP
-alias art="php artisan"
-alias sf="php bin/console"
-
 # zsh settings
 # ---
 if [ -d "$HOME/.local/bin" ] ; then
