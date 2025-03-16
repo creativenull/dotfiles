@@ -2,7 +2,7 @@ PaperWM = hs.loadSpoon("PaperWM")
 
 PaperWM.window_filter:rejectApp("Finder")
 PaperWM.window_filter:rejectApp("qemu-system-aarch64")
-PaperWM.window_gap = 16
+PaperWM.window_gap = 14
 PaperWM.window_ratios = { 0.38195, 0.5, 0.61804 }
 
 PaperWM:bindHotkeys({
