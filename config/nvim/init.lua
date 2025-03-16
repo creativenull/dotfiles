@@ -136,7 +136,7 @@ vim.opt.path = { "**" }
 vim.opt.wildignore = { "*.git/*", "*node_modules/*", "*vendor/*", "*dist/*", "*build/*" }
 
 -- Editor
-vim.opt.colorcolumn = { "80", "100" }
+vim.opt.colorcolumn = { "80", "120" }
 vim.opt.expandtab = false
 vim.opt.lazyredraw = true
 vim.opt.foldenable = false
