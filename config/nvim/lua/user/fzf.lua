@@ -24,10 +24,10 @@ end
 
 function M.setup()
   vim.env.FZF_DEFAULT_COMMAND = "rg --files --hidden --iglob !.git"
-  vim.env.FZF_DEFAULT_OPTS = table.concat({
-    "--reverse",
-    "--color=border:#aaaaaa,gutter:-1,bg+:-1",
-  }, " ")
+  -- vim.env.FZF_DEFAULT_OPTS = table.concat({
+  --   "--reverse",
+  --   "--color=border:#aaaaaa,gutter:-1,bg+:-1",
+  -- }, " ")
 
   vim.g.fzf_vim = {
     preview_window = {},

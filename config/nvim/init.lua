@@ -495,6 +495,7 @@ Plug("tpope/vim-fugitive")
 Plug("lukas-reineke/indent-blankline.nvim", { tag = "v3.*" })
 Plug("creativenull/feline.nvim")
 Plug("creativenull/feline-provider-ale.nvim")
+Plug("f-person/auto-dark-mode.nvim")
 
 -- TreeSitter
 -- ---
@@ -617,26 +618,40 @@ require("ibl").setup({
 -- = Colorscheme =
 -- =============================================================================
 
+local function set_custom_dark_colorscheme()
+  -- Show different color in substitution mode aka `:substitute` / `:s`
+  vim.api.nvim_set_hl(0, "IncSearch", {})
+  vim.api.nvim_set_hl(0, "IncSearch", { bg = "#103da5", fg = "#eeeeee" })
+
+  -- Custom window separator line color
+  vim.api.nvim_set_hl(0, "WinSeparator", {})
+  vim.api.nvim_set_hl(0, "WinSeparator", { bg = "NONE", fg = "#eeeeee" })
+
+  -- Float border transparent
+  -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+  -- vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
+
+  -- Disable inverse visual
+  -- vim.api.nvim_set_hl(0, 'Visual', { bg = '#aaaaaa', fg = '#222222' })
+
+  -- Fold
+  vim.api.nvim_set_hl(0, "Folded", { bg = "NONE", fg = "#555555" })
+end
+
+local function set_custom_light_colorscheme()
+  -- Float border transparent
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE" })
+end
+
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = vim.g.user.event,
   callback = function()
-    -- Show different color in substitution mode aka `:substitute` / `:s`
-    vim.api.nvim_set_hl(0, "IncSearch", {})
-    vim.api.nvim_set_hl(0, "IncSearch", { bg = "#103da5", fg = "#eeeeee" })
-
-    -- Custom window separator line color
-    vim.api.nvim_set_hl(0, "WinSeparator", {})
-    vim.api.nvim_set_hl(0, "WinSeparator", { bg = "NONE", fg = "#eeeeee" })
-
-    -- Float border transparent
-    -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-    -- vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
-
-    -- Disable inverse visual
-    -- vim.api.nvim_set_hl(0, 'Visual', { bg = '#aaaaaa', fg = '#222222' })
-
-    -- Fold
-    vim.api.nvim_set_hl(0, "Folded", { bg = "NONE", fg = "#555555" })
+    if vim.opt.background:get() == "dark" then
+      set_custom_dark_colorscheme()
+    else
+      set_custom_light_colorscheme()
+    end
   end,
   desc = "Custom user highlights",
 })
@@ -646,33 +661,54 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 vim.g.moonflyTransparent = 1
 vim.g.moonflyNormalFloat = 1
 
--- catppuccin Config
--- ---
-pcall(function()
-  vim.g.catppuccin_flavour = "mocha"
-  require("catppuccin").setup({
-    custom_highlights = { NormalFloat = { bg = "NONE" } },
-    term_colors = true,
-    color_overrides = {
-      mocha = {
-        base = "#111111",
-        mantle = "#111111",
-        crust = "#111111",
-      },
-    },
-  })
-end)
-
 -- tokyonight.nvim Config
 -- ---
-pcall(function()
-  require("tokyonight").setup({
-    style = "night",
-    on_highlights = function(hi, _)
-      hi.NormalFloat = { bg = "NONE" }
-      hi.FloatBorder = { bg = "NONE" }
-    end,
-  })
-end)
+-- pcall(function()
+--   require("tokyonight").setup({
+--     style = "night",
+--     on_highlights = function(hi, _)
+--       hi.NormalFloat = { bg = "NONE" }
+--       hi.FloatBorder = { bg = "NONE" }
+--     end,
+--   })
+-- end)
 
-pcall(vim.cmd, "colorscheme moonfly")
+-- auto-dark-mode.nvim Config
+-- ---
+require("auto-dark-mode").setup({
+  set_dark_mode = function()
+    vim.api.nvim_set_option_value("background", "dark", {})
+    pcall(vim.cmd, "colorscheme moonfly")
+
+    vim.env.FZF_DEFAULT_OPTS = table.concat({
+      "--reverse",
+      "--color bg:#080808",
+      "--color bg+:#262626",
+      "--color border:#2e2e2e",
+      "--color fg:#b2b2b2",
+      "--color fg+:#e4e4e4",
+      "--color gutter:#262626",
+      "--color header:#80a0ff",
+      "--color hl+:#f09479",
+      "--color hl:#f09479",
+      "--color info:#cfcfb0",
+      "--color marker:#f09479",
+      "--color pointer:#ff5189",
+      "--color prompt:#80a0ff",
+      "--color spinner:#36c692",
+    }, " ")
+  end,
+  set_light_mode = function()
+    vim.api.nvim_set_option_value("background", "light", {})
+    pcall(vim.cmd, "colorscheme catppuccin-latte")
+
+    vim.env.FZF_DEFAULT_OPTS = table.concat({
+      "--reverse",
+      "--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39",
+      "--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78",
+      "--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39",
+      "--color=selected-bg:#bcc0cc",
+      "--color=border:#ccd0da,label:#4c4f69",
+    }, " ")
+  end,
+})
