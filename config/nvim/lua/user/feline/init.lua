@@ -22,7 +22,12 @@ function M.setup()
         if gitsigns.has_branch() then
           return { fg = colors.neutral200, bg = colors.neutral300 }
         end
-        return { fg = colors.neutral200, bg = colors.neutral900 }
+
+        if vim.opt.background:get() == "light" then
+          return { fg = colors.neutral200, bg = colors.neutral100 }
+        else
+          return { fg = colors.neutral200, bg = colors.neutral900 }
+        end
       end,
     },
   })
@@ -36,7 +41,12 @@ function M.setup()
         if gitsigns.has_changes("added") or gitsigns.has_changes("removed") or gitsigns.has_changes("changed") then
           return { fg = colors.neutral300, bg = colors.neutral300 }
         end
-        return { fg = colors.neutral300, bg = colors.neutral900 }
+
+        if vim.opt.background:get() == "light" then
+          return { fg = colors.neutral300, bg = colors.neutral100 }
+        else
+          return { fg = colors.neutral300, bg = colors.neutral900 }
+        end
       end,
     },
   })
@@ -52,7 +62,12 @@ function M.setup()
           if gitsigns.has_changes("changed") or gitsigns.has_changes("removed") then
             return { fg = colors.neutral300, bg = colors.neutral300 }
           end
-          return { fg = colors.neutral300, bg = colors.neutral900 }
+
+          if vim.opt.background:get() == "light" then
+            return { fg = colors.neutral300, bg = colors.neutral100 }
+          else
+            return { fg = colors.neutral300, bg = colors.neutral900 }
+          end
         end,
       },
     },
@@ -69,7 +84,12 @@ function M.setup()
           if gitsigns.has_changes("removed") then
             return { fg = colors.neutral300, bg = colors.neutral300 }
           end
-          return { fg = colors.neutral300, bg = colors.neutral900 }
+
+          if vim.opt.background:get() == "light" then
+            return { fg = colors.neutral300, bg = colors.neutral100 }
+          else
+            return { fg = colors.neutral300, bg = colors.neutral900 }
+          end
         end,
       },
     },
@@ -82,14 +102,28 @@ function M.setup()
       "block",
       {
         str = "slant_right",
-        hl = { fg = colors.neutral300, bg = colors.neutral900 },
+        -- hl = { fg = colors.neutral300, bg = colors.neutral900 },
+        hl = function()
+          if vim.opt.background:get() == "light" then
+            return { fg = colors.neutral300, bg = colors.neutral100 }
+          else
+            return { fg = colors.neutral300, bg = colors.neutral900 }
+          end
+        end,
       },
     },
   })
 
   table.insert(components.active[1], {
     provider = "",
-    hl = { bg = colors.neutral900 },
+    -- hl = { bg = colors.neutral900 },
+    hl = function()
+      if vim.opt.background:get() == "light" then
+        return { bg = colors.neutral100 }
+      else
+        return { bg = colors.neutral900 }
+      end
+    end,
   })
 
   -- Middle
@@ -126,7 +160,14 @@ function M.setup()
   -- ---
   table.insert(components.active[3], {
     provider = "line_info",
-    hl = { bg = colors.neutral900, fg = colors.neutral100 },
+    -- hl = { bg = colors.neutral900, fg = colors.neutral100 },
+    hl = function()
+      if vim.opt.background:get() == "light" then
+        return { fg = colors.neutral900, bg = colors.neutral100 }
+      else
+        return { fg = colors.neutral100, bg = colors.neutral900 }
+      end
+    end,
   })
 
   table.insert(components.active[3], {
@@ -136,10 +177,16 @@ function M.setup()
       str = "slant_left",
       -- hl = { fg = colors.emerald800, bg = colors.green700 },
       hl = function()
-        if common.is_not_empty_buffer() then
+        -- if common.is_not_empty_buffer() then
+        --   return { fg = colors.emerald800, bg = colors.neutral900 }
+        -- end
+        -- return { fg = colors.emerald800, bg = colors.neutral900 }
+        --
+        if vim.opt.background:get() == "light" then
+          return { fg = colors.emerald800, bg = colors.neutral100 }
+        else
           return { fg = colors.emerald800, bg = colors.neutral900 }
         end
-        return { fg = colors.emerald800, bg = colors.neutral900 }
       end,
     },
   })
