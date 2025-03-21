@@ -700,15 +700,37 @@ require("auto-dark-mode").setup({
   end,
   set_light_mode = function()
     vim.api.nvim_set_option_value("background", "light", {})
-    pcall(vim.cmd, "colorscheme catppuccin-latte")
+    pcall(vim.cmd, "colorscheme tokyonight-day")
 
     vim.env.FZF_DEFAULT_OPTS = table.concat({
       "--reverse",
-      "--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39",
-      "--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78",
-      "--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39",
-      "--color=selected-bg:#bcc0cc",
-      "--color=border:#ccd0da,label:#4c4f69",
+      "--color=bg+:#b7c1e3",
+      "--color=bg:-1",
+      "--color=border:#4094a3",
+      "--color=fg:#3760bf",
+      "--color=gutter:#d0d5e3",
+      "--color=header:#b15c00",
+      "--color=hl+:#188092",
+      "--color=hl:#188092",
+      "--color=info:#8990b3",
+      "--color=marker:#d20065",
+      "--color=pointer:#d20065",
+      "--color=prompt:#188092",
+      "--color=query:#3760bf:regular",
+      "--color=scrollbar:#4094a3",
+      "--color=separator:#b15c00",
+      "--color=spinner:#d20065",
     }, " ")
+
+    -- For catppuccin
+    -- pcall(vim.cmd, "colorscheme catppuccin-latte")
+    -- vim.env.FZF_DEFAULT_OPTS = table.concat({
+    --   "--reverse",
+    --   "--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39",
+    --   "--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78",
+    --   "--color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39",
+    --   "--color=selected-bg:#bcc0cc",
+    --   "--color=border:#ccd0da,label:#4c4f69",
+    -- }, " ")
   end,
 })
