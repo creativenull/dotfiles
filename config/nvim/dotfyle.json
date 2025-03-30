@@ -4,10 +4,7 @@
   "plugins": [
     "Exafunction/codeium.vim",
     "JoosepAlviste/nvim-ts-context-commentstring",
-    "LumaKernel/ddc-source-file",
     "MTDL9/vim-log-highlighting",
-    "Shougo/ddc-filter-matcher_head",
-    "Shougo/ddc-filter-sorter_rank",
     "Shougo/ddc-source-around",
     "Shougo/ddc-source-lsp",
     "Shougo/ddc-ui-native",
@@ -29,9 +26,9 @@
     "creativenull/web.nvim",
     "dense-analysis/ale",
     "dominickng/fzf-session.vim",
+    "f-person/auto-dark-mode.nvim",
     "folke/tokyonight.nvim",
     "gelguy/wilder.nvim",
-    "haxibami/ddc-filter-converter_color",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-nvim-lsp-signature-help",
@@ -69,7 +66,6 @@
     "uga-rosa/ddc-previewer-floating",
     "vim-denops/denops-shared-server.vim",
     "vim-denops/denops.vim",
-    "vim-fall/fall.vim",
     "williamboman/mason.nvim"
   ],
   "pluginManager": "vim-plug",
@@ -94,4 +90,3 @@
   "lspServers": ["efm", "lua_ls"],
   "leaderKey": "<Space>"
 }
-
