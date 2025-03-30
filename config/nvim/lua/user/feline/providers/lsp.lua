@@ -24,7 +24,7 @@ end
 
 function M.is_registered()
   local bufnr = vim.api.nvim_get_current_buf()
-  return #vim.lsp.get_active_clients({ bufnr = bufnr }) > 0
+  return #vim.lsp.get_clients({ bufnr = bufnr }) > 0
 end
 
 function M.status_provider(component)
@@ -35,7 +35,7 @@ function M.status_provider(component)
   end
 
   local bufnr = vim.api.nvim_get_current_buf()
-  local count = #vim.lsp.get_active_clients({ bufnr = bufnr })
+  local count = #vim.lsp.get_clients({ bufnr = bufnr })
 
   if count == 0 then
     return ""

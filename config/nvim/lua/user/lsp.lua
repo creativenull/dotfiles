@@ -15,7 +15,7 @@ local function fmt_with_edit(state)
 end
 
 local function efm_fmt(buf, state)
-  local matched_clients = vim.lsp.get_active_clients({ name = "efm", bufnr = buf })
+  local matched_clients = vim.lsp.get_clients({ name = "efm", bufnr = buf })
 
   if vim.tbl_isempty(matched_clients) then
     return

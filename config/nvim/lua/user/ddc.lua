@@ -10,7 +10,7 @@ end
 
 local function autoimport_nvim_lsp(buf)
   local completeditem = vim.api.nvim_get_var("pum#completed_item")
-  local active_clients = vim.lsp.get_active_clients({ bufnr = buf })
+  local active_clients = vim.lsp.get_clients({ bufnr = buf })
 
   if completeditem.__sourceName == "lsp" then
     for _, client in pairs(active_clients) do
