@@ -1,0 +1,33 @@
+autoinstall:
+  version: 1
+  keyboard:
+    layout: us
+    variant: ""
+  source:
+    id: ubuntu-desktop-minimal
+  storage:
+    swap:
+      size: 0
+    name: lvm
+    sizing-policy: all
+  identity:
+    realname: CreativeNull
+    username: creativenull
+    hostname: nullmachine
+    password: "$1$MkOTatcl$0F0RuBUBXd2UfzWOe5q4b/"
+  packages:
+    - build-essential
+    - autoconf
+    - curl
+    - wget
+    - zsh
+    - ripgrep
+    - bat
+    - zip
+    - unzip
+    - python3-pip
+    - python3-venv
+    - python3-pynvim
+    - mysql-server
+  timezone: "America/Port_of_Spain"
+  updates: security
