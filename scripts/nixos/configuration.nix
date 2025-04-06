@@ -85,8 +85,27 @@
       stylua
       efm-langserver
       nodejs_22
-      php84
-      php84Packages.composer
+      (php84.withExtensions ({ enabled, all }:
+        enabled ++ [
+          all.ctype
+          all.curl
+          all.dom
+          all.fileinfo
+          all.filter
+          all.gd
+          all.imagick
+          all.intl
+          all.mbstring
+          all.opcache
+          all.openssl
+          all.pdo
+          all.pdo_mysql
+          all.session
+          all.sodium
+          all.tokenizer
+          all.xdebug
+          all.zip
+        ])).packages.composer
     ];
     shell = pkgs.zsh;
   };
@@ -113,36 +132,34 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wl-clipboard
-    gcc
-    wget
-    curl
-    zip
-    unzip
-    git
     bash
-    zsh
-    lsd
-    fzf
-    ripgrep
-    kitty
-    fastfetch
-    starship
+    curl
     dbeaver-bin
     deno
-    tree-sitter
-    vim
-    neovim
+    fastfetch
     firefox
+    fzf
+    gcc
+    git
     gnome-tweaks
     gnomeExtensions.blur-my-shell
     gnomeExtensions.dash-to-dock
-    (python312.withPackages (py: [
-      py.pip
-      py.wheel
-      py.setuptools
-      py.pynvim
-    ]))
+    gnomeExtensions.paperwm
+    kitty
+    lsd
+    neovim
+    openssl
+    ripgrep
+    starship
+    tree
+    tree-sitter
+    unzip
+    vim
+    wget
+    wl-clipboard
+    zip
+    zsh
+    (python312.withPackages (py: [ py.pip py.wheel py.setuptools py.pynvim ]))
   ];
 
   # Additional fonts
