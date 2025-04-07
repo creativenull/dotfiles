@@ -175,9 +175,9 @@
     ensureUsers = [
       {
         name = "creativenull";
-	ensurePermissions = {
-	  "*.*" = "ALL PRIVILEGES";
-	};
+        ensurePermissions = {
+          "*.*" = "ALL PRIVILEGES";
+        };
       }
     ];
   };
