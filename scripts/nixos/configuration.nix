@@ -134,7 +134,6 @@
   environment.systemPackages = with pkgs; [
     bash
     curl
-    dbeaver-bin
     deno
     fastfetch
     firefox
