@@ -7,16 +7,16 @@ PaperWM.window_ratios = { 0.38195, 0.5, 0.61804 }
 
 PaperWM:bindHotkeys({
 	-- switch to a new focused window in tiled grid
-	focus_left = { { "alt", "cmd" }, "left" },
-	focus_right = { { "alt", "cmd" }, "right" },
-	focus_up = { { "alt", "cmd" }, "up" },
-	focus_down = { { "alt", "cmd" }, "down" },
+	focus_left = { { "alt", "cmd" }, "," },
+	focus_right = { { "alt", "cmd" }, "." },
+	-- focus_up = { { "alt", "cmd" }, "up" },
+	-- focus_down = { { "alt", "cmd" }, "down" },
 
 	-- move windows around in tiled grid
-	swap_left = { { "alt", "cmd", "shift" }, "left" },
-	swap_right = { { "alt", "cmd", "shift" }, "right" },
-	swap_up = { { "alt", "cmd", "shift" }, "up" },
-	swap_down = { { "alt", "cmd", "shift" }, "down" },
+	swap_left = { { "alt", "cmd", "shift" }, "," },
+	swap_right = { { "alt", "cmd", "shift" }, "." },
+	-- swap_up = { { "alt", "cmd", "shift" }, "up" },
+	-- swap_down = { { "alt", "cmd", "shift" }, "down" },
 
 	-- position and resize focused window
 	center_window = { { "alt", "cmd" }, "c" },
@@ -31,8 +31,8 @@ PaperWM:bindHotkeys({
 	barf_out = { { "alt", "cmd" }, "o" },
 
 	-- switch to a new Mission Control space
-	switch_space_l = { { "alt", "cmd" }, "," },
-	switch_space_r = { { "alt", "cmd" }, "." },
+	switch_space_l = { { "alt", "cmd" }, "left" },
+	switch_space_r = { { "alt", "cmd" }, "right" },
 	switch_space_1 = { { "alt", "cmd" }, "1" },
 	switch_space_2 = { { "alt", "cmd" }, "2" },
 	switch_space_3 = { { "alt", "cmd" }, "3" },
