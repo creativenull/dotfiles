@@ -21,7 +21,6 @@
   boot.loader.grub.useOSProber = true;
 
   networking.hostName = "nullmachine";
-  networking.wireless.enable = true;
   networking.networkmanager.enable = true;
 
   virtualisation.vmware.guest.enable = true;
@@ -59,6 +58,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.zsh.enable = true;
   programs.firefox.enable = true;
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
