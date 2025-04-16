@@ -35,7 +35,7 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
-    option = "caps:escape_shifted_capslock";
+    options = "caps:escape_shifted_capslock";
   };
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
