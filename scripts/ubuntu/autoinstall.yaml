@@ -56,8 +56,11 @@ autoinstall:
     - zlib1g-dev
     - zsh
   snaps:
-    - bibata-all-cursor
-    - tela-icons
-    - vivaldi
+    - name: bibata-all-cursor
+      channel: stable
+    - name: tela-icons
+      channel: stable
+    - name: vivaldi
+      channel: stable
   timezone: "America/Port_of_Spain"
   updates: security
