@@ -12,7 +12,7 @@ echo '---'
 
 sudo snap refresh
 
-read -p "Update kitty? (y/n) " choice
+read -p "Update kitty? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
@@ -30,7 +30,7 @@ if [ "$choice" = "y" ]; then
     sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
 fi
 
-read -p "Update asdf? (y/n) " choice
+read -p "Update asdf? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
@@ -47,7 +47,7 @@ if [ "$choice" = "y" ]; then
     export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 fi
 
-read -p "Update starship? (y/n) " choice
+read -p "Update starship? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
@@ -63,7 +63,7 @@ if [ "$choice" = "y" ]; then
     rm ~/.local/bin/starship.tar.gz
 fi
 
-read -p "Update lsd? (y/n) " choice
+read -p "Update lsd? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
@@ -81,7 +81,7 @@ if [ "$choice" = "y" ]; then
     rm -rf ~/.local/bin/lsd-${LSD_VER}-aarch64-unknown-linux-gnu
 fi
 
-read -p "Update stylua? (y/n) " choice
+read -p "Update stylua? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
@@ -98,7 +98,7 @@ if [ "$choice" = "y" ]; then
 fi
 
 
-read -p "Update efm-langserver? (y/n) " choice
+read -p "Update efm-langserver? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
@@ -117,7 +117,7 @@ if [ "$choice" = "y" ]; then
 fi
 
 
-read -p "Update deno? (y/n) " choice
+read -p "Update deno? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'

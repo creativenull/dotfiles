@@ -36,7 +36,7 @@ ln -s ~/dotfiles/npmrc ~/.npmrc
 rm -fv ~/.default-npm-packages
 ln -s ~/dotfiles/default-npm-packages ~/.default-npm-packages
 
-read -p "Install global npm packages? (y/n) " choice
+read -p "Install global npm packages? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     if [ -x "$(command -v npm)" ]; then
@@ -44,7 +44,7 @@ if [ "$choice" = "y" ]; then
     fi
 fi
 
-read -p "Change default shell? (y/n) " choice
+read -p "Change default shell? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
     echo '---'
