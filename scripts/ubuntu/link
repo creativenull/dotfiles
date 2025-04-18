@@ -36,8 +36,11 @@ ln -s ~/dotfiles/npmrc ~/.npmrc
 rm -fv ~/.default-npm-packages
 ln -s ~/dotfiles/default-npm-packages ~/.default-npm-packages
 
-if [ -x "$(command -v npm)" ]; then
-    npm install -g $(cat ~/.default-npm-packages)
+read -p "Install global npm packages? (y/n) " choice
+if [ "$choice" != "y" ]; then
+    if [ -x "$(command -v npm)" ]; then
+	npm install -g $(cat ~/.default-npm-packages)
+    fi
 fi
 
 echo ''
