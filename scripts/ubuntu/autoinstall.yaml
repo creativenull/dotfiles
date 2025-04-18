@@ -17,6 +17,9 @@ autoinstall:
     password: "$1$MkOTatcl$0F0RuBUBXd2UfzWOe5q4b/"
   packages:
     - build-essential
+    - ninja-build
+    - gettext
+    - cmake
     - autoconf
     - curl
     - wget
