@@ -14,7 +14,7 @@ sudo snap refresh
 
 read -p "Update kitty? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating kitty'
     echo '---'
@@ -32,7 +32,7 @@ fi
 
 read -p "Update asdf? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating asdf'
     echo '---'
@@ -49,7 +49,7 @@ fi
 
 read -p "Update starship? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating starship'
     echo '---'
@@ -65,7 +65,7 @@ fi
 
 read -p "Update lsd? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating lsd'
     echo '---'
@@ -83,7 +83,7 @@ fi
 
 read -p "Update stylua? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating stylua'
     echo '---'
@@ -100,7 +100,7 @@ fi
 
 read -p "Update efm-langserver? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating efm-langserver'
     echo '---'
@@ -119,7 +119,7 @@ fi
 
 read -p "Update deno? (y/n) " choice
 
-if [ "$choice" != "y" ]; then
+if [ "$choice" = "y" ]; then
     echo '---'
     echo 'Updating deno'
     echo '---'
