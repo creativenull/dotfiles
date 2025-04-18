@@ -16,21 +16,21 @@ autoinstall:
     hostname: nullmachine
     password: "$1$MkOTatcl$0F0RuBUBXd2UfzWOe5q4b/"
   packages:
-    - build-essential
-    - ninja-build
-    - gettext
-    - cmake
     - autoconf
-    - curl
-    - wget
-    - zsh
-    - ripgrep
     - bat
-    - zip
-    - unzip
-    - python3-pip
-    - python3-venv
-    - python3-pynvim
+    - build-essential
+    - cmake
+    - curl
+    - gettext
     - mysql-server
+    - ninja-build
+    - python3-pip
+    - python3-pynvim
+    - python3-venv
+    - ripgrep
+    - unzip
+    - wget
+    - zip
+    - zsh
   timezone: "America/Port_of_Spain"
   updates: security
