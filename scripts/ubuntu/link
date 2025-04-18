@@ -37,15 +37,19 @@ rm -fv ~/.default-npm-packages
 ln -s ~/dotfiles/default-npm-packages ~/.default-npm-packages
 
 read -p "Install global npm packages? (y/n) " choice
+
 if [ "$choice" != "y" ]; then
     if [ -x "$(command -v npm)" ]; then
 	npm install -g $(cat ~/.default-npm-packages)
     fi
 fi
 
-echo ''
-echo '---'
-echo 'Setting default shell to zsh'
-echo '---'
+read -p "Change default shell? (y/n) " choice
 
-chsh -s /bin/zsh
+if [ "$choice" != "y" ]; then
+    echo '---'
+    echo 'Setting default shell to zsh'
+    echo '---'
+
+    chsh -s /bin/zsh
+fi
