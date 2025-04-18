@@ -7,7 +7,7 @@ echo '---'
 rm -rf ~/.config/kitty
 ln -s ~/dotfiles/config/kitty ~/.config/
 
-rm -fv ~/.config/nvim
+rm -fv ~/.gitconfig
 ln -s ~/dotfiles/gitconfig ~/.gitconfig
 
 rm -fv ~/.zshrc
