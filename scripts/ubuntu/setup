@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+
+echo '---'
+echo 'Creating ~/.local/bin and add to $PATH'
+echo '---'
+
+mkdir -p ~/.local/bin
+export PATH="$HOME/.local/bin:$PATH"
+
+echo '---'
+echo 'Install mysql-server'
+echo '---'
+
+# Secure the MySQL installation (remove anonymous users, disallow remote root login, etc.)
+sudo mysql_secure_installation <<EOF
+
+n # Change the password? No
+n # Remove anonymous users? Yes
+y # Disallow root login remotely? Yes
+y # Remove test database and access to it? Yes
+y # Reload privilege tables now? Yes
+EOF
+
+# Login to MySQL and create the user and grant privileges
+sudo mysql <<EOF
+CREATE USER 'creativenull'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'creativenull'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF
+
+echo '---'
+echo 'Installing starship'
+echo '---'
+
+STARSHIP_VER="v1.22.1"
+STARSHIP_URL="https://github.com/starship/starship/releases/download/${STARSHIP_VER}/starship-x86_64-unknown-linux-gnu.tar.gz"
+wget "$STARSHIP_URL" -O ~/.local/bin/starship.tar.gz
+tar -xzf ~/.local/bin/starship.tar.gz -C ~/.local/bin
+rm ~/.local/bin/starship.tar.gz
+
+echo '---'
+echo 'Installing deno'
+echo '---'
+
+curl -fsSL https://deno.land/install.sh | sh -s -- --yes --no-modify-path
+
+echo '---'
+echo 'Installing lsd'
+echo '---'
+
+LSD_VER="v1.1.5"
+LSD_URL="https://github.com/lsd-rs/lsd/releases/download/${LSD_VER}/lsd-${LSD_VER}-aarch64-unknown-linux-gnu.tar.gz"
+wget "$LSD_URL" -O ~/.local/bin/lsd.tar.gz
+tar -xzf ~/.local/bin/lsd.tar.gz -C ~/.local/bin
+rm ~/.local/bin/lsd.tar.gz
+mv -v ~/.local/bin/lsd-${LSD_VER}-aarch64-unknown-linux-gnu/lsd ~/.local/bin
+rm -rf ~/.local/bin/lsd-${LSD_VER}-aarch64-unknown-linux-gnu
+
+echo '---'
+echo 'Installing stylua'
+echo '---'
+
+STYLUA_VER="v2.0.2"
+STYLUA_URL="https://github.com/JohnnyMorganz/StyLua/releases/download/${STYLUA_VER}/stylua-linux-x86_64.zip"
+wget "$STYLUA_URL" -O ~/.local/bin/stylua.zip
+unzip ~/.local/bin/stylua.zip -d ~/.local/bin
+rm ~/.local/bin/stylua.zip
+
+echo '---'
+echo 'Installing efm-langserver'
+echo '---'
+
+EFM_VER="v0.0.54"
+EFM_URL="https://github.com/mattn/efm-langserver/releases/download/$EFM_VER/efm-langserver_${EFM_VER}_linux_amd64.tar.gz"
+wget "$EFM_URL" -O ~/.local/bin/efm-langserver.tar.gz
+tar -xzf ~/.local/bin/efm-langserver.tar.gz -C ~/.local/bin
+rm ~/.local/bin/efm-langserver.tar.gz
+mv ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64/efm-langserver ~/.local/bin
+rm -rf ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64
+
+echo '---'
+echo 'Installing asdf'
+echo '---'
+
+ASDF_VER="v0.16.7"
+ASDF_URL="https://github.com/asdf-vm/asdf/releases/download/${ASDF_VER}/asdf-${ASDF_VER}-linux-amd64.tar.gz"
+wget "$ASDF_URL" -O ~/.local/bin/asdf.tar.gz
+tar -xzf ~/.local/bin/asdf.tar.gz -C ~/.local/bin
+rm ~/.local/bin/asdf.tar.gz
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+echo '---'
+echo 'Installing nodejs'
+echo '---'
+
+NODE_VER="22.14.0"
+asdf plugin add nodejs
+asdf install nodejs $NODE_VER
+asdf set -u nodejs $NODE_VER
+
+echo '---'
+echo 'Installing php'
+echo '---'
+
+PHP_VER="8.4.4"
+asdf plugin add php
+ASDF_CONCURRENCY=4 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
+asdf set -u php $PHP_VER
+
+echo '---'
+echo 'Install lua-language-server'
+echo '---'
+
+LUA_LANGUAGE_SERVER_VER="3.13.6"
+asdf plugin add lua-language-server
+asdf install lua-language-server $LUA_LANGUAGE_SERVER_VER
+asdf set -u lua-language-server $LUA_LANGUAGE_SERVER_VER
+
+echo '---'
+echo 'Installing kitty'
+echo '---'
+
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
+mkdir -p ~/.local/share/applications
+cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
+sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+echo 'kitty.desktop' > ~/.config/xdg-terminals.list
+
+echo '---'
+echo 'Installing neovim'
+echo '---'
+
+NVIM_VER="v0.10.4"
+rm -rf ~/.builds/neovim
+git clone --depth 1 --branch $NVIM_VER https://github.com/neovim/neovim.git ~/.builds/neovim
+cd ~/.builds/neovim
+make distclean && make -j2 CMAKE_BUILD_TYPE=Release
+sudo make install
+
+echo '---'
+echo 'Installing fonts, icons and themes'
+echo '---'
+
+JETBRAINS_NF_VER="v3.3.0"
+JETBRAINS_NF_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${JETBRAINS_NF_VER}/JetBrainsMono.zip"
+mkdir -p ~/.local/share/fonts
+wget "$JETBRAINS_NF_URL" -O ~/.builds/JetBrainsMono.zip
+unzip ~/.builds/JetBrainsMono.zip -d ~/.local/share/fonts
+rm ~/.builds/JetBrainsMono.zip
+
+#TELA_ICONS_GIT_URL="https://github.com/vinceliuice/Tela-icon-theme.git"
+#rm -rf ~/.builds/Tela-icon-theme
+#git clone --depth 1 $TELA_ICONS_GIT_URL ~/.builds/Tela-icon-theme
+#~/.builds/Tela-icon-theme/install.sh -- -a
+#rm -rf ~/.builds/Tela-icon-theme
+#
+#BIBATA_CURSOR_VER="v2.0.7"
+#BIBATA_CURSOR_URL="https://github.com/ful1e5/Bibata_Cursor/releases/download/${BIBATA_CURSOR_VER}/Bibata-Modern-Classic.tar.xz"
+#mkdir -p ~/.local/share/icons
+#wget "$BIBATA_CURSOR_URL" -O ~/.builds/Bibata-Modern-Classic.tar.xz
+#tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C ~/.local/share/icons
+#rm ~/.builds/Bibata-Modern-Classic.tar.xz
