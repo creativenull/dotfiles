@@ -1,6 +1,10 @@
 #cloud-config
 autoinstall:
   version: 1
+  shutdown: reboot
+  locale: en_US.UTF-8
+  timezone: "America/Port_of_Spain"
+  updates: security
   keyboard:
     layout: us
     variant: ""
@@ -63,5 +67,3 @@ autoinstall:
       channel: stable
     - name: vivaldi
       channel: stable
-  timezone: "America/Port_of_Spain"
-  updates: security
