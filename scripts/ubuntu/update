@@ -97,7 +97,6 @@ if [ "$choice" = "y" ]; then
     rm ~/.local/bin/stylua.zip
 fi
 
-
 read -p "Update efm-langserver? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
@@ -115,7 +114,6 @@ if [ "$choice" = "y" ]; then
     mv ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64/efm-langserver ~/.local/bin
     rm -rf ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64
 fi
-
 
 read -p "Update deno? (y/N) " choice
 
