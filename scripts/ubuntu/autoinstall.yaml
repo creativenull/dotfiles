@@ -1,13 +1,10 @@
 #cloud-config
 autoinstall:
   version: 1
-  shutdown: reboot
-  locale: en_US.UTF-8
+  locale: "en_US"
   timezone: "America/Port_of_Spain"
-  updates: security
   keyboard:
     layout: us
-    variant: ""
   source:
     id: ubuntu-desktop-minimal
   storage:
