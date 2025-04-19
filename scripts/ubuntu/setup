@@ -11,7 +11,7 @@ echo '---'
 echo 'Install mysql-server'
 echo '---'
 
-# Secure the MySQL installation (remove anonymous users, disallow remote root login, etc.)
+sudo apt install mysql-server mysql-client -y
 sudo mysql_secure_installation <<EOF
 
 n # Change the password? No

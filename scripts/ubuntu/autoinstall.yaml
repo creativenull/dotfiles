@@ -43,7 +43,6 @@ autoinstall:
     - libssl-dev
     - libxml2-dev
     - libzip-dev
-    - mysql-server
     - ninja-build
     - openssl
     - pkg-config
