@@ -11,10 +11,8 @@ autoinstall:
   source:
     id: ubuntu-desktop-minimal
   storage:
-    swap:
-      size: 0
-    name: lvm
-    sizing-policy: all
+    layout:
+      name: lvm
   identity:
     realname: CreativeNull
     username: creativenull
