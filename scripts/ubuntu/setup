@@ -161,3 +161,12 @@ BIBATA_CURSOR_URL="https://github.com/ful1e5/Bibata_Cursor/releases/download/${B
 wget "$BIBATA_CURSOR_URL" -O ~/.builds/Bibata-Modern-Classic.tar.xz
 sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
 rm ~/.builds/Bibata-Modern-Classic.tar.xz
+
+echo '---'
+echo 'Configuring keyboard settings'
+echo '---'
+
+gsettings set org.gnome.desktop.peripherals.keyboard delay 250
+gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 15
+
+gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape_shifted_capslock']"
