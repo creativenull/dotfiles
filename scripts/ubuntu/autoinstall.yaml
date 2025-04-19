@@ -25,6 +25,8 @@ autoinstall:
     - fonts-inter
     - gettext
     - git
+    - gnome-tweaks
+    - gnome-shell-extension-manager
     - libcurl4-openssl-dev
     - libedit-dev
     - libgd-dev
