@@ -151,15 +151,13 @@ wget "$JETBRAINS_NF_URL" -O ~/.builds/JetBrainsMono.zip
 unzip ~/.builds/JetBrainsMono.zip -d ~/.local/share/fonts
 rm ~/.builds/JetBrainsMono.zip
 
-#TELA_ICONS_GIT_URL="https://github.com/vinceliuice/Tela-icon-theme.git"
-#rm -rf ~/.builds/Tela-icon-theme
-#git clone --depth 1 $TELA_ICONS_GIT_URL ~/.builds/Tela-icon-theme
-#~/.builds/Tela-icon-theme/install.sh -- -a
-#rm -rf ~/.builds/Tela-icon-theme
-#
-#BIBATA_CURSOR_VER="v2.0.7"
-#BIBATA_CURSOR_URL="https://github.com/ful1e5/Bibata_Cursor/releases/download/${BIBATA_CURSOR_VER}/Bibata-Modern-Classic.tar.xz"
-#mkdir -p ~/.local/share/icons
-#wget "$BIBATA_CURSOR_URL" -O ~/.builds/Bibata-Modern-Classic.tar.xz
-#tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C ~/.local/share/icons
-#rm ~/.builds/Bibata-Modern-Classic.tar.xz
+TELA_ICONS_GIT_URL="https://github.com/vinceliuice/Tela-icon-theme.git"
+git clone --depth 1 $TELA_ICONS_GIT_URL ~/.builds/Tela-icon-theme
+sudo ~/.builds/Tela-icon-theme/install.sh -a
+rm -rf ~/.builds/Tela-icon-theme
+
+BIBATA_CURSOR_VER="v2.0.7"
+BIBATA_CURSOR_URL="https://github.com/ful1e5/Bibata_Cursor/releases/download/${BIBATA_CURSOR_VER}/Bibata-Modern-Classic.tar.xz"
+wget "$BIBATA_CURSOR_URL" -O ~/.builds/Bibata-Modern-Classic.tar.xz
+sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
+rm ~/.builds/Bibata-Modern-Classic.tar.xz
