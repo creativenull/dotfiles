@@ -50,6 +50,7 @@ autoinstall:
     - python3-venv
     - re2c
     - ripgrep
+    - timeshift
     - unzip
     - wget
     - zip
