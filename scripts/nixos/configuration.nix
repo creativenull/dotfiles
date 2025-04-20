@@ -74,6 +74,7 @@
     gnomeExtensions.blur-my-shell
     gnomeExtensions.dash-to-dock
     gnomeExtensions.paperwm
+    home-manager
     kitty
     lsd
     lua-language-server
