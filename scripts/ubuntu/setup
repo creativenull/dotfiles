@@ -163,6 +163,15 @@ sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
 rm ~/.builds/Bibata-Modern-Classic.tar.xz
 
 echo '---'
+echo 'Configuring system theme'
+echo '---'
+
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface color-scheme 'Yaru-blue-dark'
+gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Classic'
+gsettings set org.gnome.desktop.interface icon-theme 'Tela-blue'
+
+echo '---'
 echo 'Configuring keyboard settings'
 echo '---'
 
