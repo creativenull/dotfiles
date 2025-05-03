@@ -177,7 +177,7 @@ sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
 rm ~/.builds/Bibata-Modern-Classic.tar.xz
 
 echo '---'
-echo 'Configuring theme for snap pacakges'
+echo 'Configuring theme for snap packages'
 echo '---'
 
 sudo snap install bibata-all-cursor
@@ -190,7 +190,7 @@ echo '---'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Yaru-blue-dark'
 gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Classic'
-gsettings set org.gnome.desktop.interface icon-theme 'Tela-blue'
+gsettings set org.gnome.desktop.interface icon-theme 'Tela-dark'
 
 echo '---'
 echo 'Configuring keyboard settings'
