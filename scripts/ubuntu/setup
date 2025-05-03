@@ -177,6 +177,13 @@ sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
 rm ~/.builds/Bibata-Modern-Classic.tar.xz
 
 echo '---'
+echo 'Configuring theme for snap pacakges'
+echo '---'
+
+sudo snap install bibata-all-cursor
+for plug in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect ${plug} bibata-all-cursor:icon-themes; done
+
+echo '---'
 echo 'Configuring system theme'
 echo '---'
 
