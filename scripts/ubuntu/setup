@@ -200,3 +200,10 @@ gsettings set org.gnome.desktop.peripherals.keyboard delay 250
 gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 15
 
 gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape_shifted_capslock']"
+
+echo '---'
+echo 'Configuring misc settings'
+echo '---'
+
+# Change emoji keyboard shortcut
+gsettings set org.freedesktop.ibus.panel.emoji hotkey "['<Ctrl><Shift>e']"
