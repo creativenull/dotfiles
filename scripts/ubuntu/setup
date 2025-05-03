@@ -67,8 +67,8 @@ LSD_URL="https://github.com/lsd-rs/lsd/releases/download/${LSD_VER}/lsd-${LSD_VE
 wget "$LSD_URL" -O ~/.local/bin/lsd.tar.gz
 tar -xzf ~/.local/bin/lsd.tar.gz -C ~/.local/bin
 rm ~/.local/bin/lsd.tar.gz
-mv -v ~/.local/bin/lsd-${LSD_VER}-aarch64-unknown-linux-gnu/lsd ~/.local/bin
-rm -rf ~/.local/bin/lsd-${LSD_VER}-aarch64-unknown-linux-gnu
+mv -v ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu/lsd ~/.local/bin
+rm -rf ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu
 
 echo '---'
 echo 'Installing stylua'
