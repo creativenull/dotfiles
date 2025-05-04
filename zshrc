@@ -9,6 +9,11 @@ else
     export EDITOR=nvim
 fi
 
+# Make aliase for bat if batcat is found
+if command -v batcat &> /dev/null; then
+	alias bat="batcat"
+fi
+
 # System
 alias ls="lsd -A"
 alias ll="lsd -lA"
