@@ -5,6 +5,7 @@
 	editor = nvim
 	autocrlf = input
 	whitespace = error
+	pager = batcat -l man -p
 [color]
 	ui = auto
 [init]
