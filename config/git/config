@@ -12,6 +12,11 @@
 	defaultBranch = main
 [pull]
 	ff = only
+	default = current
+[push]
+	autoSetupRemote = true
+	default = current
+	followTags = true
 [column]
 	ui = auto
 [branch]
