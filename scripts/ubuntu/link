@@ -9,7 +9,8 @@ rm -rf ~/.config/kitty
 ln -s ~/dotfiles/config/kitty ~/.config/
 
 rm -fv ~/.gitconfig
-ln -s ~/dotfiles/gitconfig ~/.gitconfig
+rm -rfv ~/.config/git
+ln -s ~/dotfiles/config/git ~/.config/
 
 rm -fv ~/.zshrc
 ln -s ~/dotfiles/zshrc ~/.zshrc
