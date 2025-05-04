@@ -15,3 +15,5 @@ autoinstall:
     username: creativenull
     hostname: nullmachine
     password: "$1$MkOTatcl$0F0RuBUBXd2UfzWOe5q4b/"
+  packages:
+    - git
