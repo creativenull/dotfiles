@@ -43,6 +43,35 @@ FLUSH PRIVILEGES;
 EOF
 
 echo '---'
+echo 'Installing asdf'
+echo '---'
+
+ASDF_VER="v0.16.7"
+ASDF_URL="https://github.com/asdf-vm/asdf/releases/download/${ASDF_VER}/asdf-${ASDF_VER}-linux-amd64.tar.gz"
+wget "$ASDF_URL" -O ~/.local/bin/asdf.tar.gz
+tar -xzf ~/.local/bin/asdf.tar.gz -C ~/.local/bin
+rm ~/.local/bin/asdf.tar.gz
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+echo '---'
+echo 'Installing nodejs'
+echo '---'
+
+NODE_VER="22.15.0"
+asdf plugin add nodejs
+asdf install nodejs $NODE_VER
+asdf set -u nodejs $NODE_VER
+
+echo '---'
+echo 'Installing php'
+echo '---'
+
+PHP_VER="8.4.4"
+asdf plugin add php
+ASDF_CONCURRENCY=4 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
+asdf set -u php $PHP_VER
+
+echo '---'
 echo 'Installing starship'
 echo '---'
 
@@ -91,35 +120,6 @@ tar -xzf ~/.local/bin/efm-langserver.tar.gz -C ~/.local/bin
 rm ~/.local/bin/efm-langserver.tar.gz
 mv ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64/efm-langserver ~/.local/bin
 rm -rf ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64
-
-echo '---'
-echo 'Installing asdf'
-echo '---'
-
-ASDF_VER="v0.16.7"
-ASDF_URL="https://github.com/asdf-vm/asdf/releases/download/${ASDF_VER}/asdf-${ASDF_VER}-linux-amd64.tar.gz"
-wget "$ASDF_URL" -O ~/.local/bin/asdf.tar.gz
-tar -xzf ~/.local/bin/asdf.tar.gz -C ~/.local/bin
-rm ~/.local/bin/asdf.tar.gz
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
-echo '---'
-echo 'Installing nodejs'
-echo '---'
-
-NODE_VER="22.14.0"
-asdf plugin add nodejs
-asdf install nodejs $NODE_VER
-asdf set -u nodejs $NODE_VER
-
-echo '---'
-echo 'Installing php'
-echo '---'
-
-PHP_VER="8.4.4"
-asdf plugin add php
-ASDF_CONCURRENCY=4 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium" asdf install php $PHP_VER
-asdf set -u php $PHP_VER
 
 echo '---'
 echo 'Install lua-language-server'
