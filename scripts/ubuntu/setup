@@ -17,7 +17,7 @@ sudo apt install -y autoconf bat bison build-essential cmake curl fonts-inter ge
 	gnome-shell-extension-manager libcurl4-openssl-dev libedit-dev libgd-dev libicu-dev libjpeg-dev libmysqlclient-dev \
 	libonig-dev libpng-dev libpq-dev libreadline-dev libsodium-dev libsqlite3-dev libssl-dev libxml2-dev \
 	libzip-dev ninja-build openssl pkg-config python3-pip python3-pynvim python3-venv re2c ripgrep unzip wget zip \
-	zlib1g-dev zsh
+	zlib1g-dev zsh software-properties-common
 
 sudo snap refresh
 sudo snap install --stable vivaldi
