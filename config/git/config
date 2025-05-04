@@ -4,6 +4,7 @@
 [core]
 	editor = nvim
 	autocrlf = input
+	whitespace = error
 [color]
 	ui = auto
 [init]
@@ -14,3 +15,11 @@
 	ui = auto
 [branch]
 	sort = -committerdate
+[advise]
+	addEmptyPathspec = false
+	pushNonFastForward = false
+	statusHints = false
+	detachedHead = false
+[diff]
+	renames = copies
+	interHunkContext = 10
