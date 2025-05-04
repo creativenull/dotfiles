@@ -11,7 +11,7 @@ echo '---'
 echo 'Install system packages'
 echo '---'
 
-sudo apt update
+sudo apt update && sudo apt upgrade -y
 sudo apt install -y autoconf bat bison build-essential cmake curl fonts-inter gettext git gnome-tweaks \
 	gnome-shell-extension-manager libcurl4-openssl-dev libedit-dev libgd-dev libicu-dev libjpeg-dev libmysqlclient-dev \
 	libonig-dev libpng-dev libpq-dev libreadline-dev libsodium-dev libsqlite3-dev libssl-dev libxml2-dev \
