@@ -499,8 +499,8 @@ Plug("f-person/auto-dark-mode.nvim")
 
 -- TreeSitter
 -- ---
-Plug("nvim-treesitter/nvim-treesitter", { commit = "2d5133f67429f82547ea5fad33a0b1e7d4f78a1c", ["do"] = ":TSUpdate" })
-Plug("nvim-treesitter/nvim-treesitter-textobjects", { commit = "84cc9ed772f1fee2f47c1e076f518829583d8347" })
+Plug("nvim-treesitter/nvim-treesitter", { commit = "94ea4f436d2b59c80f02e293466c374584f03b8c", ["do"] = ":TSUpdate" })
+Plug("nvim-treesitter/nvim-treesitter-textobjects", { commit = "ed373482db797bbf71bdff37a15c7555a84dce47" })
 
 -- Doc Generation
 -- ---
