@@ -29,3 +29,5 @@
 [diff]
 	renames = copies
 	interHunkContext = 10
+[fetch]
+	prune = true
