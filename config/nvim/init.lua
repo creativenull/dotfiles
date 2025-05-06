@@ -106,6 +106,12 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Set code indents",
 })
 
+vim.filetype.add({
+  pattern = {
+    [".*/git/config"] = "gitconfig",
+  },
+})
+
 -- =============================================================================
 -- = Options (OPT) =
 -- =============================================================================
