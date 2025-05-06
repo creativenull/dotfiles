@@ -5,9 +5,24 @@
 	editor = nvim
 	autocrlf = input
 	whitespace = error
-	pager = bat -l man -p
+	pager = diff-so-fancy | less --tabs=4 -RF
+[interactive]
+	diffFilter = diff-so-fancy --patch
 [color]
 	ui = auto
+[color "diff-highlight"]
+	oldNormal = "red bold"
+	oldHighlight = "red bold 52"
+	newNormal = "green bold"
+	newHighlight = "green bold 22"
+[color "diff"]
+	meta = "11"
+	frag = "magenta bold"
+	func = "146 bold"
+	commit = "yellow bold"
+	old  = "red bold"
+	new  = "green bold"
+	whitespace = "red reverse"
 [init]
 	defaultBranch = main
 [pull]
