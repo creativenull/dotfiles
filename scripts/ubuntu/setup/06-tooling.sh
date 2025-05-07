@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing stylua'
-echo '---'
+echo '=> Installing stylua'
 
 STYLUA_VER="v2.0.2"
 STYLUA_URL="https://github.com/JohnnyMorganz/StyLua/releases/download/${STYLUA_VER}/stylua-linux-x86_64.zip"
@@ -14,20 +12,18 @@ stylua_install() {
 
 if command -v stylua &> /dev/null
 then
-	read -p "stylua: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> stylua: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		stylua_install
 	else
-		echo "Skipping"
+		echo "=> Skipping"
 	fi
 else
 	stylua_install
 fi
 
-echo '---'
-echo 'Installing efm-langserver'
-echo '---'
+echo '=> Installing efm-langserver'
 
 EFM_VER="v0.0.54"
 EFM_URL="https://github.com/mattn/efm-langserver/releases/download/$EFM_VER/efm-langserver_${EFM_VER}_linux_amd64.tar.gz"
@@ -41,20 +37,18 @@ efm_install() {
 
 if command -v efm-langserver &> /dev/null
 then
-	read -p "efm-langserver: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> efm-langserver: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		efm_install
 	else
-		echo "Skipping"
+		echo "=> Skipping"
 	fi
 else
 	efm_install
 fi
 
-echo '---'
-echo 'Installing deno'
-echo '---'
+echo '=> Installing deno'
 
 deno_install() {
 	curl -fsSL https://deno.land/install.sh | sh -s -- --yes --no-modify-path
@@ -62,20 +56,18 @@ deno_install() {
 
 if command -v deno &> /dev/null
 then
-	read -p "deno: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> deno: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		deno_install
 	else
-		echo "Skipping: deno already installed"
+		echo "=> Skipping"
 	fi
 else
 	deno_install
 fi
 
-echo '---'
-echo 'Install lua-language-server'
-echo '---'
+echo '=> Install lua-language-server'
 
 LUA_LANGUAGE_SERVER_VER="3.13.6"
 luals_install() {
@@ -86,12 +78,12 @@ luals_install() {
 
 if command -v lua-language-server &> /dev/null
 then
-	read -p "lua-language-server: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> lua-language-server: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		luals_install
 	else
-		echo "Skipping: lua-language-server already installed"
+		echo "=> Skipping"
 	fi
 else
 	luals_install

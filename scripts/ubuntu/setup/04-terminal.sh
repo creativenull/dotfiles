@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing starship'
-echo '---'
+echo '=> Installing starship'
 
 STARSHIP_VER="v1.22.1"
 STARSHIP_URL="https://github.com/starship/starship/releases/download/${STARSHIP_VER}/starship-x86_64-unknown-linux-gnu.tar.gz"
@@ -14,20 +12,18 @@ starship_install() {
 
 if command -v starship &> /dev/null
 then
-	read -p "starship: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> starship: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		starship_install
 	else
-		echo "Skipping"
+		echo "=> Skipping"
 	fi
 else
 	starship_install
 fi
 
-echo '---'
-echo 'Installing kitty'
-echo '---'
+echo '=> Installing kitty'
 
 kitty_install() {
 	curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
@@ -42,24 +38,22 @@ kitty_install() {
 
 if command -v kitty &> /dev/null
 then
-	read -p "kitty: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> kitty: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		kitty_install
 	else
-		echo "Skipping"
+		echo "=> Skipping"
 	fi
 else
 	kitty_install
 fi
 
-echo '---'
-echo 'Installing diff-so-fancy'
-echo '---'
+echo '=> Installing diff-so-fancy'
 
 if command -v diff-so-fancy &> /dev/null
 then
-	echo "Skipping: diff-so-fancy already installed"
+	echo "=> Skipping"
 else
 	sudo add-apt-repository ppa:aos1/diff-so-fancy
 	sudo apt update

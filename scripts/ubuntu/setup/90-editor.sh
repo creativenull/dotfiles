@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing neovim'
-echo '---'
+echo '=> Installing neovim'
 
 neovim_install() {
 	sudo apt install -y ninja-build gettext cmake curl build-essential
@@ -17,12 +15,12 @@ neovim_install() {
 
 if command -v nvim &> /dev/null
 then
-	read -p "nvim: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> nvim: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		nvim_install
 	else
-		echo "Skipping: nvim already installed"
+		echo "=> Skipping: nvim already installed"
 	fi
 else
 	nvim_install

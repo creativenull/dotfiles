@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing caddy'
-echo '---'
+echo '=> Installing caddy'
 
 caddy_install() {
 	sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
@@ -13,12 +11,12 @@ caddy_install() {
 
 if command -v caddy &> /dev/null
 then
-	read -p "caddy: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> caddy: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		caddy_install
 	else
-		echo "Skipping: caddy already installed"
+		echo "=> Skipping"
 	fi
 else
 	caddy_install

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing core packages'
-echo '---'
+echo '=> Installing core packages'
 
 sudo apt install -y autoconf
 sudo apt install -y bat
@@ -21,9 +19,7 @@ sudo apt install -y zsh
 
 sudo snap install --stable vivaldi
 
-echo '---'
-echo 'Installing lsd'
-echo '---'
+echo '=> Installing lsd'
 
 LSD_VER="v1.1.5"
 LSD_URL="https://github.com/lsd-rs/lsd/releases/download/${LSD_VER}/lsd-${LSD_VER}-x86_64-unknown-linux-gnu.tar.gz"
@@ -37,10 +33,10 @@ asdf_install() {
 
 if command -v lsd &> /dev/null
 then
-	read -p "lsd: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> lsd: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" != "y" ]; then
-		echo "Skipping: lsd already installed"
+		echo "=> Skipping"
 	else
 		asdf_install
 	fi

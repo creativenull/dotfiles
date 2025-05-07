@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing MySQL server'
-echo '---'
+echo '=> Installing MySQL server'
 
 if command -v mysql &> /dev/null
 then
-	echo "Skipping: mysql already installed"
+	echo "=> Skipping: mysql already installed"
 	exit 0
 fi
 

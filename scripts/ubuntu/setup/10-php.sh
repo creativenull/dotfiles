@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing php'
-echo '---'
+echo '=> Installing php'
 
 php_install() {
 	sudo apt install -y autoconf bison build-essential curl gettext git libgd-dev libcurl4-openssl-dev libedit-dev \
@@ -17,12 +15,12 @@ php_install() {
 
 if command -v php &> /dev/null
 then
-	read -p "php: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> php: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		php_install
 	else
-		echo "Skipping: php already installed"
+		echo "=> Skipping"
 	fi
 else
 	php_install

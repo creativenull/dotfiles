@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing fonts, icons and themes'
-echo '---'
+echo '=> Installing fonts, icons and themes'
 
 JETBRAINS_NF_VER="v3.3.0"
 JETBRAINS_NF_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${JETBRAINS_NF_VER}/JetBrainsMono.zip"
@@ -24,9 +22,7 @@ sudo rm -rf /usr/share/icons/Bibata-Modern-Classic
 sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
 rm ~/.builds/Bibata-Modern-Classic.tar.xz
 
-echo '---'
-echo 'Configuring theme for snap packages'
-echo '---'
+echo '=> Configuring theme for snap packages'
 
 sudo snap install bibata-all-cursor
 for plug in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect ${plug} bibata-all-cursor:icon-themes; done

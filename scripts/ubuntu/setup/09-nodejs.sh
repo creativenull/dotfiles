@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing nodejs'
-echo '---'
+echo '=> Installing nodejs'
 
 NODE_VER="22.15.0"
 nodejs_install() {
@@ -13,12 +11,12 @@ nodejs_install() {
 
 if command -v node &> /dev/null
 then
-	read -p "node: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> node: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		nodejs_install
 	else
-		echo "Skipping: node already installed"
+		echo "=> Skipping"
 	fi
 else
 	nodejs_install

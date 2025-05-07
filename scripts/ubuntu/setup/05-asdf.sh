@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo '---'
-echo 'Installing asdf'
-echo '---'
+echo '=> Installing asdf'
 
 ASDF_VER="v0.16.7"
 ASDF_URL="https://github.com/asdf-vm/asdf/releases/download/${ASDF_VER}/asdf-${ASDF_VER}-linux-amd64.tar.gz"
@@ -15,12 +13,12 @@ asdf_install() {
 
 if command -v asdf &> /dev/null
 then
-	read -p "asdf: already installed. Reinstall? [y/N] " reinstall
+	read -p "=> asdf: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
 		asdf_install
 	else
-		echo "Skipping: asdf already installed"
+		echo "=> Skipping"
 	fi
 else
 	asdf_install
