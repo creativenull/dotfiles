@@ -4,34 +4,22 @@ echo '---'
 echo 'Installing core packages'
 echo '---'
 
-pkgs=(
-	autoconf
-	bat
-	build-essential
-	cmake
-	curl
-	gnome-shell-extension-manager
-	gnome-tweaks
-	ripgrep
-	software-properties-common
-	unzip
-	vim
-	wget
-	zip
-	zsh
-)
+sudo apt install -y autoconf
+sudo apt install -y bat
+sudo apt install -y build-essential
+sudo apt install -y cmake
+sudo apt install -y curl
+sudo apt install -y gnome-shell-extension-manager
+sudo apt install -y gnome-tweaks
+sudo apt install -y ripgrep
+sudo apt install -y software-properties-common
+sudo apt install -y unzip
+sudo apt install -y vim
+sudo apt install -y wget
+sudo apt install -y zip
+sudo apt install -y zsh
 
-for pkg in "${pkgs[@]}"; do
-	sudo apt install -y "$pkg"
-done
-
-snaps=(
-	vivaldi
-)
-
-for snap in "${snaps[@]}"; do
-	sudo snap install --stable "$snap"
-done
+sudo snap install --stable vivaldi
 
 echo '---'
 echo 'Installing lsd'
