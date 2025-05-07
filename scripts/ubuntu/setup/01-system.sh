@@ -35,16 +35,25 @@ echo '---'
 echo 'Installing lsd'
 echo '---'
 
-if command -v lsd &> /dev/null
-then
-	echo "Skipping: lsd already installed"
-	exit 0
-fi
-
 LSD_VER="v1.1.5"
 LSD_URL="https://github.com/lsd-rs/lsd/releases/download/${LSD_VER}/lsd-${LSD_VER}-x86_64-unknown-linux-gnu.tar.gz"
-wget "$LSD_URL" -O ~/.local/bin/lsd.tar.gz
-tar -xzf ~/.local/bin/lsd.tar.gz -C ~/.local/bin
-rm ~/.local/bin/lsd.tar.gz
-mv -v ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu/lsd ~/.local/bin
-rm -rf ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu
+asdf_install() {
+	wget "$LSD_URL" -O ~/.local/bin/lsd.tar.gz
+	tar -xzf ~/.local/bin/lsd.tar.gz -C ~/.local/bin
+	rm ~/.local/bin/lsd.tar.gz
+	mv -v ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu/lsd ~/.local/bin
+	rm -rf ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu
+}
+
+if command -v lsd &> /dev/null
+then
+	read -p "lsd: already installed. Reinstall? [y/N] " reinstall
+
+	if [ "$reinstall" != "y" ]; then
+		echo "Skipping: lsd already installed"
+	else
+		asdf_install
+	fi
+else
+	asdf_install
+fi
