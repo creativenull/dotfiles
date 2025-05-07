@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 echo '---'
 echo 'Installing fonts, icons and themes'
 echo '---'
