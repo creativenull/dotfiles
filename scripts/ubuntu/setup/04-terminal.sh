@@ -50,3 +50,16 @@ then
 else
 	kitty_install
 fi
+
+echo '---'
+echo 'Installing diff-so-fancy'
+echo '---'
+
+if command -v diff-so-fancy &> /dev/null
+then
+	echo "Skipping: diff-so-fancy already installed"
+else
+	sudo add-apt-repository ppa:aos1/diff-so-fancy
+	sudo apt update
+	sudo apt install diff-so-fancy
+fi
