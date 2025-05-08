@@ -2,8 +2,7 @@
 
 echo '=> Installing MySQL server'
 
-if command -v mysql &> /dev/null
-then
+if [ "$(which mysql)" != "" ]; then
 	echo "=> Skipping: mysql already installed"
 	exit 0
 fi

@@ -9,8 +9,7 @@ nodejs_install() {
 	asdf set -u nodejs $NODE_VER
 }
 
-if command -v node &> /dev/null
-then
+if [ "$(which node)" != "" ]; then
 	read -p "=> node: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then

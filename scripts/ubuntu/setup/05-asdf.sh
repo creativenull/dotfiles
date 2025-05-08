@@ -11,8 +11,7 @@ asdf_install() {
 	export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 }
 
-if command -v asdf &> /dev/null
-then
+if [ "$(which asdf)" != "" ]; then
 	read -p "=> asdf: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then

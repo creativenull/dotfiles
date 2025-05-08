@@ -9,8 +9,7 @@ caddy_install() {
 	sudo apt update && sudo apt install caddy
 }
 
-if command -v caddy &> /dev/null
-then
+if [ "$(which caddy)" != "" ]; then
 	read -p "=> caddy: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then

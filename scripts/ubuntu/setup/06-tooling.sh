@@ -10,8 +10,7 @@ stylua_install() {
 	rm ~/.local/bin/stylua.zip
 }
 
-if command -v stylua &> /dev/null
-then
+if [ "$(which stylua)" != "" ]; then
 	read -p "=> stylua: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
@@ -35,8 +34,7 @@ efm_install() {
 	rm -rf ~/.local/bin/efm-langserver_${EFM_VER}_linux_amd64
 }
 
-if command -v efm-langserver &> /dev/null
-then
+if [ "$(which efm-langserver)" != "" ]; then
 	read -p "=> efm-langserver: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
@@ -54,8 +52,7 @@ deno_install() {
 	curl -fsSL https://deno.land/install.sh | sh -s -- --yes --no-modify-path
 }
 
-if command -v deno &> /dev/null
-then
+if [ "$(which deno)" != "" ]; then
 	read -p "=> deno: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
@@ -76,8 +73,7 @@ luals_install() {
 	asdf set -u lua-language-server $LUA_LANGUAGE_SERVER_VER
 }
 
-if command -v lua-language-server &> /dev/null
-then
+if [ "$(which lua-language-server)" != "" ]; then
 	read -p "=> lua-language-server: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then

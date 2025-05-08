@@ -13,8 +13,7 @@ php_install() {
 	asdf set -u php $PHP_VER
 }
 
-if command -v php &> /dev/null
-then
+if [ "$(which php)" != "" ]; then
 	read -p "=> php: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then

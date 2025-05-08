@@ -23,7 +23,7 @@ echo '=> Installing lsd'
 
 LSD_VER="v1.1.5"
 LSD_URL="https://github.com/lsd-rs/lsd/releases/download/${LSD_VER}/lsd-${LSD_VER}-x86_64-unknown-linux-gnu.tar.gz"
-asdf_install() {
+lsd_install() {
 	wget "$LSD_URL" -O ~/.local/bin/lsd.tar.gz
 	tar -xzf ~/.local/bin/lsd.tar.gz -C ~/.local/bin
 	rm ~/.local/bin/lsd.tar.gz
@@ -31,15 +31,14 @@ asdf_install() {
 	rm -rf ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu
 }
 
-if command -v lsd &> /dev/null
-then
+if [ "$(which lsd)" != "" ]; then
 	read -p "=> lsd: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" != "y" ]; then
 		echo "=> Skipping"
 	else
-		asdf_install
+		lsd_install
 	fi
 else
-	asdf_install
+	lsd_install
 fi
