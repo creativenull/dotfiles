@@ -13,7 +13,7 @@ neovim_install() {
 	sudo make install
 }
 
-if [ "$(which nvim)" != "" ]; then
+if [ -f /usr/bin/nvim ]; then
 	read -p "=> nvim: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then

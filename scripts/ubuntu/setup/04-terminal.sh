@@ -10,7 +10,7 @@ starship_install() {
 	rm ~/.local/bin/starship.tar.gz
 }
 
-if [ "$(which starship)" != "" ]; then
+if [ -f ~/.local/bin/starship ]; then
 	read -p "=> starship: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
@@ -35,7 +35,7 @@ kitty_install() {
 	echo 'kitty.desktop' > ~/.config/xdg-terminals.list
 }
 
-if [ "$(which kitty)" != "" ]; then
+if [ -f ~/.local/bin/kitty ]; then
 	read -p "=> kitty: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
@@ -49,10 +49,10 @@ fi
 
 echo '=> Installing diff-so-fancy'
 
-if [ "$(which diff-so-fancy)" != "" ]; then
+if [ -f /usr/bin/diff-so-fancy ]; then
 	echo "=> Skipping"
 else
-	sudo add-apt-repository ppa:aos1/diff-so-fancy
+	sudo add-apt-repository -y ppa:aos1/diff-so-fancy
 	sudo apt update
-	sudo apt install diff-so-fancy
+	sudo apt install -y diff-so-fancy
 fi

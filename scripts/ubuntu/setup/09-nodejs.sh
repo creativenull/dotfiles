@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
 echo '=> Installing nodejs'
 
 NODE_VER="22.15.0"

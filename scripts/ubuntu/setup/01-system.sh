@@ -31,7 +31,7 @@ lsd_install() {
 	rm -rf ~/.local/bin/lsd-${LSD_VER}-x86_64-unknown-linux-gnu
 }
 
-if [ "$(which lsd)" != "" ]; then
+if [ -f ~/.local/bin/lsd ]; then
 	read -p "=> lsd: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" != "y" ]; then
