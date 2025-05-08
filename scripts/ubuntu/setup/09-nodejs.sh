@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$HOME/.local/bin:$PATH"
 
 echo '=> Installing nodejs'
 

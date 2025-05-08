@@ -66,6 +66,8 @@ fi
 
 echo '=> Install lua-language-server'
 
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$HOME/.local/bin:$PATH"
+
 LUA_LANGUAGE_SERVER_VER="3.13.6"
 luals_install() {
 	asdf plugin add lua-language-server
@@ -73,7 +75,7 @@ luals_install() {
 	asdf set -u lua-language-server $LUA_LANGUAGE_SERVER_VER
 }
 
-if [ -f ~/.local/bin/lua-language-server ]; then
+if [ "$(which lua-language-server)" != "" ]; then
 	read -p "=> lua-language-server: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
