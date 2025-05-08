@@ -17,10 +17,10 @@ if [ -f /usr/bin/nvim ]; then
 	read -p "=> nvim: already installed. Reinstall? [y/N] " reinstall
 
 	if [ "$reinstall" = "y" ]; then
-		nvim_install
+		neovim_install
 	else
 		echo "=> Skipping: nvim already installed"
 	fi
 else
-	nvim_install
+	neovim_install
 fi
