@@ -1,36 +1,31 @@
 #!/usr/bin/env bash
 set -e
 
-echo '---'
-echo 'Linking config files'
-echo '---'
+echo '=> Linking config files'
 
 rm -rf ~/.config/kitty
-ln -s ~/dotfiles/config/kitty ~/.config/
+ln -sv ~/dotfiles/config/kitty ~/.config/
 
 rm -fv ~/.gitconfig
 rm -rfv ~/.config/git
-ln -s ~/dotfiles/config/git ~/.config/
+ln -sv ~/dotfiles/config/git ~/.config/
 
 rm -fv ~/.zshrc
-ln -s ~/dotfiles/zshrc ~/.zshrc
+ln -sv ~/dotfiles/zshrc ~/.zshrc
 
 rm -rfv ~/.config/zsh-plugins
-ln -s ~/dotfiles/config/zsh-plugins ~/.config/
+ln -sv ~/dotfiles/config/zsh-plugins ~/.config/
 
 rm -fv ~/.config/starship.toml
-ln -s ~/dotfiles/config/starship.toml ~/.config/starship.toml
+ln -sv ~/dotfiles/config/starship.toml ~/.config/starship.toml
 
 rm -fv ~/.config/lsd
-ln -s ~/dotfiles/config/lsd ~/.config/
+ln -sv ~/dotfiles/config/lsd ~/.config/
 
 rm -fv ~/.config/nvim
-ln -s ~/dotfiles/config/nvim ~/.config/
+ln -sv ~/dotfiles/config/nvim ~/.config/
 
-echo ''
-echo '---'
-echo 'Linking npm packages and installing'
-echo '---'
+echo '=> Linking npm packages and installing'
 
 rm -fv ~/.npmrc
 ln -s ~/dotfiles/npmrc ~/.npmrc
@@ -49,9 +44,6 @@ fi
 read -p "Change default shell? (y/N) " choice
 
 if [ "$choice" = "y" ]; then
-    echo '---'
-    echo 'Setting default shell to zsh'
-    echo '---'
-
+    echo '=> Setting default shell to zsh'
     chsh -s /bin/zsh
 fi
