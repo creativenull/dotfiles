@@ -289,9 +289,6 @@ vim.api.nvim_create_user_command("ToggleCodeshot", function()
   require("user.utils").toggle_codeshot()
 end, { desc = "Toggle features to enable copying from terminal" })
 
-vim.api.nvim_create_user_command("MyTodoPersonal", "edit ~/todofiles/personal/README.md", {})
-vim.api.nvim_create_user_command("MyTodoWork", "edit ~/todofiles/work/README.md", {})
-
 -- Command Abbreviations, I can't release my shift key fast enough 😭
 vim.cmd("cnoreabbrev Q  q")
 vim.cmd("cnoreabbrev Qa qa")
