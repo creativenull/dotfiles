@@ -511,9 +511,7 @@ Plug("kkoomen/vim-doge", { tag = "v4.*", ["do"] = ":call doge#install()" })
 
 -- FileType Syntax
 -- ---
-Plug("MTDL9/vim-log-highlighting")
 Plug("jwalton512/vim-blade")
-Plug("aklt/plantuml-syntax")
 
 -- Colorschemes
 -- ---
