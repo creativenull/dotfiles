@@ -13,11 +13,13 @@ blurmyshell_install() {
 		gnome-extensions uninstall "${BLURMYSHELL_UUID}"
 	fi
 
-	wget "$BLURMYSHELL_URL" -O ~/.builds/blur-my-shell.shell-extension.zip
-	gnome-extensions install ~/.builds/blur-my-shell.shell-extension.zip
+	wget "$BLURMYSHELL_URL" -O ~/.builds/blur-my-shell.zip
+	mkdir -p ~/.local/share/gnome-shell/extensions/${BLURMYSHELL_UUID}
+	unzip ~/.builds/blur-my-shell.zip -d ~/.local/share/gnome-shell/extensions/${BLURMYSHELL_UUID}
+
 	gnome-extensions enable "${BLURMYSHELL_UUID}"
 
-	rm -rf ~/.builds/blur-my-shell.shell-extension.zip
+	rm -rf ~/.builds/blur-my-shell.zip
 }
 
 if [ -d ~/.local/share/gnome-shell/extensions/${BLURMYSHELL_UUID} ]; then
@@ -43,11 +45,13 @@ tophat_install() {
 		gnome-extensions uninstall "${TOPHAT_UUID}"
 	fi
 
-	wget "$TOPHAT_URL" -O ~/.builds/tophat.shell-extension.zip
-	gnome-extensions install ~/.builds/tophat.shell-extension.zip
+	wget "$TOPHAT_URL" -O ~/.builds/tophat.zip
+	mkdir -p ~/.local/share/gnome-shell/extensions/${TOPHAT_UUID}
+	unzip ~/.builds/tophat.zip -d ~/.local/share/gnome-shell/extensions/${TOPHAT_UUID}
+
 	gnome-extensions enable "${TOPHAT_UUID}"
 
-	rm -rf ~/.builds/tophat.shell-extension.zip
+	rm -rf ~/.builds/tophat.zip
 }
 
 if [ -d ~/.local/share/gnome-shell/extensions/${TOPHAT_UUID} ]; then
@@ -64,9 +68,9 @@ fi
 
 echo '=> paperwm'
 
-PAPERWM_VERSION="v48.0.1"
+PAPERWM_VERSION="48.0.1"
 PAPERWM_UUID="paperwm@paperwm.github.io"
-PAPERWM_URL="https://github.com/paperwm/PaperWM/archive/refs/tags/${PAPERWM_VERSION}.zip"
+PAPERWM_URL="https://github.com/paperwm/PaperWM/archive/refs/tags/v${PAPERWM_VERSION}.zip"
 
 paperwm_install() {
 	if [ -d ~/.local/share/gnome-shell/extensions/${PAPERWM_UUID} ]; then
