@@ -451,9 +451,7 @@ Plug("dense-analysis/ale")
 Plug("neovim/nvim-lspconfig")
 Plug("creativenull/efmls-configs-nvim")
 Plug("creativenull/diagnosticls-configs-nvim")
-Plug("nvimtools/none-ls.nvim")
 Plug("creativenull/web.nvim")
-Plug("williamboman/mason.nvim")
 
 -- AutoCompletion + Sources (ddc.vim)
 -- ---
