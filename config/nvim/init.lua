@@ -304,10 +304,6 @@ vim.cmd("cnoreabbrev Wq wq")
 vim.g.vim_json_conceal = 0
 vim.g.vim_markdown_conceal = 0
 
--- vim-vue Config
--- ---
-vim.g.vue_pre_processors = { "typescript" }
-
 -- emmet-vim Config
 -- ---
 vim.g.user_emmet_leader_key = "<C-q>"
