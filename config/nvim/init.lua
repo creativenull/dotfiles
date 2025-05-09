@@ -504,6 +504,7 @@ Plug("kkoomen/vim-doge", { tag = "v4.*", ["do"] = ":call doge#install()" })
 -- FileType Syntax
 -- ---
 Plug("jwalton512/vim-blade")
+Plug("fladson/vim-kitty")
 
 -- Colorschemes
 -- ---
