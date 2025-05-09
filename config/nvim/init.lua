@@ -564,10 +564,6 @@ vim.keymap.set("n", "<Leader>sc", ":Session ")
 -- ---
 require("user.treesitter").setup()
 
--- mason.nvim Config
--- ---
-require("mason").setup()
-
 -- nvim-lspconfig Config
 -- ---
 require("user.lsp").setup()
