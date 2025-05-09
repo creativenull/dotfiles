@@ -3,7 +3,12 @@
 echo '=> Installing neovim'
 
 neovim_install() {
-	sudo apt install -y ninja-build gettext cmake curl build-essential
+	sudo apt install -y ninja-build
+	sudo apt install -y gettext
+	sudo apt install -y python3-pip
+	sudo apt install -y python3-wheel
+	sudo apt install -y python-setuptools
+	sudo apt install -y python3-pynvim
 
 	NVIM_VER="v0.11.1"
 	rm -rf ~/.builds/neovim
