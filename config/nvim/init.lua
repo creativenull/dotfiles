@@ -439,9 +439,8 @@ Plug("kristijanhusak/vim-dadbod-ui")
 
 -- File Explorer + Addons
 -- ---
-Plug("antoinemadec/FixCursorHold.nvim")
-Plug("lambdalisue/fern.vim")
-Plug("lambdalisue/fern-renderer-nerdfont.vim")
+Plug("lambdalisue/vim-fern")
+Plug("lambdalisue/vim-fern-renderer-nerdfont")
 
 -- Linters + Formatters
 -- ---
