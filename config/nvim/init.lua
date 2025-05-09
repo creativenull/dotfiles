@@ -413,9 +413,9 @@ vim.call("plug#begin")
 -- ---
 Plug("vim-denops/denops.vim")
 Plug("vim-denops/denops-shared-server.vim")
-Plug("lambdalisue/nerdfont.vim")
+Plug("lambdalisue/vim-nerdfont")
 Plug("nvim-lua/plenary.nvim")
-Plug("lambdalisue/glyph-palette.vim")
+Plug("lambdalisue/vim-glyph-palette")
 
 -- Core
 -- ---
