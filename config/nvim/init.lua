@@ -648,8 +648,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 -- moonfly Config
 -- ---
-vim.g.moonflyTransparent = 1
-vim.g.moonflyNormalFloat = 1
+vim.g.moonflyTransparent = true
+vim.g.moonflyNormalFloat = true
 
 -- tokyonight.nvim Config
 -- ---
