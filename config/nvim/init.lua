@@ -440,7 +440,7 @@ Plug("dense-analysis/ale")
 
 -- Builtin LSP Configs
 -- ---
-Plug("neovim/nvim-lspconfig")
+Plug("neovim/nvim-lspconfig", { tag = "v2.*" })
 Plug("creativenull/efmls-configs-nvim")
 Plug("creativenull/diagnosticls-configs-nvim")
 Plug("creativenull/web.nvim")
