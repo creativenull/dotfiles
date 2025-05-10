@@ -487,7 +487,8 @@ Plug("tpope/vim-fugitive")
 
 -- UI/Aesthetics
 -- ---
-Plug("lukas-reineke/indent-blankline.nvim", { tag = "v3.*" })
+-- Plug("lukas-reineke/indent-blankline.nvim", { tag = "v3.*" })
+Plug("nvimdev/indentmini.nvim")
 Plug("creativenull/feline.nvim")
 Plug("creativenull/feline-provider-ale.nvim")
 Plug("f-person/auto-dark-mode.nvim")
@@ -598,11 +599,15 @@ require("user.feline").setup()
 
 -- indent-blanklint.nvim Config
 -- ---
-require("ibl").setup({
-  indent = { char = "│" },
-  scope = { enabled = false },
-  exclude = { filetypes = { "help", "fzf", "fern" } },
-})
+-- require("ibl").setup({
+--   indent = { char = "│" },
+--   scope = { enabled = false },
+--   exclude = { filetypes = { "help", "fzf", "fern" } },
+-- })
+
+-- indentmini.nvim Config
+-- ---
+require("indentmini").setup({ minlevel = 2 })
 
 -- =============================================================================
 -- = Colorscheme =
@@ -626,6 +631,10 @@ local function set_custom_dark_colorscheme()
 
   -- Fold
   vim.api.nvim_set_hl(0, "Folded", { bg = "NONE", fg = "#555555" })
+
+  -- indentmini Highlights
+  vim.api.nvim_set_hl(0, "IndentLine", { bg = "NONE", fg = "#111111" })
+  vim.api.nvim_set_hl(0, "IndentLineCurrent", { bg = "NONE", fg = "#aaaaaa" })
 end
 
 local function set_custom_light_colorscheme()
