@@ -18,3 +18,6 @@ echo '=> Configuring misc settings'
 
 # Change emoji keyboard shortcut
 gsettings set org.freedesktop.ibus.panel.emoji hotkey "['<Ctrl><Shift>e']"
+
+# Remove desktop icons
+gsettings set org.gnome.desktop.background show-desktop-icons false
