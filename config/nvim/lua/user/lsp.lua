@@ -109,18 +109,14 @@ function M.setup()
   vim.diagnostic.config({
     virtual_text = false,
     update_in_insert = false,
-    float = {
-      source = true,
-      width = width,
-      border = border,
-    },
+    float = { source = true, width = width, border = border },
     signs = {
       text = {
         [vim.diagnostic.severity.ERROR] = signs.Error,
         [vim.diagnostic.severity.WARN] = signs.Warn,
         [vim.diagnostic.severity.INFO] = signs.Info,
         [vim.diagnostic.severity.HINT] = signs.Hint,
-      }
+      },
     },
   })
 
