@@ -1,5 +1,9 @@
 local M = {}
 
+-- UI options
+local width = 80
+local border = "rounded"
+
 local function fmt_with_edit(state)
   state = state or "manual"
   local win_state = vim.call("winsaveview")
@@ -55,9 +59,13 @@ local function on_attach(client, bufnr)
   -- LSP Keymaps
   vim.keymap.set({ "n", "v" }, "<Leader>la", vim.lsp.buf.code_action, { desc = "LSP Code Actions", buffer = bufnr })
   vim.keymap.set("n", "<Leader>ld", vim.lsp.buf.definition, { desc = "LSP Go-to Definition", buffer = bufnr })
-  vim.keymap.set("n", "<Leader>lh", vim.lsp.buf.hover, { desc = "LSP Hover Information", buffer = bufnr })
+  vim.keymap.set("n", "<Leader>lh", function()
+    vim.lsp.buf.hover({ width = width, border = border })
+  end, { desc = "LSP Hover Information", buffer = bufnr })
   vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename, { desc = "LSP Rename", buffer = bufnr })
-  vim.keymap.set("i", "<C-o>", vim.lsp.buf.signature_help, { desc = "LSP Signature Help", buffer = bufnr })
+  vim.keymap.set("i", "<C-o>", function()
+    vim.lsp.buf.signature_help({ width = width, border = border })
+  end, { desc = "LSP Signature Help", buffer = bufnr })
   vim.keymap.set("n", "<Leader>le", vim.diagnostic.setloclist, { desc = "LSP Show All Diagnostics", buffer = bufnr })
   vim.keymap.set("n", "<Leader>lw", function()
     vim.diagnostic.open_float({ bufnr = bufnr, scope = "line" })
@@ -96,10 +104,6 @@ function M.setup()
     },
   }
 
-  -- UI options
-  local width = 80
-  local border = "rounded"
-
   -- Custom signs
   local signs = { Error = "󰅖", Warn = "󰌕", Hint = "󰙎", Info = "󰙎" }
 
@@ -118,21 +122,6 @@ function M.setup()
         [vim.diagnostic.severity.HINT] = signs.Hint,
       },
     },
-  })
-
-  -- lspconfig LspInfo border
-  require("lspconfig.ui.windows").default_options.border = border
-
-  -- Hover options
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    width = width,
-    border = border,
-  })
-
-  -- Signature help options
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = border,
-    width = width,
   })
 
   -- projectlocal-vim Config
