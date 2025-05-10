@@ -1,13 +1,7 @@
 # Custom settings
 # ---
 export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR=nvim
-else
-    export EDITOR=nvim
-fi
+export EDITOR=nvim
 
 # Make aliase for bat if batcat is found
 if command -v batcat &> /dev/null; then
@@ -20,10 +14,8 @@ alias ll="lsd -lA"
 alias mkdir="mkdir -pv"
 alias cp="cp -v"
 
-# Vim
-export PYTHON3_HOST_PROG=/usr/bin/python3
-export PYTHON_HOST_PROG=/usr/bin/python2
-alias v=nvim
+# Neovim
+export PYTHON3_HOST_PROG=$(which python3)
 
 # Git aliases
 alias g="git"
@@ -72,17 +64,27 @@ SAVEHIST=10000
 
 setopt SHARE_HISTORY
 
+# Deno plugin
+# ---
 source ~/.config/zsh-plugins/zsh-deno/deno.plugin.zsh
 
+# Autosuggestions plugin
+# ---
 source ~/.config/zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 bindkey '^ ' autosuggest-accept
 
+# Syntax highlighting plugin
+# ---
 source ~/.config/zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
+# History substring search plugin
+# ---
 source ~/.config/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
+# Laravel artisan plugin
+# ---
 source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
