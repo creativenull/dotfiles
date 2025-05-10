@@ -422,7 +422,8 @@ Plug("JoosepAlviste/nvim-ts-context-commentstring")
 
 -- AI
 -- ---
-Plug("Exafunction/codeium.vim")
+Plug("nvim-lua/plenary.nvim")
+Plug("Exafunction/windsurf.nvim")
 
 -- Database
 -- ---
