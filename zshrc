@@ -13,6 +13,7 @@ alias ls="lsd -A"
 alias ll="lsd -lA"
 alias mkdir="mkdir -pv"
 alias cp="cp -v"
+alias open-ports="sudo ss -ltnp"
 
 # Neovim
 export PYTHON3_HOST_PROG=$(which python3)
