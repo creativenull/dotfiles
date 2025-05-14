@@ -16,6 +16,12 @@ ln -sv ~/dotfiles/zshrc ~/.zshrc
 rm -rfv ~/.config/zsh-plugins
 ln -sv ~/dotfiles/config/zsh-plugins ~/.config/
 
+rm -fv ~/.tmux.conf
+ln -sv ~/dotfiles/tmux.conf ~/.tmux.conf
+
+rm -rfv ~/.hammerspoon
+ln -sv ~/dotfiles/hammerspoon ~/.hammerspoon
+
 rm -fv ~/.config/starship.toml
 ln -sv ~/dotfiles/config/starship.toml ~/.config/starship.toml
 
