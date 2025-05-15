@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-echo '---'
-echo 'Updating apt packages'
-echo '---'
+echo '=> Updating apt packages'
 
 sudo apt update && sudo apt upgrade
 
-echo '---'
-echo 'Updating snap packages'
-echo '---'
+echo '=> Updating snap packages'
 
 sudo snap refresh
