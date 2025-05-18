@@ -162,7 +162,7 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.undolevels = 10000
-vim.opt.updatetime = 500
+vim.opt.updatetime = 250
 
 if vim.fn.has("wsl") == 1 then
   vim.opt.mouse = ""
