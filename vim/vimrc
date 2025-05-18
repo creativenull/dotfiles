@@ -98,6 +98,14 @@ function! s:ResizeVerticalWindow(amount) abort
   endif
 endfunction
 
+function! g:CreateConfigSnapshot() abort
+  let l:timestamp = localtime()
+  let l:filename = printf('snapshot_%s.vim', l:timestamp)
+  let l:filepath = printf("%s/snapshots/%s", g:config.datadir, l:filename)
+
+  execute printf('PlugSnapshot %s', l:filepath)
+endfunction
+
 " ============================================================================
 " Events
 "
@@ -128,7 +136,7 @@ autocmd UserGroup BufEnter,BufRead .env.* setlocal filetype=sh
 " ============================================================================
 " Options
 "
-" Tags: OPT
+" Tags: OPTS
 " ============================================================================
 
 " Ensure dir for storing undo changes
@@ -143,8 +151,6 @@ endif
 " Completion
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
-set wildmenu
-set wildoptions=pum,fuzzy
 
 " Search
 set hlsearch
@@ -153,6 +159,9 @@ set incsearch
 set path=**
 set showmatch
 set smartcase
+set wildmenu
+set wildoptions=pum,fuzzy
+set wildignore+=*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*
 
 " Editor
 set autoindent
@@ -162,6 +171,9 @@ set nofoldenable
 set nospell
 set nowrap
 set scrolloff=1
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 set smartindent
 set smarttab
 set wildignorecase
@@ -192,6 +204,8 @@ set laststatus=2
 set number
 set showtabline=0
 set signcolumn=yes
+set title
+let &titlestring=printf('%s [nvim]', fnamemodify(getcwd(), ':t'))
 
 if has('termguicolors')
   set termguicolors
@@ -285,6 +299,7 @@ nnoremap Q @@
 
 command! Config edit $MYVIMRC
 command! ConfigReload source $MYVIMRC | nohlsearch
+command! ConfigSnapshot call <SID>ConfigSnapshot()
 
 command! ToggleConcealLevel call <SID>ToggleConcealLevel()
 command! ToggleCodeshot call <SID>ToggleCodeshot()
@@ -294,6 +309,7 @@ cnoreabbrev Q  q
 cnoreabbrev Qa qa
 cnoreabbrev W  w
 cnoreabbrev Wq wq
+
 " ============================================================================
 " Vim built-in packages
 "
@@ -304,6 +320,7 @@ packadd! matchit
 packadd! editorconfig
 packadd! comment
 packadd! nohlsearch
+packadd! hlyank
 
 " ============================================================================
 " Plugins
@@ -321,7 +338,7 @@ call plug#begin()
 
 " Deps
 " ---
-Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/vim-nerdfont'
 Plug 'vim-denops/denops.vim'
 Plug 'vim-denops/denops-shared-server.vim'
 Plug 'roxma/nvim-yarp'
@@ -336,22 +353,20 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'Shougo/context_filetype.vim'
-" Plug 'tyru/caw.vim'
 Plug 'markonm/traces.vim', #{ commit: '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
 
 " File explorer
 " ---
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-Plug 'lambdalisue/glyph-palette.vim'
+Plug 'lambdalisue/vim-fern'
+Plug 'lambdalisue/vim-fern-renderer-nerdfont'
+Plug 'lambdalisue/vim-glyph-palette'
 
 " Fuzzy finder/Code finder
 " ---
-Plug 'junegunn/fzf', #{ tag: 'v0.57.*', do: { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'dominickng/fzf-session.vim'
-Plug 'linrongbin16/fzfx.vim', #{ commit: '9bd93e78f22c734751688cefd3ee2c475cd85ccd' }
-Plug 'gelguy/wilder.nvim', #{ commit: '679f348dc90d80ff9ba0e7c470c40a4d038dcecf' }
+" Plug 'junegunn/fzf', #{ tag: 'v0.62.*', do: { -> fzf#install()  }  }
+" Plug 'junegunn/fzf.vim'
+" Plug 'linrongbin16/fzfx.vim', #{ commit: '9bd93e78f22c734751688cefd3ee2c475cd85ccd'  }
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Git
 " ---
@@ -363,18 +378,19 @@ Plug 'airblade/vim-gitgutter'
 " ---
 Plug 'dense-analysis/ale'
 
+" Autocompletion
+" ---
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'andreypopp/asyncomplete-ale.vim'
+
 " UI/Aeshetics
 " ---
-Plug 'Yggdroot/indentLine', #{ commit: 'd15d63bf9c4a74a02470d4bc8ecce53df13e3a75' }
-Plug 'machakann/vim-highlightedyank', #{ commit: 'f9db473137ca96c6a989ec3e2b7edf8a3189c448' }
+Plug 'vim-airline/vim-airline'
 
 " File syntax plugins
 " ---
-Plug 'jwalton512/vim-blade'
-Plug 'pangloss/vim-javascript'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'posva/vim-vue'
-Plug 'MTDL9/vim-log-highlighting'
 
 " Colorschemes
 " ---
@@ -389,35 +405,97 @@ call plug#end()
 " Tags: POST
 " ============================================================================
 
+" ale Config
+" ---
+let g:ale_completion_enabled = 0
+let g:ale_completion_delay = 100
+let g:ale_completion_max_suggestions = 10
+let g:ale_hover_cursor = 0
+let g:ale_echo_msg_error_str = 'Err'
+let g:ale_sign_error = ' '
+let g:ale_echo_msg_warning_str = 'Warn'
+let g:ale_sign_warning = ' '
+let g:ale_echo_msg_info_str = 'Info'
+let g:ale_sign_info = ' '
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_linters_explicit = 1
+let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace']  }
+let g:ale_virtualtext_cursor = 'disabled'
+let g:ale_virtualtext_prefix = ''
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = []
+
+nnoremap <silent> <Leader>ai <Cmd>ALEInfo<CR>
+nnoremap <silent> <Leader>af <Cmd>ALEFix<CR>
+
+nnoremap <silent> <Leader>le <Cmd>lopen<CR>
+nnoremap <silent> <Leader>ld <Cmd>ALEGoToDefinition<CR>
+nnoremap <silent> <Leader>lh <Cmd>ALEHover<CR>
+nnoremap <silent> <Leader>lr <Cmd>ALERename<CR>
+nnoremap <silent> <Leader>la <Cmd>ALECodeAction<CR>
+
+" asyncomplete.vim Config
+" ---
+inoremap <expr> <CR> pumvisible() ? asyncomplete#close_popup() . "\<CR>" : "\<CR>"
+imap <silent> <C-@> <Plug>(asyncomplete_force_refresh)
+
+let g:asyncomplete_min_chars = 1
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
+  \'priority': 1,
+\}))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+  \'name': 'buffer',
+  \'allowlist': ['*'],
+  \'priority': 5,
+  \'completor': function('asyncomplete#sources#buffer#completor'),
+\}))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+  \'name': 'file',
+  \'allowlist': ['*'],
+  \'priority': 10,
+  \'completor': function('asyncomplete#sources#file#completor')
+\}))
+
 " fzf.vim Config
 " ---
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
-let g:fzf_vim = #{
-  \preview_window: [],
-  \grep_multi_line: 1
-\}
+" let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+" let $FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
+" let g:fzf_vim = #{
+"   \preview_window: [],
+"   \grep_multi_line: 1
+" \}
 
-function! s:VimGrep(qargs, bang) abort
-  let s:sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(a:qargs)
-  call fzf#vim#grep(s:sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
-endfunction
+" function! s:VimGrep(qargs, bang) abort
+"   let s:sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(a:qargs)
+"   call fzf#vim#grep(s:sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
+" endfunction
 
-command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
+" command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
 
-nnoremap <C-p> <Cmd>Files<CR>
-nnoremap <C-t> <Cmd>Rg<CR>
-nnoremap <C-y> <Cmd>call <SID>VimGrep(expand('<cword>'), 0)<CR>
-nnoremap <C-Space> <Cmd>FzfxBuffers<CR>
+" nnoremap <C-p> <Cmd>Files<CR>
+" nnoremap <C-t> <Cmd>Rg<CR>
+" nnoremap <C-y> <Cmd>call <SID>VimGrep(expand('<cword>'), 0)<CR>
+" nnoremap <C-@> <Cmd>FzfxBuffers<CR>
 
-function! s:fzf_statusline()
-  " Override statusline as you like
-  highlight fzf1 guibg=NONE
-  setlocal statusline=%#fzf1#\ >\ fzf
-endfunction
+" function! s:fzf_statusline()
+"   " Override statusline as you like
+"   highlight fzf1 guibg=NONE
+"   setlocal statusline=%#fzf1#\ >\ fzf
+" endfunction
 
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
-autocmd! ColorScheme * highlight! fzfBorder guifg=#aaaaaa
+" autocmd! User FzfStatusLine call <SID>fzf_statusline()
+" autocmd! ColorScheme * highlight! fzfBorder guifg=#aaaaaa
+
+" ctrlp.vim Config
+" ---
+let g:ctrlp_map = '<C-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 0
+
+nnoremap <C-@> <Cmd>CtrlPBuffer<CR>
 
 " fern.vim Config
 " ---
@@ -442,12 +520,12 @@ autocmd! FileType fern call <SID>FernInit()
 
 " emmet-vim Config
 " ---
-let g:user_emmet_leader_key = "<C-q>"
-let g:user_emmet_mode = "in"
+let g:user_emmet_leader_key = '<C-q>'
+let g:user_emmet_mode = 'in'
 imap <C-x><C-y> <Plug>(emmet-expand-abbr)
 nmap <Leader>er <Plug>(emmet-update-tag)
-let g:user_emmet_settings = #{
-  \blade: #{ extends: 'html' },
+let g:user_emmet_settings = {
+  \'blade': { 'extends': 'html' },
 \}
 
 " indentLine Config
@@ -455,34 +533,19 @@ let g:user_emmet_settings = #{
 let g:indentLine_char = '│'
 let g:indentLine_fileTypeExclude = ['help', 'fern', 'fzf']
 
-" wilder.nvim Config
+" vim-airline Config
 " ---
-call wilder#setup(#{
-  \modes: [':', '/', '?'],
-  \next_key: '<C-n>',
-  \previous_key: '<C-p>',
-\})
+let g:airline_experimental = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
 
-cnoremap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
-cnoremap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+let g:airline_section_z = '℅:%v, :%L'
 
-call wilder#set_option('pipeline', [
-  \wilder#branch(
-    \wilder#cmdline_pipeline(#{ fuzzy: 1, set_pcre2_pattern: 1 }),
-    \wilder#python_search_pipeline(#{ pattern: 'fuzzy' })
-  \),
-\])
-
-call wilder#set_option(
-  \'renderer',
-  \wilder#popupmenu_renderer(wilder#popupmenu_border_theme(#{
-    \border: 'rounded',
-    \empty_message: wilder#popupmenu_empty_message_with_spinner(),
-    \highlighter: wilder#basic_highlighter(),
-    \left: [' ', wilder#popupmenu_devicons()],
-    \right: [' ', wilder#popupmenu_scrollbar()],
-  \}))
-\)
+" hlyank Config
+" ---
+let g:hlyank_hlgroup = 'IncSearch'
+let g:hlyank_duration = 250
+let g:hlyank_invisual = 1
 
 " ============================================================================
 " Theme
