@@ -11,6 +11,7 @@ sudo apt install -y curl
 sudo apt install -y gnome-shell-extension-manager
 sudo apt install -y gnome-tweaks
 sudo apt install -y httpie
+sudo apt install -y nala
 sudo apt install -y ripgrep
 sudo apt install -y software-properties-common
 sudo apt install -y unzip
