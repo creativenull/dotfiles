@@ -3,7 +3,11 @@ set -e
 
 echo '=> Updating apt packages'
 
-sudo apt update && sudo apt upgrade
+if [ -x $(command -v nala) ]; then
+	sudo nala update && sudo nala upgrade
+else
+	sudo apt update && sudo apt upgrade
+fi
 
 echo '=> Updating snap packages'
 
