@@ -19,9 +19,6 @@ ln -sv ~/dotfiles/config/zsh-plugins ~/.config/
 rm -fv ~/.tmux.conf
 ln -sv ~/dotfiles/tmux.conf ~/.tmux.conf
 
-rm -rfv ~/.hammerspoon
-ln -sv ~/dotfiles/hammerspoon ~/.hammerspoon
-
 rm -fv ~/.config/starship.toml
 ln -sv ~/dotfiles/config/starship.toml ~/.config/starship.toml
 
@@ -33,6 +30,12 @@ ln -sv ~/dotfiles/config/nvim ~/.config/
 
 rm -fv ~/.config/zellij
 ln -sv ~/dotfiles/config/zellij ~/.config/
+
+# For Mac OS only
+if [ "$(uname -s)" = "Darwin" ]; then
+	rm -rfv ~/.hammerspoon
+	ln -sv ~/dotfiles/hammerspoon ~/.hammerspoon
+fi
 
 echo '=> Linking npm packages and installing'
 
