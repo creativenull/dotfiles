@@ -31,6 +31,9 @@ ln -sv ~/dotfiles/config/lsd ~/.config/
 rm -fv ~/.config/nvim
 ln -sv ~/dotfiles/config/nvim ~/.config/
 
+rm -fv ~/.config/zellij
+ln -sv ~/dotfiles/config/zellij ~/.config/
+
 echo '=> Linking npm packages and installing'
 
 rm -fv ~/.npmrc
