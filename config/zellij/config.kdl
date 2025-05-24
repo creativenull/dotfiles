@@ -270,6 +270,7 @@ themes {
 		orange "#f78c6c"
 	}
 }
+
 theme "moonfly"
 
 // Choose the base input mode of zellij.
