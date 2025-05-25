@@ -101,7 +101,12 @@
 				all.xdebug
 				all.zip
 			]))
-		(python312.withPackages (py: [ py.pip py.wheel py.setuptools py.pynvim ]))
+		(python312.withPackages (py: [
+			py.pip
+			py.wheel
+			py.setuptools
+			py.pynvim
+		]))
 	];
 
 	fonts.packages = with pkgs; [
