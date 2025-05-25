@@ -48,6 +48,7 @@
 		curl
 		cmake
 		deno
+		diff-so-fancy
 		efm-langserver
 		fastfetch
 		firefox
@@ -73,8 +74,10 @@
 		tree-sitter
 		unzip
 		vim
+		vivaldi
 		wget
 		wl-clipboard
+		zellij
 		zip
 		zsh
 		(php84.withExtensions ({ enabled, all }:
@@ -102,7 +105,7 @@
 	];
 
 	fonts.packages = with pkgs; [
-		(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+		nerd-fonts.jetbrains-mono
 		inter
 	];
 
