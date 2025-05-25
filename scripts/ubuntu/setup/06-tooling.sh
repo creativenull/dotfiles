@@ -2,7 +2,7 @@
 
 echo '=> Installing stylua'
 
-STYLUA_VER="v2.0.2"
+STYLUA_VER="v2.1.0"
 STYLUA_URL="https://github.com/JohnnyMorganz/StyLua/releases/download/${STYLUA_VER}/stylua-linux-x86_64.zip"
 stylua_install() {
 	wget "$STYLUA_URL" -O ~/.local/bin/stylua.zip
@@ -68,7 +68,7 @@ echo '=> Install lua-language-server'
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$HOME/.local/bin:$PATH"
 
-LUA_LANGUAGE_SERVER_VER="3.13.6"
+LUA_LANGUAGE_SERVER_VER="3.14.0"
 luals_install() {
 	asdf plugin add lua-language-server
 	asdf install lua-language-server $LUA_LANGUAGE_SERVER_VER

@@ -2,7 +2,7 @@
 
 echo '=> Installing starship'
 
-STARSHIP_VER="v1.22.1"
+STARSHIP_VER="v1.23.0"
 STARSHIP_URL="https://github.com/starship/starship/releases/download/${STARSHIP_VER}/starship-x86_64-unknown-linux-gnu.tar.gz"
 starship_install() {
 	wget "$STARSHIP_URL" -O ~/.local/bin/starship.tar.gz

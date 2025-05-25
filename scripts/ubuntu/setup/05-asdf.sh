@@ -2,7 +2,7 @@
 
 echo '=> Installing asdf'
 
-ASDF_VER="v0.16.7"
+ASDF_VER="v0.17.0"
 ASDF_URL="https://github.com/asdf-vm/asdf/releases/download/${ASDF_VER}/asdf-${ASDF_VER}-linux-amd64.tar.gz"
 asdf_install() {
 	wget "$ASDF_URL" -O ~/.local/bin/asdf.tar.gz
