@@ -45,8 +45,8 @@
 
 	environment.systemPackages = with pkgs; [
 		bibata-cursors
-		curl
 		cmake
+		curl
 		deno
 		diff-so-fancy
 		efm-langserver
