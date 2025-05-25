@@ -153,6 +153,9 @@
 				"org/gnome/desktop/background" = {
 					show-desktop-icons = false;
 				};
+				"org/gnome/shell" = {
+					favorite-apps = [ "kitty.desktop" "vivaldi-stable.desktop" ];
+				};
 			};
 		}];
 
