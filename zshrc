@@ -87,8 +87,8 @@ source ~/.config/zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plu
 # History substring search plugin
 # ---
 source ~/.config/zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
 
 # Laravel artisan plugin
 # ---
