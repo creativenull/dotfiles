@@ -132,9 +132,10 @@
 		description = "CreativeNull";
 		extraGroups = [ "networkmanager" "wheel" ];
 	};
-	programs.dconf.enable = true;
-	programs.dconf.profiles = {
-		user.databases = [{
+
+	programs.dconf = {
+		enable = true;
+		profiles.user.databases = [{
 			settings = {
 				"org/gnome/desktop/interface" = {
 					color-scheme = "prefer-dark";
@@ -153,5 +154,6 @@
 				};
 			};
 		}];
+
 	};
 }
