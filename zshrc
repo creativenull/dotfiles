@@ -51,8 +51,14 @@ if [ -d "$HOME/.deno/bin" ] ; then
     PATH="$HOME/.deno/bin:$PATH"
 fi
 
-bindkey '^I' complete-word
+# Tab and Shift Tab to auto complete
+bindkey '^I' expand-or-complete
 bindkey '^[[Z' reverse-menu-complete
+bindkey '^N' expand-or-complete
+bindkey '^P' reverse-menu-complete
+
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
 
 autoload -Uz compinit; compinit
 zstyle ':completion:*' menu select
