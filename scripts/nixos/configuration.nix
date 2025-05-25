@@ -149,7 +149,7 @@
 					repeat-interval = lib.gvariant.mkUint32 15;
 				};
 				"org/gnome/desktop/input-sources" = {
-					xkb-options = ["caps:escape_shifted_capslock"];
+					xkb-options = [ "caps:escape_shifted_capslock" ];
 				};
 				"org/gnome/desktop/background" = {
 					show-desktop-icons = false;
