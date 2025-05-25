@@ -131,6 +131,7 @@
 		isNormalUser = true;
 		description = "CreativeNull";
 		extraGroups = [ "networkmanager" "wheel" ];
+		shell = pkgs.zsh;
 	};
 
 	programs.dconf = {
