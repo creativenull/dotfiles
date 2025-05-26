@@ -42,6 +42,7 @@
 	programs.firefox.enable = true;
 	programs.neovim.enable = true;
 	programs.neovim.defaultEditor = true;
+	programs.niri.enable = true;
 
 	environment.systemPackages = with pkgs; [
 		bibata-cursors
@@ -63,6 +64,7 @@
 		lsd
 		lua-language-server
 		neovim
+		niri
 		nodejs_22
 		openssl
 		php84Packages.composer
