@@ -16,8 +16,8 @@ local function vim_grep_files(args, bang)
     query = args
   end
 
-
-  local sh = "rg --with-filename --no-heading --column --line-number --no-heading --color=always --smart-case -- " .. query
+  local sh = "rg --with-filename --no-heading --column --line-number --no-heading --color=always --smart-case -- "
+    .. query
   vim.call("fzf#vim#grep", sh, 1, vim.call("fzf#vim#with_preview", vim.empty_dict()), bang)
 end
 
