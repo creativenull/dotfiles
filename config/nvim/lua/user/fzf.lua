@@ -7,7 +7,18 @@ local function vim_grep(args, bang)
   end
 
   local sh = "rg --column --line-number --no-heading --color=always --smart-case -- " .. query
-  vim.call("fzf#vim#grep", sh, 1, vim.call("fzf#vim#with_preview", "right:50%", "ctrl-/"), bang)
+  vim.call("fzf#vim#grep", sh, 1, vim.call("fzf#vim#with_preview", vim.empty_dict()), bang)
+end
+
+local function vim_grep_files(args, bang)
+  local query = ""
+  if args ~= nil then
+    query = args
+  end
+
+
+  local sh = "rg --with-filename --no-heading --column --line-number --no-heading --color=always --smart-case -- " .. query
+  vim.call("fzf#vim#grep", sh, 1, vim.call("fzf#vim#with_preview", vim.empty_dict()), bang)
 end
 
 local function fzf_window_setup()
@@ -36,6 +47,10 @@ function M.setup()
 
   vim.api.nvim_create_user_command("Rg", function(c)
     vim_grep(c.args, c.bang)
+  end, { bang = true, nargs = "*" })
+
+  vim.api.nvim_create_user_command("RgFiles", function(c)
+    vim_grep_files(c.args, c.bang)
   end, { bang = true, nargs = "*" })
 
   vim.keymap.set("n", "<C-p>", "<Cmd>Files<CR>", { desc = "List files in the current directory" })
