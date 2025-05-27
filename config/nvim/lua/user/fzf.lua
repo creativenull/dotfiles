@@ -53,6 +53,10 @@ function M.setup()
     vim_grep_files(c.args, c.bang)
   end, { bang = true, nargs = "*" })
 
+  vim.api.nvim_create_user_command("ConfigFiles", function()
+    vim.call("fzf#vim#files", "~/.config/nvim", 0)
+  end, { bang = true })
+
   vim.keymap.set("n", "<C-p>", "<Cmd>Files<CR>", { desc = "List files in the current directory" })
   vim.keymap.set("n", "<C-t>", "<Cmd>Rg<CR>", { desc = "Open the grep interface in the current directory" })
   vim.keymap.set("n", "<C-y>", function()
