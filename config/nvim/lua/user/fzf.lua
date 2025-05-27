@@ -42,7 +42,7 @@ function M.setup()
 
   vim.g.fzf_vim = {
     preview_window = {},
-    grep_multi_line = 1,
+    grep_multi_line = 2,
   }
 
   vim.api.nvim_create_user_command("Rg", function(c)
