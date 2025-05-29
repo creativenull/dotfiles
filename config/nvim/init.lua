@@ -336,6 +336,7 @@ local function init_fern(ev)
   vim.bo[ev.buf].expandtab = true
   vim.bo[ev.buf].shiftwidth = 2
   vim.bo[ev.buf].tabstop = 2
+
   local winid = vim.api.nvim_get_current_win()
   vim.wo[winid].number = false
 
