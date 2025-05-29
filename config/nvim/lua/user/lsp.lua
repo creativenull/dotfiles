@@ -136,16 +136,7 @@ function M.setup()
 
   -- register_format_on_save()
 
-  require("web").setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    lsp = {
-      astro = { inlay_hints = false },
-      volar = { inlay_hints = false },
-      tsserver = { inlay_hints = false },
-      tailwindcss = { disabled = true, additional_filetypes = { "blade" } },
-    },
-  })
+  require("web").setup({ on_attach = on_attach, capabilities = capabilities })
 
   -- Log debug
   -- vim.lsp.set_log_level('DEBUG')
