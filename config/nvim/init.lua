@@ -428,11 +428,6 @@ Plug("JoosepAlviste/nvim-ts-context-commentstring")
 Plug("nvim-lua/plenary.nvim")
 Plug("Exafunction/windsurf.nvim")
 
--- Database
--- ---
-Plug("tpope/vim-dadbod")
-Plug("kristijanhusak/vim-dadbod-ui")
-
 -- File Explorer + Addons
 -- ---
 Plug("lambdalisue/vim-fern")
