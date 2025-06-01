@@ -60,6 +60,7 @@
 		gnomeExtensions.blur-my-shell
 		gnomeExtensions.dash-to-dock
 		gnomeExtensions.paperwm
+		gnomeExtensions.tophat
 		home-manager
 		kitty
 		lsd
