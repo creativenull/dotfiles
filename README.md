@@ -10,3 +10,8 @@
 + [vscode](https://code.visualstudio.com/)
 + [zellij](https://zellij.dev/)
 + [zsh](https://www.zsh.org/)
+
+## Scripts to reproduce my development environment in Linux
+
+- [Ubuntu](https://ubuntu.com/)
+- [NixOS](https://nixos.org/)
