@@ -5,6 +5,7 @@
 + [kitty](https://sw.kovidgoyal.net/kitty/)
 + [lsd](https://github.com/Peltoche/lsd)
 + [neovim](https://neovim.io/)
++ [starship](https://starship.rs/)
 + [tmux](https://github.com/tmux/tmux)
 + [vim](https://github.com/vim/vim)
 + [vscode](https://code.visualstudio.com/)
