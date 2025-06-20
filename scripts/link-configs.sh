@@ -3,6 +3,10 @@ set -e
 
 echo '=> Linking config files'
 
+# ---
+# For all systems
+# ---
+
 rm -rf ~/.config/kitty
 ln -sv ~/dotfiles/config/kitty ~/.config/
 
@@ -31,11 +35,18 @@ ln -sv ~/dotfiles/config/nvim ~/.config/
 rm -fv ~/.config/zellij
 ln -sv ~/dotfiles/config/zellij ~/.config/
 
-# For Mac OS only
+# ---
+# For macOS only
+# ---
+
 if [ "$(uname -s)" = "Darwin" ]; then
 	rm -rfv ~/.hammerspoon
 	ln -sv ~/dotfiles/hammerspoon ~/.hammerspoon
 fi
+
+# ---
+# npm specific
+# ---
 
 echo '=> Linking npm packages and installing'
 
@@ -52,6 +63,10 @@ if [ "$choice" = "y" ]; then
 		npm install -g $(cat ~/.default-npm-packages)
 	fi
 fi
+
+# ---
+# zsh specific
+# ---
 
 read -p "Change default shell? (y/N) " choice
 
