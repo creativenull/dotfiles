@@ -2,9 +2,9 @@
 @astrojs/language-server
 @tailwindcss/language-server
 @vue/language-server
+blade-formatter
 diagnostic-languageserver
 intelephense
 prettier
 typescript-language-server
 vscode-langservers-extracted
-blade-formatter
