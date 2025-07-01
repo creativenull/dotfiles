@@ -6,5 +6,6 @@ blade-formatter
 diagnostic-languageserver
 intelephense
 prettier
+typescript
 typescript-language-server
 vscode-langservers-extracted
