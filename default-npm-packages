@@ -1,5 +1,7 @@
 @antfu/ni
+@anthropic-ai/claude-code
 @astrojs/language-server
+@google/gemini-cli
 @tailwindcss/language-server
 @vue/language-server
 blade-formatter
