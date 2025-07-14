@@ -35,6 +35,9 @@ ln -sv ~/dotfiles/config/nvim ~/.config/
 rm -fv ~/.config/zellij
 ln -sv ~/dotfiles/config/zellij ~/.config/
 
+rm -fv ~/.aider.conf.yml
+ln -sv ~/dotfiles/aider.conf.yml ~/.aider.conf.yml
+
 # ---
 # For macOS only
 # ---
@@ -65,12 +68,14 @@ if [ "$choice" = "y" ]; then
 fi
 
 # ---
-# zsh specific
+# zsh specific (Linux)
 # ---
 
-read -p "Change default shell? (y/N) " choice
+if [ "$(uname -s)" = "Linux" ]; then
+	read -p "Change default shell? (y/N) " choice
 
-if [ "$choice" = "y" ]; then
-	echo '=> Setting default shell to zsh'
-	chsh -s /bin/zsh
+	if [ "$choice" = "y" ]; then
+		echo '=> Setting default shell to zsh'
+		chsh -s /bin/zsh
+	fi
 fi
