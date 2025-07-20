@@ -1,3 +1,5 @@
+model: o3
+reasoning-effort: high
 auto-commits: false
 gitignore: false
 auto-lint: true
