@@ -3,11 +3,13 @@
 @astrojs/language-server
 @google/gemini-cli
 @tailwindcss/language-server
+@vtsls/language-server
 @vue/language-server
 blade-formatter
 diagnostic-languageserver
 intelephense
 prettier
+svelte-language-server
 typescript
 typescript-language-server
 vscode-langservers-extracted
