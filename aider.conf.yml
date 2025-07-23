@@ -3,7 +3,5 @@ reasoning-effort: high
 auto-commits: false
 gitignore: false
 auto-lint: true
-architect: true
-auto-accept-architect: false
 read:
   - CONVENTIONS.md
