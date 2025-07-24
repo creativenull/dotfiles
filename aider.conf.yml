@@ -1,4 +1,4 @@
-model: o3
+model: o4-mini
 reasoning-effort: high
 auto-commits: false
 gitignore: false
