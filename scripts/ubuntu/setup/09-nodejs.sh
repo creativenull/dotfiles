@@ -4,7 +4,7 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$HOME/.local/bin:$PATH"
 
 echo '=> Installing nodejs'
 
-NODE_VER="22.15.0"
+NODE_VER="latest:22"
 nodejs_install() {
 	asdf plugin add nodejs
 	asdf install nodejs $NODE_VER

@@ -7,7 +7,6 @@ sudo apt install -y bat
 sudo apt install -y btop
 sudo apt install -y build-essential
 sudo apt install -y cmake
-sudo apt install -y curl
 sudo apt install -y gnome-shell-extension-manager
 sudo apt install -y gnome-tweaks
 sudo apt install -y httpie
@@ -16,11 +15,8 @@ sudo apt install -y ripgrep
 sudo apt install -y software-properties-common
 sudo apt install -y unzip
 sudo apt install -y vim
-sudo apt install -y wget
 sudo apt install -y zip
 sudo apt install -y zsh
-
-sudo snap install --stable vivaldi
 
 echo '=> Installing lsd'
 

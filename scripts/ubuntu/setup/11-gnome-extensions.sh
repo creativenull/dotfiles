@@ -36,7 +36,7 @@ fi
 
 echo '=> tophat'
 
-TOPHAT_VERSION="v21"
+TOPHAT_VERSION="v22"
 TOPHAT_UUID="tophat@fflewddur.github.io"
 TOPHAT_URL="https://github.com/fflewddur/tophat/releases/download/${TOPHAT_VERSION}/${TOPHAT_UUID}.${TOPHAT_VERSION}.shell-extension.zip"
 
@@ -68,7 +68,7 @@ fi
 
 echo '=> paperwm'
 
-PAPERWM_VERSION="48.0.1"
+PAPERWM_VERSION="48.0.2"
 PAPERWM_UUID="paperwm@paperwm.github.io"
 PAPERWM_URL="https://github.com/paperwm/PaperWM/archive/refs/tags/v${PAPERWM_VERSION}.zip"
 

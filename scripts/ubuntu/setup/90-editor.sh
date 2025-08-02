@@ -10,7 +10,7 @@ neovim_install() {
 	sudo apt install -y python-setuptools
 	sudo apt install -y python3-pynvim
 
-	NVIM_VER="v0.11.1"
+	NVIM_VER="v0.11.3"
 	rm -rf ~/.builds/neovim
 	git clone --depth 1 --branch $NVIM_VER https://github.com/neovim/neovim.git ~/.builds/neovim
 	cd ~/.builds/neovim

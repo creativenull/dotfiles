@@ -68,7 +68,7 @@ echo '=> Install lua-language-server'
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$HOME/.local/bin:$PATH"
 
-LUA_LANGUAGE_SERVER_VER="3.14.0"
+LUA_LANGUAGE_SERVER_VER="3.15.0"
 luals_install() {
 	asdf plugin add lua-language-server
 	asdf install lua-language-server $LUA_LANGUAGE_SERVER_VER

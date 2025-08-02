@@ -9,7 +9,7 @@ php_install() {
 		libicu-dev libjpeg-dev libmysqlclient-dev libonig-dev libpng-dev libpq-dev libreadline-dev libsqlite3-dev \
 		libssl-dev libxml2-dev libzip-dev openssl pkg-config re2c zlib1g-dev libsodium-dev
 
-	PHP_VER="8.4.4"
+	PHP_VER="latest:8.4"
 	asdf plugin add php
 	ASDF_CONCURRENCY=4 PHP_CONFIGURE_OPTIONS="--with-openssl --with-curl --with-zlib --with-readline --with-gettext --with-sodium --with-redis" asdf install php $PHP_VER
 	asdf set -u php $PHP_VER

@@ -2,7 +2,7 @@
 
 echo '=> Installing fonts, icons and themes'
 
-JETBRAINS_NF_VER="v3.3.0"
+JETBRAINS_NF_VER="v3.4.0"
 JETBRAINS_NF_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${JETBRAINS_NF_VER}/JetBrainsMono.zip"
 mkdir -p ~/.local/share/fonts
 rm -rf ~/.local/share/fonts/JetBrainsMono
