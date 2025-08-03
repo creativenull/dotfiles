@@ -9,8 +9,6 @@ sudo apt install -y autoconf
 sudo apt install -y bat
 sudo apt install -y btop
 sudo apt install -y cmake
-sudo apt install -y gnome-shell-extension-manager
-sudo apt install -y gnome-tweaks
 sudo apt install -y httpie
 sudo apt install -y ripgrep
 sudo apt install -y software-properties-common

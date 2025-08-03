@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+echo '=> Installing extra packages'
+
+sudo nala install -y gnome-shell-extension-manager
+sudo nala install -y gnome-tweaks
+
 echo '=> Configuring system theme'
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
