@@ -31,19 +31,19 @@ cd ~/.builds/niri
 cargo build --release
 
 if [ -f ~/.builds/niri/target/release/niri ]; then
-	sudo cp -v ~/.builds/niri/target/release/niri /usr/local/bin/
-	sudo cp -v ~/.builds/niri/resources/niri-session /usr/local/bin
-	sudo cp -v ~/.builds/niri/resources/niri.desktop /usr/share/wayland-sessions
-	sudo cp -v ~/.builds/niri/resources/niri.desktop /usr/share/xsessions
-	sudo cp -v ~/.builds/niri/resources/niri-portals.conf /usr/share/xdg-desktop-portal
+	sudo cp -fv ~/.builds/niri/target/release/niri /usr/local/bin/
+	sudo cp -fv ~/.builds/niri/resources/niri-session /usr/local/bin
+	sudo cp -fv ~/.builds/niri/resources/niri.desktop /usr/share/wayland-sessions
+	sudo cp -fv ~/.builds/niri/resources/niri.desktop /usr/share/xsessions
+	sudo cp -fv ~/.builds/niri/resources/niri-portals.conf /usr/share/xdg-desktop-portal
 
     sudo mkdir -p /etc/systemd/user
-	sudo cp -v ~/.builds/niri/resources/niri.service /etc/systemd/user
-	sudo cp -v ~/.builds/niri/resources/niri-shutdown.target /etc/systemd/user
+	sudo cp -fv ~/.builds/niri/resources/niri.service /etc/systemd/user
+	sudo cp -fv ~/.builds/niri/resources/niri-shutdown.target /etc/systemd/user
 
 	sudo mkdir -p /etc/dinit.d/user
-	sudo cp -v ~/.builds/niri/resources/dinit/niri /etc/dinit.d/user
-	sudo cp -v ~/.builds/niri/resources/dinit/niri-shutdown /etc/dinit.d/user
+	sudo cp -fv ~/.builds/niri/resources/dinit/niri /etc/dinit.d/user
+	sudo cp -fv ~/.builds/niri/resources/dinit/niri-shutdown /etc/dinit.d/user
 
 	# Install deps
 	sudo nala install -y mako-notifier fuzzel swaylock
