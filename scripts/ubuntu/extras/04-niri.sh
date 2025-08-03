@@ -14,7 +14,7 @@ if [ "$1" == "uninstall" ]; then
 	sudo rm -fv /etc/dinit.d/user/niri-shutdown
 
 	# Remove deps
-	sudo nala remove -y mako-notifier xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring
+	sudo nala remove -y mako-notifier fuzzel swaylock
 
 	exit 0
 fi
@@ -44,5 +44,5 @@ if [ -f ~/.builds/niri/target/release/niri ]; then
 	sudo ln -sv ~/.builds/niri/resources/dinit/niri-shutdown /etc/dinit.d/user
 
 	# Install deps
-	sudo nala install -y mako-notifier xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring
+	sudo nala install -y mako-notifier fuzzel swaylock
 fi
