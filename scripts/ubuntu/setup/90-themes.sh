@@ -21,8 +21,3 @@ wget "$BIBATA_CURSOR_URL" -O ~/.builds/Bibata-Modern-Classic.tar.xz
 sudo rm -rf /usr/share/icons/Bibata-Modern-Classic
 sudo tar -xvf ~/.builds/Bibata-Modern-Classic.tar.xz -C /usr/share/icons
 rm ~/.builds/Bibata-Modern-Classic.tar.xz
-
-echo '=> Configuring theme for snap packages'
-
-sudo snap install bibata-all-cursor
-for plug in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect ${plug} bibata-all-cursor:icon-themes; done
