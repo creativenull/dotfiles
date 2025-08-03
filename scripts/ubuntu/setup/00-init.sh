@@ -9,3 +9,8 @@ echo '=> System update'
 
 sudo apt update && sudo apt upgrade -y
 sudo snap refresh
+
+echo '=> Installing essentials'
+
+sudo apt install -y build-essential
+sudo apt install -y nala

@@ -2,20 +2,17 @@
 
 echo '=> Installing core packages'
 
-sudo apt install -y build-essential
-sudo apt install -y nala
-
-sudo apt install -y autoconf
-sudo apt install -y bat
-sudo apt install -y btop
-sudo apt install -y cmake
-sudo apt install -y httpie
-sudo apt install -y ripgrep
-sudo apt install -y software-properties-common
-sudo apt install -y unzip
-sudo apt install -y vim
-sudo apt install -y zip
-sudo apt install -y zsh
+sudo nala install -y autoconf
+sudo nala install -y bat
+sudo nala install -y btop
+sudo nala install -y cmake
+sudo nala install -y httpie
+sudo nala install -y ripgrep
+sudo nala install -y software-properties-common
+sudo nala install -y unzip
+sudo nala install -y vim
+sudo nala install -y zip
+sudo nala install -y zsh
 
 echo '=> Installing lsd'
 
