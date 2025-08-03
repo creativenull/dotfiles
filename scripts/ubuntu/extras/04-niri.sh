@@ -24,24 +24,24 @@ echo '=> Installing niri'
 sudo nala install -y gcc clang libudev-dev libgbm-dev libxkbcommon-dev libegl1-mesa-dev libwayland-dev libinput-dev \
 	libdbus-1-dev libsystemd-dev libseat-dev libpipewire-0.3-dev libpango1.0-dev libdisplay-info-dev
 
-$NIRI_VER="v25.05.1"
+NIRI_VER="v25.05.1"
 git clone --depth 1 --branch $NIRI_VER https://github.com/YaLTeR/niri.git ~/.builds/niri
 cd ~/.builds/niri
 cargo build --release
 
 if [ -f ~/.builds/niri/target/release/niri ]; then
-	sudo ln -sv ~/.builds/niri/target/release/niri /usr/local/bin/
-	sudo ln -sv ~/.builds/niri/resources/niri-session /usr/local/bin
-	sudo ln -sv ~/.builds/niri/resources/niri.desktop /usr/share/wayland-sessions
-	sudo ln -sv ~/.builds/niri/resources/niri-portals.conf /usr/share/xdg-desktop-portal
+	sudo cp -sv ~/.builds/niri/target/release/niri /usr/local/bin/
+	sudo cp -sv ~/.builds/niri/resources/niri-session /usr/local/bin
+	sudo cp -sv ~/.builds/niri/resources/niri.desktop /usr/share/wayland-sessions
+	sudo cp -sv ~/.builds/niri/resources/niri-portals.conf /usr/share/xdg-desktop-portal
 
     sudo mkdir -p /etc/systemd/user
-	sudo ln -sv ~/.builds/niri/resources/niri.service /etc/systemd/user
-	sudo ln -sv ~/.builds/niri/resources/niri-shutdown.target /etc/systemd/user
+	sudo cp -sv ~/.builds/niri/resources/niri.service /etc/systemd/user
+	sudo cp -sv ~/.builds/niri/resources/niri-shutdown.target /etc/systemd/user
 
 	sudo mkdir -p /etc/dinit.d/user
-	sudo ln -sv ~/.builds/niri/resources/dinit/niri /etc/dinit.d/user
-	sudo ln -sv ~/.builds/niri/resources/dinit/niri-shutdown /etc/dinit.d/user
+	sudo cp -sv ~/.builds/niri/resources/dinit/niri /etc/dinit.d/user
+	sudo cp -sv ~/.builds/niri/resources/dinit/niri-shutdown /etc/dinit.d/user
 
 	# Install deps
 	sudo nala install -y mako-notifier fuzzel swaylock
