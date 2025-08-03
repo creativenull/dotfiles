@@ -7,6 +7,7 @@ if [ "$1" == "uninstall" ]; then
 	sudo rm -fv /usr/local/bin/niri
 	sudo rm -fv /usr/local/bin/niri-session
 	sudo rm -fv /usr/share/wayland-sessions/niri.desktop
+	sudo rm -fv /usr/share/xsessions/niri.desktop
 	sudo rm -fv /usr/share/xdg-desktop-portal/niri-portals.conf
 	sudo rm -fv /etc/systemd/user/niri.service
 	sudo rm -fv /etc/systemd/user/niri-shutdown.target
@@ -33,6 +34,7 @@ if [ -f ~/.builds/niri/target/release/niri ]; then
 	sudo cp -v ~/.builds/niri/target/release/niri /usr/local/bin/
 	sudo cp -v ~/.builds/niri/resources/niri-session /usr/local/bin
 	sudo cp -v ~/.builds/niri/resources/niri.desktop /usr/share/wayland-sessions
+	sudo cp -v ~/.builds/niri/resources/niri.desktop /usr/share/xsessions
 	sudo cp -v ~/.builds/niri/resources/niri-portals.conf /usr/share/xdg-desktop-portal
 
     sudo mkdir -p /etc/systemd/user
