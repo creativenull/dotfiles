@@ -46,24 +46,6 @@ else
 	efm_install
 fi
 
-echo '=> Installing deno'
-
-deno_install() {
-	curl -fsSL https://deno.land/install.sh | sh -s -- --yes --no-modify-path
-}
-
-if [ -f ~/.deno/bin/deno ]; then
-	read -p "=> deno: already installed. Reinstall? [y/N] " reinstall
-
-	if [ "$reinstall" = "y" ]; then
-		deno_install
-	else
-		echo "=> Skipping"
-	fi
-else
-	deno_install
-fi
-
 echo '=> Install lua-language-server'
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$HOME/.local/bin:$PATH"
