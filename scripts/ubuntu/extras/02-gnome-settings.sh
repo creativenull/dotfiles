@@ -5,11 +5,6 @@ echo '=> Installing extra packages'
 sudo nala install -y gnome-shell-extension-manager
 sudo nala install -y gnome-tweaks
 
-echo '=> Configuring theme for snap packages'
-
-sudo snap install bibata-all-cursor
-for plug in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect ${plug} bibata-all-cursor:icon-themes; done
-
 echo '=> Configuring system theme'
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
