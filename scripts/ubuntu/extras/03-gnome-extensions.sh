@@ -8,6 +8,22 @@ BLURMYSHELL_VERSION="v68-2"
 BLURMYSHELL_UUID="blur-my-shell@aunetx"
 BLURMYSHELL_URL="https://github.com/aunetx/blur-my-shell/releases/download/${BLURMYSHELL_VERSION}/${BLURMYSHELL_UUID}.shell-extension.zip"
 
+TOPHAT_VERSION="v22"
+TOPHAT_UUID="tophat@fflewddur.github.io"
+TOPHAT_URL="https://github.com/fflewddur/tophat/releases/download/${TOPHAT_VERSION}/${TOPHAT_UUID}.${TOPHAT_VERSION}.shell-extension.zip"
+
+PAPERWM_VERSION="48.0.2"
+PAPERWM_UUID="paperwm@paperwm.github.io"
+PAPERWM_URL="https://github.com/paperwm/PaperWM/archive/refs/tags/v${PAPERWM_VERSION}.zip"
+
+if [ "$1" = "enable" ]; then
+	gnome-extensions enable "${BLURMYSHELL_UUID}"
+    gnome-extensions enable "${TOPHAT_UUID}"
+    gnome-extensions enable "${PAPERWM_UUID}"
+
+	exit 0
+fi
+
 blurmyshell_install() {
 	if [ -d ~/.local/share/gnome-shell/extensions/${BLURMYSHELL_UUID} ]; then
 		gnome-extensions uninstall "${BLURMYSHELL_UUID}"
@@ -16,8 +32,6 @@ blurmyshell_install() {
 	wget "$BLURMYSHELL_URL" -O ~/.builds/blur-my-shell.zip
 	mkdir -p ~/.local/share/gnome-shell/extensions/${BLURMYSHELL_UUID}
 	unzip ~/.builds/blur-my-shell.zip -d ~/.local/share/gnome-shell/extensions/${BLURMYSHELL_UUID}
-
-	gnome-extensions enable "${BLURMYSHELL_UUID}"
 
 	rm -rf ~/.builds/blur-my-shell.zip
 }
@@ -36,10 +50,6 @@ fi
 
 echo '=> tophat'
 
-TOPHAT_VERSION="v22"
-TOPHAT_UUID="tophat@fflewddur.github.io"
-TOPHAT_URL="https://github.com/fflewddur/tophat/releases/download/${TOPHAT_VERSION}/${TOPHAT_UUID}.${TOPHAT_VERSION}.shell-extension.zip"
-
 tophat_install() {
 	if [ -d ~/.local/share/gnome-shell/extensions/${TOPHAT_UUID} ]; then
 		gnome-extensions uninstall "${TOPHAT_UUID}"
@@ -48,8 +58,6 @@ tophat_install() {
 	wget "$TOPHAT_URL" -O ~/.builds/tophat.zip
 	mkdir -p ~/.local/share/gnome-shell/extensions/${TOPHAT_UUID}
 	unzip ~/.builds/tophat.zip -d ~/.local/share/gnome-shell/extensions/${TOPHAT_UUID}
-
-	gnome-extensions enable "${TOPHAT_UUID}"
 
 	rm -rf ~/.builds/tophat.zip
 }
@@ -68,10 +76,6 @@ fi
 
 echo '=> paperwm'
 
-PAPERWM_VERSION="48.0.2"
-PAPERWM_UUID="paperwm@paperwm.github.io"
-PAPERWM_URL="https://github.com/paperwm/PaperWM/archive/refs/tags/v${PAPERWM_VERSION}.zip"
-
 paperwm_install() {
 	if [ -d ~/.local/share/gnome-shell/extensions/${PAPERWM_UUID} ]; then
 		gnome-extensions uninstall "${PAPERWM_UUID}"
@@ -79,10 +83,9 @@ paperwm_install() {
 
 	wget "$PAPERWM_URL" -O ~/.builds/paperwm.zip
 	unzip ~/.builds/paperwm.zip -d ~/.builds
-	rm ~/.builds/paperwm.zip
-
 	. ~/.builds/PaperWM-${PAPERWM_VERSION}/install.sh
-	gnome-extensions enable "${PAPERWM_UUID}"
+
+	rm ~/.builds/paperwm.zip
 }
 
 if [ -d ~/.local/share/gnome-shell/extensions/${PAPERWM_UUID} ]; then
