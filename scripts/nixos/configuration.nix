@@ -38,52 +38,42 @@
 
 	nixpkgs.config.allowUnfree = true;
 
-	programs.zsh.enable = true;
-	programs.firefox.enable = true;
-	programs.neovim.enable = true;
-	programs.neovim.defaultEditor = true;
-	programs.niri.enable = true;
-
 	environment.systemPackages = with pkgs; [
+		# Core
 		bat
-		bibata-cursors
 		cmake
 		curl
-		deno
-		diff-so-fancy
-		efm-langserver
 		fastfetch
 		firefox
 		gcc
 		git
-		gnome-tweaks
-		gnomeExtensions.blur-my-shell
-		gnomeExtensions.dash-to-dock
-		gnomeExtensions.paperwm
-		gnomeExtensions.tophat
-		home-manager
 		kitty
 		lsd
-		lua-language-server
-		neovim
-		niri
-		nodejs_22
 		openssl
-		php84Packages.composer
 		ripgrep
 		starship
-		stylua
-		tela-icon-theme
 		tree
-		tree-sitter
 		unzip
-		vim
 		vivaldi
 		wget
 		wl-clipboard
 		zellij
 		zip
 		zsh
+
+		# Editor
+		diff-so-fancy
+		efm-langserver
+		lua-language-server
+		neovim
+		stylua
+		tree-sitter
+		vim
+
+		# Development
+		deno
+		nodejs_22
+		php84Packages.composer
 		(php84.withExtensions ({ enabled, all }:
 			enabled ++ [
 				all.ctype
@@ -111,6 +101,23 @@
 			py.setuptools
 			py.pynvim
 		]))
+
+		# UI
+		bibata-cursors
+		tela-icon-theme
+
+		# GNOME Desktop
+		gnome-tweaks
+		gnomeExtensions.blur-my-shell
+		gnomeExtensions.dash-to-dock
+		gnomeExtensions.paperwm
+		gnomeExtensions.tophat
+
+		# Niri WM
+		fuzzel
+		mako
+		niri
+		waybar
 	];
 
 	fonts.packages = with pkgs; [
@@ -138,10 +145,15 @@
 		shell = pkgs.zsh;
 	};
 
+	programs.zsh.enable = true;
+	programs.firefox.enable = true;
+	programs.neovim.enable = true;
+	programs.neovim.defaultEditor = true;
+	programs.niri.enable = true;
+
 	programs.dconf = {
 		enable = true;
 		profiles.user.databases = [{
-			lockAll = true;
 			settings = {
 				"org/gnome/desktop/interface" = {
 					color-scheme = "prefer-dark";
