@@ -2,6 +2,6 @@ model: o4-mini
 reasoning-effort: high
 auto-commits: false
 gitignore: false
-auto-lint: true
-read:
-  - CONVENTIONS.md
+stream: false
+architect: true
+auto-accept-architect: false
