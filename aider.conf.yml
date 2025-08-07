@@ -3,5 +3,3 @@ reasoning-effort: high
 auto-commits: false
 gitignore: false
 stream: false
-architect: true
-auto-accept-architect: false
