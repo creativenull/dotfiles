@@ -19,9 +19,6 @@ alias grep="grep --color=auto"
 # Neovim
 export PYTHON3_HOST_PROG=$(which python3)
 
-# Aider
-alias aider='if [[ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" == "Dark" ]]; then aider --dark-mode; else aider --light-mode; fi'
-
 # Git aliases
 alias g="git"
 alias gA="git add -A"
