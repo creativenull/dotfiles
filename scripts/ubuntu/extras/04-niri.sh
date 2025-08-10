@@ -15,14 +15,14 @@ if [ "$1" == "uninstall" ]; then
 	sudo rm -fv /etc/dinit.d/user/niri-shutdown
 
 	# Remove deps
-	sudo nala remove -y mako-notifier fuzzel swaylock
+	sudo apt remove -y mako-notifier fuzzel swaylock
 
 	exit 0
 fi
 
 echo '=> Installing niri'
 
-sudo nala install -y gcc clang libudev-dev libgbm-dev libxkbcommon-dev libegl1-mesa-dev libwayland-dev libinput-dev \
+sudo apt install -y gcc clang libudev-dev libgbm-dev libxkbcommon-dev libegl1-mesa-dev libwayland-dev libinput-dev \
 	libdbus-1-dev libsystemd-dev libseat-dev libpipewire-0.3-dev libpango1.0-dev libdisplay-info-dev
 
 NIRI_VER="v25.05.1"
@@ -46,5 +46,5 @@ if [ -f ~/.builds/niri/target/release/niri ]; then
 	sudo cp -fv ~/.builds/niri/resources/dinit/niri-shutdown /etc/dinit.d/user
 
 	# Install deps
-	sudo nala install -y mako-notifier fuzzel swaylock
+	sudo apt install -y mako-notifier fuzzel swaylock
 fi

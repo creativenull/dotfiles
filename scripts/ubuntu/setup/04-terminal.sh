@@ -53,5 +53,6 @@ if [ -f /usr/bin/diff-so-fancy ]; then
 	echo "=> Skipping"
 else
 	sudo add-apt-repository -y ppa:aos1/diff-so-fancy
-	sudo nala update && sudo nala install -y diff-so-fancy
+	sudo apt update
+	sudo apt install -y diff-so-fancy
 fi

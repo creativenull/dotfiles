@@ -3,12 +3,7 @@
 echo '=> Installing neovim'
 
 neovim_install() {
-	sudo nala install -y ninja-build
-	sudo nala install -y gettext
-	sudo nala install -y python3-pip
-	sudo nala install -y python3-wheel
-	sudo nala install -y python-setuptools
-	sudo nala install -y python3-pynvim
+	sudo apt install -y ninja-build gettext python3-pip python3-wheel python-setuptools python3-pynvim
 
 	NVIM_VER="v0.11.3"
 	rm -rf ~/.builds/neovim

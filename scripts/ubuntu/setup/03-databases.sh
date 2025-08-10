@@ -7,7 +7,7 @@ if [ -f /usr/bin/mysql ]; then
 	exit 0
 fi
 
-sudo nala install mysql-server-8.0 mysql-client-8.0 -y
+sudo apt install mysql-server-8.0 mysql-client-8.0 -y
 sudo mysql_secure_installation <<EOF
 
 n # Change the password? No
