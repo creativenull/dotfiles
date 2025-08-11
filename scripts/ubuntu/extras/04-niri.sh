@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# THIS SCRIPT IS EXPERIMENTAL
+# ---
+
 # Check if an agrument uninstall is passed then run uninstall otherwise run install
 if [ "$1" == "uninstall" ]; then
     echo '=> Uninstalling niri'
