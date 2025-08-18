@@ -1,4 +1,4 @@
-model: gpt-4.1-mini
+model: gpt-4.1
 weak-model: gpt-4o-mini
 editor-model: gpt-4.1-nano
 auto-commits: false
