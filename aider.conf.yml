@@ -3,4 +3,3 @@ weak-model: gpt-4.1-mini
 editor-model: gpt-4.1-mini
 auto-commits: false
 gitignore: false
-stream: false
