@@ -259,7 +259,7 @@ themes {
 	moonfly {
 		bg "#080808"
 		fg "#bdbdbd"
-		black "#1c1c1c"
+		black "#080808"
 		red "#e65e72"
 		green "#8cc85f"
 		yellow "#e3c78a"
