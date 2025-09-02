@@ -12,7 +12,8 @@
 + [zellij](https://zellij.dev/)
 + [zsh](https://www.zsh.org/)
 
-## Scripts to reproduce my development environment in Linux
+## Scripts to reproduce my development environment on a new machine
 
-- [Ubuntu](https://ubuntu.com/)
-- [NixOS](https://nixos.org/)
+- [MacOS][./scripts/macos]
+- [NixOS][./scripts/nixos]
+- [Ubuntu][./scripts/ubuntu]
