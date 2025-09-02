@@ -422,6 +422,7 @@ Plug("tpope/vim-repeat")
 Plug("tpope/vim-surround")
 Plug("numToStr/Comment.nvim")
 Plug("JoosepAlviste/nvim-ts-context-commentstring")
+Plug("AndrewRadev/splitjoin.vim")
 
 -- AI
 -- ---
