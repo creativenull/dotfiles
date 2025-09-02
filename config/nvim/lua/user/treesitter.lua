@@ -20,6 +20,7 @@ function M.setup()
       "prisma",
       "sql",
       "svelte",
+      "todotxt",
       "tsx",
       "typescript",
       "vimdoc",
