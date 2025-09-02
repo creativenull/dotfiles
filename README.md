@@ -14,6 +14,6 @@
 
 ## Scripts to reproduce my development environment on a new machine
 
-- [MacOS][./scripts/macos]
-- [NixOS][./scripts/nixos]
-- [Ubuntu][./scripts/ubuntu]
+- [MacOS](./scripts/macos)
+- [NixOS](./scripts/nixos)
+- [Ubuntu](./scripts/ubuntu)
