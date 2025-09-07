@@ -1,0 +1,9 @@
+model = "gpt-5-mini"
+model_reasoning_effort = "minimal"
+
+file_opener = "none"
+hide_agent_reasoning = true
+
+[mcp_servers.laravel-boost]
+command = "php"
+args = ["./artisan", "boost:mcp"]
