@@ -1,5 +1,4 @@
-model: gpt-4.1
-weak-model: gpt-4.1-mini
-editor-model: gpt-4.1-mini
+model: openrouter/qwen/qwen3-coder:free
+editor: nvim
 auto-commits: false
 gitignore: false
