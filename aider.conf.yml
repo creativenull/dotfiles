@@ -4,6 +4,7 @@ editor-model: openrouter/mistralai/devstral-small-2505:free
 editor: nvim
 auto-commits: false
 gitignore: false
+cache-prompts: true
 read:
   - AGENTS.md
   - CLAUDE.md
