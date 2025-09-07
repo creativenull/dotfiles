@@ -1,4 +1,6 @@
 model: openrouter/qwen/qwen3-coder:free
+weak-model: openrouter/mistralai/devstral-small-2505:free
+editor-model: openrouter/mistralai/devstral-small-2505:free
 editor: nvim
 auto-commits: false
 gitignore: false
