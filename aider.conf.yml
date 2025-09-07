@@ -2,3 +2,6 @@ model: openrouter/qwen/qwen3-coder:free
 editor: nvim
 auto-commits: false
 gitignore: false
+read:
+  - AGENTS.md
+  - CLAUDE.md
