@@ -12,6 +12,8 @@ classic: false
 blocks:
   - permission
   - size
+  - user
+  - group
   - date
   - name
 
