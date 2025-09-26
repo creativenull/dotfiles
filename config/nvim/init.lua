@@ -498,6 +498,7 @@ Plug("nvimdev/indentmini.nvim")
 Plug("creativenull/feline.nvim")
 Plug("creativenull/feline-provider-ale.nvim")
 Plug("f-person/auto-dark-mode.nvim")
+Plug("brenoprata10/nvim-highlight-colors")
 
 -- TreeSitter
 -- ---
@@ -614,6 +615,10 @@ require("user.feline").setup()
 -- indentmini.nvim Config
 -- ---
 require("indentmini").setup({ minlevel = 2 })
+
+-- nvim-highlight-colors Config
+-- ---
+require("nvim-highlight-colors").setup({})
 
 -- =============================================================================
 -- = Colorscheme =
