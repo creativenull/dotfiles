@@ -2,6 +2,7 @@
   "distribution": "custom",
   "masonTools": [],
   "plugins": [
+    "AndrewRadev/splitjoin.vim",
     "Exafunction/windsurf.nvim",
     "JoosepAlviste/nvim-ts-context-commentstring",
     "Shougo/ddc-source-around",
@@ -12,6 +13,7 @@
     "Shougo/pum.vim",
     "SirVer/ultisnips",
     "bluz71/vim-moonfly-colors",
+    "brenoprata10/nvim-highlight-colors",
     "catppuccin/nvim",
     "cohama/lexima.vim",
     "creativenull/diagnosticls-configs-nvim",
@@ -76,6 +78,7 @@
     "prisma",
     "sql",
     "svelte",
+    "todotxt",
     "tsx",
     "typescript",
     "vimdoc",
