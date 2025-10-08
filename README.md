@@ -17,3 +17,9 @@
 - [MacOS](./scripts/macos)
 - [NixOS](./scripts/nixos)
 - [Ubuntu](./scripts/ubuntu)
+
+## AI configurations
+
+- [aider.chat](https://aider.chat)
+- [Claude Code](https://github.com/anthropics/claude-code)
+- [OpenAI Codex](https://github.com/openai/codex)
