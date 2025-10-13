@@ -23,7 +23,7 @@ color:
   # When to colorize the output.
   # When "classic" is set, this is set to "never".
   # Possible values: never, auto, always
-  when: auto
+  when: never
 
 # == Date ==
 # This specifies the date format for the date column. The freeform format
@@ -60,7 +60,7 @@ icons:
 # == Indicators ==
 # Whether to add indicator characters to certain listed files.
 # Possible values: false, true
-indicators: false
+indicators: true
 
 # == Layout ==
 # Which layout to use. "oneline" might be a bit confusing here and should be
