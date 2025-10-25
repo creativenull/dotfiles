@@ -14,6 +14,7 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 
 sketchybar --bar position=top height=35 y_offset=3 color=0x00000000 padding_left=10 padding_right=10
 sketchybar --add event bluetooth_change "com.apple.bluetooth.status"
+sketchybar --add event theme_change AppleInterfaceThemeChangedNotification
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -55,6 +56,11 @@ default=(
 	label.padding_right=5
 )
 sketchybar --default "${default[@]}"
+
+#### THEME CHANGE ####
+sketchybar --add item theme left \
+	--set theme drawing=off script="$PLUGIN_DIR/theme_switcher.sh"
+	--subscribe theme theme_change
 
 ##### Adding Mission Control Space Indicators #####
 # Let's add some mission control spaces:
@@ -214,11 +220,6 @@ bluetooth_headset_item=(
 sketchybar --add item bluetooth_headset right \
     --set bluetooth_headset "${bluetooth_headset_item[@]}" \
 	--subscribe bluetooth_headset bluetooth_change
-
-# sketchybar --add event theme_change AppleInterfaceThemeChangedNotification
-# sketchybar --add item theme left \
-# 	--set theme script="sketchybar --reload"
-# 	--subscribe theme theme_change
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
