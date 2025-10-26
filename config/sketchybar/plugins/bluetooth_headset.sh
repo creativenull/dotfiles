@@ -8,7 +8,7 @@ if [ "$SENDER" = "bluetooth_change" ]; then
 	if [ "$DEVICES" = "" ]; then
 		sketchybar --set "$NAME" drawing=off background.drawing=off
 	else
-		ICON="󰥰"
+		ICON="󰂯 "
 		sketchybar --set "$NAME" icon="$ICON"
 	fi
 fi
