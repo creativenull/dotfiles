@@ -5,10 +5,6 @@
 # focused application in the $INFO variable:
 # https://felixkratz.github.io/SketchyBar/config/events#events-and-scripting
 
-source "$HOME/.config/sketchybar/helpers/icon_map.sh"
-
 if [ "$SENDER" = "front_app_switched" ]; then
-	__icon_map "${INFO}"
-	symbol_ligature="${icon_result}"
-	sketchybar --set "$NAME" label="$INFO" icon="$symbol_ligature"
+	sketchybar --set "$NAME" label="$INFO"
 fi

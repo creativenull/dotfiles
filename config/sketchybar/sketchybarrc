@@ -112,13 +112,9 @@ sketchybar --add item separator1 left \
 
 front_app_item=(
 	script="$PLUGIN_DIR/front_app.sh"
-	icon.padding_left=15
-	icon.padding_right=2
-	label.padding_left=2
+	icon.drawing=off
+	label.padding_left=15
 	label.padding_right=15
-	icon.font="sketchybar-app-font:Regular:14.0"
-	icon.y_offset=0
-	icon.color="$theme_text_color"
 	label.color="$theme_text_color"
 	background.color="$theme_background_color"
 	background.corner_radius=8
