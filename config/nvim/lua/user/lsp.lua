@@ -29,6 +29,10 @@ local function efm_fmt(buf, state)
   local ft = vim.api.nvim_buf_get_option(buf, "filetype")
   local formatters = efm.config.settings.languages[ft]
 
+  if not formatters then
+    return
+  end
+
   local matches = vim.tbl_filter(function(fmt)
     return not fmt.formatStdin
   end, formatters)
