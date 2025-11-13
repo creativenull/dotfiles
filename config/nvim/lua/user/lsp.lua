@@ -136,7 +136,10 @@ function M.setup()
     capabilities = capabilities,
   })
 
-  require("diagnosticls-configs").init({ on_attach = on_attach })
+  -- require("diagnosticls-configs").init({
+  --   on_attach = on_attach,
+  --   default_config = true,
+  -- })
 
   -- register_format_on_save()
 
