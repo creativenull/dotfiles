@@ -60,7 +60,7 @@ sketchybar --default "${default[@]}"
 #### THEME CHANGE ####
 sketchybar --add item theme left \
 	--set theme drawing=off script="$PLUGIN_DIR/theme_switcher.sh"
-	--subscribe theme theme_change
+	--subscribe theme system_woke theme_change
 
 ##### Adding Mission Control Space Indicators #####
 # Let's add some mission control spaces:
