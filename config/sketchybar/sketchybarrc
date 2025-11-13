@@ -215,7 +215,7 @@ bluetooth_headset_item=(
 )
 sketchybar --add item bluetooth_headset right \
     --set bluetooth_headset "${bluetooth_headset_item[@]}" \
-	--subscribe bluetooth_headset bluetooth_change
+	--subscribe bluetooth_headset system_woke bluetooth_change
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
