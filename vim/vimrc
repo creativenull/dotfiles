@@ -319,7 +319,7 @@ let g:airline_section_z = '℅:%v, :%L'
 " hlyank Config
 " ---
 let g:hlyank_hlgroup = 'IncSearch'
-let g:hlyank_duration = 250
+let g:hlyank_duration = 300
 let g:hlyank_invisual = 1
 
 " =============================================================================
