@@ -188,7 +188,9 @@ function! s:SetDarkTheme() abort
 endfunction
 
 function! s:UpdateGuiMacvimColorscheme()
-	if v:os_appearance == 0
+	let l:cmd_result = systemlist('defaults read -g AppleInterfaceStyle')
+	let l:is_light = l:cmd_result[0] != 'Dark'
+	if l:is_light
 		call <SID>SetLightTheme()
 	else
 		call <SID>SetDarkTheme()
