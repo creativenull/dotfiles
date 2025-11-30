@@ -32,7 +32,7 @@ theme_spaces_text_color=0xfff5f5f5
 theme_spaces_background_color=0xff075985
 theme_spaces_text_highlight_color=0xff171717
 theme_spaces_background_highlight_color=0xfff5f5f5
-theme_height=25
+theme_height=30
 
 if [ "$theme" = "Dark" ]; then
     theme_background_color=0xff404040
