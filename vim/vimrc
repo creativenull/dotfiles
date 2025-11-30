@@ -365,6 +365,8 @@ let g:hlyank_invisual = 1
 " =============================================================================
 
 let g:moonflyNormalFloat = v:true
-let g:moonflyTransparent = v:true
+let g:moonflyTransparent = v:false
 
-call <SID>ConfigTheme()
+" call <SID>ConfigTheme()
+set background=dark
+colorscheme moonfly
