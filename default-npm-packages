@@ -11,6 +11,7 @@ diagnostic-languageserver
 intelephense
 prettier
 svelte-language-server
+taze
 typescript
 typescript-language-server
 vscode-langservers-extracted
