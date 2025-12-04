@@ -4,3 +4,4 @@
 
 set guifont=JetBrainsMono\ Nerd\ Font:h15
 set guioptions=dMrk
+set columns=130
