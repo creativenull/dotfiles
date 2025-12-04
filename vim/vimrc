@@ -61,7 +61,7 @@ set title
 set ttimeoutlen=50
 set undofile
 set undolevels=10000
-set updatetime=250
+set updatetime=100
 set wildignore=*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*
 set wildignorecase
 set wildmenu
@@ -367,6 +367,4 @@ let g:hlyank_invisual = 1
 let g:moonflyNormalFloat = v:true
 let g:moonflyTransparent = v:false
 
-" call <SID>ConfigTheme()
-set background=dark
-colorscheme moonfly
+call <SID>ConfigTheme()
