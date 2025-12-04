@@ -61,7 +61,7 @@ set title
 set ttimeoutlen=50
 set undofile
 set undolevels=10000
-set updatetime=100
+set updatetime=250
 set wildignore=*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*
 set wildignorecase
 set wildmenu
