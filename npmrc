@@ -3,3 +3,4 @@ registry=https://registry.npmjs.org/
 fetch-timeout=10000
 loglevel=warn
 strict-ssl=true
+progress=false
