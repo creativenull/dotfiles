@@ -1,3 +1,9 @@
 {
-  "model": "sonnet"
+  "model": "sonnet",
+  "cleanupPeriodDays": 7,
+  "includeCoAuthoredBy": true,
+  "statusLine": {
+    "type": "command",
+    "command": "deno run --allow-read=/home/creativenull/.claude ~/dotfiles/claude/statusline/main.ts"
+  }
 }
