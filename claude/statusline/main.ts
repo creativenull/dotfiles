@@ -1,0 +1,102 @@
+import type { StdinResponse } from "./stdin_response.ts";
+import { TranscriptData } from "./transcript_data.ts";
+
+function getModelName(r: StdinResponse) {
+  return r.model.display_name;
+}
+
+function getVersion(r: StdinResponse): string {
+  const ver = r.version;
+  return `v${ver}`;
+}
+
+function getCost(r: StdinResponse): string {
+  const cost = r.cost.total_cost_usd.toFixed(4) ?? "0";
+  return `Cost: $${cost}`;
+}
+
+function getUnitNumber(n: number): string {
+  if (n >= 0 && n < 1000) {
+    return n.toString();
+  } else if (n >= 1000 && n < 1000000) {
+    return `${(n / 1000).toFixed(1)}k`;
+  } else if (n >= 1000000) {
+    return `${(n / 1000000).toFixed(1)}M`;
+  } else {
+    return n.toString();
+  }
+}
+
+async function getContextLength(r: StdinResponse): Promise<string> {
+  try {
+    const path = r.transcript_path;
+    const content = await Deno.readTextFile(path);
+
+    // Parse all valid transcript lines
+    const messages = content
+      .split("\n")
+      .map((line) => {
+        try {
+          return JSON.parse(line) as TranscriptData;
+        } catch {
+          return null;
+        }
+      })
+      .filter((d): d is TranscriptData =>
+        d !== null && d.message?.usage !== undefined
+      );
+
+    // Get the last message's usage (represents current context)
+    const lastMessage = messages.at(-1);
+
+    if (!lastMessage?.message?.usage) {
+      return "";
+    }
+
+    const usage = lastMessage.message.usage;
+    const inTokens = (usage.input_tokens ?? 0) +
+      (usage.cache_read_input_tokens ?? 0) +
+      (usage.cache_creation_input_tokens ?? 0);
+    const outTokens = usage.output_tokens ?? 0;
+    const totalTokens = inTokens + outTokens;
+    const maxTokens = 200_000;
+    const freeSpace = maxTokens - totalTokens;
+
+    const items = [
+      `${getUnitNumber(totalTokens)}/${getUnitNumber(maxTokens)}`,
+      `free: ${getUnitNumber(freeSpace)}`,
+    ];
+
+    return items.join(" - ");
+  } catch (_e) {
+    return "";
+  }
+}
+
+async function main(input: string) {
+  try {
+    const r = JSON.parse(input) as StdinResponse;
+
+    const items = [
+      getModelName(r),
+      getVersion(r),
+      getCost(r),
+      await getContextLength(r),
+    ];
+
+    // Dimmer font color in console.log
+    console.log("\x1b[2m%s\x1b[0m", items.join(" | "));
+    // console.log(items.join(" | "));
+  } catch (_e) {
+    console.log("Status line error", _e);
+  }
+}
+
+const inputDecoder = new TextDecoder();
+let input = "";
+
+for await (const chunk of Deno.stdin.readable) {
+  input += inputDecoder.decode(chunk);
+}
+
+await main(input);
