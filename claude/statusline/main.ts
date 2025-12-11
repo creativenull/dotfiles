@@ -84,7 +84,7 @@ async function main(input: string) {
       await getContextLength(r),
     ];
 
-    console.log(items.join(" | "));
+    console.log(items.filter((i) => !!i).join(" | "));
   } catch (_e) {
     console.log("Status line error", _e);
   }
