@@ -125,11 +125,11 @@ async function main(input: string) {
   try {
     const r = JSON.parse(input) as StdinResponse;
 
-    const items = [
+    const items = await Promise.all([
       getToolInfo(r),
       getCost(r),
-      await getContextLength(r),
-    ];
+      getContextLength(r),
+    ]);
 
     console.log(items.filter((i) => !!i).join(" | "));
   } catch (_e) {
