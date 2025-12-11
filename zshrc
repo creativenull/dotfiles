@@ -109,6 +109,10 @@ source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 
+# Custom completions location
+fpath=($HOME/.zsh/completions $fpath)
+autoload -U compinit; compinit
+
 # Starship
 # ---
 eval "$(starship init zsh)"
