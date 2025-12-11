@@ -1,5 +1,5 @@
-import type { StdinResponse } from "./stdin_response.ts";
-import { TranscriptData } from "./transcript_data.ts";
+import type { StdinResponse } from "./types/stdin.ts";
+import type { TranscriptData } from "./types/transcript.ts";
 
 function getModelName(r: StdinResponse) {
   return r.model.display_name;
