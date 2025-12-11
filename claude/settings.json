@@ -4,6 +4,6 @@
   "includeCoAuthoredBy": true,
   "statusLine": {
     "type": "command",
-    "command": "deno run --allow-read ~/dotfiles/claude/statusline/main.ts"
+    "command": "~/dotfiles/claude/statusline.ts"
   }
 }
