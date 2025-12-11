@@ -69,7 +69,7 @@ async function getContextLength(r: StdinResponse): Promise<string> {
 
     return items.join(" - ");
   } catch (_e) {
-    return "";
+    return "No context info";
   }
 }
 
