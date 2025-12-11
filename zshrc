@@ -46,6 +46,11 @@ alias gs="git status"
 alias gst="git stash"
 alias gt="git tag"
 
+# Personal aliases
+alias cddot="cd ~/dotfiles"
+alias cdp="cd ~/projects/github.com/creativenull"
+alias cdd="cd ~/projects/demos"
+
 # zsh settings
 # ---
 if [ -d "$HOME/.local/bin" ] ; then
