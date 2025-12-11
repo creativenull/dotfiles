@@ -1,13 +1,11 @@
 import type { StdinResponse } from "./types/stdin.ts";
 import type { TranscriptData } from "./types/transcript.ts";
 
-function getModelName(r: StdinResponse) {
-  return r.model.display_name;
-}
+function getToolInfo(r: StdinResponse) {
+  const ver = `v${r.version}`;
+  const model =  r.model.display_name;
 
-function getVersion(r: StdinResponse): string {
-  const ver = r.version;
-  return `v${ver}`;
+  return `${ver} - ${model}`;
 }
 
 function getCost(r: StdinResponse): string {
@@ -92,8 +90,7 @@ async function main(input: string) {
     const r = JSON.parse(input) as StdinResponse;
 
     const items = [
-      getModelName(r),
-      getVersion(r),
+      getToolInfo(r),
       getCost(r),
       await getContextLength(r),
     ];
