@@ -11,7 +11,21 @@ function getVersion(r: StdinResponse): string {
 }
 
 function getCost(r: StdinResponse): string {
-  const cost = r.cost.total_cost_usd.toFixed(4) ?? "0";
+  const rawCost = r.cost.total_cost_usd;
+  let cost = rawCost.toFixed(4);
+
+  // Show green if < $5
+  // Show warning if < $10
+  // Show error otherwise
+  if (rawCost < 5) {
+    // Make sure to reset the color after
+    cost = `\x1b[32m${cost}\x1b[0m`;
+  } else if (rawCost < 10) {
+    cost = `\x1b[33m${cost}\x1b[0m`;
+  } else {
+    cost = `\x1b[31m${cost}\x1b[0m`;
+  }
+
   return `Cost: $${cost}`;
 }
 
