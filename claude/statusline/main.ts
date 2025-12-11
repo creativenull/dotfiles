@@ -84,9 +84,7 @@ async function main(input: string) {
       await getContextLength(r),
     ];
 
-    // Dimmer font color in console.log
-    console.log("\x1b[2m%s\x1b[0m", items.join(" | "));
-    // console.log(items.join(" | "));
+    console.log(items.join(" | "));
   } catch (_e) {
     console.log("Status line error", _e);
   }
