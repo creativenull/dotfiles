@@ -4,6 +4,10 @@ model_reasoning_effort = "medium"
 file_opener = "none"
 hide_agent_reasoning = true
 
+[features]
+view_image_tool = true
+web_search_request = true
+
 [mcp_servers.laravel-boost]
 command = "php"
 args = ["./artisan", "boost:mcp"]
