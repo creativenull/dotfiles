@@ -1,6 +1,6 @@
 user:
   always_allow:
   - developer__text_editor
-  - developer__shell
+  - serana__read_file
   ask_before: []
   never_allow: []

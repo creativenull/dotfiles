@@ -49,6 +49,27 @@ extensions:
     timeout: 30
     bundled: true
     available_tools: []
+  serana:
+    enabled: true
+    type: stdio
+    name: serana
+    description: A coding agent toolkit that provides IDE-like tools.
+    cmd: uvx
+    args:
+    - --from
+    - git+https://github.com/oraios/serena
+    - serena
+    - start-mcp-server
+    - --context
+    - agent
+    - --enable-web-dashboard=false
+    - --project
+    - '"$(pwd)"'
+    envs: {}
+    env_keys: []
+    timeout: 30
+    bundled: null
+    available_tools: []
 GOOSE_MODE: smart_approve
 GOOSE_CLI_MIN_PRIORITY: 0.5
 GOOSE_CLI_SHOW_COST: true
