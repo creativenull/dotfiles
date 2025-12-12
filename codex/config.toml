@@ -1,5 +1,5 @@
 model = "gpt-5-mini"
-model_reasoning_effort = "minimal"
+model_reasoning_effort = "medium"
 
 file_opener = "none"
 hide_agent_reasoning = true
