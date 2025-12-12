@@ -1,0 +1,56 @@
+OPENAI_HOST: https://api.openai.com
+OPENAI_BASE_PATH: v1/chat/completions
+GOOSE_PROVIDER: openai
+GOOSE_MODEL: gpt-5-mini
+extensions:
+  developer:
+    enabled: true
+    type: builtin
+    name: developer
+    description: Code editing and shell access
+    display_name: Developer Tools
+    timeout: 30
+    bundled: true
+    available_tools: []
+  skills:
+    enabled: true
+    type: platform
+    name: skills
+    description: Load and use skills from .claude/skills or .goose/skills directories
+    bundled: true
+    available_tools: []
+  todo:
+    enabled: true
+    type: platform
+    name: todo
+    description: Enable a todo list for Goose so it can keep track of what it is doing
+    bundled: true
+    available_tools: []
+  extensionmanager:
+    enabled: true
+    type: platform
+    name: Extension Manager
+    description: Enable extension management tools for discovering, enabling, and disabling extensions
+    bundled: true
+    available_tools: []
+  chatrecall:
+    enabled: true
+    type: platform
+    name: chatrecall
+    description: Search past conversations and load session summaries for contextual memory
+    bundled: true
+    available_tools: []
+  memory:
+    enabled: true
+    type: builtin
+    name: memory
+    description: Tools to save and retrieve durable memories
+    display_name: Memory
+    timeout: 30
+    bundled: true
+    available_tools: []
+GOOSE_MODE: smart_approve
+GOOSE_CLI_MIN_PRIORITY: 0.5
+GOOSE_CLI_SHOW_COST: true
+GOOSE_ENABLE_ROUTER: true
+GOOSE_MAX_TURNS: 10
