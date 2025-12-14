@@ -619,7 +619,13 @@ require("indentmini").setup({ minlevel = 2 })
 
 -- nvim-highlight-colors Config
 -- ---
-require("nvim-highlight-colors").setup({})
+require("nvim-highlight-colors").setup({
+  render = "virtual",
+  virtual_symbol = "●",
+  virtual_symbol_position = "eow",
+  virtual_symbol_prefix = " ",
+  virtual_symbol_suffix = "",
+})
 
 -- mason.nvim Config
 -- ---
