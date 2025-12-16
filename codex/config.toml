@@ -1,4 +1,4 @@
-model = "gpt-5-mini"
+model = "gpt-5.1-codex"
 model_reasoning_effort = "medium"
 
 file_opener = "none"
