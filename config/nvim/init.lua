@@ -411,6 +411,7 @@ Plug("vim-denops/denops.vim")
 Plug("vim-denops/denops-shared-server.vim")
 Plug("lambdalisue/vim-nerdfont")
 Plug("lambdalisue/vim-glyph-palette")
+Plug("nvim-lua/plenary.nvim")
 
 -- Core
 -- ---
@@ -426,7 +427,6 @@ Plug("AndrewRadev/splitjoin.vim")
 
 -- AI
 -- ---
-Plug("nvim-lua/plenary.nvim")
 Plug("Exafunction/windsurf.nvim")
 
 -- File Explorer + Addons
