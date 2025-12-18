@@ -29,8 +29,8 @@ function M.setup()
 
     mapping = cmp.mapping.preset.insert({
       ["<C-Space>"] = cmp.mapping.complete(),
-      ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-      -- ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<CR>"] = cmp.mapping.confirm(),
+      -- ['<Tab>'] = cmp.mapping.confirm(),
     }),
 
     sources = cmp.config.sources({
@@ -49,6 +49,8 @@ function M.setup()
     performance = {
       max_view_entries = 5,
     },
+
+    preselect = cmp.PreselectMode.None,
   })
 end
 
