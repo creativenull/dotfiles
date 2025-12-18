@@ -45,6 +45,10 @@ function M.setup()
     completion = {
       keyword_length = 2,
     },
+
+    performance = {
+      max_view_entries = 5,
+    },
   })
 end
 
