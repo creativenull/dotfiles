@@ -371,12 +371,6 @@ vim.g.vim_json_syntax_conceal = 0
 -- ---
 vim.g.javascript_plugin_jsdoc = 1
 
--- vim-doge Config
--- ---
-vim.g.doge_enable_mappings = 0
-
-vim.keymap.set("n", "<Leader>dg", "<CMD>DogeGenerate<CR>")
-
 -- =============================================================================
 -- = Plugin Manager (PLUG) =
 -- =============================================================================
@@ -507,10 +501,6 @@ Plug("f-person/auto-dark-mode.nvim")
 -- ---
 Plug("nvim-treesitter/nvim-treesitter", { commit = "94ea4f436d2b59c80f02e293466c374584f03b8c", ["do"] = ":TSUpdate" })
 Plug("nvim-treesitter/nvim-treesitter-textobjects", { commit = "ed373482db797bbf71bdff37a15c7555a84dce47" })
-
--- Doc Generation
--- ---
-Plug("kkoomen/vim-doge", { tag = "v4.*", ["do"] = ":call doge#install()" })
 
 -- FileType Syntax
 -- ---
