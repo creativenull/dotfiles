@@ -57,6 +57,9 @@ vim.g.loaded_python_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
+-- disable some plugins
+vim.g.loaded_gzip = 1
+
 -- =============================================================================
 -- = Events (AUG) =
 -- =============================================================================
