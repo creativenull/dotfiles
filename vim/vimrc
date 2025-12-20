@@ -305,9 +305,9 @@ call plug#end()
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
 let $FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
 let g:fzf_vim = #{
-			\preview_window: [],
-			\grep_multi_line: 1
-			\}
+\	preview_window: [],
+\	grep_multi_line: 1
+\}
 
 command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
 
@@ -336,8 +336,8 @@ autocmd! FileType fern call <SID>FernInit()
 let g:user_emmet_leader_key = '<C-q>'
 let g:user_emmet_mode = 'in'
 let g:user_emmet_settings = #{
-			\blade: #{ extends: 'html' },
-			\}
+\	blade: #{ extends: 'html' },
+\}
 imap <C-x><C-y> <Plug>(emmet-expand-abbr)
 nmap <Leader>er <Plug>(emmet-update-tag)
 
