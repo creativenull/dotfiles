@@ -441,7 +441,7 @@ Plug("neovim/nvim-lspconfig", { tag = "v2.*" })
 Plug("creativenull/efmls-configs-nvim")
 Plug("creativenull/diagnosticls-configs-nvim")
 Plug("creativenull/web.nvim")
-Plug("mason-org/mason.nvim")
+-- Plug("mason-org/mason.nvim")
 
 -- AutoCompletion + Sources (ddc.vim)
 -- ---
