@@ -413,7 +413,7 @@ Plug("nvim-lua/plenary.nvim")
 -- Core
 -- ---
 Plug("creativenull/projectlocal.vim", { tag = "v1.*" })
-Plug("cohama/lexima.vim")
+Plug("nvim-mini/mini.nvim", { branch = "stable" })
 Plug("mattn/emmet-vim")
 Plug("tpope/vim-abolish")
 Plug("tpope/vim-repeat")
@@ -527,9 +527,9 @@ vim.call("plug#end")
 -- ---
 -- require("user.codeium").setup()
 
--- lexima.vim Config
+-- mini.nvim Config
 -- ---
-require("user.lexima").setup()
+require("mini.pairs").setup()
 
 -- ultisnips Config
 -- ---
