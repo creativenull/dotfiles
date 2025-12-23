@@ -1,7 +1,5 @@
-OPENAI_HOST: https://api.openai.com
-OPENAI_BASE_PATH: v1/chat/completions
-GOOSE_PROVIDER: openai
-GOOSE_MODEL: gpt-5-mini
+GOOSE_PROVIDER: openrouter
+GOOSE_MODEL: mistralai/codestral-2508
 extensions:
   developer:
     enabled: true
@@ -56,7 +54,8 @@ GOOSE_ENABLE_ROUTER: true
 GOOSE_MAX_TURNS: 10
 GOOSE_DISABLE_KEYRING: 'true'
 GOOSE_LEAD_PROVIDER: openrouter
-GOOSE_LEAD_MODEL: anthropic/claude-sonnet-4.5
+# GOOSE_LEAD_MODEL: moonshotai/kimi-k2-thinking
+GOOSE_LEAD_MODEL: mistralai/devstral-2512
 GOOSE_LEAD_TURNS: 5
 GOOSE_LEAD_FAILURE_THRESHOLD: 2
 GOOSE_LEAD_FALLBACK_TURNS: 2
