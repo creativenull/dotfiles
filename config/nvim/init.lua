@@ -413,7 +413,7 @@ Plug("nvim-lua/plenary.nvim")
 -- Core
 -- ---
 Plug("creativenull/projectlocal.vim", { tag = "v1.*" })
-Plug("nvim-mini/mini.nvim", { branch = "stable" })
+Plug("nvim-mini/mini.pairs", { branch = "stable" })
 Plug("mattn/emmet-vim")
 Plug("tpope/vim-abolish")
 Plug("tpope/vim-repeat")
