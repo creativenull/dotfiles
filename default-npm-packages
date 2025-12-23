@@ -9,6 +9,7 @@
 blade-formatter
 diagnostic-languageserver
 intelephense
+neovim
 prettier
 svelte-language-server
 taze
