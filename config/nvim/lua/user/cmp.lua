@@ -29,22 +29,22 @@ function M.setup()
 
     mapping = cmp.mapping.preset.insert({
       ["<C-Space>"] = cmp.mapping.complete(),
-      ["<CR>"] = cmp.mapping.confirm(),
-      -- ['<Tab>'] = cmp.mapping.confirm(),
+      -- ["<CR>"] = cmp.mapping.confirm(),
+      -- ["<Tab>"] = cmp.mapping.confirm(),
     }),
 
     sources = cmp.config.sources({
       { name = "nvim_lsp" },
-      { name = "ultisnips" }, -- For vsnip users.
+      { name = "ultisnips" },
     }, {
       { name = "nvim_lsp_signature_help" },
       { name = "buffer" },
       { name = "path" },
     }),
 
-    completion = {
-      keyword_length = 2,
-    },
+    -- completion = {
+    --   keyword_length = 2,
+    -- },
 
     performance = {
       max_view_entries = 5,
