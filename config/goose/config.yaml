@@ -1,5 +1,5 @@
 GOOSE_PROVIDER: openrouter
-GOOSE_MODEL: qwen/qwen-2.5-coder-32b-instruct
+GOOSE_MODEL: mistralai/devstral-2512:free
 extensions:
   developer:
     enabled: true
