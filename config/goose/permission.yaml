@@ -1,6 +1,11 @@
 user:
   always_allow:
+  - developer__analyze
   - developer__text_editor
-  - serana__read_file
+  - todo__todo_write
+  - memory__remember_memory
+  - memory__retrieve_memories
+  - memory__remove_memory_category
+  - memory__remove_specific_memory
   ask_before: []
   never_allow: []
