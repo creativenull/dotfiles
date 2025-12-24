@@ -525,7 +525,7 @@ vim.call("plug#end")
 
 -- codeium.vim Config
 -- ---
--- require("user.codeium").setup()
+require("user.codeium").setup()
 
 -- mini.nvim Config
 -- ---
