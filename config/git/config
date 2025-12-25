@@ -1,6 +1,6 @@
 [user]
 	name = Arnold Chand
-	email = <creativenull@outlook.com>
+	email = creativenull@outlook.com
 [core]
 	editor = nvim
 	autocrlf = input
