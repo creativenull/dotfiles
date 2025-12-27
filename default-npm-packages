@@ -7,6 +7,7 @@
 @vtsls/language-server
 @vue/language-server
 blade-formatter
+cclsp
 diagnostic-languageserver
 intelephense
 neovim
