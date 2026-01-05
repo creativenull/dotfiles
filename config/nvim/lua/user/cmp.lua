@@ -47,7 +47,7 @@ function M.setup()
     -- },
 
     performance = {
-      max_view_entries = 5,
+      max_view_entries = 10,
     },
 
     preselect = cmp.PreselectMode.None,
