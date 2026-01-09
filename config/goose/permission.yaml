@@ -1,11 +1,10 @@
 user:
   always_allow:
-  - developer__analyze
   - developer__text_editor
-  - todo__todo_write
-  - memory__remember_memory
-  - memory__retrieve_memories
-  - memory__remove_memory_category
-  - memory__remove_specific_memory
+  - developer__list_windows
+  - developer__analyze
+  - developer__image_processor
+  - code_execution__execute_code
+  - code_execution__read_module
   ask_before: []
   never_allow: []
