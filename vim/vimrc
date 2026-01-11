@@ -177,43 +177,6 @@ function! s:FernInit() abort
 	call glyph_palette#apply()
 endfunction
 
-function! s:SetLightTheme() abort
-	set background=light
-	colorscheme one
-endfunction
-
-function! s:SetDarkTheme() abort
-	set background=dark
-	colorscheme moonfly
-endfunction
-
-function! s:UpdateGuiMacvimColorscheme()
-	let cmd_result = systemlist('defaults read -g AppleInterfaceStyle')
-	let is_light = !empty(cmd_result) ? cmd_result[0] != 'Dark' : v:true
-	if is_light
-		call <SID>SetLightTheme()
-	else
-		call <SID>SetDarkTheme()
-	endif
-endfunction
-
-function! s:ConfigTheme() abort
-	if has('gui_macvim')
-		call <SID>UpdateGuiMacvimColorscheme()
-
-		" Register event to automatically switch between light and dark theme
-		augroup AppearanceChangedUserGroup
-			autocmd!
-			autocmd OSAppearanceChanged * call <SID>UpdateGuiMacvimColorscheme()
-		augroup END
-
-		return
-	endif
-
-	" Default colorscheme
-	call <SID>SetDarkTheme()
-endfunction
-
 " =============================================================================
 " Builtin plugins (BUILT)
 " =============================================================================
@@ -283,7 +246,6 @@ Plug 'dense-analysis/ale'
 " UI/Aeshetics
 " ---
 Plug 'vim-airline/vim-airline'
-Plug 'L-TChen/auto-dark-mode.vim'
 
 " File syntax plugins
 " ---
@@ -367,4 +329,5 @@ let g:hlyank_invisual = 1
 let g:moonflyNormalFloat = v:true
 let g:moonflyTransparent = v:false
 
-call <SID>ConfigTheme()
+set background=dark
+colorscheme moonfly
