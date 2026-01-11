@@ -1,10 +1,6 @@
 user:
   always_allow:
-  - developer__text_editor
-  - developer__list_windows
   - developer__analyze
-  - developer__image_processor
-  - code_execution__execute_code
-  - code_execution__read_module
+  - developer__text_editor
   ask_before: []
   never_allow: []
