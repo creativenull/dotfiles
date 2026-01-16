@@ -738,15 +738,11 @@ local function dark_colorscheme()
   }, " ")
 end
 
-if vim.fn.has("wsl") == 1 then
-  dark_colorscheme()
-else
-  require("auto-dark-mode").setup({
-    set_dark_mode = function()
-      dark_colorscheme()
-    end,
-    set_light_mode = function()
-      light_colorscheme()
-    end,
-  })
-end
+require("auto-dark-mode").setup({
+  set_dark_mode = function()
+    dark_colorscheme()
+  end,
+  set_light_mode = function()
+    light_colorscheme()
+  end,
+})
