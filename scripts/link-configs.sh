@@ -35,8 +35,14 @@ ln -sv ~/dotfiles/config/nvim ~/.config/
 rm -fv ~/.config/zellij
 ln -sv ~/dotfiles/config/zellij ~/.config/
 
-rm -fv ~/.aider.conf.yml
-ln -sv ~/dotfiles/aider.conf.yml ~/.aider.conf.yml
+rm -fv ~/.config/goose
+ln -sv ~/dotfiles/config/goose ~/.config/
+
+rm -fv ~/.claude/settings.json
+ln -sv ~/dotfiles/claude/settings.json ~/.claude/settings.json
+
+rm -fv ~/.codex/config.toml
+ln -sv ~/dotfiles/codex/config.toml ~/.codex/config.toml
 
 # ---
 # For macOS only
