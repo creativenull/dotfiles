@@ -1,8 +1,4 @@
 user:
-  always_allow:
-  - developer__analyze
-  - developer__text_editor
-  - developer__shell
-  - todo__todo_write
+  always_allow: []
   ask_before: []
   never_allow: []
