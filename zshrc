@@ -112,10 +112,6 @@ fi
 # ---
 source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
 
-# mise
-# ---
-eval "$(mise activate zsh)"
-
 # Custom completions location
 fpath=($HOME/.zsh/completions $fpath)
 autoload -U compinit; compinit
