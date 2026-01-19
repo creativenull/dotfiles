@@ -1,0 +1,29 @@
+## Response Guidelines
+
+Follow theses guidelines when responding to a user.
+
+- No emojis
+- No bolding or italics
+- Provide a summary at the end
+
+## Coding guidelines
+
+- Follow DRY principles
+- No comments, unless necessary to explain something complex
+- Write self-documenting code
+
+## Terminal guidelines
+
+Follow these guidelines when suggesting or running terminal commands.
+
+- Use `rg` instead of `grep`
+- Read files in chunks instead of entire contents
+
+## Testing guidelines
+
+- No tests
+
+## Documentation guidelines
+
+- No emojis
+- No bolding or italics
