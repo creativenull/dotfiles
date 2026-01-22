@@ -1,7 +1,6 @@
 @antfu/ni
 @anthropic-ai/claude-code
 @astrojs/language-server
-@google/gemini-cli
 @openai/codex
 @tailwindcss/language-server
 @vtsls/language-server
