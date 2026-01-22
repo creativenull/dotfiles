@@ -1,10 +1,6 @@
-## Response Guidelines
+## Guidelines
 
-Follow theses guidelines when responding to a user.
-
-- No emojis
-- No bolding or italics
-- Provide a summary at the end
+- Respond in terminal friendly format, no markdown style
 
 ## Coding guidelines
 
@@ -26,4 +22,4 @@ Follow these guidelines when suggesting or running terminal commands.
 ## Documentation guidelines
 
 - No emojis
-- No bolding or italics
+- Prefer markdown style documentation
