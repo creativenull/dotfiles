@@ -1,5 +1,4 @@
 @antfu/ni
-@anthropic-ai/claude-code
 @astrojs/language-server
 @openai/codex
 @tailwindcss/language-server
