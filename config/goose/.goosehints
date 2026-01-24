@@ -1,23 +1,17 @@
-## Guidelines
+## General Guidelines
 
-- Respond in terminal friendly format, no markdown style
+- Response in plain-text only
+
+## Tool guidelines
+
+- Shell tool:
+	- Use UNIX commands like `ls`, `find`, `grep`, etc
+- Developer tool:
+	- Analyse code code in chunks not the whole file
 
 ## Coding guidelines
 
-- Follow DRY principles
-- No comments, unless necessary to explain something complex
-- Write self-documenting code
-
-## Terminal guidelines
-
-Follow these guidelines when suggesting or running terminal commands.
-
-- Use `rg` instead of `grep`
-- Read files in chunks instead of entire contents
-
-## Testing guidelines
-
-- No tests
+- No comments, unless it is a complex piece of code
 
 ## Documentation guidelines
 
