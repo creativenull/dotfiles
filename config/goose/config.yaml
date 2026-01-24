@@ -14,3 +14,4 @@ extensions:
     timeout: 60
     bundled: true
     available_tools: []
+GOOSE_TELEMETRY_ENABLED: false
