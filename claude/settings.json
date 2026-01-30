@@ -1,5 +1,5 @@
 {
-  "model": "sonnet",
+  "model": "opusplan",
   "cleanupPeriodDays": 7,
   "includeCoAuthoredBy": true,
   "statusLine": {
