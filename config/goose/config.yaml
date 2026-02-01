@@ -1,8 +1,7 @@
 GOOSE_PROVIDER: openrouter
 GOOSE_MODEL: z-ai/glm-4.7
-GOOSE_CLI_MIN_PRIORITY: 0.0
-GOOSE_DISABLE_KEYRING: 'true'
-GOOSE_MODE: smart_approve
+GOOSE_CLI_MIN_PRIORITY: 0.8
+GOOSE_MODE: auto
 SECURITY_PROMPT_ENABLED: true
 extensions:
   developer:
