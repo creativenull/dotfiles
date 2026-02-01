@@ -10,7 +10,6 @@
 - [tmux](https://github.com/tmux/tmux)
 - [vim](https://github.com/vim/vim)
 - [vscode](https://code.visualstudio.com/)
-- [vscode](https://code.visualstudio.com/)
 - [zellij](https://zellij.dev/)
 - [zsh](https://www.zsh.org/)
 
