@@ -68,6 +68,7 @@ if [ $install_brew_pkgs -eq 1 ]; then
 
 	brew_pkgs=(
 		deno
+		diff-so-fancy
 		efm-langserver
 		lsd
 		lua-language-server
