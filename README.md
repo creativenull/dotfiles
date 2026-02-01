@@ -18,6 +18,7 @@
 - [MacOS](./scripts/macos)
 - [NixOS](./scripts/nixos)
 - [Ubuntu](./scripts/ubuntu)
+- [WSL2](./scripts/wsl2)
 
 ## AI configurations
 
