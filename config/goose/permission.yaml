@@ -3,5 +3,6 @@ user:
   - developer__text_editor
   - developer__analyze
   - developer__shell
+  - todo__todo_write
   ask_before: []
   never_allow: []
