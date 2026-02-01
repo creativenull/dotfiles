@@ -22,6 +22,7 @@
 
 ## AI configurations
 
-- [aider.chat](https://aider.chat)
-- [Claude Code](https://github.com/anthropics/claude-code)
-- [OpenAI Codex](https://github.com/openai/codex)
+- [claude-code](https://github.com/anthropics/claude-code)
+- [codex](https://github.com/openai/codex)
+- [goose](https://block.github.io/goose)
+- [opencode](https://github.com/anomalyco/opencode)
