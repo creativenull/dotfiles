@@ -44,6 +44,9 @@ ln -sv ~/dotfiles/claude/settings.json ~/.claude/settings.json
 rm -fv ~/.codex/config.toml
 ln -sv ~/dotfiles/codex/config.toml ~/.codex/config.toml
 
+rm -fv ~/.config/opencode
+ln -sv ~/dotfiles/config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
+
 # ---
 # For macOS only
 # ---
