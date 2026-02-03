@@ -2,7 +2,7 @@
 set -euo pipefail
 
 install_brew_pkgs=1
-install_mise_pkgs=1
+install_asdf_pkgs=1
 setup_mysql_server=1
 
 sudo apt update && sudo apt upgrade -y
@@ -67,12 +67,12 @@ if [ $install_brew_pkgs -eq 1 ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 	brew_pkgs=(
+		asdf
 		deno
 		diff-so-fancy
 		efm-langserver
 		lsd
 		lua-language-server
-		mise
 		neovim
 		starship
 		stylua
@@ -84,13 +84,25 @@ if [ $install_brew_pkgs -eq 1 ]; then
 	brew install "${brew_pkgs[@]}"
 fi
 
-if [ $install_mise_pkgs -eq 1 ]; then
-	printf "=> Installing mise plugins\n"
-	mise settings add disable_backends asdf
-	mise use -g nodejs@22
-	mise use -g rust@latest
-	mise use -g ruby@latest
-	mise use -g php@8.4
+if [ $install_asdf_pkgs -eq 1 ]; then
+	printf "=> Installing asdf plugins\n"
+	asdf use -g nodejs@22
+	asdf use -g ruby@latest
+	asdf use -g php@8.4
+
+	asdf plugin add nodejs php ruby
+
+	# nodejs
+	asdf install nodejs latest:22
+	asdf set -u nodejs latest:22
+
+    # ruby
+	asdf install ruby latest:4
+    asdf set -u ruby latest:4
+
+	# php
+	ASDF_CONCURRENCY=4 PHP_CONFIGURE_OPTIONS="--with-openssl=/usr/bin/openssl --with-sodium" asdf install php latest:8.4
+    asdf set -u php latest:8.4
 fi
 
 if [ $setup_mysql_server -eq 1 ]; then
