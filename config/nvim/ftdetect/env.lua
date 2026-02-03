@@ -2,6 +2,6 @@
 -- Eg: .env.example, .env.production
 vim.filetype.add({
   pattern = {
-    ['.env.*'] = 'sh'
-  }
+    [".env.*"] = "sh",
+  },
 })
