@@ -5,7 +5,9 @@ function M.setup()
     enable_cmp_source = false,
     virtual_text = {
       enabled = true,
-      filetypes = { ["fern-replacer"] = false },
+      filetypes = {
+        ["fern-replacer"] = false,
+      },
       map_keys = true,
       key_bindings = {
         accept = "<Tab>",
