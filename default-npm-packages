@@ -1,6 +1,5 @@
 @antfu/ni
 @astrojs/language-server
-@openai/codex
 @tailwindcss/language-server
 @vtsls/language-server
 @vue/language-server
