@@ -36,15 +36,18 @@ rm -fv ~/.config/zellij
 ln -sv ~/dotfiles/config/zellij ~/.config/
 
 rm -fv ~/.claude/settings.json
+mkdir -pv ~/.claude
 ln -sv ~/dotfiles/claude/settings.json ~/.claude/settings.json
 
 rm -fv ~/.codex/config.toml
+mkdir -pv ~/.codex
 ln -sv ~/dotfiles/codex/config.toml ~/.codex/config.toml
 
-rm -fv ~/.config/goose
+rm -rfv ~/.config/goose
 ln -sv ~/dotfiles/config/goose ~/.config/
 
-rm -fv ~/.config/opencode
+rm -rfv ~/.config/opencode
+mkdir -pv ~/.config/opencode
 ln -sv ~/dotfiles/config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
 
 # ---
