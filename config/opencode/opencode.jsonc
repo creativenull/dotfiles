@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "system",
+  "theme": "opencode",
   "model": "openrouter/moonshotai/kimi-k2.5",
   "small_model": "openrouter/moonshotai/kimi-k2.5",
   "tui": {
