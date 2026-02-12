@@ -13,4 +13,52 @@ extensions:
     timeout: 60
     bundled: true
     available_tools: []
+  chatrecall:
+    enabled: false
+    type: platform
+    name: chatrecall
+    description: Search past conversations and load session summaries for contextual memory
+    display_name: Chat Recall
+    bundled: true
+    available_tools: []
+  apps:
+    enabled: true
+    type: platform
+    name: apps
+    description: Create and manage custom Goose apps through chat. Apps are HTML/CSS/JavaScript and run in sandboxed windows.
+    display_name: Apps
+    bundled: true
+    available_tools: []
+  code_execution:
+    enabled: false
+    type: platform
+    name: code_execution
+    description: Goose will make extension calls through code execution, saving tokens
+    display_name: Code Mode
+    bundled: true
+    available_tools: []
+  skills:
+    enabled: true
+    type: platform
+    name: skills
+    description: Load and use skills from relevant directories
+    display_name: Skills
+    bundled: true
+    available_tools: []
+  todo:
+    enabled: true
+    type: platform
+    name: todo
+    description: Enable a todo list for goose so it can keep track of what it is doing
+    display_name: Todo
+    bundled: true
+    available_tools: []
+  extensionmanager:
+    enabled: true
+    type: platform
+    name: Extension Manager
+    description: Enable extension management tools for discovering, enabling, and disabling extensions
+    display_name: Extension Manager
+    bundled: true
+    available_tools: []
 GOOSE_TELEMETRY_ENABLED: false
