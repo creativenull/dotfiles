@@ -344,5 +344,20 @@ let g:hlyank_invisual = 1
 let g:moonflyNormalFloat = v:true
 let g:moonflyTransparent = v:false
 
-set background=dark
-colorscheme moonfly
+function! s:AutoTheme() abort
+	if has('mac')
+		let s:theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')
+		if s:theme == 'Dark'
+			set background=dark
+			colorscheme moonfly
+		else
+			set background=light
+			colorscheme one
+		endif
+	else
+		set background=dark
+		colorscheme moonfly
+	endif
+endfunction
+
+call <SID>AutoTheme()
