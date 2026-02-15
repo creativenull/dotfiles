@@ -218,6 +218,10 @@ Plug 'tpope/vim-surround'
 Plug 'Shougo/context_filetype.vim'
 Plug 'markonm/traces.vim', #{ commit: '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
 
+" AI
+" ---
+Plug 'Exafunction/windsurf.vim', #{ branch: 'main' }
+
 " File explorer
 " ---
 Plug 'lambdalisue/vim-fern'
@@ -261,6 +265,17 @@ call plug#end()
 " =============================================================================
 " Configure plugins (POST)
 " =============================================================================
+
+" windsurf.vim Config
+" ---
+let g:codeium_disable_bindings = 1
+let g:codeium_filetypes = {
+\	'fern-replacer': v:false,
+\}
+
+imap <script><silent><nowait><expr> <Tab> codeium#Accept()
+imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 
 " fzf.vim Config
 " ---
