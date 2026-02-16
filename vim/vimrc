@@ -346,7 +346,7 @@ let g:moonflyTransparent = v:false
 
 function! s:AutoTheme() abort
 	if has('mac')
-		let s:theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')
+		let s:theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')->trim()
 		if s:theme == 'Dark'
 			set background=dark
 			colorscheme moonfly
