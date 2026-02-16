@@ -341,22 +341,35 @@ let g:hlyank_invisual = 1
 " Configure theme (THEME)
 " =============================================================================
 
-let g:moonflyNormalFloat = v:true
-let g:moonflyTransparent = v:false
+function! s:SetLightTheme() abort
+	augroup colorset
+		autocmd!
+		autocmd ColorScheme one silent! highlight Normal guibg=NONE
+		autocmd ColorScheme one silent! highlight SignColumn guibg=NONE
+	augroup END
+
+	set background=light
+	colorscheme one
+endfunction
+
+function! s:SetDarkTheme() abort
+	let g:moonflyNormalFloat = v:true
+	let g:moonflyTransparent = v:false
+
+	set background=dark
+	colorscheme moonfly
+endfunction
 
 function! s:AutoTheme() abort
 	if has('mac')
 		let s:theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')->trim()
 		if s:theme == 'Dark'
-			set background=dark
-			colorscheme moonfly
+			call <SID>SetDarkTheme()
 		else
-			set background=light
-			colorscheme one
+			call <SID>SetLightTheme()
 		endif
 	else
-		set background=dark
-		colorscheme moonfly
+		call <SID>SetDarkTheme()
 	endif
 endfunction
 
