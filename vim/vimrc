@@ -1,27 +1,28 @@
-" Name: Arnold Chand
-" Github: https://github.com/creativenull
-" Description: My vimrc config, aiming to be one file, self-contained.
-" =============================================================================
-" User Configuration (USER)
-" =============================================================================
+vim9script
+# Name: Arnold Chand
+# Github: https://github.com/creativenull
+# Description: My vimrc config, aiming to be one file, self-contained.
+# =============================================================================
+# User Configuration (USER)
+# =============================================================================
 
-let mapleader = "\<Space>"
+g:mapleader = "\<Space>"
 
-let s:undopath = expand('$HOME/.cache/vim/undo')
-if isdirectory(s:undopath) == 0
+const undopath = expand('$HOME/.cache/vim/undo')
+if undopath->isdirectory() == 0
 	echomsg 'Creating undodir directory'
-	call mkdir(s:undopath, 'p')
+	undopath->mkdir('p')
 endif
 
-" =============================================================================
-" Options (OPT)
-" =============================================================================
+# =============================================================================
+# Options (OPT)
+# =============================================================================
 
-unlet! skip_defaults_vim
+unlet! g:skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
-let &titlestring=printf("%s [vim]", fnamemodify(getcwd(), ":t"))
-let &undodir=expand('$HOME/.cache/vim/undo')
+&titlestring = printf("%s [vim]", fnamemodify(getcwd(), ":t"))
+&undodir = undopath
 set backspace=indent,eol,start
 set clipboard-=autoselect
 set cmdheight=2
@@ -69,13 +70,13 @@ set wildoptions=pum,fuzzy
 
 if has('termguicolors')
 	set termguicolors
-	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+	&t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	&t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" =============================================================================
-" Keymaps (KEY)
-" =============================================================================
+# =============================================================================
+# Keymaps (KEY)
+# =============================================================================
 
 nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
@@ -100,86 +101,138 @@ nnoremap <Down> <Cmd>call <SID>ResizeHorizontal(-2)<CR>
 nnoremap <Left> <Cmd>call <SID>ResizeVertical(2)<CR>
 nnoremap <Right> <Cmd>call <SID>ResizeVertical(-2)<CR>
 
-" Map escape from terminal input to Normal mode
+# Map escape from terminal input to Normal mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-[> <C-\><C-n>
 
-" Disable highlights
+# Disable highlights
 nnoremap <Leader><CR> <Cmd>noh<CR>
 
-" Close all buffer, except current
+# Close all buffer, except current
 nnoremap <Leader>bx <Cmd>%bd<Bar>e#<Bar>bd#<CR>
 
-" Move a line of text Alt+[j/k]
+# Move a line of text Alt+[j/k]
 nnoremap <M-j> mz:m+<CR>`z
 vnoremap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
 nnoremap <M-k> mz:m-2<CR>`z
 vnoremap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 
-" Edit vimrc
+# Edit vimrc
 nnoremap <Leader>ve <Cmd>edit $MYVIMRC<CR>
 
-" Source the vimrc to reflect changes
+# Source the vimrc to reflect changes
 nnoremap <Leader>vs <Cmd>source $MYVIMRC<CR>
 
-" Reload file
+# Reload file
 nnoremap <Leader>r <Cmd>edit!<CR>
 
-" Copy/Paste from sytem clipboard
+# Copy/Paste from sytem clipboard
 vnoremap p "_dP
 vnoremap <Leader>y "+y
 nnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 
-" =============================================================================
-" Commands (CMD)
-" =============================================================================
+# =============================================================================
+# Commands (CMD)
+# =============================================================================
 
-" Command Abbreviations, I can't release my shift key fast enough 😭
+# Command Abbreviations, I can't release my shift key fast enough 😭
 cnoreabbrev Q  q
 cnoreabbrev Qa qa
 cnoreabbrev W  w
 cnoreabbrev Wq wq
 
-" =============================================================================
-" Functions (FUN)
-" =============================================================================
+# =============================================================================
+# Functions (FUN)
+# =============================================================================
 
-function! s:ResizeHorizontal(amount) abort
-	let l:wincount = getwininfo()->len()
-	if l:wincount > 1
-		call execute(printf('resize %s%d', a:amount > 0 ? '+' : '', a:amount))
+def ResizeHorizontal(amount: number)
+	const wincount = getwininfo()->len()
+	if wincount > 1
+		execute(printf('resize %s%d', amount > 0 ? '+' : '', amount))
 	endif
-endfunction
+enddef
 
-function! s:ResizeVertical(amount) abort
-	let l:wincount = getwininfo()->len()
-	if l:wincount > 1
-		call execute(printf('vertical resize %s%d', a:amount > 0 ? '+' : '', a:amount))
+def ResizeVertical(amount: number)
+	const wincount = getwininfo()->len()
+	if wincount > 1
+		execute(printf('vertical resize %s%d', amount > 0 ? '+' : '', amount))
 	endif
-endfunction
+enddef
 
-function! s:VimGrep(qargs, bang) abort
-	let s:sh = 'rg --column --line-number --no-heading --color=always --smart-case -- ' .. shellescape(a:qargs)
-	call fzf#vim#grep(s:sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), a:bang)
-endfunction
+def VimGrep(qargs: string, bang: bool)
+	const sanitizedQargs = qargs->shellescape()
+	const sh = $'rg --column --line-number --no-heading --color=always --smart-case -- {sanitizedQargs}'
+	fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), bang)
+enddef
 
-function! s:FzfStatusline()
-	" Override statusline as you like
+def FzfStatusline()
 	highlight fzf1 guibg=NONE
 	setlocal statusline=%#fzf1#\ >\ fzf
-endfunction
+enddef
 
-function! s:FernInit() abort
+def FernInit()
 	nnoremap q <Cmd>bd<CR>
 	nmap <buffer> D <Plug>(fern-action-remove)
 	setlocal expandtab shiftwidth=2 tabstop=2
-	call glyph_palette#apply()
-endfunction
+	glyph_palette#apply()
+enddef
 
-" =============================================================================
-" Builtin plugins (BUILT)
-" =============================================================================
+def SetLightTheme(theme: string)
+	augroup colorset
+		autocmd!
+		autocmd ColorScheme one silent! highlight Normal guibg=NONE
+		autocmd ColorScheme one silent! highlight SignColumn guibg=NONE
+	augroup END
+
+	$FZF_DEFAULT_OPTS = [
+		'--reverse',
+		'--color=bg+:#b7c1e3',
+		'--color=bg:-1',
+		'--color=border:#4094a3',
+		'--color=fg:#3760bf',
+		'--color=gutter:#d0d5e3',
+		'--color=header:#b15c00',
+		'--color=hl+:#188092',
+		'--color=hl:#188092',
+		'--color=info:#8990b3',
+		'--color=marker:#d20065',
+		'--color=pointer:#d20065',
+		'--color=prompt:#188092',
+		'--color=query:#3760bf:regular',
+		'--color=scrollbar:#4094a3',
+		'--color=separator:#b15c00',
+		'--color=spinner:#d20065',
+	]->join(' ')
+
+	set background=light
+	printf('colorscheme %s', theme)->execute()
+enddef
+
+def SetDarkTheme(theme: string)
+	g:moonflyNormalFloat = v:true
+	g:moonflyTransparent = v:false
+
+	set background=dark
+	printf('colorscheme %s', theme)->execute()
+enddef
+
+def AutoTheme(config: dict<any>)
+	if has('mac')
+		const theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')->trim()
+		if theme == 'Dark'
+			SetDarkTheme(config.dark)
+		else
+			SetLightTheme(config.light)
+		endif
+	else
+		SetDarkTheme(config.dark)
+	endif
+enddef
+
+# =============================================================================
+# Builtin plugins (BUILT)
+# =============================================================================
 
 packadd! matchit
 packadd! editorconfig
@@ -187,28 +240,28 @@ packadd! comment
 packadd! nohlsearch
 packadd! hlyank
 
-" =============================================================================
-" Plugin Manger (PLUG)
-" =============================================================================
+# =============================================================================
+# Plugin Manger (PLUG)
+# =============================================================================
 
-let data_dir = expand('~/.vim')
-if empty(glob(data_dir . '/autoload/plug.vim'))
-	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+const data_dir = expand('$HOME/.vim')
+if empty(glob($'{data_dir}/autoload/plug.vim'))
+	silent execute '!curl -fLo '.. data_dir ..'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin()
+plug#begin()
 
-" Deps
-" ---
+# Deps
+# ---
 Plug 'lambdalisue/vim-nerdfont'
 Plug 'vim-denops/denops.vim'
 Plug 'vim-denops/denops-shared-server.vim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 
-" Core
-" ---
+# Core
+# ---
 Plug 'cohama/lexima.vim'
 Plug 'creativenull/projectlocal-vim', { 'tag': 'v1.*' }
 Plug 'mattn/emmet-vim'
@@ -216,181 +269,134 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'Shougo/context_filetype.vim'
-Plug 'markonm/traces.vim', #{ commit: '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
+Plug 'markonm/traces.vim', { 'commit': '9663fcf84de5776bee71b6c816c25ccb6ea11d1a' }
 
-" AI
-" ---
-Plug 'Exafunction/windsurf.vim', #{ branch: 'main' }
+# AI
+# ---
+Plug 'Exafunction/windsurf.vim', { 'branch': 'main' }
 
-" File explorer
-" ---
+# File explorer
+# ---
 Plug 'lambdalisue/vim-fern'
 Plug 'lambdalisue/vim-fern-renderer-nerdfont'
 Plug 'lambdalisue/vim-glyph-palette'
 
-" Fuzzy finder/Code finder
-" ---
-Plug 'junegunn/fzf', #{ tag: 'v0.67.*', do: { -> fzf#install()  }  }
+# Fuzzy finder/Code finder
+# ---
+Plug 'junegunn/fzf', { 'tag': 'v0.67.*', 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
-Plug 'linrongbin16/fzfx.vim', #{ commit: '9bd93e78f22c734751688cefd3ee2c475cd85ccd'  }
+Plug 'linrongbin16/fzfx.vim', { 'commit': '9bd93e78f22c734751688cefd3ee2c475cd85ccd'  }
 
-" Git
-" ---
+# Git
+# ---
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/vim-gitbranch'
 Plug 'airblade/vim-gitgutter'
 
-" Linters + Formatters
-" ---
+# Linters + Formatters
+# ---
 Plug 'dense-analysis/ale'
 
-" Autocompletion
-" ---
+# Autocompletion
+# ---
 
-" UI/Aeshetics
-" ---
+# UI/Aeshetics
+# ---
 Plug 'vim-airline/vim-airline'
 
-" File syntax plugins
-" ---
+# File syntax Plugins
+# ---
 
-" Colorschemes
-" ---
+# Colorschemes
+# ---
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'rakr/vim-one'
 
-call plug#end()
+plug#end()
 
-" =============================================================================
-" Configure plugins (POST)
-" =============================================================================
+# =============================================================================
+# Configure plugins (POST)
+# =============================================================================
 
-" windsurf.vim Config
-" ---
-let g:codeium_disable_bindings = 1
-let g:codeium_filetypes = {
-\	'fern-replacer': v:false,
-\}
+# windsurf.vim Config
+# ---
+g:codeium_disable_bindings = 1
+g:codeium_filetypes = {
+	'fern-replacer': false
+}
 
 imap <script><silent><nowait><expr> <Tab> codeium#Accept()
 imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 
-" fzf.vim Config
-" ---
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
-let $FZF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
-let g:fzf_vim = #{
-\	preview_window: [],
-\	grep_multi_line: 1
-\}
+# fzf.vim Config
+# ---
+$fzF_DEFAULT_COMMAND = 'rg --files --hidden --iglob !.git'
+$fzF_DEFAULT_OPTS = '--reverse --color=border:#aaaaaa,gutter:-1,bg+:-1'
+g:fzf_vim = {
+	preview_window: [],
+	grep_multi_line: 1
+}
 
-command! -bang -nargs=* Rg call <SID>VimGrep(<q-args>, <bang>0)
+command! -bang -nargs=* Rg VimGrep(<q-args>, <bang>0)
 
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
-nnoremap <C-y> <Cmd>call <SID>VimGrep(expand('<cword>'), 0)<CR>
+nnoremap <C-y> <Cmd>VimGrep(expand('<cword>'), 0)<CR>
 nnoremap <C-@> <Cmd>FzfxBuffers<CR>
 
 autocmd! User FzfStatusLine call <SID>FzfStatusline()
 autocmd! ColorScheme * highlight! fzfBorder guifg=#aaaaaa
 
-" fern.vim Config
-" ---
-let g:fern#hide_cursor = 1
-let g:fern#default_hidden = 1
-let g:fern#renderer = 'nerdfont'
-let g:fern#renderer#nerdfont#root_symbol = ' '
-let g:fern#renderer#nerdfont#indent_markers = 1
+# fern.vim Config
+# ---
+g:fern#hide_cursor = 1
+g:fern#default_hidden = 1
+g:fern#renderer = 'nerdfont'
+g:fern#renderer#nerdfont#root_symbol = ' '
+g:fern#renderer#nerdfont#indent_markers = 1
 
 nnoremap <Leader>ff <Cmd>Fern . -reveal=%<CR>
 
-autocmd! FileType fern call <SID>FernInit()
+autocmd! FileType fern FernInit()
 
-" emmet-vim Config
-" ---
-let g:user_emmet_leader_key = '<C-q>'
-let g:user_emmet_mode = 'in'
-let g:user_emmet_settings = #{
-\	blade: #{ extends: 'html' },
-\}
+# emmet-vim Config
+# ---
+g:user_emmet_leader_key = '<C-q>'
+g:user_emmet_mode = 'in'
+g:user_emmet_settings = {
+	'blade': {
+		'extends': 'html'
+	},
+}
 imap <C-x><C-y> <Plug>(emmet-expand-abbr)
 nmap <Leader>er <Plug>(emmet-update-tag)
 
-" indentLine Config
-" ---
-let g:indentLine_char = '│'
-let g:indentLine_fileTypeExclude = ['help', 'fern', 'fzf']
+# indentLine Config
+# ---
+g:indentLine_char = '│'
+g:indentLine_fileTypeExclude = ['help', 'fern', 'fzf']
 
-" vim-airline Config
-" ---
-let g:airline_experimental = 1
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#ale#enabled = 1
+# vim-airline Config
+# ---
+g:airline_experimental = 1
+g:airline_powerline_fonts = 1
+g:airline#extensions#ale#enabled = 1
 
-let g:airline_section_z = '℅:%v, :%L'
+g:airline_section_z = '℅:%v, :%L'
 
-" hlyank Config
-" ---
-let g:hlyank_hlgroup = 'IncSearch'
-let g:hlyank_duration = 300
-let g:hlyank_invisual = 1
+# hlyank Config
+# ---
+g:hlyank_hlgroup = 'IncSearch'
+g:hlyank_duration = 300
+g:hlyank_invisual = 1
 
-" =============================================================================
-" Configure theme (THEME)
-" =============================================================================
+# =============================================================================
+# Configure theme (THEME)
+# =============================================================================
 
-function! s:SetLightTheme() abort
-	augroup colorset
-		autocmd!
-		autocmd ColorScheme one silent! highlight Normal guibg=NONE
-		autocmd ColorScheme one silent! highlight SignColumn guibg=NONE
-	augroup END
-
-	let $FZF_DEFAULT_OPTS = [
-	\	'--reverse',
-	\	'--color=bg+:#b7c1e3',
-	\	'--color=bg:-1',
-	\	'--color=border:#4094a3',
-	\	'--color=fg:#3760bf',
-	\	'--color=gutter:#d0d5e3',
-	\	'--color=header:#b15c00',
-	\	'--color=hl+:#188092',
-	\	'--color=hl:#188092',
-	\	'--color=info:#8990b3',
-	\	'--color=marker:#d20065',
-	\	'--color=pointer:#d20065',
-	\	'--color=prompt:#188092',
-	\	'--color=query:#3760bf:regular',
-	\	'--color=scrollbar:#4094a3',
-	\	'--color=separator:#b15c00',
-	\	'--color=spinner:#d20065',
-	\]->join(' ')
-
-	set background=light
-	colorscheme one
-endfunction
-
-function! s:SetDarkTheme() abort
-	let g:moonflyNormalFloat = v:true
-	let g:moonflyTransparent = v:false
-
-	set background=dark
-	colorscheme moonfly
-endfunction
-
-function! s:AutoTheme() abort
-	if has('mac')
-		let s:theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')->trim()
-		if s:theme == 'Dark'
-			call <SID>SetDarkTheme()
-		else
-			call <SID>SetLightTheme()
-		endif
-	else
-		call <SID>SetDarkTheme()
-	endif
-endfunction
-
-call <SID>AutoTheme()
+AutoTheme({
+	light: 'one',
+	dark: 'moonfly'
+})
