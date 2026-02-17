@@ -343,7 +343,7 @@ command! -bang -nargs=* Rg VimGrep(<q-args>, <bang>0)
 
 nnoremap <C-p> <Cmd>Files<CR>
 nnoremap <C-t> <Cmd>Rg<CR>
-nnoremap <C-y> <Cmd>VimGrep(expand('<cword>'), 0)<CR>
+nnoremap <C-y> <ScriptCmd>VimGrep(expand('<cword>'), 0)<CR>
 nnoremap <C-Space> <Cmd>FzfxBuffers<CR>
 
 autocmd! User FzfStatusLine call <SID>FzfStatusline()
