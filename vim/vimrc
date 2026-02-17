@@ -346,8 +346,7 @@ nnoremap <C-t> <Cmd>Rg<CR>
 nnoremap <C-y> <ScriptCmd>VimGrep(expand('<cword>'), 0)<CR>
 nnoremap <C-Space> <Cmd>FzfxBuffers<CR>
 
-autocmd! User FzfStatusLine FzfStatusline()
-autocmd! ColorScheme * highlight! fzfBorder guifg=#aaaaaa
+autocmd! ColorScheme moonfly highlight! fzfBorder guifg=#aaaaaa
 
 # fern.vim Config
 # ---
