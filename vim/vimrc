@@ -245,8 +245,18 @@ packadd! hlyank
 # =============================================================================
 
 const data_dir = expand('$HOME/.vim')
-if empty(glob($'{data_dir}/autoload/plug.vim'))
-	silent execute '!curl -fLo '.. data_dir ..'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+const plug_filepath = $'{data_dir}/autoload/plug.vim'
+
+if empty(glob(plug_filepath))
+	const cmd = [
+		'!curl',
+		'-fLo',
+		plug_filepath,
+		'--create-dirs',
+		'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim',
+	]->join(' ')
+
+	silent execute(cmd)
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
