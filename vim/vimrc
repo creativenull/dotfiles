@@ -327,8 +327,8 @@ g:codeium_filetypes = {
 }
 
 imap <script><silent><nowait><expr> <Tab> codeium#Accept()
-imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
-imap <M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <M-]> <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <M-[> <Cmd>call codeium#CycleCompletions(-1)<CR>
 
 # fzf.vim Config
 # ---
