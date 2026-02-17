@@ -323,7 +323,8 @@ plug#end()
 # ---
 g:codeium_disable_bindings = 1
 g:codeium_filetypes = {
-	'fern-replacer': false
+	'fern-replacer': false,
+	'gitcommit': true,
 }
 
 imap <script><silent><nowait><expr> <Tab> codeium#Accept()
