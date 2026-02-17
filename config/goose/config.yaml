@@ -61,4 +61,12 @@ extensions:
     display_name: Extension Manager
     bundled: true
     available_tools: []
+  tom:
+    enabled: false
+    type: platform
+    name: tom
+    description: Inject custom context into every turn via GOOSE_MOIM_MESSAGE_TEXT and GOOSE_MOIM_MESSAGE_FILE environment variables
+    display_name: Top Of Mind
+    bundled: true
+    available_tools: []
 GOOSE_TELEMETRY_ENABLED: false
