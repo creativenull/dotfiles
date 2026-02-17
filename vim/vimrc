@@ -67,6 +67,7 @@ set wildignore=*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*
 set wildignorecase
 set wildmenu
 set wildoptions=pum,fuzzy
+set wildmode=noselect:lastused,full
 
 if has('termguicolors')
 	set termguicolors
