@@ -1,5 +1,5 @@
 GOOSE_PROVIDER: openrouter
-GOOSE_MODEL: moonshotai/kimi-k2.5
+GOOSE_MODEL: minimax/minimax-m2.5
 GOOSE_CLI_MIN_PRIORITY: 0.8
 GOOSE_MODE: auto
 SECURITY_PROMPT_ENABLED: true
