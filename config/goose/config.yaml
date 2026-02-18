@@ -69,4 +69,12 @@ extensions:
     display_name: Top Of Mind
     bundled: true
     available_tools: []
+  summon:
+    enabled: true
+    type: platform
+    name: summon
+    description: Load knowledge and delegate tasks to subagents
+    display_name: Summon
+    bundled: true
+    available_tools: []
 GOOSE_TELEMETRY_ENABLED: false
