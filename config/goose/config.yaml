@@ -78,3 +78,5 @@ extensions:
     bundled: true
     available_tools: []
 GOOSE_TELEMETRY_ENABLED: false
+GOOSE_CLI_LIGHT_THEME: 'Catppuccin Latte'
+GOOSE_CLI_DARK_THEME: 'TwoDark'
