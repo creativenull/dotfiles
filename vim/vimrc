@@ -26,7 +26,7 @@ source $VIMRUNTIME/defaults.vim
 set backspace=indent,eol,start
 set clipboard-=autoselect
 set cmdheight=2
-set colorcolumn=80,120
+set colorcolumn=81,121
 set completeopt=menuone,noinsert,noselect,fuzzy
 set conceallevel=2
 set encoding=utf-8
