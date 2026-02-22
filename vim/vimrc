@@ -21,7 +21,7 @@ endif
 unlet! g:skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
-&titlestring = printf("%s [vim]", fnamemodify(getcwd(), ":t"))
+&titlestring = printf("[vim] %s", fnamemodify(getcwd(), ":t"))
 &undodir = undopath
 set backspace=indent,eol,start
 set clipboard-=autoselect
