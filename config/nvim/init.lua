@@ -109,6 +109,9 @@ vim.api.nvim_create_autocmd("FileType", {
     if string.match(ev.match, "markdown") ~= nil then
       vim.opt_local.spell = true
       vim.opt_local.textwidth = 120
+      vim.cmd("inoreabbrev i I")
+      vim.cmd("inoreabbrev ive I've")
+      vim.cmd("inoreabbrev im I'm")
     end
   end,
   desc = "Set options for filetypes",
