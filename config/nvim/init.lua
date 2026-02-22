@@ -99,14 +99,19 @@ vim.api.nvim_create_autocmd("FileType", {
     "vim",
     "vue",
   },
-  callback = function()
+  callback = function(ev)
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
     vim.opt_local.shiftwidth = 0
     vim.opt_local.expandtab = true
     vim.opt_local.iskeyword:append("-")
+
+    if string.match(ev.match, "markdown") ~= nil then
+      vim.opt_local.spell = true
+      vim.opt_local.textwidth = 120
+    end
   end,
-  desc = "Set code indents",
+  desc = "Set options for filetypes",
 })
 
 vim.filetype.add({
