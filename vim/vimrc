@@ -179,45 +179,6 @@ def FernInit()
 	glyph_palette#apply()
 enddef
 
-def SetLightTheme(theme: string)
-	augroup colorset
-		autocmd!
-		autocmd ColorScheme one silent! highlight Normal guibg=NONE
-		autocmd ColorScheme one silent! highlight SignColumn guibg=NONE
-	augroup END
-
-	$FZF_DEFAULT_OPTS = [
-		'--reverse',
-		'--color=bg+:#b7c1e3',
-		'--color=bg:-1',
-		'--color=border:#4094a3',
-		'--color=fg:#3760bf',
-		'--color=gutter:#d0d5e3',
-		'--color=header:#b15c00',
-		'--color=hl+:#188092',
-		'--color=hl:#188092',
-		'--color=info:#8990b3',
-		'--color=marker:#d20065',
-		'--color=pointer:#d20065',
-		'--color=prompt:#188092',
-		'--color=query:#3760bf:regular',
-		'--color=scrollbar:#4094a3',
-		'--color=separator:#b15c00',
-		'--color=spinner:#d20065',
-	]->join(' ')
-
-	set background=light
-	printf('colorscheme %s', theme)->execute()
-enddef
-
-def SetDarkTheme(theme: string)
-	g:moonflyNormalFloat = v:true
-	g:moonflyTransparent = v:false
-
-	set background=dark
-	printf('colorscheme %s', theme)->execute()
-enddef
-
 def AutoTheme(config: dict<any>)
 	if has('mac')
 		const theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')->trim()
@@ -404,6 +365,45 @@ g:hlyank_invisual = 1
 # =============================================================================
 # Configure theme (THEME)
 # =============================================================================
+
+def SetLightTheme(theme: string)
+	augroup colorset
+		autocmd!
+		autocmd ColorScheme one silent! highlight Normal guibg=NONE
+		autocmd ColorScheme one silent! highlight SignColumn guibg=NONE
+	augroup END
+
+	$FZF_DEFAULT_OPTS = [
+		'--reverse',
+		'--color=bg+:#b7c1e3',
+		'--color=bg:-1',
+		'--color=border:#4094a3',
+		'--color=fg:#3760bf',
+		'--color=gutter:#d0d5e3',
+		'--color=header:#b15c00',
+		'--color=hl+:#188092',
+		'--color=hl:#188092',
+		'--color=info:#8990b3',
+		'--color=marker:#d20065',
+		'--color=pointer:#d20065',
+		'--color=prompt:#188092',
+		'--color=query:#3760bf:regular',
+		'--color=scrollbar:#4094a3',
+		'--color=separator:#b15c00',
+		'--color=spinner:#d20065',
+	]->join(' ')
+
+	set background=light
+	printf('colorscheme %s', theme)->execute()
+enddef
+
+def SetDarkTheme(theme: string)
+	g:moonflyNormalFloat = v:true
+	g:moonflyTransparent = v:false
+
+	set background=dark
+	printf('colorscheme %s', theme)->execute()
+enddef
 
 AutoTheme({
 	light: 'one',
