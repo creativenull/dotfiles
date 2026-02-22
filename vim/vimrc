@@ -66,8 +66,8 @@ set updatetime=250
 set wildignore=*.git/*,*node_modules/*,*vendor/*,*dist/*,*build/*
 set wildignorecase
 set wildmenu
-set wildoptions=pum,fuzzy
 set wildmode=noselect:lastused,full
+set wildoptions=pum,fuzzy
 
 if has('termguicolors')
 	set termguicolors
@@ -164,7 +164,7 @@ enddef
 def VimGrep(qargs: string, bang: bool)
 	const sanitizedQargs = qargs->shellescape()
 	const sh = $'rg --column --line-number --no-heading --color=always --smart-case -- {sanitizedQargs}'
-	fzf#vim#grep(sh, 1, fzf#vim#with_preview('right:50%', 'ctrl-/'), bang)
+	fzf#vim#grep(sh, 1, fzf#vim#with_preview({}), bang)
 enddef
 
 def FzfStatusline()
