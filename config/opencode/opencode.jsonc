@@ -1,7 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "opencode",
-  "model": "openrouter/moonshotai/kimi-k2.5",
+  "model": "openrouter/z-ai/glm-5",
+  "small_model": "openrouter/z-ai/glm-4.7-flash",
   "tui": {
     "diff_style": "stacked"
   }
