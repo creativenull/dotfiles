@@ -8,9 +8,9 @@ extensions:
     enabled: true
     type: builtin
     name: developer
-    description: Code editing and shell access
-    display_name: Developer Tools
-    timeout: 60
+    description: Write and edit files, and execute shell commands
+    display_name: Developer
+    timeout: null
     bundled: true
     available_tools: []
   chatrecall:
@@ -77,6 +77,14 @@ extensions:
     display_name: Summon
     bundled: true
     available_tools: []
+  analyze:
+    enabled: true
+    type: platform
+    name: analyze
+    description: 'Analyze code structure with tree-sitter: directory overviews, file details, symbol call graphs'
+    display_name: Analyze
+    bundled: true
+    available_tools: []
 GOOSE_TELEMETRY_ENABLED: false
-GOOSE_CLI_LIGHT_THEME: 'Catppuccin Latte'
-GOOSE_CLI_DARK_THEME: 'TwoDark'
+GOOSE_CLI_LIGHT_THEME: Catppuccin Latte
+GOOSE_CLI_DARK_THEME: TwoDark
