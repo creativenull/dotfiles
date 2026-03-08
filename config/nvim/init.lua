@@ -510,6 +510,7 @@ Plug("nvimdev/indentmini.nvim")
 Plug("creativenull/feline.nvim")
 Plug("creativenull/feline-provider-ale.nvim")
 Plug("f-person/auto-dark-mode.nvim")
+Plug("lukas-reineke/virt-column.nvim")
 
 -- TreeSitter
 -- ---
@@ -626,6 +627,10 @@ require("indentmini").setup({ minlevel = 2 })
 -- ---
 -- require("mason").setup()
 
+-- virt-column Config
+-- ---
+require("virt-column").setup()
+
 -- =============================================================================
 -- = Colorscheme =
 -- =============================================================================
@@ -652,15 +657,12 @@ local function set_custom_dark_colorscheme()
   -- indentmini Highlights
   vim.api.nvim_set_hl(0, "IndentLine", { bg = "NONE", fg = "#111111" })
   vim.api.nvim_set_hl(0, "IndentLineCurrent", { bg = "NONE", fg = "#aaaaaa" })
-
-  vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#333333" })
 end
 
 local function set_custom_light_colorscheme()
   -- Float border transparent
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#dddddd" })
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
