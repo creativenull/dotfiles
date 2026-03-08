@@ -652,6 +652,8 @@ local function set_custom_dark_colorscheme()
   -- indentmini Highlights
   vim.api.nvim_set_hl(0, "IndentLine", { bg = "NONE", fg = "#111111" })
   vim.api.nvim_set_hl(0, "IndentLineCurrent", { bg = "NONE", fg = "#aaaaaa" })
+
+  vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#333333" })
 end
 
 local function set_custom_light_colorscheme()
