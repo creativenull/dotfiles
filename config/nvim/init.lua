@@ -46,7 +46,12 @@ end
 
 for _, exec in pairs(optional_execs) do
   if vim.fn.executable(exec) == 0 then
-    vim.api.nvim_echo({ { string.format("[nvim] `%s` not found, but optional", exec), "WarningMsg" } }, true, {})
+    vim.api.nvim_echo({
+      {
+        string.format("[nvim] `%s` not found, but optional", exec),
+        "WarningMsg",
+      },
+    }, true, {})
   end
 end
 
@@ -598,9 +603,8 @@ require("gitsigns").setup()
 
 -- Comment.nvim Config
 -- ---
-require("Comment").setup({
-  pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-})
+local pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
+require("Comment").setup({ pre_hook = pre_hook })
 
 -- feline.nvim Config
 -- ---
