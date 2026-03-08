@@ -654,6 +654,7 @@ local function set_custom_light_colorscheme()
   -- Float border transparent
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#dddddd" })
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
