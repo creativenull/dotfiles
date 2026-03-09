@@ -527,6 +527,7 @@ Plug("fladson/vim-kitty")
 Plug("bluz71/vim-moonfly-colors")
 Plug("folke/tokyonight.nvim")
 Plug("catppuccin/nvim", { as = "catppuccin" })
+Plug("idr4n/github-monochrome.nvim")
 
 -- Misc
 -- ---
@@ -637,7 +638,8 @@ require("virt-column").setup()
 
 local function light_colorscheme()
   vim.api.nvim_set_option_value("background", "light", {})
-  pcall(vim.cmd, "colorscheme tokyonight-day")
+  -- pcall(vim.cmd, "colorscheme tokyonight-day")
+  pcall(vim.cmd, "colorscheme github-monochrome-light")
 end
 
 local function dark_colorscheme()
@@ -745,6 +747,28 @@ pcall(function()
     on_highlights = function(hi, _)
       hi.NormalFloat = { bg = "NONE" }
       hi.FloatBorder = { bg = "NONE" }
+    end,
+  })
+end)
+
+-- github-monochrome.nvim Config
+-- ---
+pcall(function()
+  require("github-monochrome").setup({
+    style = "light",
+    transparent = true,
+    styles = {
+      floats = "transparent",
+      sidebars = "transparent",
+    },
+    on_highlights = function(hi, _)
+      hi.IndentLine = { fg = "#dddddd" }
+      hi.IndentLineCurrent = { fg = "#9775FA" }
+      hi.LineNr = { fg = "#333333" }
+      hi.Comment = { fg = "#888888", italic = true }
+      hi.Visual = { bg = "#cccccc" }
+      hi.VirtColumn = { fg = "#bbbbbb" }
+      hi.FernIndentMarkers = { fg = "#9775FA" }
     end,
   })
 end)
