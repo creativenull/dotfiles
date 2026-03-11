@@ -9,8 +9,13 @@ if command -v batcat &> /dev/null; then
 fi
 
 # System
-alias ls="lsd -A"
-alias ll="lsd -lA"
+if command -v eza &> /dev/null; then
+	alias ls="EZA_COLORS='reset' eza --group-directories-first --icons=auto --classify --all"
+	alias ll="EZA_COLORS='reset' eza --group-directories-first --group --icons=auto --classify --all --long"
+else
+	alias ll="ls -lA"
+fi
+
 alias mkdir="mkdir -pv"
 alias cp="cp -v"
 alias open-ports="sudo ss -ltnp"
