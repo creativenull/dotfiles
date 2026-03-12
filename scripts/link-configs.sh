@@ -26,9 +26,6 @@ ln -sv ~/dotfiles/tmux.conf ~/.tmux.conf
 rm -fv ~/.config/starship.toml
 ln -sv ~/dotfiles/config/starship.toml ~/.config/starship.toml
 
-rm -fv ~/.config/lsd
-ln -sv ~/dotfiles/config/lsd ~/.config/
-
 rm -fv ~/.config/nvim
 ln -sv ~/dotfiles/config/nvim ~/.config/
 
