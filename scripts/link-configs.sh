@@ -32,6 +32,8 @@ ln -sv ~/dotfiles/config/nvim ~/.config/
 rm -fv ~/.config/zellij
 ln -sv ~/dotfiles/config/zellij ~/.config/
 
+# AI
+# ---
 rm -fv ~/.claude/settings.json
 mkdir -pv ~/.claude
 ln -sv ~/dotfiles/claude/settings.json ~/.claude/settings.json
