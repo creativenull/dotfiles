@@ -1,5 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "openrouter/z-ai/glm-5",
-  "small_model": "openrouter/z-ai/glm-4.7-flash"
+  "model": "openrouter/moonshotai/kimi-k2.5",
+  "small_model": "openrouter/openai/gpt-oss-20b"
 }
