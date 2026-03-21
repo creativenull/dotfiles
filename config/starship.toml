@@ -20,7 +20,7 @@ $character\
 
 scan_timeout = 500
 command_timeout = 1000
-add_newline = false
+add_newline = true
 
 [directory]
 truncation_length = 2
