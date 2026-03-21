@@ -1,7 +1,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$username\
 $hostname\
 $directory\
 $git_branch\
@@ -10,27 +9,21 @@ $git_state\
 $git_metrics\
 $git_status\
 $deno\
+$mise\
 $nodejs\
 $php\
 $python\
-$custom\
-$sudo\
 $cmd_duration\
 $line_break\
-$time\
-$status\
-$os\
-$shell\
-$character"""
+$character\
+"""
 
-add_newline = true
+scan_timeout = 500
+command_timeout = 1000
+add_newline = false
 
 [directory]
-truncation_length = 1
+truncation_length = 2
 
-[os]
+[git_metrics]
 disabled = false
-[os.symbols]
-Macos = "\uf302  "
-Mint = "\uf30e  "
-Ubuntu = "\ue73a  "
