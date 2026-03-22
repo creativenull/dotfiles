@@ -72,6 +72,7 @@ if [ $install_brew_pkgs -eq 1 ]; then
 		diff-so-fancy
 		efm-langserver
 		eza
+		fd
 		lua-language-server
 		neovim
 		starship
