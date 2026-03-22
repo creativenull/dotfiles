@@ -8,5 +8,11 @@
     "medium": 10240,
     "high": 32768
   },
-  "npmCommand": ["mise", "exec", "node", "--", "npm"]
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node",
+    "--",
+    "npm"
+  ]
 }
