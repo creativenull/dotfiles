@@ -1,4 +1,5 @@
 {
+  "theme": "terminal",
   "defaultProvider": "openrouter",
   "defaultModel": "moonshotai/kimi-k2.5",
   "defaultThinkingLevel": "medium",
