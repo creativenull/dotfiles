@@ -1,0 +1,12 @@
+{
+  "defaultProvider": "openrouter",
+  "defaultModel": "moonshotai/kimi-k2.5",
+  "defaultThinkingLevel": "medium",
+  "thinkingBudgets": {
+    "minimal": 1024,
+    "low": 4096,
+    "medium": 10240,
+    "high": 32768
+  },
+  "npmCommand": ["mise", "exec", "node", "--", "npm"]
+}
