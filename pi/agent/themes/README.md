@@ -2,4 +2,4 @@
 
 ### terminal.json
 
-Adopted from (pi-terminal-theme)[https://github.com/mavam/pi-terminal-theme]
+Adopted from [pi-terminal-theme](https://github.com/mavam/pi-terminal-theme)
