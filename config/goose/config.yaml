@@ -94,6 +94,14 @@ extensions:
     display_name: Summarize
     bundled: true
     available_tools: []
+  orchestrator:
+    enabled: false
+    type: platform
+    name: orchestrator
+    description: 'Manage agent sessions: list, view, start, send messages, interrupt, and stop agents'
+    display_name: Orchestrator
+    bundled: true
+    available_tools: []
 GOOSE_TELEMETRY_ENABLED: true
 GOOSE_CLI_LIGHT_THEME: Catppuccin Latte
 GOOSE_CLI_DARK_THEME: TwoDark
