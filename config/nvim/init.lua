@@ -1,19 +1,14 @@
 -- Name: Arnold Chand
 -- Github: https://github.com/creativenull
--- Description: My vimrc, works with MacOS, Linux and Windows.
--- Required:
---   + curl
---   + git
---   + python3
---   + ripgrep
+-- Description: My neovim configuration, cross platform
 -- =============================================================================
 -- = Initialize =
 -- =============================================================================
 
 -- Pre-checks
 -- ---
-if vim.fn.has("nvim-0.10") == 0 then
-  local errmsg = debug.traceback("This config requires nvim >= 0.10")
+if vim.fn.has("nvim-0.12") == 0 then
+  local errmsg = debug.traceback("This config requires nvim >= 0.12")
   vim.api.nvim_echo({ { errmsg, "ErrorMsg" } }, true, {})
   return
 end
@@ -33,7 +28,7 @@ vim.g.user = {
 vim.api.nvim_create_augroup(vim.g.user.event, {})
 
 -- Ensure the following tools are installed in the system
-local required_execs = { "git", "curl", "rg", "deno", "python3" }
+local required_execs = { "git", "curl", "rg", "deno", "python3", "tree-sitter" }
 local optional_execs = { "stylua" }
 
 for _, exec in pairs(required_execs) do
@@ -432,8 +427,6 @@ Plug("mattn/emmet-vim")
 Plug("tpope/vim-abolish")
 Plug("tpope/vim-repeat")
 Plug("tpope/vim-surround")
-Plug("numToStr/Comment.nvim")
-Plug("JoosepAlviste/nvim-ts-context-commentstring")
 
 -- AI
 -- ---
@@ -505,7 +498,6 @@ Plug("tpope/vim-fugitive")
 
 -- UI/Aesthetics
 -- ---
--- Plug("lukas-reineke/indent-blankline.nvim", { tag = "v3.*" })
 Plug("nvimdev/indentmini.nvim")
 Plug("creativenull/feline.nvim")
 Plug("creativenull/feline-provider-ale.nvim")
@@ -514,8 +506,8 @@ Plug("lukas-reineke/virt-column.nvim")
 
 -- TreeSitter
 -- ---
-Plug("nvim-treesitter/nvim-treesitter", { commit = "94ea4f436d2b59c80f02e293466c374584f03b8c", ["do"] = ":TSUpdate" })
-Plug("nvim-treesitter/nvim-treesitter-textobjects", { commit = "ed373482db797bbf71bdff37a15c7555a84dce47" })
+Plug("nvim-treesitter/nvim-treesitter", { branch = "main", ["do"] = ":TSUpdate" })
+Plug("nvim-treesitter/nvim-treesitter-textobjects", { branch = "main" })
 
 -- FileType Syntax
 -- ---
@@ -604,22 +596,9 @@ require("user.ale").setup()
 -- ---
 require("gitsigns").setup()
 
--- Comment.nvim Config
--- ---
-local pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
-require("Comment").setup({ pre_hook = pre_hook })
-
 -- feline.nvim Config
 -- ---
 require("user.feline").setup()
-
--- indent-blanklint.nvim Config
--- ---
--- require("ibl").setup({
---   indent = { char = "│" },
---   scope = { enabled = false },
---   exclude = { filetypes = { "help", "fzf", "fern" } },
--- })
 
 -- indentmini.nvim Config
 -- ---
