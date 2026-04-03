@@ -1,20 +1,17 @@
 model = "gpt-5.3-codex"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "high"
 
 file_opener = "none"
 hide_agent_reasoning = true
 
 web_search = "live"
+personality = "pragmatic"
 
 [features]
 view_image_tool = true
 undo = true
-personality = "pragmatic"
 smart_approvals = true
 
 [mcp_servers.laravel-boost]
 command = "php"
-args = ["./artisan", "boost:mcp"]
-
-[notice.model_migrations]
-"gpt-5.3-codex" = "gpt-5.4"
+args = ["artisan", "boost:mcp"]
