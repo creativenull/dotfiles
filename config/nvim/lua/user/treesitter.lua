@@ -6,11 +6,13 @@ function M.setup()
 
   local ft = {
     "astro",
+    "blade",
     "css",
     "go",
     "html",
     "javascript",
     "json",
+    "kitty",
     "lua",
     "nix",
     "php",

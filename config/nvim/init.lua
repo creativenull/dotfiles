@@ -509,11 +509,6 @@ Plug("lukas-reineke/virt-column.nvim")
 Plug("nvim-treesitter/nvim-treesitter", { commit = "4916d6592ede8c07973490d9322f187e07dfefac", ["do"] = ":TSUpdate" })
 Plug("nvim-treesitter/nvim-treesitter-textobjects", { commit = "93d60a475f0b08a8eceb99255863977d3a25f310" })
 
--- FileType Syntax
--- ---
-Plug("jwalton512/vim-blade")
-Plug("fladson/vim-kitty")
-
 -- Colorschemes
 -- ---
 Plug("bluz71/vim-moonfly-colors")
