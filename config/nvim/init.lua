@@ -506,8 +506,8 @@ Plug("lukas-reineke/virt-column.nvim")
 
 -- TreeSitter
 -- ---
-Plug("nvim-treesitter/nvim-treesitter", { branch = "main", ["do"] = ":TSUpdate" })
-Plug("nvim-treesitter/nvim-treesitter-textobjects", { branch = "main" })
+Plug("nvim-treesitter/nvim-treesitter", { commit = "4916d6592ede8c07973490d9322f187e07dfefac", ["do"] = ":TSUpdate" })
+Plug("nvim-treesitter/nvim-treesitter-textobjects", { commit = "93d60a475f0b08a8eceb99255863977d3a25f310" })
 
 -- FileType Syntax
 -- ---
