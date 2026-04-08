@@ -146,6 +146,14 @@ function M.setup()
   require("web").setup({
     on_attach = on_attach,
     capabilities = capabilities,
+    lsp = {
+      vue = {
+        inlay_hints = false,
+      },
+      vtsls = {
+        inlay_hints = false,
+      }
+    },
   })
 
   -- Log debug
