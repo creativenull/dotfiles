@@ -35,8 +35,8 @@
     "thinkingText": "brightBlack",
 
     "selectedBg": "brightBlack",
-    "userMessageBg": "white",
-    "userMessageText": "brightWhite",
+    "userMessageBg": "black",
+    "userMessageText": "magenta",
     "customMessageBg": "",
     "customMessageText": "",
     "customMessageLabel": "magenta",

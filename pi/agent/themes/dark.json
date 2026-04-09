@@ -36,7 +36,7 @@
 
     "selectedBg": "brightBlack",
     "userMessageBg": "black",
-    "userMessageText": "brightWhite",
+    "userMessageText": "white",
     "customMessageBg": "",
     "customMessageText": "",
     "customMessageLabel": "magenta",
