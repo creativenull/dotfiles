@@ -93,7 +93,7 @@ local function on_attach(client, bufnr)
 end
 
 function M.setup()
-  vim.keymap.set("n", "<Leader>li", "<Cmd>LspInfo<CR>")
+  vim.keymap.set("n", "<Leader>li", "<Cmd>checkhealth vim.lsp<CR>")
 
   -- Add support to get snippets from lsp
   local capabilities = vim.lsp.protocol.make_client_capabilities()
