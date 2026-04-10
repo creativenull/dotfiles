@@ -1,7 +1,7 @@
 {
   "defaultProvider": "openrouter",
   "defaultModel": "z-ai/glm-5",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "theme": "terminal",
   "thinkingBudgets": {
     "minimal": 1024,
@@ -16,6 +16,6 @@
     "--",
     "npm"
   ],
-  "lastChangelogVersion": "0.66.0",
+  "lastChangelogVersion": "0.66.1",
   "hideThinkingBlock": true
 }
