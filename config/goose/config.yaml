@@ -41,7 +41,7 @@ extensions:
     enabled: true
     type: platform
     name: skills
-    description: Load and use skills from relevant directories
+    description: Discover and provide skill instructions from filesystem and builtins
     display_name: Skills
     bundled: true
     available_tools: []
