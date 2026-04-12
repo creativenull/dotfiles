@@ -1,5 +1,6 @@
 @antfu/ni
 @astrojs/language-server
+@mariozechner/pi-coding-agent
 @tailwindcss/language-server
 @vtsls/language-server
 @vue/language-server
