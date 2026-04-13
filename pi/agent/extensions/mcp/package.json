@@ -1,0 +1,29 @@
+{
+  "name": "@creativenull/pi-mcp-tool",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server integration for Pi coding agent",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.0.0",
+    "@mariozechner/pi-coding-agent": "^0.66.1",
+    "@sinclair/typebox": "^0.34.49",
+    "@types/node": "^25.6.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.0.0"
+  }
+}
