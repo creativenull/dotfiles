@@ -193,4 +193,4 @@ Check Pi's logs for detailed error messages when servers fail to connect.
 
 ## License
 
-MIT
+MIT © 2026 creativenull
