@@ -1,40 +1,7 @@
 /**
  * MCP Extension for Pi
  *
- * Connects to MCP (Model Context Protocol) servers and exposes their tools
- * as native Pi tools callable by the LLM.
- *
- * Configuration:
- *   ~/.pi/agent/mcp.json (global)
- *   .pi/mcp.json (project-local)
- *
- * Commands:
- *   /mcp              - List servers and tools
- *   /mcp-connect      - Connect to a server
- *   /mcp-disconnect   - Disconnect from a server
- *   /mcp-reload       - Reload configuration and reconnect
- *
- * Example configs:
- *
- *   // Laravel Boost (.pi/mcp.json in project root)
- *   {
- *     "servers": {
- *       "laravel-boost": {
- *         "command": "php",
- *         "args": ["artisan", "boost:mcp"]
- *       }
- *     }
- *   }
- *
- *   // Filesystem server
- *   {
- *     "servers": {
- *       "filesystem": {
- *         "command": "npx",
- *         "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path"]
- *       }
- *     }
- *   }
+ * See README.md for documentation.
  */
 
 import type { ExtensionAPI, ExtensionContext } from '@mariozechner/pi-coding-agent'
@@ -77,7 +44,7 @@ export default function mcpExtension(pi: ExtensionAPI): void {
     const connected: string[] = []
     const failed: string[] = []
 
-    for (const [name, serverConfig] of Object.entries(config.servers)) {
+    for (const [name, serverConfig] of Object.entries(config.mcpServers)) {
       if (serverConfig.disabled) {
         continue
       }
@@ -213,7 +180,7 @@ export default function mcpExtension(pi: ExtensionAPI): void {
       }
 
       const config = await loadMcpConfig(ctx.cwd)
-      const serverConfig = config.servers[serverName]
+      const serverConfig = config.mcpServers[serverName]
 
       if (!serverConfig) {
         ctx.ui.notify(`Unknown MCP server: ${serverName}`, 'error')

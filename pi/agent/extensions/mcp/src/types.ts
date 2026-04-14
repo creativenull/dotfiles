@@ -14,10 +14,10 @@ export interface McpServerConfig {
   disabled?: boolean
 }
 
-/** Full MCP configuration file */
+/** Full MCP configuration file (Claude-compatible schema) */
 export interface McpConfig {
-  /** Named server configurations */
-  servers: Record<string, McpServerConfig>
+  /** Named server configurations (Claude-compatible key name) */
+  mcpServers: Record<string, McpServerConfig>
 }
 
 /** MCP tool definition from server */

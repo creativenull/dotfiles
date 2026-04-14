@@ -72,10 +72,10 @@ export async function loadMcpConfig(projectDir?: string): Promise<McpConfig> {
   }
 
   // Merge configs (project overrides global for same server names)
-  const merged: McpConfig = { servers: {} }
+  const merged: McpConfig = { mcpServers: {} }
   for (const config of configs) {
-    for (const [name, serverConfig] of Object.entries(config.servers ?? {})) {
-      merged.servers[name] = expandConfigEnv(serverConfig)
+    for (const [name, serverConfig] of Object.entries(config.mcpServers ?? {})) {
+      merged.mcpServers[name] = expandConfigEnv(serverConfig)
     }
   }
 
