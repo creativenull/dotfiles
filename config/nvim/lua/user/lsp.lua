@@ -152,7 +152,7 @@ function M.setup()
       },
       vtsls = {
         inlay_hints = false,
-      }
+      },
     },
   })
 
