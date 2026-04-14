@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "openrouter": {
+      "modelOverrides": {
+        "z-ai/glm-5.1": {
+          "contextWindow": 202752,
+          "compat": {
+            "openRouterRouting": {
+              "only": ["z-ai"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
