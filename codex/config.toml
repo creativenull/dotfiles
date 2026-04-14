@@ -11,7 +11,3 @@ personality = "pragmatic"
 view_image_tool = true
 undo = true
 smart_approvals = true
-
-[mcp_servers.laravel-boost]
-command = "php"
-args = ["artisan", "boost:mcp"]
