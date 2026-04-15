@@ -12,6 +12,7 @@
 import type { ExtensionAPI, ExtensionContext } from '@mariozechner/pi-coding-agent'
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
+import { Text } from '@mariozechner/pi-tui'
 
 const execAsync = promisify(exec)
 
@@ -57,15 +58,23 @@ export default function (pi: ExtensionAPI) {
     }
   }
 
+  /**
+   * Update the theme indicator below the editor.
+   * Uses "dim" color token to match the footer's muted text style.
+   */
+  function updateStatus(ctx: ExtensionContext) {
+    if (!ctx.hasUI)
+      return
+    ctx.ui.setWidget('theme-switcher', (tui, theme) =>
+      new Text(theme.fg('dim', `theme: ${currentTheme}`), 0, 0), { placement: 'belowEditor' })
+  }
+
   pi.on('session_start', async (_event, ctx) => {
     // Set theme immediately on startup
     const dark = await isDarkMode()
     currentTheme = dark ? 'dark' : 'light'
     applyTheme(ctx, currentTheme)
-
-    if (ctx.hasUI) {
-      ctx.ui.setStatus('theme-switcher', `theme: ${currentTheme}`)
-    }
+    updateStatus(ctx)
 
     // Poll for changes
     intervalId = setInterval(async () => {
@@ -76,17 +85,28 @@ export default function (pi: ExtensionAPI) {
         if (newTheme !== currentTheme) {
           currentTheme = newTheme
           applyTheme(ctx, newTheme)
-
-          if (ctx.hasUI) {
-            ctx.ui.setStatus('theme-switcher', `theme: ${currentTheme}`)
-            ctx.ui.notify(`Switched to ${currentTheme} theme`, 'info')
-          }
+          updateStatus(ctx)
+          ctx.ui.notify(`Switched to ${currentTheme} theme`, 'info')
         }
       }
       catch {
         // Silently ignore errors during polling
       }
     }, POLL_INTERVAL_MS)
+  })
+
+  pi.registerCommand('theme', {
+    description: 'Show current theme status',
+    handler: async (_args, ctx) => {
+      const dark = await isDarkMode()
+      const osMode = dark ? 'dark' : 'light'
+      const lines = [
+        `OS appearance: ${osMode}`,
+        `Active theme:   ${currentTheme ?? 'unknown'}`,
+        `Persisted:      no (in-memory only)`,
+      ]
+      ctx.ui.notify(lines.join('\n'), 'info')
+    },
   })
 
   pi.on('session_shutdown', () => {
