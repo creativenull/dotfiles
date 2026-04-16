@@ -16,14 +16,14 @@
     ]
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.0"
+    "@modelcontextprotocol/sdk": "^1.29.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.0.0",
+    "@antfu/eslint-config": "^4.19.0",
     "@mariozechner/pi-coding-agent": "^0.66.1",
     "@sinclair/typebox": "^0.34.49",
     "@types/node": "^25.6.0",
-    "eslint": "^9.0.0",
-    "typescript": "^5.0.0"
+    "eslint": "^9.39.4",
+    "typescript": "^5.9.3"
   }
 }
