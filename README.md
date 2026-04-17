@@ -27,3 +27,5 @@
 - [goose](https://block.github.io/goose) - [Source](./config/goose)
 - [opencode](https://github.com/anomalyco/opencode) - [Source](./config/opencode)
 - [pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) - [Source](./pi)
+  - mcp - [Source](./pi/agent/extensions/mcp)
+  - theme-switcher - [Source](./pi/agent/extensions/theme-switcher)
