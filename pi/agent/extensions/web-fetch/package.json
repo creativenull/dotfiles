@@ -1,0 +1,26 @@
+{
+  "name": "@creativenull/pi-web-fetch-tool",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web fetch tool for Pi coding agent - fetch and parse web content",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.19.0",
+    "@mariozechner/pi-coding-agent": "^0.66.1",
+    "@sinclair/typebox": "^0.34.49",
+    "@types/node": "^25.6.0",
+    "eslint": "^9.39.4",
+    "typescript": "^5.9.3"
+  }
+}
