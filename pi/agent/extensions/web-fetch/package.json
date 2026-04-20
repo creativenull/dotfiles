@@ -1,0 +1,32 @@
+{
+  "name": "@creativenull/pi-web-fetch",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web fetch tool for Pi coding agent — intelligently parses HTML, JSON, and plain text responses",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "dependencies": {
+    "node-html-parser": "^7.0.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^8.2.0",
+    "@mariozechner/pi-coding-agent": "^0.67.68",
+    "@sinclair/typebox": "^0.34.49",
+    "@types/node": "^25.6.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-format": "^2.0.1",
+    "jiti": "^2.6.1",
+    "typescript": "^5.9.3"
+  }
+}
