@@ -22,7 +22,6 @@
 
 ## AI configurations
 
-- [claude-code](https://github.com/anthropics/claude-code) - [Source](./claude)
 - [codex](https://github.com/openai/codex) - [Source](./codex)
 - [goose](https://block.github.io/goose) - [Source](./config/goose)
 - [opencode](https://github.com/anomalyco/opencode) - [Source](./config/opencode)
