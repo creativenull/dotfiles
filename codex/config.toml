@@ -11,3 +11,6 @@ personality = "pragmatic"
 view_image_tool = true
 undo = true
 smart_approvals = true
+
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
