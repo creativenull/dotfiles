@@ -1,9 +1,0 @@
-{
-  "model": "opusplan",
-  "cleanupPeriodDays": 7,
-  "includeCoAuthoredBy": true,
-  "statusLine": {
-    "type": "command",
-    "command": "~/dotfiles/claude/statusline.ts"
-  }
-}
