@@ -34,10 +34,6 @@ ln -sv ~/dotfiles/config/zellij ~/.config/
 
 # AI
 # ---
-rm -fv ~/.claude/settings.json
-mkdir -pv ~/.claude
-ln -sv ~/dotfiles/claude/settings.json ~/.claude/settings.json
-
 rm -fv ~/.codex/config.toml
 mkdir -pv ~/.codex
 ln -sv ~/dotfiles/codex/config.toml ~/.codex/config.toml
@@ -45,9 +41,8 @@ ln -sv ~/dotfiles/codex/config.toml ~/.codex/config.toml
 rm -rfv ~/.config/goose
 ln -sv ~/dotfiles/config/goose ~/.config/
 
-rm -rfv ~/.config/opencode
-mkdir -pv ~/.config/opencode
-ln -sv ~/dotfiles/config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
+rm -rf ~/.pi
+ln -sv ~/dotfiles/pi ~/.pi
 
 # ---
 # For macOS only
