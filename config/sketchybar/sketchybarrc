@@ -21,29 +21,38 @@ sketchybar --add event theme_change AppleInterfaceThemeChangedNotification
 # For a full list of all available item properties see:
 # https://felixkratz.github.io/SketchyBar/config/items
 
-theme=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+# Source colors first
+source "$CONFIG_DIR/colors.sh"
 
-theme_background_color=0xfff5f5f5
-theme_text_color=0xff171717
-theme_highlight_color=0xff171717
-theme_border_color=0xfff5f5f5
-theme_border_width=1
-theme_spaces_text_color=0xfff5f5f5
-theme_spaces_background_color=0xff075985
-theme_spaces_text_highlight_color=0xff171717
-theme_spaces_background_highlight_color=0xfff5f5f5
-theme_height=25
+# Detect current macOS theme (defaults to Light if not set)
+theme=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
 
 if [ "$theme" = "Dark" ]; then
-    theme_background_color=0xff404040
-	theme_text_color=0xfff5f5f5
-	theme_highlight_color=0xff075985
-	theme_border_color=0x00000000
-	theme_border_width=0
-	theme_spaces_text_color=0xfff5f5f5
-	theme_spaces_background_color=0xff404040
-	theme_spaces_text_highlight_color=0xfff5f5f5
-	theme_spaces_background_highlight_color=0xff0284c7
+    theme_background_color=$DARK_BG_COLOR
+    theme_text_color=$DARK_TEXT_COLOR
+    theme_highlight_color=$DARK_HIGHLIGHT_COLOR
+    theme_border_color=$DARK_BORDER_COLOR
+    theme_border_width=$DARK_BORDER_WIDTH
+    theme_spaces_text_color=$DARK_SPACE_TEXT_COLOR
+    theme_spaces_background_color=$DARK_SPACE_BG_COLOR
+    theme_spaces_text_highlight_color=$DARK_SPACE_TEXT_HIGHLIGHT_COLOR
+    theme_spaces_background_highlight_color=$DARK_SPACE_BG_HIGHLIGHT_COLOR
+    theme_clock_bg_color=$DARK_CLOCK_BG_COLOR
+    theme_clock_text_color=$DARK_CLOCK_TEXT_COLOR
+    theme_height=$DARK_THEME_HEIGHT
+else
+    theme_background_color=$LIGHT_BG_COLOR
+    theme_text_color=$LIGHT_TEXT_COLOR
+    theme_highlight_color=$LIGHT_HIGHLIGHT_COLOR
+    theme_border_color=$LIGHT_BORDER_COLOR
+    theme_border_width=$LIGHT_BORDER_WIDTH
+    theme_spaces_text_color=$LIGHT_SPACE_TEXT_COLOR
+    theme_spaces_background_color=$LIGHT_SPACE_BG_COLOR
+    theme_spaces_text_highlight_color=$LIGHT_SPACE_TEXT_HIGHLIGHT_COLOR
+    theme_spaces_background_highlight_color=$LIGHT_SPACE_BG_HIGHLIGHT_COLOR
+    theme_clock_bg_color=$LIGHT_CLOCK_BG_COLOR
+    theme_clock_text_color=$LIGHT_CLOCK_TEXT_COLOR
+    theme_height=$LIGHT_THEME_HEIGHT
 fi
 
 default=(
@@ -59,9 +68,10 @@ default=(
 sketchybar --default "${default[@]}"
 
 #### THEME CHANGE ####
-sketchybar --add item theme left \
-	--set theme drawing=off script="$PLUGIN_DIR/theme_switcher.sh"
-	--subscribe theme system_woke theme_change
+# Add a hidden item that triggers reload when theme changes
+sketchybar --add item theme_switcher left \
+	--set theme_switcher drawing=off script="$PLUGIN_DIR/theme_switcher.sh" \
+	--subscribe theme_switcher system_woke theme_change
 
 ##### Adding Mission Control Space Indicators #####
 # Let's add some mission control spaces:
@@ -139,10 +149,10 @@ clock_item=(
     update_freq=1
 	script="$PLUGIN_DIR/clock.sh"
 	icon.drawing=off
-	label.color=0xfff5f5f5
+	label.color="$theme_clock_text_color"
 	label.padding_left=15
 	label.padding_right=15
-	background.color=0xff075985
+	background.color="$theme_clock_bg_color"
 	background.corner_radius=8
 	background.height=${theme_height}
 	background.border_color="$theme_border_color"
