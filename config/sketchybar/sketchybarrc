@@ -39,6 +39,8 @@ if [ "$theme" = "Dark" ]; then
     theme_spaces_background_highlight_color=$DARK_SPACE_BG_HIGHLIGHT_COLOR
     theme_clock_bg_color=$DARK_CLOCK_BG_COLOR
     theme_clock_text_color=$DARK_CLOCK_TEXT_COLOR
+	theme_clock_border_color=$DARK_CLOCK_BORDER_COLOR
+	theme_clock_border_width=$DARK_CLOCK_BORDER_WIDTH
     theme_height=$DARK_THEME_HEIGHT
 else
     theme_background_color=$LIGHT_BG_COLOR
@@ -52,6 +54,8 @@ else
     theme_spaces_background_highlight_color=$LIGHT_SPACE_BG_HIGHLIGHT_COLOR
     theme_clock_bg_color=$LIGHT_CLOCK_BG_COLOR
     theme_clock_text_color=$LIGHT_CLOCK_TEXT_COLOR
+    theme_clock_border_color=$LIGHT_CLOCK_BORDER_COLOR
+    theme_clock_border_width=$LIGHT_CLOCK_BORDER_WIDTH
     theme_height=$LIGHT_THEME_HEIGHT
 fi
 
@@ -155,8 +159,8 @@ clock_item=(
 	background.color="$theme_clock_bg_color"
 	background.corner_radius=8
 	background.height=${theme_height}
-	background.border_color="$theme_border_color"
-	background.border_width="$theme_border_width"
+	background.border_color="$theme_clock_border_color"
+	background.border_width="$theme_clock_border_width"
 )
 sketchybar --add item clock right \
 	--set clock "${clock_item[@]}"

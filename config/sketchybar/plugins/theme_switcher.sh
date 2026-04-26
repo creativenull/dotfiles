@@ -17,6 +17,8 @@ if [ "$SENDER" = "theme_change" ] || [ "$SENDER" = "system_woke" ]; then
     HIGHLIGHT_COLOR=$DARK_HIGHLIGHT_COLOR
     BORDER_COLOR=$DARK_BORDER_COLOR
     BORDER_WIDTH=$DARK_BORDER_WIDTH
+	CLOCK_BORDER_COLOR=$DARK_CLOCK_BORDER_COLOR
+    CLOCK_BORDER_WIDTH=$DARK_CLOCK_BORDER_WIDTH
     SPACE_TEXT_COLOR=$DARK_SPACE_TEXT_COLOR
     SPACE_BG_COLOR=$DARK_SPACE_BG_COLOR
     SPACE_TEXT_HIGHLIGHT_COLOR=$DARK_SPACE_TEXT_HIGHLIGHT_COLOR
@@ -31,6 +33,8 @@ if [ "$SENDER" = "theme_change" ] || [ "$SENDER" = "system_woke" ]; then
     HIGHLIGHT_COLOR=$LIGHT_HIGHLIGHT_COLOR
     BORDER_COLOR=$LIGHT_BORDER_COLOR
     BORDER_WIDTH=$LIGHT_BORDER_WIDTH
+    CLOCK_BORDER_COLOR=$LIGHT_CLOCK_BORDER_COLOR
+    CLOCK_BORDER_WIDTH=$LIGHT_CLOCK_BORDER_WIDTH
     SPACE_TEXT_COLOR=$LIGHT_SPACE_TEXT_COLOR
     SPACE_BG_COLOR=$LIGHT_SPACE_BG_COLOR
     SPACE_TEXT_HIGHLIGHT_COLOR=$LIGHT_SPACE_TEXT_HIGHLIGHT_COLOR
@@ -43,7 +47,7 @@ if [ "$SENDER" = "theme_change" ] || [ "$SENDER" = "system_woke" ]; then
 
   # Update colors dynamically without full reload to prevent flashing
   sketchybar --set front_app label.color="$TEXT_COLOR" background.color="$BG_COLOR" \
-    --set clock label.color="$CLOCK_TEXT_COLOR" background.color="$CLOCK_BG_COLOR" background.border_color="$BORDER_COLOR" background.border_width="$BORDER_WIDTH" \
+    --set clock label.color="$CLOCK_TEXT_COLOR" background.color="$CLOCK_BG_COLOR" background.border_color="$CLOCK_BORDER_COLOR" background.border_width="$CLOCK_BORDER_WIDTH" \
     --set battery icon.color="$ITEM_ICON_COLOR" label.color="$ITEM_LABEL_COLOR" background.color="$BG_COLOR" \
     --set volume icon.color="$ITEM_ICON_COLOR" label.color="$ITEM_LABEL_COLOR" background.color="$BG_COLOR" \
     --set wifi icon.color="$ITEM_ICON_COLOR" background.color="$BG_COLOR" \
