@@ -16,7 +16,7 @@ import { htmlToText } from './html-parser.js'
 import { formatJson, formatResponse, formatText } from './response-formatter.js'
 
 const DEFAULT_TIMEOUT = 15_000
-const MAX_BODY_BYTES = 100_000 // max raw body we'll accept before processing
+const MAX_BODY_BYTES = 5_000_000 // generous raw limit — parsed output is capped by maxBytes/head
 const DEFAULT_MAX_BYTES_OUTPUT = DEFAULT_MAX_BYTES // LLM-facing cap after processing
 
 /**
@@ -211,6 +211,50 @@ function getStatusText(status: number): string {
 }
 
 /**
+ * Fetch llms.txt for a given domain.
+ * Tries /llms.txt first, then /.well-known/llms.txt.
+ */
+async function fetchLlmsTxt(url: string, signal: AbortSignal): Promise<{ text: string, found: boolean, llmsTxtUrl: string }> {
+  let origin: string
+  try {
+    origin = new URL(url).origin
+  }
+  catch {
+    throw new Error(`Invalid URL: ${url}`)
+  }
+
+  const paths = [`${origin}/llms.txt`, `${origin}/.well-known/llms.txt`]
+
+  for (const path of paths) {
+    try {
+      const response = await fetch(path, {
+        signal,
+        headers: { Accept: 'text/plain,text/markdown,*/*' },
+        redirect: 'follow',
+      })
+
+      if (response.ok) {
+        const text = await response.text()
+        return {
+          text: text.trim() || `[llms.txt found at ${path} but is empty]`,
+          found: true,
+          llmsTxtUrl: path,
+        }
+      }
+    }
+    catch {
+      // Try next path
+    }
+  }
+
+  return {
+    text: `No llms.txt found for ${origin}. Tried:\n  ${paths.join('\n  ')}`,
+    found: false,
+    llmsTxtUrl: '',
+  }
+}
+
+/**
  * Register the web_fetch tool with the Pi extension API.
  */
 export function registerWebFetchTool(pi: ExtensionAPI): void {
@@ -226,6 +270,7 @@ export function registerWebFetchTool(pi: ExtensionAPI): void {
       'The response is automatically parsed — HTML becomes plain text, JSON is pretty-printed.',
       'Use the head parameter (e.g., head=3000) to limit output from large pages.',
       'Set raw=true to include response headers and metadata in the output.',
+      'Set llms_txt=true to read the domain\'s llms.txt file instead of the URL itself.',
       'For POST/PUT requests, provide method, headers, and body as needed.',
     ],
     parameters: Type.Object({
@@ -261,6 +306,11 @@ export function registerWebFetchTool(pi: ExtensionAPI): void {
           description: 'Include full response metadata (status, headers)',
         }),
       ),
+      llms_txt: Type.Optional(
+        Type.Boolean({
+          description: 'Read llms.txt for the domain instead of the URL itself. Tries /llms.txt then /.well-known/llms.txt',
+        }),
+      ),
     }),
 
     async execute(_toolCallId, params, signal, onUpdate, _ctx) {
@@ -270,6 +320,19 @@ export function registerWebFetchTool(pi: ExtensionAPI): void {
       })
 
       try {
+        // Handle llms.txt mode
+        if (params.llms_txt) {
+          const result = await fetchLlmsTxt(params.url, signal!)
+          return {
+            content: [{ type: 'text', text: result.text }],
+            details: {
+              url: params.url,
+              found: result.found,
+              llms_txt_url: result.llmsTxtUrl,
+            } as Record<string, unknown>,
+          }
+        }
+
         const response = await performFetch(params, signal!)
 
         // If raw mode is off and response is OK, keep output minimal
