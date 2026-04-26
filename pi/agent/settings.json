@@ -1,6 +1,6 @@
 {
   "defaultProvider": "openrouter",
-  "defaultModel": "moonshotai/kimi-k2.6",
+  "defaultModel": "z-ai/glm-5-turbo",
   "defaultThinkingLevel": "medium",
   "thinkingBudgets": {
     "minimal": 1024,
