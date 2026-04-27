@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.2.0",
-    "@mariozechner/pi-coding-agent": "^0.70.2",
+    "@mariozechner/pi-coding-agent": "^0.70.5",
     "@types/node": "^25.6.0",
     "eslint": "^10.2.1",
     "eslint-plugin-format": "^2.0.1",
