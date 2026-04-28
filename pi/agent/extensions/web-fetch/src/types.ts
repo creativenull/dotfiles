@@ -2,97 +2,96 @@
  * Type definitions for the web-fetch extension
  */
 
-/** Parsed fetch response */
-export interface FetchResponse {
-  /** HTTP status code */
-  status: number
-  /** HTTP status text */
-  statusText: string
-  /** Normalised lowercase response headers */
-  headers: Record<string, string>
-  /** Processed body text (HTML converted to plain text, JSON formatted) */
-  body: string
-  /** Raw content type from the response */
-  contentType: string
-  /** Whether the body was truncated */
-  truncated: boolean
-  /** Total bytes of the raw body before processing */
-  totalBytes: number
+// ============================================================================
+// Web Fetch Types
+// ============================================================================
+
+/** Fetch result */
+export interface FetchResult {
+  content: string
+  metadata: FetchMetadata
 }
 
-/** Tool input parameters */
-export interface WebFetchParams {
-  /** URL to fetch */
+/** Fetch metadata */
+export interface FetchMetadata {
   url: string
-  /** HTTP method (default: GET) */
-  method?: string
-  /** JSON object of headers to send */
-  headers?: Record<string, string>
-  /** Request body (for POST/PUT/PATCH) */
-  body?: string
-  /** Maximum response body size in bytes (default: 50_000) */
+  source: 'llms-txt' | 'html' | 'raw' | 'jina-reader'
+  status?: number
+  contentType?: string
+  truncated?: boolean
+  totalBytes?: number
+  linkCount?: number
+}
+
+/** Fetch options */
+export interface FetchOptions {
+  url: string
   maxBytes?: number
-  /** Request timeout in seconds (default: 15) */
   timeout?: number
-  /** Return only the first N characters of the body (default: none) */
   head?: number
-  /** Whether to include raw response metadata (default: false) */
-  raw?: boolean
-  /** Try to read llms.txt for the domain instead of the URL itself */
-  llms_txt?: boolean
 }
 
-/** Search tool parameters */
-export interface WebSearchParams {
-  /** Search query */
+// ============================================================================
+// Web Search Types
+// ============================================================================
+
+/** Search result */
+export interface SearchResult {
+  title: string
+  url: string
+  snippet?: string
+  score?: number
+  source: string
+}
+
+/** Search options */
+export interface SearchOptions {
   query: string
-  /** Source to search (default: all) */
-  source?: 'stackoverflow' | 'github' | 'all'
-  /** GitHub search type, only used when source is github (default: repositories) */
-  github_type?: 'repositories' | 'code' | 'issues'
-  /** Max results per source (default: 5, max: 10) */
   limit?: number
+  source?: string // 'jina', 'duckduckgo', etc.
 }
 
-/** StackOverflow question from API */
-export interface SOQuestion {
-  question_id: number
+// ============================================================================
+// LLMs.txt Types
+// ============================================================================
+
+/** Document link */
+export interface DocLink {
   title: string
-  link: string
-  score: number
-  answer_count: number
-  is_answered: boolean
-  tags: string[]
-  view_count: number
-  creation_date: number
+  url: string
+  description?: string
+  section?: string
 }
 
-/** GitHub repository from API */
-export interface GHRepo {
-  full_name: string
-  description: string | null
-  html_url: string
-  stargazers_count: number
-  language: string | null
-  forks_count: number
-  updated_at: string
-}
-
-/** GitHub issue from API */
-export interface GHIssue {
+/** Parsed llms.txt */
+export interface LlmsDocument {
   title: string
-  html_url: string
-  state: string
-  number: number
-  body: string | null
-  created_at: string
-  user: { login: string }
+  description: string
+  links: DocLink[]
 }
 
-/** GitHub code result from API */
-export interface GHCodeItem {
+// ============================================================================
+// Documentation Site Types
+// ============================================================================
+
+/** Docs site config */
+export interface DocsSite {
   name: string
-  path: string
-  html_url: string
-  repository: { full_name: string, description: string | null }
+  baseUrl: string
+  llmsPath?: string
+  docsPath?: string
+  selector?: string
+}
+
+// ============================================================================
+// Jina AI Types
+// ============================================================================
+
+/** Jina Reader response */
+export interface JinaReaderResponse {
+  title: string
+  url: string
+  content: string
+  description?: string
+  publishedTime?: string
 }
