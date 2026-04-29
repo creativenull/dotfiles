@@ -23,7 +23,6 @@
 ## AI configurations
 
 - [codex](https://github.com/openai/codex) - [Source](./codex)
-- [goose](https://block.github.io/goose) - [Source](./config/goose)
 - [pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) - [Source](./pi)
   - mcp - [Source](./pi/agent/extensions/mcp)
   - theme-switcher - [Source](./pi/agent/extensions/theme-switcher)

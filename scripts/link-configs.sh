@@ -38,9 +38,6 @@ rm -fv ~/.codex/config.toml
 mkdir -pv ~/.codex
 ln -sv ~/dotfiles/codex/config.toml ~/.codex/config.toml
 
-rm -rfv ~/.config/goose
-ln -sv ~/dotfiles/config/goose ~/.config/
-
 rm -rf ~/.pi
 ln -sv ~/dotfiles/pi ~/.pi
 
