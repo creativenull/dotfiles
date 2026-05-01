@@ -21,7 +21,7 @@
     "brightWhite": 15
   },
   "colors": {
-    "accent": "blue",
+    "accent": "yellow",
     "border": "brightBlack",
     "borderAccent": "blue",
     "borderMuted": "brightBlack",
@@ -34,9 +34,9 @@
     "text": "fg",
     "thinkingText": "brightBlack",
 
-    "selectedBg": "brightBlack",
-    "userMessageBg": "black",
-    "userMessageText": "magenta",
+    "selectedBg": "#d0d0e8",
+    "userMessageBg": "#c0c0c0",
+    "userMessageText": "black",
     "customMessageBg": "",
     "customMessageText": "",
     "customMessageLabel": "magenta",
