@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "openrouter": {
+      "models": [
+        {
+          "id": "deepseek/deepseek-v4-flash",
+          "reasoning": true,
+          "compat": {
+            "requiresReasoningContentOnAssistantMessages": true,
+            "thinkingFormat": "deepseek"
+          }
+        }
+      ]
+    }
+  }
+}
