@@ -15,5 +15,6 @@
     "--",
     "npm"
   ],
+  "hideThinkingBlock": true,
   "lastChangelogVersion": "0.74.0"
 }
