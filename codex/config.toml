@@ -1,5 +1,5 @@
-model = "gpt-5.4-mini"
-model_reasoning_effort = "medium"
+model = "gpt-5.3-codex"
+model_reasoning_effort = "high"
 
 file_opener = "none"
 hide_agent_reasoning = true
@@ -14,9 +14,3 @@ smart_approvals = true
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-remaining"]
-
-[projects."/Users/creativenull/dotfiles"]
-trust_level = "trusted"
-
-[tui.model_availability_nux]
-"gpt-5.5" = 4
