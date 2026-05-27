@@ -21,6 +21,3 @@ vim.keymap.set("n", "gf", function()
     vim.cmd(string.format("edit %s", filename))
   end
 end, { silent = true })
-
-vim.opt_local.iskeyword:append("-")
-vim.opt_local.iskeyword:append(".")
