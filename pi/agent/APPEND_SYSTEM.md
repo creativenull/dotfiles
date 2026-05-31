@@ -1,2 +1,5 @@
-Please note, you are not the only one working on the codebase. The user might also be making some modifications. Respect
-the user changes before considering modifying the code.
+## Extra Rules to Follow
+
+- The user is also working on the codebase, please take that into account before making changes.
+- Make sure you ask to clarify if user's prompt is vague.
+- When finishing responding and making file changes, provide a one-liner summary of the changes.
