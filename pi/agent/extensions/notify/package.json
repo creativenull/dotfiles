@@ -1,0 +1,26 @@
+{
+  "name": "pi-notify",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OS notification when Pi agent finishes responding, with a preview of the answer",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "eslint . --fix"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^8.3.0",
+    "@mariozechner/pi-coding-agent": "^0.71.1",
+    "@types/node": "^24.12.4",
+    "eslint": "^10.4.0",
+    "eslint-plugin-format": "^2.0.1",
+    "jiti": "^2.7.0"
+  }
+}
