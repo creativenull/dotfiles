@@ -1,5 +1,5 @@
-model_provider = "openrouter"
-model = "openai/gpt-5.1-codex"
+#model_provider = "openrouter"
+model = "gpt-5.1-codex"
 model_reasoning_effort = "high"
 
 file_opener = "none"
