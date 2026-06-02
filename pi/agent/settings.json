@@ -3,10 +3,10 @@
   "defaultModel": "z-ai/glm-5.1",
   "defaultThinkingLevel": "medium",
   "thinkingBudgets": {
-    "minimal": 2048,
-    "low": 8192,
-    "medium": 20480,
-    "high": 65536
+    "minimal": 1024,
+    "low": 4096,
+    "medium": 10240,
+    "high": 32768
   },
   "npmCommand": [
     "mise",
