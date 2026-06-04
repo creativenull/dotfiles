@@ -27,3 +27,4 @@
   - mcp - [Source](./pi/agent/extensions/mcp)
   - theme-switcher - [Source](./pi/agent/extensions/theme-switcher)
   - web-fetch - [Source](./pi/agent/extensions/web-fetch)
+  - notify - [Source](./pi/agent/extensions/notify)
