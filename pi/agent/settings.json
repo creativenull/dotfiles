@@ -1,7 +1,7 @@
 {
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.1",
-  "defaultThinkingLevel": "medium",
+  "defaultModel": "qwen/qwen3.7-plus",
+  "defaultThinkingLevel": "high",
   "thinkingBudgets": {
     "minimal": 1024,
     "low": 4096,
@@ -16,5 +16,5 @@
     "npm"
   ],
   "hideThinkingBlock": true,
-  "lastChangelogVersion": "0.78.0"
+  "lastChangelogVersion": "0.78.1"
 }
