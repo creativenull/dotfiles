@@ -2,4 +2,4 @@
 
 - The user is also working on the codebase, please take that into account before making changes.
 - Make sure you ask to clarify if user's prompt is vague.
-- When finishing responding and making file changes, provide a one-liner summary of the changes.
+- After making file changes, provide a summary of the changes made.
