@@ -2,3 +2,4 @@ auth.json
 sessions/
 bin/
 git/
+trust.json
