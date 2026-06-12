@@ -1,104 +1,174 @@
-tap "caarlos0/tap"
-tap "felixkratz/formulae"
-tap "mongodb/brew"
-tap "shivammathur/php"
-tap "surrealdb/tap"
+tap "felixkratz/formulae", trusted: true
+tap "shivammathur/php", trusted: true
+# GNU internationalization (i18n) and localization (l10n) library
 brew "gettext"
+# Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
+# Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# Regular expressions library
 brew "oniguruma"
+# Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Parser generator
 brew "bison"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Freely available high-quality data compressor
 brew "bzip2"
+# Vector graphics library with cross-device output support
 brew "cairo"
+# Cross-platform make
 brew "cmake"
+# Dependency manager for Cocoa projects
 brew "cocoapods"
+# Apjanke's fork of the classic cowsay project
 brew "cowsay"
+# Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# Library for command-line editing
 brew "readline"
+# Good-lookin' diffs with diff-highlight and more
 brew "diff-so-fancy"
+# Lightweight DNS forwarder and DHCP server
 brew "dnsmasq"
-brew "docker"
+# Pack, ship and run any application as a lightweight container
+brew "docker", link: false
+# NaCl networking and cryptography library
 brew "libsodium"
+# General purpose Language Server
 brew "efm-langserver"
+# Modern, maintained replacement for ls
 brew "eza"
+# Simple, fast and user-friendly alternative to find
 brew "fd"
+# Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
+# Command-line fuzzy finder written in Go
 brew "fzf"
+# Graphics library to dynamically manipulate images
 brew "gd"
+# GitHub command-line tool
 brew "gh"
+# Distributed revision control system
 brew "git"
+# GNU multiple precision arithmetic library
 brew "gmp"
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
+# Package compiler and linker metadata toolkit
 brew "pkgconf"
+# Generate introspection data for GObject libraries
 brew "gobject-introspection"
+# Toolkit for creating graphical user interfaces
 brew "gtk+3"
+# Library for communicating with USB and Bluetooth HID devices
 brew "hidapi"
+# Improved top (interactive process viewer)
 brew "htop"
+# User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# C/C++ and Java libraries for Unicode and globalization
 brew "icu4c@76"
+# Generic library support script
 brew "libtool"
+# Tools and libraries to manipulate images in select formats
 brew "imagemagick"
+# Lightweight and flexible command-line JSON processor
 brew "jq"
+# BSD-style licensed readline alternative
 brew "libedit"
+# Conversion library
 brew "libiconv"
+# C library for reading, creating, and modifying zip archives
 brew "libzip"
+# Language Server for the Lua language
 brew "lua-language-server"
+# Package manager for the Lua programming language
 brew "luarocks"
+# GUI for vim, made for macOS
 brew "macvim"
+# Polyglot runtime manager (asdf rust clone)
 brew "mise"
+# Deep clean and optimize your Mac
 brew "mole"
+# Simple text editor with clickable interface
+brew "msedit"
+# Open source relational database management system
 brew "mysql@8.0", restart_service: :changed
+# Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# HTTP(S) server and reverse proxy, and IMAP/POP3 proxy server
 brew "nginx"
+# Small build system for use with gyp or CMake
 brew "ninja"
+# Port scanning utility for large networks
 brew "nmap"
+# Development kit for the Java programming language
 brew "openjdk@17"
+# Swiss-army knife of markup format conversion
 brew "pandoc"
+# Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
+# Generate C-based recognizers from regular expressions
 brew "re2c"
+# Persistent key-value database, with built-in net interface
 brew "redis", restart_service: :changed
+# Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Display and control your Android device
 brew "scrcpy"
+# Cross-shell prompt for astronauts
 brew "starship"
+# Opinionated Lua code formatter
 brew "stylua"
+# Granddaddy of HTML tools, with support for modern standards
 brew "tidy-html5"
+# Terminal multiplexer
 brew "tmux"
+# Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Parser generator tool
 brew "tree-sitter-cli"
+# Watch files and take action when they change
 brew "watchman"
+# Internet file retriever
 brew "wget"
+# Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
+# General-purpose lossless data-compression library
 brew "zlib"
+# Custom macOS statusbar with shell plugin, interaction and graph support
 brew "felixkratz/formulae/sketchybar"
+# OpenAI's coding agent that runs in your terminal
 cask "codex"
+# Database version management tool
 cask "dbngin"
+# Voice and text chat software
 cask "discord"
 cask "font-blex-mono-nerd-font"
 cask "font-fira-code-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-ubuntu-mono-nerd-font"
+# Client for the Google Drive storage service
 cask "google-drive"
+# Desktop automation application
 cask "hammerspoon"
+# Open-source video transcoder
 cask "handbrake-app"
+# Password manager app
 cask "keepassxc"
+# Replacement for Docker Desktop
 cask "orbstack"
+# Team communication and collaboration software
 cask "slack"
+# Music streaming service
 cask "spotify"
+# Open-source code editor
 cask "visual-studio-code"
+# Multimedia player
 cask "vlc"
+# Connect to Windows
 cask "windows-app"
-vscode "antfu.theme-vitesse"
-vscode "dbaeumer.vscode-eslint"
-vscode "esbenp.prettier-vscode"
-vscode "github.copilot-chat"
-vscode "ms-azuretools.vscode-containers"
-vscode "ms-azuretools.vscode-docker"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vsliveshare.vsliveshare"
-vscode "sanderronde.phpstan-vscode"
-vscode "stuart.unique-window-colors"
-vscode "vscodevim.vim"
-vscode "vue.volar"
