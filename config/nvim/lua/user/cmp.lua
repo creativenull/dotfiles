@@ -46,9 +46,9 @@ function M.setup()
     --   keyword_length = 2,
     -- },
 
-    performance = {
-      max_view_entries = 10,
-    },
+    -- performance = {
+    --   max_view_entries = 10,
+    -- },
 
     preselect = cmp.PreselectMode.None,
   })
