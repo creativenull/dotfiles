@@ -9,10 +9,10 @@
  * (Passing a string name to setTheme() would persist to settings.json.)
  */
 
-import type { ExtensionAPI, ExtensionContext } from '@mariozechner/pi-coding-agent'
+import type { ExtensionAPI, ExtensionContext } from '@earendil-works/pi-coding-agent'
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
-import { Text } from '@mariozechner/pi-tui'
+import { Text } from '@earendil-works/pi-tui'
 
 const execAsync = promisify(exec)
 
@@ -50,11 +50,12 @@ export default function (pi: ExtensionAPI) {
   function applyTheme(ctx: ExtensionContext, name: 'dark' | 'light') {
     const theme = ctx.ui.getTheme(name)
     if (theme) {
-      ctx.ui.setTheme(theme)
+      ctx.ui.setTheme(theme) // In-memory only
     }
     else {
-      // Fallback: if custom theme not found, use string (will persist)
-      ctx.ui.setTheme(name)
+      // Fallback: built-in themes are guaranteed to exist, but if not,
+      // we notify instead of falling back to string (which would persist to disk)
+      ctx.ui.notify(`Theme "${name}" not found.`, 'error')
     }
   }
 
