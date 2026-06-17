@@ -45,8 +45,8 @@ function expandConfigEnv(config: McpServerConfig): McpServerConfig {
 export async function loadMcpConfig(projectDir?: string): Promise<McpConfig> {
   const configs: McpConfig[] = []
 
-  // Global config: ~/.pi/agent/mcp.json
-  const globalPath = join(homedir(), '.pi', 'agent', 'mcp.json')
+  // Global config: ~/.agents/mcp.json
+  const globalPath = join(homedir(), '.agents', 'mcp.json')
   if (existsSync(globalPath)) {
     try {
       const content = await readFile(globalPath, 'utf-8')
@@ -57,9 +57,9 @@ export async function loadMcpConfig(projectDir?: string): Promise<McpConfig> {
     }
   }
 
-  // Project config: <project>/.pi/mcp.json
+  // Project config: <project>/.agents/mcp.json
   if (projectDir) {
-    const projectPath = join(projectDir, '.pi', 'mcp.json')
+    const projectPath = join(projectDir, '.agents', 'mcp.json')
     if (existsSync(projectPath)) {
       try {
         const content = await readFile(projectPath, 'utf-8')

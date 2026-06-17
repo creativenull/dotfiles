@@ -143,7 +143,7 @@ export default function mcpExtension(pi: ExtensionAPI): void {
 
       if (clients.length === 0) {
         ctx.ui.notify(
-          'No MCP servers configured. Create ~/.pi/agent/mcp.json',
+          'No MCP servers configured. Create ~/.agents/mcp.json',
           'info',
         )
         return
