@@ -20,10 +20,14 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
-    "@earendil-works/pi-coding-agent": "^0.78.1",
+    "@earendil-works/pi-coding-agent": "^0.79.6",
     "@sinclair/typebox": "^0.34.49",
     "@types/node": "^25.9.1",
     "eslint": "^10.4.1",
     "typescript": "^6.0.3"
+  },
+  "allowScripts": {
+    "protobufjs@7.5.9": true,
+    "@google/genai@1.52.0": true
   }
 }
