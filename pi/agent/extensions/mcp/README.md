@@ -22,8 +22,8 @@ The extension uses a Claude-compatible schema with `mcpServers` as the top-level
 
 | Location | Purpose |
 |----------|---------|
-| `~/.pi/agent/mcp.json` | Global configuration (applies to all projects) |
-| `.pi/mcp.json` | Project-local configuration (overrides global) |
+| `~/.agents/mcp.json` | Global configuration (applies to all projects) |
+| `.agents/mcp.json` | Project-local configuration (overrides global) |
 
 ### Configuration Schema
 
@@ -42,7 +42,7 @@ interface McpConfig {
 
 ### Example Configurations
 
-**Filesystem Server** (`~/.pi/agent/mcp.json`)
+**Filesystem Server** (`~/.agents/mcp.json`)
 
 ```json
 {
@@ -55,7 +55,7 @@ interface McpConfig {
 }
 ```
 
-**Laravel Boost** (`.pi/mcp.json` in project root)
+**Laravel Boost** (`.agents/mcp.json` in project root)
 
 ```json
 {
