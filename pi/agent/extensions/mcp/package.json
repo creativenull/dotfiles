@@ -20,10 +20,10 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
-    "@earendil-works/pi-coding-agent": "^0.79.6",
+    "@earendil-works/pi-coding-agent": "^0.79.9",
     "@sinclair/typebox": "^0.34.49",
-    "@types/node": "^25.9.1",
-    "eslint": "^10.4.1",
+    "@types/node": "^25.9.4",
+    "eslint": "^10.5.0",
     "typescript": "^6.0.3"
   },
   "allowScripts": {
