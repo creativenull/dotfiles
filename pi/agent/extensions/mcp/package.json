@@ -27,7 +27,7 @@
     "typescript": "^6.0.3"
   },
   "allowScripts": {
-    "protobufjs@7.5.9": true,
-    "@google/genai@1.52.0": true
+    "@google/genai@1.52.0": true,
+    "protobufjs@7.6.4": true
   }
 }

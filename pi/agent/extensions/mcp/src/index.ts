@@ -4,7 +4,7 @@
  * See README.md for documentation.
  */
 
-import type { ExtensionAPI, ExtensionContext } from '@mariozechner/pi-coding-agent'
+import type { ExtensionAPI, ExtensionContext } from '@earendil-works/pi-coding-agent'
 import type { McpSessionState } from './types.js'
 import { McpClientManager } from './client.js'
 import { loadMcpConfig, validateServerConfig } from './config.js'

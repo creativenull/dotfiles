@@ -2,7 +2,7 @@
  * Tool discovery and registration for MCP tools
  */
 
-import type { ExtensionAPI } from '@mariozechner/pi-coding-agent'
+import type { ExtensionAPI } from '@earendil-works/pi-coding-agent'
 import type { TSchema } from '@sinclair/typebox'
 import type { McpClient, McpClientManager } from './client'
 import type { McpToolDefinition } from './types'
