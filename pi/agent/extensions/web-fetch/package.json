@@ -17,17 +17,17 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.0.0",
-    "@earendil-works/pi-coding-agent": "^0.79.9",
+    "@antfu/eslint-config": "^9.1.0",
+    "@earendil-works/pi-coding-agent": "^0.80.3",
     "@sinclair/typebox": "^0.34.49",
-    "@types/node": "^25.9.4",
-    "eslint": "^10.5.0",
+    "@types/node": "^26.1.0",
+    "eslint": "^10.6.0",
     "eslint-plugin-format": "^2.0.1",
     "jiti": "^2.7.0",
     "typescript": "^6.0.3"
   },
   "allowScripts": {
-    "protobufjs@7.5.9": true,
-    "@google/genai@1.52.0": true
+    "@google/genai@1.52.0": true,
+    "protobufjs@7.6.4": true
   }
 }
