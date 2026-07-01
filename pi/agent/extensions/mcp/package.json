@@ -19,11 +19,11 @@
     "@modelcontextprotocol/sdk": "^1.29.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.0.0",
-    "@earendil-works/pi-coding-agent": "^0.79.9",
+    "@antfu/eslint-config": "^9.1.0",
+    "@earendil-works/pi-coding-agent": "^0.80.3",
     "@sinclair/typebox": "^0.34.49",
-    "@types/node": "^25.9.4",
-    "eslint": "^10.5.0",
+    "@types/node": "^26.1.0",
+    "eslint": "^10.6.0",
     "typescript": "^6.0.3"
   },
   "allowScripts": {
