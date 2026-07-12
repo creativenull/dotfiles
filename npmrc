@@ -1,6 +1,9 @@
 audit=false
-registry=https://registry.npmjs.org/
-fetch-timeout=10000
-loglevel=warn
-strict-ssl=true
+engine-strict=false
+fund=false
+loglevel=error
+maxsockets=50
+min-release-age=7
+prefer-offline=true
 progress=false
+save=false
