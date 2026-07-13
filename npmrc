@@ -6,4 +6,3 @@ maxsockets=50
 min-release-age=7
 prefer-offline=true
 progress=false
-save=false
