@@ -1,8 +1,4 @@
-audit=false
-engine-strict=false
-fund=false
 loglevel=error
 maxsockets=50
 min-release-age=7
 prefer-offline=true
-progress=false
