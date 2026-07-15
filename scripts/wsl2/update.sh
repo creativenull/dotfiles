@@ -2,7 +2,11 @@
 set -euo pipefail
 
 printf "=> Updating packages\n"
-sudo apt update && sudo apt upgrade --yes
+
+read -p "=> Run apt upgrade? (y/N) " apt_choice
+if [ "$apt_choice" = "y" ]; then
+	sudo apt update && sudo apt upgrade --yes
+fi
 
 printf "=> Checking for outdated brew packages\n"
 brew update && brew outdated
