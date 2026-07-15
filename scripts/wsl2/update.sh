@@ -13,9 +13,9 @@ if [ "$brew_choice" = "y" ]; then
 fi
 
 printf "=> Checking for outdated npm packages\n"
-npm outdated --global || true
+npm outdated --global --prefer-online --min-release-age=0 || true
 
 read -p "=> Run npm update? (y/N) " npm_choice
 if [ "$npm_choice" = "y" ]; then
-    npm update --global
+    npm update --global --prefer-online --min-release-age=0
 fi
