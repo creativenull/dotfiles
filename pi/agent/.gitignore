@@ -3,3 +3,4 @@ sessions/
 bin/
 git/
 trust.json
+models-store.json
