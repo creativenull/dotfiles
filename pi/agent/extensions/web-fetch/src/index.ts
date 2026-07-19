@@ -16,13 +16,13 @@
  * - Get a free API key at https://jina.ai/reader/
  */
 
-import type { ExtensionAPI } from '@mariozechner/pi-coding-agent'
+import type { ExtensionAPI } from '@earendil-works/pi-coding-agent'
 import type { WebFetchInput } from './types'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-import { Type } from '@sinclair/typebox'
+import { Type } from 'typebox'
 import { fetchUrl, getApiKey, testApiKey } from './client'
 
 /** Max chars to return directly to LLM. Above this, content goes to temp file. */

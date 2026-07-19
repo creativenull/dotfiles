@@ -11,7 +11,7 @@
  * Configuration: ~/.pi/agent/notify.json
  */
 
-import type { AgentEndEvent, ExtensionAPI } from '@mariozechner/pi-coding-agent'
+import type { AgentEndEvent, ExtensionAPI } from '@earendil-works/pi-coding-agent'
 import { loadConfig } from './config'
 import { notify } from './notifier'
 import { extractPreview } from './preview'

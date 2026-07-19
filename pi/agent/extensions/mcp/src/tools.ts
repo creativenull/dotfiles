@@ -3,10 +3,10 @@
  */
 
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent'
-import type { TSchema } from '@sinclair/typebox'
+import type { TSchema } from 'typebox'
 import type { McpClient, McpClientManager } from './client'
 import type { McpToolDefinition } from './types'
-import { Type } from '@sinclair/typebox'
+import { Type } from 'typebox'
 
 /**
  * Generate a Pi-compatible tool name from MCP server and tool names.
