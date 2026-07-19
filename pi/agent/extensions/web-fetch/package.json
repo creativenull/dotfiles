@@ -24,7 +24,7 @@
     "eslint": "^10.6.0",
     "eslint-plugin-format": "^2.0.1",
     "jiti": "^2.7.0",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "allowScripts": {
     "@google/genai@1.52.0": true,
