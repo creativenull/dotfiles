@@ -24,7 +24,7 @@
     "@sinclair/typebox": "^0.34.49",
     "@types/node": "^26.1.0",
     "eslint": "^10.6.0",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.0"
   },
   "allowScripts": {
     "@google/genai@1.52.0": true,
