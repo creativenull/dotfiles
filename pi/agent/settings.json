@@ -1,6 +1,6 @@
 {
   "defaultProvider": "openrouter",
-  "defaultModel": "qwen/qwen3.7-plus",
+  "defaultModel": "z-ai/glm-5.1",
   "defaultThinkingLevel": "medium",
   "thinkingBudgets": {
     "minimal": 1024,
