@@ -1,6 +1,6 @@
 {
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.1",
+  "defaultModel": "poolside/laguna-s-2.1",
   "defaultThinkingLevel": "medium",
   "thinkingBudgets": {
     "minimal": 1024,
