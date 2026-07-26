@@ -10,10 +10,11 @@ done
 
 printf "=> Updating packages\n"
 
+echo "sudo apt update && sudo apt upgrade --yes"
 if [ $yes -eq 1 ]; then
 	sudo apt update && sudo apt upgrade --yes
 else
-	read -p "=> Run apt update and upgrade? (y/N) " apt_choice
+	read -p "=> Run the above apt command? (y/N) " apt_choice
 	if [ "$apt_choice" = "y" ]; then
 		sudo apt update && sudo apt upgrade --yes
 	fi
@@ -22,10 +23,11 @@ fi
 printf "=> Checking for outdated brew packages\n"
 brew update && brew outdated
 
+echo "brew upgrade --yes"
 if [ $yes -eq 1 ]; then
 	brew upgrade --yes
 else
-	read -p "=> Run brew upgrade? (y/N) " brew_choice
+	read -p "=> Run the above brew command? (y/N) " brew_choice
 	if [ "$brew_choice" = "y" ]; then
 		brew upgrade --yes
 	fi
@@ -34,10 +36,11 @@ fi
 printf "=> Checking for outdated npm packages\n"
 npm outdated --global --prefer-online --min-release-age=0 || true
 
+echo "npm update --global --prefer-online --min-release-age=0"
 if [ $yes -eq 1 ]; then
 	npm update --global --prefer-online --min-release-age=0
 else
-	read -p "=> Run npm update? (y/N) " npm_choice
+	read -p "=> Run the above npm command? (y/N) " npm_choice
 	if [ "$npm_choice" = "y" ]; then
 		npm update --global --prefer-online --min-release-age=0
 	fi
