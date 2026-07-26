@@ -3,7 +3,7 @@ set -euo pipefail
 
 printf "=> Updating packages\n"
 
-read -p "=> Run apt upgrade? (y/N) " apt_choice
+read -p "=> Run apt update and upgrade? (y/N) " apt_choice
 if [ "$apt_choice" = "y" ]; then
 	sudo apt update && sudo apt upgrade --yes
 fi
