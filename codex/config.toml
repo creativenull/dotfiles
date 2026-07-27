@@ -20,3 +20,8 @@ status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-rem
 
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"
+
+[model_providers.openrouter]
+name = "openrouter"
+base_url = "https://openrouter.ai/api/v1"
+env_key = "OPENROUTER_API_KEY"
