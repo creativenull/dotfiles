@@ -16,22 +16,17 @@
     ]
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "@modelcontextprotocol/sdk": "^1.30.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.2.0",
-    "@earendil-works/pi-coding-agent": "^0.82.1",
-    "@types/node": "^26.1.1",
+    "@earendil-works/pi-coding-agent": "^0.83.0",
+    "@types/node": "^26.1.2",
     "eslint": "^10.8.0",
     "typescript": "^7.0.2"
   },
   "allowScripts": {
     "@google/genai@1.52.0": true,
     "protobufjs@7.6.4": true
-  },
-  "overrides": {
-    "@modelcontextprotocol/sdk": {
-      "@hono/node-server": "^2.0.11"
-    }
   }
 }
