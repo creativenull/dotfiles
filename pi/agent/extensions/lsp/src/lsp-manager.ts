@@ -5,63 +5,63 @@ import { pathToFileURL } from 'node:url'
 import { LspClient } from './lsp-client.js'
 
 const EXTENSION_TO_LANGUAGE: Record<string, string> = {
-  '.ts': 'typescript',
-  '.tsx': 'typescriptreact',
-  '.js': 'javascript',
-  '.jsx': 'javascriptreact',
-  '.mjs': 'javascript',
-  '.cjs': 'javascript',
-  '.mts': 'typescript',
-  '.cts': 'typescript',
-  '.py': 'python',
-  '.pyi': 'python',
-  '.lua': 'lua',
-  '.rs': 'rust',
-  '.go': 'go',
-  '.java': 'java',
-  '.kt': 'kotlin',
-  '.kts': 'kotlin',
-  '.scala': 'scala',
-  '.c': 'c',
-  '.h': 'c',
-  '.cpp': 'cpp',
-  '.hpp': 'cpp',
-  '.cc': 'cpp',
-  '.cs': 'csharp',
-  '.rb': 'ruby',
-  '.php': 'php',
-  '.swift': 'swift',
-  '.dart': 'dart',
-  '.sh': 'shellscript',
-  '.bash': 'shellscript',
-  '.zsh': 'shellscript',
-  '.html': 'html',
-  '.htm': 'html',
-  '.css': 'css',
-  '.scss': 'scss',
-  '.less': 'less',
-  '.vue': 'vue',
-  '.svelte': 'svelte',
-  '.json': 'json',
-  '.jsonc': 'json',
-  '.yaml': 'yaml',
-  '.yml': 'yaml',
-  '.toml': 'toml',
-  '.xml': 'xml',
-  '.md': 'markdown',
-  '.sql': 'sql',
-  '.r': 'r',
-  '.R': 'r',
-  '.ex': 'elixir',
-  '.exs': 'elixir',
-  '.erl': 'erlang',
-  '.hrl': 'erlang',
-  '.hs': 'haskell',
-  '.lhs': 'haskell',
-  '.clj': 'clojure',
-  '.cljs': 'clojure',
-  '.zig': 'zig',
-  '.nim': 'nim',
+  ts: 'typescript',
+  tsx: 'typescriptreact',
+  js: 'javascript',
+  jsx: 'javascriptreact',
+  mjs: 'javascript',
+  cjs: 'javascript',
+  mts: 'typescript',
+  cts: 'typescript',
+  py: 'python',
+  pyi: 'python',
+  lua: 'lua',
+  rs: 'rust',
+  go: 'go',
+  java: 'java',
+  kt: 'kotlin',
+  kts: 'kotlin',
+  scala: 'scala',
+  c: 'c',
+  h: 'c',
+  cpp: 'cpp',
+  hpp: 'cpp',
+  cc: 'cpp',
+  cs: 'csharp',
+  rb: 'ruby',
+  php: 'php',
+  swift: 'swift',
+  dart: 'dart',
+  sh: 'shellscript',
+  bash: 'shellscript',
+  zsh: 'shellscript',
+  html: 'html',
+  htm: 'html',
+  css: 'css',
+  scss: 'scss',
+  less: 'less',
+  vue: 'vue',
+  svelte: 'svelte',
+  json: 'json',
+  jsonc: 'json',
+  yaml: 'yaml',
+  yml: 'yaml',
+  toml: 'toml',
+  xml: 'xml',
+  md: 'markdown',
+  sql: 'sql',
+  r: 'r',
+  R: 'r',
+  ex: 'elixir',
+  exs: 'elixir',
+  erl: 'erlang',
+  hrl: 'erlang',
+  hs: 'haskell',
+  lhs: 'haskell',
+  clj: 'clojure',
+  cljs: 'clojure',
+  zig: 'zig',
+  nim: 'nim',
 }
 
 export class LspManager {
@@ -85,7 +85,7 @@ export class LspManager {
         this.servers.set(name, client)
 
         for (const ext of config.extensions) {
-          const normalized = ext.startsWith('.') ? ext : `.${ext}`
+          const normalized = ext.startsWith('.') ? ext.slice(1) : ext
           this.extensionMap.set(normalized, name)
         }
 
@@ -110,7 +110,7 @@ export class LspManager {
   }
 
   findServerForFile(filePath: string): LspClient | undefined {
-    const ext = extname(filePath)
+    const ext = extname(filePath).slice(1)
     const serverName = this.extensionMap.get(ext)
     if (!serverName)
       return undefined
@@ -120,10 +120,10 @@ export class LspManager {
   async getDiagnosticsForFile(filePath: string): Promise<DiagnosticsResult | DiagnosticsError> {
     const server = this.findServerForFile(filePath)
     if (!server) {
-      const ext = extname(filePath)
+      const ext = extname(filePath).slice(1)
       return {
         error: ext
-          ? `No LSP server configured for '${ext}' files`
+          ? `No LSP server configured for '.${ext}' files`
           : `No LSP server configured for this file type`,
       }
     }
@@ -135,7 +135,7 @@ export class LspManager {
     try {
       const text = await readFile(filePath, 'utf-8')
       const uri = pathToFileURL(filePath).href
-      const ext = extname(filePath)
+      const ext = extname(filePath).slice(1)
       const languageId = EXTENSION_TO_LANGUAGE[ext] ?? 'plaintext'
 
       if (!server.isFileOpen(uri)) {

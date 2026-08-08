@@ -44,7 +44,7 @@ The extension reads `lspServers` from the same config files used by the MCP exte
     "<name>": {
       "command": "server-command", // Required: LSP server executable
       "args": ["--stdio"], // Optional: arguments
-      "extensions": [".ts", ".js"], // Required: file extensions this server handles
+      "extensions": ["ts", "js"], // Required: file extensions this server handles
       "env": {}, // Optional: environment variables
       "initializationOptions": {}, // Optional: passed to LSP initialize
       "disabled": false // Optional: set true to skip this server
@@ -68,22 +68,22 @@ The extension reads `lspServers` from the same config files used by the MCP exte
     "typescript": {
       "command": "typescript-language-server",
       "args": ["--stdio"],
-      "extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
+      "extensions": ["ts", "tsx", "js", "jsx", "mjs", "cjs"]
     },
     "python": {
       "command": "pyright-langserver",
       "args": ["--stdio"],
-      "extensions": [".py", ".pyi"]
+      "extensions": ["py", "pyi"]
     },
     "lua": {
       "command": "lua-language-server",
       "args": [],
-      "extensions": [".lua"]
+      "extensions": ["lua"]
     },
     "rust": {
       "command": "rust-analyzer",
       "args": [],
-      "extensions": [".rs"]
+      "extensions": ["rs"]
     }
   }
 }
@@ -99,7 +99,7 @@ Configuration values support `${VAR_NAME}` syntax:
     "custom": {
       "command": "${HOME}/.local/bin/my-lsp-server",
       "args": ["--stdio"],
-      "extensions": [".custom"]
+      "extensions": ["custom"]
     }
   }
 }
@@ -158,24 +158,24 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 
 | Extension | Language ID |
 |-----------|-------------|
-| `.ts`, `.tsx` | typescript, typescriptreact |
-| `.js`, `.jsx`, `.mjs`, `.cjs` | javascript, javascriptreact |
-| `.py`, `.pyi` | python |
-| `.rs` | rust |
-| `.go` | go |
-| `.lua` | lua |
-| `.java` | java |
-| `.kt`, `.kts` | kotlin |
-| `.c`, `.h` | c |
-| `.cpp`, `.hpp`, `.cc` | cpp |
-| `.cs` | csharp |
-| `.rb` | ruby |
-| `.php` | php |
-| `.swift` | swift |
-| `.dart` | dart |
-| `.vue` | vue |
-| `.svelte` | svelte |
-| `.html`, `.css`, `.scss` | html, css, scss |
+| `ts`, `tsx` | typescript, typescriptreact |
+| `js`, `jsx`, `mjs`, `cjs` | javascript, javascriptreact |
+| `py`, `pyi` | python |
+| `rs` | rust |
+| `go` | go |
+| `lua` | lua |
+| `java` | java |
+| `kt`, `kts` | kotlin |
+| `c`, `h` | c |
+| `cpp`, `hpp`, `cc` | cpp |
+| `cs` | csharp |
+| `rb` | ruby |
+| `php` | php |
+| `swift` | swift |
+| `dart` | dart |
+| `vue` | vue |
+| `svelte` | svelte |
+| `html`, `css`, `scss` | html, css, scss |
 
 ## Popular LSP Servers
 
