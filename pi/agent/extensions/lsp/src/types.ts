@@ -9,8 +9,7 @@ export interface LspServerConfig {
   disabled?: boolean
 }
 
-export interface AgentsConfig {
-  mcpServers?: Record<string, unknown>
+export interface LspConfig {
   lspServers?: Record<string, LspServerConfig>
 }
 

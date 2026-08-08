@@ -7,7 +7,7 @@ Connect to LSP (Language Server Protocol) servers and expose real compiler/linte
 - **Real diagnostics** — Get actual compiler errors, type errors, and lint warnings from LSP servers
 - **Multi-language** — Run multiple LSP servers simultaneously (TypeScript, Python, Rust, Lua, etc.)
 - **Standard protocol** — Uses `vscode-languageserver-protocol` for LSP communication
-- **Shared config** — Uses the same `~/.agents/mcp.json` config file as the MCP extension
+- **Separate config** — Uses its own `~/.agents/lsp.json` config file
 - **Automatic routing** — Files are automatically routed to the correct LSP server by extension
 
 ## Installation
@@ -24,22 +24,19 @@ Connect to LSP (Language Server Protocol) servers and expose real compiler/linte
 
 ## Configuration
 
-The extension reads `lspServers` from the same config files used by the MCP extension.
+The extension reads `lspServers` from a dedicated `lsp.json` config file.
 
 ### Configuration Locations
 
 | Location | Purpose |
 |----------|---------|
-| `~/.agents/mcp.json` | Global configuration (applies to all projects) |
-| `.agents/mcp.json` | Project-local configuration (overrides global) |
+| `~/.agents/lsp.json` | Global configuration (applies to all projects) |
+| `.agents/lsp.json` | Project-local configuration (overrides global) |
 
 ### Configuration Schema
 
 ```jsonc
 {
-  "mcpServers": {
-    // ... existing MCP config (unchanged)
-  },
   "lspServers": {
     "<name>": {
       "command": "server-command", // Required: LSP server executable
@@ -56,14 +53,8 @@ The extension reads `lspServers` from the same config files used by the MCP exte
 ### Example Configuration
 
 ```jsonc
-// ~/.agents/mcp.json
+// ~/.agents/lsp.json
 {
-  "mcpServers": {
-    "filesystem": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/user/projects"]
-    }
-  },
   "lspServers": {
     "typescript": {
       "command": "typescript-language-server",
@@ -195,7 +186,7 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 
 ## How It Works
 
-1. **Startup**: Reads `lspServers` from `~/.agents/mcp.json`, spawns each server as a child process
+1. **Startup**: Reads `lspServers` from `~/.agents/lsp.json`, spawns each server as a child process
 2. **Initialize**: Performs the LSP `initialize` handshake using `vscode-languageserver-protocol`
 3. **On tool call**: When `lsp_diagnostics` is called:
    - Finds the right server by file extension
@@ -216,7 +207,7 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 ### No diagnostics returned
 
 1. Run `/lsp` to check server status
-2. Ensure the file extension is in the server's `extensions` list
+2. Ensure the file extension is in the server's `extensions` list in `~/.agents/lsp.json`
 3. Some servers need time to index the workspace — try again after a few seconds
 
 ### View server status

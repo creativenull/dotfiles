@@ -1,6 +1,6 @@
 import type { ExtensionAPI, ExtensionContext } from '@earendil-works/pi-coding-agent'
 import type { LspSessionState } from './types.js'
-import { loadAgentsConfig, validateLspServerConfig } from './config.js'
+import { loadLspConfig, validateLspServerConfig } from './config.js'
 import { LspManager } from './lsp-manager.js'
 import { registerLspTools } from './tools.js'
 
@@ -27,7 +27,7 @@ export default function lspExtension(pi: ExtensionAPI): void {
   }
 
   async function startAll(ctx: ExtensionContext): Promise<{ started: string[], failed: string[], skipped: string[] }> {
-    const config = await loadAgentsConfig(ctx.cwd)
+    const config = await loadLspConfig(ctx.cwd)
     const lspConfigs = config.lspServers ?? {}
     const failed: string[] = []
     const skipped: string[] = []

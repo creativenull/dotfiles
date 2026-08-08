@@ -1,4 +1,4 @@
-import type { AgentsConfig, LspServerConfig } from './types.js'
+import type { LspConfig, LspServerConfig } from './types.js'
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
@@ -31,34 +31,34 @@ function expandConfigEnv(config: LspServerConfig): LspServerConfig {
   return expanded
 }
 
-export async function loadAgentsConfig(projectDir?: string): Promise<AgentsConfig> {
-  const configs: AgentsConfig[] = []
+export async function loadLspConfig(projectDir?: string): Promise<LspConfig> {
+  const configs: LspConfig[] = []
 
-  const globalPath = join(homedir(), '.agents', 'mcp.json')
+  const globalPath = join(homedir(), '.agents', 'lsp.json')
   if (existsSync(globalPath)) {
     try {
       const content = await readFile(globalPath, 'utf-8')
       configs.push(JSON.parse(content))
     }
     catch (error) {
-      console.error(`Failed to load global agents config: ${error}`)
+      console.error(`Failed to load global LSP config: ${error}`)
     }
   }
 
   if (projectDir) {
-    const projectPath = join(projectDir, '.agents', 'mcp.json')
+    const projectPath = join(projectDir, '.agents', 'lsp.json')
     if (existsSync(projectPath)) {
       try {
         const content = await readFile(projectPath, 'utf-8')
         configs.push(JSON.parse(content))
       }
       catch (error) {
-        console.error(`Failed to load project agents config: ${error}`)
+        console.error(`Failed to load project LSP config: ${error}`)
       }
     }
   }
 
-  const merged: AgentsConfig = { lspServers: {} }
+  const merged: LspConfig = { lspServers: {} }
   for (const config of configs) {
     for (const [name, serverConfig] of Object.entries(config.lspServers ?? {})) {
       merged.lspServers![name] = expandConfigEnv(serverConfig)
