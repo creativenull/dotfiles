@@ -11,7 +11,7 @@ function formatDiagnostics(result: DiagnosticsResult): string {
   const fileName = basename(filePath)
 
   if (diagnostics.length === 0) {
-    return `No diagnostics for ${fileName} (${server}) ✓`
+    return `No diagnostics for ${fileName} (${server})`
   }
 
   const lines: string[] = []
@@ -27,12 +27,11 @@ function formatDiagnostics(result: DiagnosticsResult): string {
   })
 
   for (const diag of sorted) {
-    const icon = severityIcon(diag.severity)
     const label = severityLabel(diag.severity)
     const line = diag.range.start.line + 1
     const col = diag.range.start.character + 1
     const code = formatCode(diag)
-    lines.push(`  ${icon} ${label} (${line}:${col}): ${diag.message}${code}`)
+    lines.push(`  ${label} (${line}:${col}): ${diag.message}${code}`)
   }
 
   lines.push('')
@@ -55,15 +54,6 @@ function formatDiagnostics(result: DiagnosticsResult): string {
   lines.push(`${diagnostics.length} diagnostic${diagnostics.length !== 1 ? 's' : ''}: ${parts.join(', ')}`)
 
   return lines.join('\n')
-}
-
-function severityIcon(severity?: DiagnosticSeverity): string {
-  switch (severity) {
-    case DiagnosticSeverity.Error: return '✗'
-    case DiagnosticSeverity.Warning: return '⚠'
-    case DiagnosticSeverity.Information: return 'ℹ'
-    default: return '💡'
-  }
 }
 
 function severityLabel(severity?: DiagnosticSeverity): string {

@@ -114,16 +114,16 @@ lsp_diagnostics({ filePath: "src/app.ts" })
 ```
 Diagnostics for app.ts (typescript):
 
-  ✗ Error (12:5): Property 'foo' does not exist on type 'Bar'. [ts(2339)]
-  ⚠ Warning (45:1): 'unused' is declared but its value is never read. [ts(6133)]
-  💡 Hint (78:10): Did you mean 'toString'? [ts(2551)]
+  Error (12:5): Property 'foo' does not exist on type 'Bar'. [ts(2339)]
+  Warning (45:1): 'unused' is declared but its value is never read. [ts(6133)]
+  Hint (78:10): Did you mean 'toString'? [ts(2551)]
 
 3 diagnostics: 1 error, 1 warning, 1 hint
 ```
 
 **Without diagnostics:**
 ```
-No diagnostics for app.ts (typescript) ✓
+No diagnostics for app.ts (typescript)
 ```
 
 ### Typical Workflow
@@ -217,10 +217,10 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 ```
 
 This shows all servers and their status:
-- ✓ Ready
-- … Starting
-- ✗ Error (with error message)
-- ○ Shutdown
+- ready
+- starting
+- error (with error message)
+- shutdown
 
 ## Development
 

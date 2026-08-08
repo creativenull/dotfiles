@@ -69,13 +69,13 @@ export default function lspExtension(pi: ExtensionAPI): void {
 
     if (result.started.length > 0) {
       lines.push(
-        `${ctx.ui.theme.fg('success', '✓ LSP servers ready:')} ${result.started.join(', ')}`,
+        `${ctx.ui.theme.fg('success', 'LSP servers ready:')} ${result.started.join(', ')}`,
       )
     }
 
     if (result.failed.length > 0) {
       lines.push(
-        `${ctx.ui.theme.fg('error', '✗ LSP servers failed:')} ${result.failed.join(', ')}`,
+        `${ctx.ui.theme.fg('error', 'LSP servers failed:')} ${result.failed.join(', ')}`,
       )
     }
 
@@ -110,7 +110,7 @@ export default function lspExtension(pi: ExtensionAPI): void {
 
       if (servers.length === 0) {
         ctx.ui.notify(
-          'No LSP servers configured. Add "lspServers" to ~/.agents/mcp.json',
+          'No LSP servers configured. Add "lspServers" to ~/.agents/lsp.json',
           'info',
         )
         return
@@ -118,16 +118,8 @@ export default function lspExtension(pi: ExtensionAPI): void {
 
       const lines: string[] = ['LSP Servers:', '']
       for (const server of servers) {
-        const icon = server.status === 'ready'
-          ? '✓'
-          : server.status === 'starting'
-            ? '…'
-            : server.status === 'error'
-              ? '✗'
-              : '○'
-
         const extensions = server.config.extensions.join(', ')
-        lines.push(`  ${icon} ${server.name} (${server.status})`)
+        lines.push(`  ${server.name} (${server.status})`)
         lines.push(`    Extensions: ${extensions}`)
 
         if (server.error) {
