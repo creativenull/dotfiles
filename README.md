@@ -27,3 +27,4 @@
   - theme-switcher - [Source](./pi/agent/extensions/theme-switcher)
   - web-fetch - [Source](./pi/agent/extensions/web-fetch)
   - notify - [Source](./pi/agent/extensions/notify)
+  - lsp - [Source](./pi/agent/extensions/lsp)
