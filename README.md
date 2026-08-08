@@ -3,7 +3,6 @@
 - [git](https://git-scm.com/) - [Source](./config/git)
 - [hammerspoon](https://hammerspoon.org/) - [Source](./hammerspoon)
 - [kitty](https://sw.kovidgoyal.net/kitty/) - [Source](./config/kitty)
-- [lsd](https://github.com/Peltoche/lsd) - [Source](./config/lsd)
 - [neovim](https://neovim.io/) - [Source](./config/nvim)
 - [npm](https://docs.npmjs.com/cli/v11/using-npm/config) - [Source](./npmrc)
 - [starship](https://starship.rs/) - [Source](./config/starship.toml)
