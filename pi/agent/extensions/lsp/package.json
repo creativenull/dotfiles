@@ -1,0 +1,28 @@
+{
+  "name": "@creativenull/pi-lsp-tool",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LSP diagnostics integration for Pi coding agent",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "dependencies": {
+    "vscode-languageserver-protocol": "^3.18.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^9.3.0",
+    "@earendil-works/pi-coding-agent": "^0.84.0",
+    "@types/node": "^26.1.2",
+    "eslint": "^10.8.0",
+    "typescript": "^6.0.3"
+  }
+}
