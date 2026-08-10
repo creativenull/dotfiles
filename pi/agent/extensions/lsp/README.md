@@ -217,10 +217,10 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 ```
 
 This shows all servers and their status:
-- ready
-- starting
-- error (with error message)
-- shutdown
+- ✓ Ready
+- … Starting
+- ✗ Error (with error message)
+- ○ Shutdown
 
 ## Development
 
