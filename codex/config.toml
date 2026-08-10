@@ -1,4 +1,4 @@
-model = "gpt-5.4"
+model = "gpt-5.6-luna"
 model_reasoning_effort = "high"
 
 file_opener = "none"
@@ -17,9 +17,11 @@ status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-rem
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+"gpt-5.6-sol" = 2
 
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"
+"gpt-5.4" = "gpt-5.6-terra"
 
 [model_providers.openrouter]
 name = "openrouter"
