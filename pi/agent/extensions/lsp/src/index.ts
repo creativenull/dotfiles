@@ -11,19 +11,17 @@ export default function lspExtension(pi: ExtensionAPI): void {
 
   function updateStatus(ctx: ExtensionContext): void {
     const servers = manager.getAll()
-    const ready = servers.filter(s => s.status === 'ready').length
-    const total = servers.length
+    const ready = servers.filter(s => s.status === 'ready')
 
-    if (total === 0) {
+    if (ready.length === 0) {
       ctx.ui.setStatus(STATUS_ID, undefined)
       return
     }
 
-    const statusText = ready === total
-      ? `LSP: ${ready} server${ready !== 1 ? 's' : ''} ready`
-      : `LSP: ${ready}/${total} ready`
+    const names = ready.map(s => s.name).join(', ')
+    const statusText = `(LSP: ${names})`
 
-    ctx.ui.setStatus(STATUS_ID, ctx.ui.theme.fg('accent', statusText))
+    ctx.ui.setStatus(STATUS_ID, statusText)
   }
 
   async function startAll(ctx: ExtensionContext): Promise<{ started: string[], failed: string[], skipped: string[] }> {
@@ -69,13 +67,13 @@ export default function lspExtension(pi: ExtensionAPI): void {
 
     if (result.started.length > 0) {
       lines.push(
-        `${ctx.ui.theme.fg('success', '✓ LSP servers ready:')} ${result.started.join(', ')}`,
+        `${ctx.ui.theme.fg('success', '✓ LSP connected:')} ${result.started.join(', ')}`,
       )
     }
 
     if (result.failed.length > 0) {
       lines.push(
-        `${ctx.ui.theme.fg('error', '✗ LSP servers failed:')} ${result.failed.join(', ')}`,
+        `${ctx.ui.theme.fg('error', '✗ LSP failed:')} ${result.failed.join(', ')}`,
       )
     }
 

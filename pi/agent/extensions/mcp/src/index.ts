@@ -20,20 +20,17 @@ export default function mcpExtension(pi: ExtensionAPI): void {
    */
   function updateStatus(ctx: ExtensionContext): void {
     const clients = manager.getAll()
-    const connected = clients.filter(c => c.status === 'connected').length
-    const total = clients.length
+    const connected = clients.filter(c => c.status === 'connected')
 
-    if (total === 0) {
+    if (connected.length === 0) {
       ctx.ui.setStatus(STATUS_ID, undefined)
       return
     }
 
-    const statusText
-      = connected === total
-        ? `MCP: ${connected} server${connected !== 1 ? 's' : ''} connected`
-        : `MCP: ${connected}/${total} connected`
+    const names = connected.map(c => c.name).join(', ')
+    const statusText = `(MCP: ${names})`
 
-    ctx.ui.setStatus(STATUS_ID, ctx.ui.theme.fg('accent', statusText))
+    ctx.ui.setStatus(STATUS_ID, statusText)
   }
 
   /**
@@ -239,7 +236,7 @@ export default function mcpExtension(pi: ExtensionAPI): void {
 
       if (result.connected.length > 0) {
         ctx.ui.notify(
-          `MCP reloaded: connected to ${result.connected.join(', ')}`,
+          `MCP reloaded: ${result.connected.join(', ')}`,
           'info',
         )
       }
