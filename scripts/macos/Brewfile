@@ -1,4 +1,4 @@
-tap "felixkratz/formulae", trusted: true
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
 tap "shivammathur/php", trusted: true
 # GNU internationalization (i18n) and localization (l10n) library
 brew "gettext"
@@ -33,7 +33,7 @@ brew "diff-so-fancy"
 # Lightweight DNS forwarder and DHCP server
 brew "dnsmasq"
 # Pack, ship and run any application as a lightweight container
-brew "docker", link: false
+brew "docker"
 # NaCl networking and cryptography library
 brew "libsodium"
 # General purpose Language Server
@@ -80,6 +80,8 @@ brew "jq"
 brew "libedit"
 # Conversion library
 brew "libiconv"
+# Postgres C API library
+brew "libpq"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # Language Server for the Lua language
