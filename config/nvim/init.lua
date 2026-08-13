@@ -469,7 +469,6 @@ Plug("hrsh7th/cmp-nvim-lsp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 -- Plug("hrsh7th/cmp-nvim-lsp-signature-help")
--- Plug("quangnguyen30192/cmp-nvim-ultisnips")
 Plug("creativenull/cmp-ultisnips")
 
 -- Snippet Engine + Presets
@@ -489,7 +488,6 @@ Plug("gelguy/wilder.nvim", {
     vim.cmd("UpdateRemotePlugins")
   end,
 })
--- Plug("vim-fall/fall.vim")
 
 -- Git
 -- ---
