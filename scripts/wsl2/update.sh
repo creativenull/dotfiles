@@ -34,14 +34,14 @@ else
 fi
 
 printf "=> Checking for outdated npm packages\n"
-npm outdated --global --prefer-online --min-release-age=0 || true
+npm outdated --global || true
 
-echo "npm update --global --prefer-online --min-release-age=0"
+echo "npm update --global"
 if [ $yes -eq 1 ]; then
-	npm update --global --prefer-online --min-release-age=0
+	npm update --global
 else
 	read -p "=> Run the above npm command? (y/N) " npm_choice
 	if [ "$npm_choice" = "y" ]; then
-		npm update --global --prefer-online --min-release-age=0
+		npm update --global
 	fi
 fi
