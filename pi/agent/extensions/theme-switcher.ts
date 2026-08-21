@@ -66,7 +66,7 @@ export default function (pi: ExtensionAPI) {
   function updateStatus(ctx: ExtensionContext) {
     if (!ctx.hasUI)
       return
-    ctx.ui.setWidget('theme-switcher', (tui, theme) =>
+    ctx.ui.setWidget('theme-switcher', (_tui, theme) =>
       new Text(theme.fg('dim', `theme: ${currentTheme}`), 0, 0), { placement: 'belowEditor' })
   }
 
