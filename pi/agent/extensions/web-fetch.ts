@@ -17,13 +17,11 @@
  */
 
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent'
-import type { WebFetchInput } from './types'
+import { Type } from 'typebox'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-
-import { Type } from 'typebox'
-import { fetchUrl, getApiKey, testApiKey } from './client'
+import process from 'node:process'
 
 /** Max chars to return directly to LLM. Above this, content goes to temp file. */
 const DIRECT_CONTENT_LIMIT = 10000
@@ -31,6 +29,159 @@ const DIRECT_CONTENT_LIMIT = 10000
 /** Temp directory for large content files */
 let tempDir: string | null = null
 
+/**
+ * Types for Jina AI Reader API
+ */
+interface JinaReaderOptions {
+  /** The URL to fetch and parse */
+  url: string
+  /** Whether to return content as markdown (default) or HTML */
+  format?: 'markdown' | 'html'
+  /** Custom timeout in milliseconds */
+  timeout?: number
+  /** Maximum content length to return (in characters) */
+  maxContentLength?: number
+}
+
+interface JinaReaderResponse {
+  /** The parsed content (markdown or HTML) */
+  content: string
+  /** The final URL after any redirects */
+  url: string
+  /** HTTP status code */
+  status: number
+  /** Response headers */
+  headers: Record<string, string>
+  /** Whether the response was truncated */
+  truncated: boolean
+  /** Content type from the original response */
+  contentType?: string
+  /** Title extracted from the page (if available) */
+  title?: string
+}
+
+interface WebFetchInput {
+  url: string
+}
+
+const JINA_READER_BASE_URL = 'https://r.jina.ai'
+
+/**
+ * Get the API key from environment variable
+ */
+function getApiKey(): string | null {
+  return process.env.JINA_AI_READER_API_KEY ?? null
+}
+
+/**
+ * Check if the API key is configured
+ */
+function isConfigured(): boolean {
+  return getApiKey() !== null
+}
+
+/**
+ * Fetch and parse a URL using Jina AI Reader
+ */
+async function fetchUrl(options: JinaReaderOptions): Promise<JinaReaderResponse> {
+  const {
+    url,
+    format = 'markdown',
+    timeout = 30000,
+    maxContentLength = 50000,
+  } = options
+
+  const apiKey = getApiKey()
+  if (!apiKey) {
+    throw new Error('JINA_AI_READER_API_KEY is missing')
+  }
+
+  // Build the reader URL with the target URL
+  const readerUrl = `${JINA_READER_BASE_URL}/${url}`
+
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+
+  try {
+    const response = await fetch(readerUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Accept': format === 'html' ? 'text/html' : 'text/markdown',
+        'X-With-Generated-Alt': 'true', // Include generated alt text for images
+      },
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeoutId)
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error')
+      throw new Error(`Jina Reader API error (${response.status}): ${errorText}`)
+    }
+
+    const content = await response.text()
+    const finalUrl = response.headers.get('x-final-url') ?? url
+    const title = response.headers.get('x-title') ?? undefined
+    const contentType = response.headers.get('content-type') ?? undefined
+
+    // Extract headers we care about
+    const headers: Record<string, string> = {}
+    response.headers.forEach((value, key) => {
+      headers[key] = value
+    })
+
+    // Check if we need to truncate
+    const truncated = content.length > maxContentLength
+    const finalContent = truncated
+      ? `${content.slice(0, maxContentLength)}\n\n[...content truncated...]`
+      : content
+
+    return {
+      content: finalContent,
+      url: finalUrl,
+      status: response.status,
+      headers,
+      truncated,
+      contentType,
+      title: title ? decodeURIComponent(title) : undefined,
+    }
+  }
+  catch (error) {
+    clearTimeout(timeoutId)
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Request timed out after ${timeout}ms`)
+    }
+    throw error
+  }
+}
+
+/**
+ * Test the API key by making a simple request
+ */
+async function testApiKey(): Promise<boolean> {
+  if (!isConfigured()) {
+    return false
+  }
+
+  try {
+    // Use a simple, reliable URL for testing
+    await fetchUrl({
+      url: 'https://example.com',
+      timeout: 10000,
+      maxContentLength: 1000,
+    })
+    return true
+  }
+  catch {
+    return false
+  }
+}
+
+/**
+ * Get temp directory
+ */
 function getTempDir(): string {
   if (!tempDir) {
     tempDir = mkdtempSync(join(tmpdir(), 'pi-web-fetch-'))
@@ -38,6 +189,9 @@ function getTempDir(): string {
   return tempDir
 }
 
+/**
+ * Cleanup temp directory
+ */
 function cleanupTempDir(): void {
   if (tempDir) {
     try {
@@ -59,21 +213,12 @@ const WEB_FETCH_PARAMS = Type.Object({
   })),
 })
 
-/**
- * Validates that the JINA_AI_READER_API_KEY is present and non-empty.
- * Throws an error if validation fails.
- */
-function validateApiKey(): void {
+export default async function webFetchExtension(pi: ExtensionAPI) {
+  // Validate API key before extension loads
   const apiKey = getApiKey()
-
   if (!apiKey || apiKey.trim() === '') {
     throw new Error('JINA_AI_READER_API_KEY is missing')
   }
-}
-
-export default async function webFetchExtension(pi: ExtensionAPI) {
-  // Validate API key before extension loads
-  validateApiKey()
 
   // Track API key status
   let apiKeyValid: boolean | null = null
