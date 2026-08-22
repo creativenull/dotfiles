@@ -1,7 +1,7 @@
 {
   "defaultProvider": "openrouter",
   "defaultModel": "z-ai/glm-5.1",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "thinkingBudgets": {
     "minimal": 1024,
     "low": 4096,
