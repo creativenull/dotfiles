@@ -17,5 +17,12 @@
   ],
   "theme": "light",
   "hideThinkingBlock": false,
-  "lastChangelogVersion": "0.84.3"
+  "lastChangelogVersion": "0.84.3",
+  "enabledModels": [
+    "openrouter/openai/gpt-5.6-luna",
+    "openrouter/google/gemini-3.6-flash",
+    "openrouter/z-ai/glm-5.1",
+    "openrouter/z-ai/glm-5.2",
+    "openrouter/z-ai/glm-5.3-flash"
+  ]
 }
