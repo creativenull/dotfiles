@@ -19,6 +19,7 @@ import {
   DynamicBorder,
   isToolCallEventType,
 } from "@earendil-works/pi-coding-agent";
+import { notify } from "./notify.ts";
 import {
   Container,
   type SelectItem,
@@ -87,6 +88,8 @@ async function showPermissionDialog(
   title: string,
   description: string,
 ): Promise<PermissionResult> {
+  notify(`Permission required: ${title}`, description);
+
   const items: SelectItem[] = [
     {
       value: "allow",

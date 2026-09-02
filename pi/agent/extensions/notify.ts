@@ -62,7 +62,7 @@ function notifyOSC99(title: string, body: string): void {
   process.stdout.write(`\x1B]99;i=${id}:d=1:p=body;${body}\x1B\\`)
 }
 
-function notify(title: string, body: string): void {
+export function notify(title: string, body: string): void {
   if (process.env.KITTY_WINDOW_ID) {
     notifyOSC99(title, body)
   }
