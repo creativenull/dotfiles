@@ -16,126 +16,130 @@
  * - Get a free API key at https://jina.ai/reader/
  */
 
-import type { ExtensionAPI } from '@earendil-works/pi-coding-agent'
-import { Type } from 'typebox'
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import process from 'node:process'
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { Type } from "typebox";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import process from "node:process";
 
 /** Max chars to return directly to LLM. Above this, content goes to temp file. */
-const DIRECT_CONTENT_LIMIT = 10000
+const DIRECT_CONTENT_LIMIT = 10000;
 
 /** Temp directory for large content files */
-let tempDir: string | null = null
+let tempDir: string | null = null;
 
 /**
  * Types for Jina AI Reader API
  */
 interface JinaReaderOptions {
   /** The URL to fetch and parse */
-  url: string
+  url: string;
   /** Whether to return content as markdown (default) or HTML */
-  format?: 'markdown' | 'html'
+  format?: "markdown" | "html";
   /** Custom timeout in milliseconds */
-  timeout?: number
+  timeout?: number;
   /** Maximum content length to return (in characters) */
-  maxContentLength?: number
+  maxContentLength?: number;
 }
 
 interface JinaReaderResponse {
   /** The parsed content (markdown or HTML) */
-  content: string
+  content: string;
   /** The final URL after any redirects */
-  url: string
+  url: string;
   /** HTTP status code */
-  status: number
+  status: number;
   /** Response headers */
-  headers: Record<string, string>
+  headers: Record<string, string>;
   /** Whether the response was truncated */
-  truncated: boolean
+  truncated: boolean;
   /** Content type from the original response */
-  contentType?: string
+  contentType?: string;
   /** Title extracted from the page (if available) */
-  title?: string
+  title?: string;
 }
 
 interface WebFetchInput {
-  url: string
+  url: string;
 }
 
-const JINA_READER_BASE_URL = 'https://r.jina.ai'
+const JINA_READER_BASE_URL = "https://r.jina.ai";
 
 /**
  * Get the API key from environment variable
  */
 function getApiKey(): string | null {
-  return process.env.JINA_AI_READER_API_KEY ?? null
+  return process.env.JINA_AI_READER_API_KEY ?? null;
 }
 
 /**
  * Check if the API key is configured
  */
 function isConfigured(): boolean {
-  return getApiKey() !== null
+  return getApiKey() !== null;
 }
 
 /**
  * Fetch and parse a URL using Jina AI Reader
  */
-async function fetchUrl(options: JinaReaderOptions): Promise<JinaReaderResponse> {
+async function fetchUrl(
+  options: JinaReaderOptions,
+): Promise<JinaReaderResponse> {
   const {
     url,
-    format = 'markdown',
+    format = "markdown",
     timeout = 30000,
     maxContentLength = 50000,
-  } = options
+  } = options;
 
-  const apiKey = getApiKey()
+  const apiKey = getApiKey();
   if (!apiKey) {
-    throw new Error('JINA_AI_READER_API_KEY is missing')
+    throw new Error("JINA_AI_READER_API_KEY is missing");
   }
 
   // Build the reader URL with the target URL
-  const readerUrl = `${JINA_READER_BASE_URL}/${url}`
+  const readerUrl = `${JINA_READER_BASE_URL}/${url}`;
 
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), timeout)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   try {
     const response = await fetch(readerUrl, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Accept': format === 'html' ? 'text/html' : 'text/markdown',
-        'X-With-Generated-Alt': 'true', // Include generated alt text for images
+        Authorization: `Bearer ${apiKey}`,
+        Accept: format === "html" ? "text/html" : "text/markdown",
+        "X-With-Generated-Alt": "true", // Include generated alt text for images
       },
       signal: controller.signal,
-    })
+    });
 
-    clearTimeout(timeoutId)
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const errorText = await response.text().catch(() => 'Unknown error')
-      throw new Error(`Jina Reader API error (${response.status}): ${errorText}`)
+      const errorText = await response.text().catch(() => "Unknown error");
+      throw new Error(
+        `Jina Reader API error (${response.status}): ${errorText}`,
+      );
     }
 
-    const content = await response.text()
-    const finalUrl = response.headers.get('x-final-url') ?? url
-    const title = response.headers.get('x-title') ?? undefined
-    const contentType = response.headers.get('content-type') ?? undefined
+    const content = await response.text();
+    const finalUrl = response.headers.get("x-final-url") ?? url;
+    const title = response.headers.get("x-title") ?? undefined;
+    const contentType = response.headers.get("content-type") ?? undefined;
 
     // Extract headers we care about
-    const headers: Record<string, string> = {}
+    const headers: Record<string, string> = {};
     response.headers.forEach((value, key) => {
-      headers[key] = value
-    })
+      headers[key] = value;
+    });
 
     // Check if we need to truncate
-    const truncated = content.length > maxContentLength
+    const truncated = content.length > maxContentLength;
     const finalContent = truncated
       ? `${content.slice(0, maxContentLength)}\n\n[...content truncated...]`
-      : content
+      : content;
 
     return {
       content: finalContent,
@@ -145,15 +149,14 @@ async function fetchUrl(options: JinaReaderOptions): Promise<JinaReaderResponse>
       truncated,
       contentType,
       title: title ? decodeURIComponent(title) : undefined,
-    }
-  }
-  catch (error) {
-    clearTimeout(timeoutId)
+    };
+  } catch (error) {
+    clearTimeout(timeoutId);
 
-    if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error(`Request timed out after ${timeout}ms`)
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error(`Request timed out after ${timeout}ms`);
     }
-    throw error
+    throw error;
   }
 }
 
@@ -162,20 +165,19 @@ async function fetchUrl(options: JinaReaderOptions): Promise<JinaReaderResponse>
  */
 async function testApiKey(): Promise<boolean> {
   if (!isConfigured()) {
-    return false
+    return false;
   }
 
   try {
     // Use a simple, reliable URL for testing
     await fetchUrl({
-      url: 'https://example.com',
+      url: "https://example.com",
       timeout: 10000,
       maxContentLength: 1000,
-    })
-    return true
-  }
-  catch {
-    return false
+    });
+    return true;
+  } catch {
+    return false;
   }
 }
 
@@ -184,9 +186,9 @@ async function testApiKey(): Promise<boolean> {
  */
 function getTempDir(): string {
   if (!tempDir) {
-    tempDir = mkdtempSync(join(tmpdir(), 'pi-web-fetch-'))
+    tempDir = mkdtempSync(join(tmpdir(), "pi-web-fetch-"));
   }
-  return tempDir
+  return tempDir;
 }
 
 /**
@@ -195,49 +197,51 @@ function getTempDir(): string {
 function cleanupTempDir(): void {
   if (tempDir) {
     try {
-      rmSync(tempDir, { recursive: true, force: true })
-    }
-    catch {}
-    tempDir = null
+      rmSync(tempDir, { recursive: true, force: true });
+    } catch {}
+    tempDir = null;
   }
 }
 
 const WEB_FETCH_PARAMS = Type.Object({
   url: Type.String({
-    description: 'The URL to fetch and parse (e.g., https://docs.example.com/api)',
+    description:
+      "The URL to fetch and parse (e.g., https://docs.example.com/api)",
   }),
-  timeout: Type.Optional(Type.Number({
-    description: 'Timeout in milliseconds (default: 30000)',
-    minimum: 5000,
-    maximum: 120000,
-  })),
-})
+  timeout: Type.Optional(
+    Type.Number({
+      description: "Timeout in milliseconds (default: 30000)",
+      minimum: 5000,
+      maximum: 120000,
+    }),
+  ),
+});
 
 export default async function webFetchExtension(pi: ExtensionAPI) {
   // Validate API key before extension loads
-  const apiKey = getApiKey()
-  if (!apiKey || apiKey.trim() === '') {
-    throw new Error('JINA_AI_READER_API_KEY is missing')
+  const apiKey = getApiKey();
+  if (!apiKey || apiKey.trim() === "") {
+    throw new Error("JINA_AI_READER_API_KEY is missing");
   }
 
   // Track API key status
-  let apiKeyValid: boolean | null = null
+  let apiKeyValid: boolean | null = null;
 
-  pi.on('session_start', async (_event, ctx) => {
+  pi.on("session_start", async (_event, ctx) => {
     // Test API key validity on startup
-    apiKeyValid = await testApiKey()
+    apiKeyValid = await testApiKey();
     if (!apiKeyValid) {
-      ctx.ui.notify('Web Fetch: API key validation failed', 'warning')
+      ctx.ui.notify("Web Fetch: API key validation failed", "warning");
     }
-  })
+  });
 
-  pi.on('session_shutdown', () => {
-    cleanupTempDir()
-  })
+  pi.on("session_shutdown", () => {
+    cleanupTempDir();
+  });
 
   pi.registerTool({
-    name: 'web_fetch',
-    label: 'Web Fetch',
+    name: "web_fetch",
+    label: "Web Fetch",
     description: `Fetch and parse web content from any URL. Uses Jina AI Reader to handle JavaScript-rendered content (SPAs), extract main content, and convert to clean markdown.
 
 Behavior:
@@ -255,107 +259,111 @@ The tool automatically:
 - Renders JavaScript if needed
 - Extracts main content (removes navigation, ads, sidebars)
 - Converts to readable markdown format`,
-    promptSnippet: 'Fetch and parse web content from URLs',
+    promptSnippet: "Fetch and parse web content from URLs",
     promptGuidelines: [
-      'Use web_fetch when you need to read content from documentation websites or technical articles.',
-      'web_fetch handles JavaScript-rendered content, making it suitable for modern docs sites.',
-      'Provide the full URL including the protocol (https://).',
+      "Use web_fetch when you need to read content from documentation websites or technical articles.",
+      "web_fetch handles JavaScript-rendered content, making it suitable for modern docs sites.",
+      "Provide the full URL including the protocol (https://).",
     ],
     parameters: WEB_FETCH_PARAMS,
     async execute(_toolCallId, params: WebFetchInput, signal, onUpdate, ctx) {
-      const timeout = params.timeout ?? 30000
+      const timeout = params.timeout ?? 30000;
 
       // Validate URL
-      let parsedUrl: URL
+      let parsedUrl: URL;
       try {
-        parsedUrl = new URL(params.url)
-      }
-      catch {
+        parsedUrl = new URL(params.url);
+      } catch {
         return {
-          content: [{
-            type: 'text',
-            text: `Error: Invalid URL "${params.url}". Make sure to include the protocol (https://).`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: `Error: Invalid URL "${params.url}". Make sure to include the protocol (https://).`,
+            },
+          ],
           details: {},
           isError: true,
-        }
+        };
       }
 
       // Only allow http/https
-      if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
         return {
-          content: [{
-            type: 'text',
-            text: `Error: Unsupported protocol "${parsedUrl.protocol}". Only http and https are allowed.`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: `Error: Unsupported protocol "${parsedUrl.protocol}". Only http and https are allowed.`,
+            },
+          ],
           details: {},
           isError: true,
-        }
+        };
       }
 
       // Notify user we're fetching
       onUpdate?.({
-        content: [{ type: 'text', text: `Fetching ${params.url}...` }],
+        content: [{ type: "text", text: `Fetching ${params.url}...` }],
         details: {},
-      })
+      });
 
       try {
         // Fetch with no truncation limit (we handle it ourselves)
         const result = await fetchUrl({
           url: params.url,
-          format: 'markdown',
+          format: "markdown",
           maxContentLength: 500000,
           timeout,
-        })
+        });
 
-        const contentLength = result.content.length
+        const contentLength = result.content.length;
 
         // If content is small enough, return directly
         if (contentLength <= DIRECT_CONTENT_LIMIT) {
-          const parts: string[] = []
+          const parts: string[] = [];
           if (result.title) {
-            parts.push(`# ${result.title}\n`)
+            parts.push(`# ${result.title}\n`);
           }
-          parts.push(`URL: ${result.url}`)
-          parts.push(`\n---\n`)
-          parts.push(result.content)
+          parts.push(`URL: ${result.url}`);
+          parts.push(`\n---\n`);
+          parts.push(result.content);
 
           return {
-            content: [{ type: 'text', text: parts.join('\n') }],
+            content: [{ type: "text", text: parts.join("\n") }],
             details: {
               url: result.url,
               title: result.title,
               contentLength,
               storedInFile: false,
             },
-          }
+          };
         }
 
         // Content is large - write to temp file
-        const tempPath = join(getTempDir(), `content-${Date.now()}.md`)
+        const tempPath = join(getTempDir(), `content-${Date.now()}.md`);
 
         // Build full content for file
-        const fullContent: string[] = []
+        const fullContent: string[] = [];
         if (result.title) {
-          fullContent.push(`# ${result.title}`)
-          fullContent.push(``)
+          fullContent.push(`# ${result.title}`);
+          fullContent.push(``);
         }
-        fullContent.push(`URL: ${result.url}`)
-        fullContent.push(`Fetched: ${new Date().toISOString()}`)
-        fullContent.push(`Content-Length: ${contentLength} characters`)
-        fullContent.push(``)
-        fullContent.push(`---`)
-        fullContent.push(``)
-        fullContent.push(result.content)
+        fullContent.push(`URL: ${result.url}`);
+        fullContent.push(`Fetched: ${new Date().toISOString()}`);
+        fullContent.push(`Content-Length: ${contentLength} characters`);
+        fullContent.push(``);
+        fullContent.push(`---`);
+        fullContent.push(``);
+        fullContent.push(result.content);
 
-        writeFileSync(tempPath, fullContent.join('\n'), 'utf-8')
+        writeFileSync(tempPath, fullContent.join("\n"), "utf-8");
 
         // Return minimal info to LLM with instructions
         return {
-          content: [{
-            type: 'text',
-            text: `Fetched: ${result.url}
-Title: ${result.title ?? 'N/A'}
+          content: [
+            {
+              type: "text",
+              text: `Fetched: ${result.url}
+Title: ${result.title ?? "N/A"}
 Content: ${contentLength} characters (too large for direct context)
 
 The full content has been saved to: ${tempPath}
@@ -364,7 +372,8 @@ Use \`rg\` to search for specific information in this file. For example:
 - \`rg "signers" ${tempPath}\` - Find information about signers
 - \`rg -i "retry" ${tempPath}\` - Case-insensitive search for retry-related content
 - \`rg -C 3 "job" ${tempPath}\` - Search with context lines`,
-          }],
+            },
+          ],
           details: {
             url: result.url,
             title: result.title,
@@ -372,76 +381,77 @@ Use \`rg\` to search for specific information in this file. For example:
             tempFile: tempPath,
             storedInFile: true,
           },
-        }
-      }
-      catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        };
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
 
-        ctx.ui.notify(`Web fetch failed: ${errorMessage}`, 'error')
+        ctx.ui.notify(`Web fetch failed: ${errorMessage}`, "error");
 
         return {
-          content: [{
-            type: 'text',
-            text: `Error fetching ${params.url}:\n${errorMessage}`,
-          }],
+          content: [
+            {
+              type: "text",
+              text: `Error fetching ${params.url}:\n${errorMessage}`,
+            },
+          ],
           details: {},
           isError: true,
-        }
+        };
       }
     },
-  })
+  });
 
   // Command to check API key status
-  pi.registerCommand('web-fetch-status', {
-    description: 'Check web fetch API key status',
+  pi.registerCommand("web-fetch-status", {
+    description: "Check web fetch API key status",
     handler: async (_args, ctx) => {
-      const apiKey = getApiKey()
-      if (!apiKey || apiKey.trim() === '') {
-        ctx.ui.notify('JINA_AI_READER_API_KEY is not set', 'warning')
-        return
+      const apiKey = getApiKey();
+      if (!apiKey || apiKey.trim() === "") {
+        ctx.ui.notify("JINA_AI_READER_API_KEY is not set", "warning");
+        return;
       }
 
-      ctx.ui.notify('Testing API key...', 'info')
+      ctx.ui.notify("Testing API key...", "info");
 
-      const valid = await testApiKey()
+      const valid = await testApiKey();
       if (valid) {
-        ctx.ui.notify('API key is valid', 'info')
-      }
-      else {
-        ctx.ui.notify('API key is invalid', 'error')
+        ctx.ui.notify("API key is valid", "info");
+      } else {
+        ctx.ui.notify("API key is invalid", "error");
       }
     },
-  })
+  });
 
   // Command to quickly fetch a URL (for user-initiated fetches)
-  pi.registerCommand('fetch', {
-    description: 'Fetch and parse a URL: /fetch <url>',
+  pi.registerCommand("fetch", {
+    description: "Fetch and parse a URL: /fetch <url>",
     getArgumentCompletions: (prefix: string) => {
       // Simple URL prefix completion
-      if (prefix.startsWith('http')) {
-        return [{ value: prefix, label: prefix }]
+      if (prefix.startsWith("http")) {
+        return [{ value: prefix, label: prefix }];
       }
-      if (prefix.startsWith('www.')) {
-        const url = `https://${prefix}`
-        return [{ value: url, label: url }]
+      if (prefix.startsWith("www.")) {
+        const url = `https://${prefix}`;
+        return [{ value: url, label: url }];
       }
-      return null
+      return null;
     },
     handler: async (args, ctx) => {
-      let url = args?.trim()
+      let url = args?.trim();
 
       if (!url) {
-        ctx.ui.notify('Usage: /fetch <url>', 'warning')
-        return
+        ctx.ui.notify("Usage: /fetch <url>", "warning");
+        return;
       }
 
       // Add https:// if no protocol
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = `https://${url}`
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = `https://${url}`;
       }
 
       // Send as user message so the LLM processes the content
-      pi.sendUserMessage(`Fetch and summarize the content from: ${url}`)
+      pi.sendUserMessage(`Fetch and summarize the content from: ${url}`);
     },
-  })
+  });
 }

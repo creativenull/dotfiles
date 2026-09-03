@@ -9,12 +9,15 @@
  * (Passing a string name to setTheme() would persist to settings.json.)
  */
 
-import type { ExtensionAPI, ExtensionContext } from '@earendil-works/pi-coding-agent'
-import { exec } from 'node:child_process'
-import { promisify } from 'node:util'
-import { Text } from '@earendil-works/pi-tui'
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+} from "@earendil-works/pi-coding-agent";
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
+import { Text } from "@earendil-works/pi-tui";
 
-const execAsync = promisify(exec)
+const execAsync = promisify(exec);
 
 /**
  * Check if macOS is in dark mode.
@@ -24,21 +27,20 @@ const execAsync = promisify(exec)
 export async function isDarkMode(): Promise<boolean> {
   try {
     const { stdout } = await execAsync(
-      'defaults read -g AppleInterfaceStyle 2>/dev/null',
-    )
-    return stdout.trim().toLowerCase() === 'dark'
-  }
-  catch {
+      "defaults read -g AppleInterfaceStyle 2>/dev/null",
+    );
+    return stdout.trim().toLowerCase() === "dark";
+  } catch {
     // Key doesn't exist = light mode
-    return false
+    return false;
   }
 }
 
-const POLL_INTERVAL_MS = 3000
+const POLL_INTERVAL_MS = 3000;
 
 export default function (pi: ExtensionAPI) {
-  let intervalId: ReturnType<typeof setInterval> | null = null
-  let currentTheme: 'dark' | 'light' | null = null
+  let intervalId: ReturnType<typeof setInterval> | null = null;
+  let currentTheme: "dark" | "light" | null = null;
 
   /**
    * Apply a theme by name using the in-memory-only path.
@@ -47,15 +49,14 @@ export default function (pi: ExtensionAPI) {
    * `ctx.ui.setTheme(Theme)` only sets it in memory.
    * We load the Theme object first via `getTheme()`, then pass it.
    */
-  function applyTheme(ctx: ExtensionContext, name: 'dark' | 'light') {
-    const theme = ctx.ui.getTheme(name)
+  function applyTheme(ctx: ExtensionContext, name: "dark" | "light") {
+    const theme = ctx.ui.getTheme(name);
     if (theme) {
-      ctx.ui.setTheme(theme) // In-memory only
-    }
-    else {
+      ctx.ui.setTheme(theme); // In-memory only
+    } else {
       // Fallback: built-in themes are guaranteed to exist, but if not,
       // we notify instead of falling back to string (which would persist to disk)
-      ctx.ui.notify(`Theme "${name}" not found.`, 'error')
+      ctx.ui.notify(`Theme "${name}" not found.`, "error");
     }
   }
 
@@ -64,56 +65,58 @@ export default function (pi: ExtensionAPI) {
    * Uses "dim" color token to match the footer's muted text style.
    */
   function updateStatus(ctx: ExtensionContext) {
-    if (!ctx.hasUI)
-      return
-    ctx.ui.setWidget('theme-switcher', (_tui, theme) =>
-      new Text(theme.fg('dim', `theme: ${currentTheme}`), 0, 0), { placement: 'belowEditor' })
+    if (!ctx.hasUI) return;
+    ctx.ui.setWidget(
+      "theme-switcher",
+      (_tui, theme) =>
+        new Text(theme.fg("dim", `theme: ${currentTheme}`), 0, 0),
+      { placement: "belowEditor" },
+    );
   }
 
-  pi.on('session_start', async (_event, ctx) => {
+  pi.on("session_start", async (_event, ctx) => {
     // Set theme immediately on startup
-    const dark = await isDarkMode()
-    currentTheme = dark ? 'dark' : 'light'
-    applyTheme(ctx, currentTheme)
-    updateStatus(ctx)
+    const dark = await isDarkMode();
+    currentTheme = dark ? "dark" : "light";
+    applyTheme(ctx, currentTheme);
+    updateStatus(ctx);
 
     // Poll for changes
     intervalId = setInterval(async () => {
       try {
-        const newDark = await isDarkMode()
-        const newTheme: 'dark' | 'light' = newDark ? 'dark' : 'light'
+        const newDark = await isDarkMode();
+        const newTheme: "dark" | "light" = newDark ? "dark" : "light";
 
         if (newTheme !== currentTheme) {
-          currentTheme = newTheme
-          applyTheme(ctx, newTheme)
-          updateStatus(ctx)
-          ctx.ui.notify(`Switched to ${currentTheme} theme`, 'info')
+          currentTheme = newTheme;
+          applyTheme(ctx, newTheme);
+          updateStatus(ctx);
+          ctx.ui.notify(`Switched to ${currentTheme} theme`, "info");
         }
-      }
-      catch {
+      } catch {
         // Silently ignore errors during polling
       }
-    }, POLL_INTERVAL_MS)
-  })
+    }, POLL_INTERVAL_MS);
+  });
 
-  pi.registerCommand('theme', {
-    description: 'Show current theme status',
+  pi.registerCommand("theme", {
+    description: "Show current theme status",
     handler: async (_args, ctx) => {
-      const dark = await isDarkMode()
-      const osMode = dark ? 'dark' : 'light'
+      const dark = await isDarkMode();
+      const osMode = dark ? "dark" : "light";
       const lines = [
         `OS appearance: ${osMode}`,
-        `Active theme:   ${currentTheme ?? 'unknown'}`,
+        `Active theme:   ${currentTheme ?? "unknown"}`,
         `Persisted:      no (in-memory only)`,
-      ]
-      ctx.ui.notify(lines.join('\n'), 'info')
+      ];
+      ctx.ui.notify(lines.join("\n"), "info");
     },
-  })
+  });
 
-  pi.on('session_shutdown', () => {
+  pi.on("session_shutdown", () => {
     if (intervalId) {
-      clearInterval(intervalId)
-      intervalId = null
+      clearInterval(intervalId);
+      intervalId = null;
     }
-  })
+  });
 }

@@ -5,53 +5,53 @@
 /** MCP server configuration */
 export interface McpServerConfig {
   /** Command to run (e.g., "mcp-filesystem", "node", "python") */
-  command: string
+  command: string;
   /** Arguments to pass to the command */
-  args?: string[]
+  args?: string[];
   /** Environment variables (values can be ${VAR_NAME} for expansion) */
-  env?: Record<string, string>
+  env?: Record<string, string>;
   /** Whether this server is disabled */
-  disabled?: boolean
+  disabled?: boolean;
 }
 
 /** Full MCP configuration file (Claude-compatible schema) */
 export interface McpConfig {
   /** Named server configurations (Claude-compatible key name) */
-  mcpServers: Record<string, McpServerConfig>
+  mcpServers: Record<string, McpServerConfig>;
 }
 
 /** MCP tool definition from server */
 export interface McpToolDefinition {
-  name: string
-  description?: string
+  name: string;
+  description?: string;
   inputSchema: {
-    type: 'object'
-    properties?: Record<string, unknown>
-    required?: string[]
-  }
+    type: "object";
+    properties?: Record<string, unknown>;
+    required?: string[];
+  };
 }
 
 /** MCP tool call result */
 export interface McpToolResult {
   content: Array<
-    | { type: 'text', text: string }
-    | { type: 'image', data: string, mimeType: string }
-    | { type: 'resource', resource: unknown }
-  >
-  isError?: boolean
+    | { type: "text"; text: string }
+    | { type: "image"; data: string; mimeType: string }
+    | { type: "resource"; resource: unknown }
+  >;
+  isError?: boolean;
 }
 
 /** Connected MCP server state */
 export interface McpServerState {
-  name: string
-  config: McpServerConfig
-  status: 'connecting' | 'connected' | 'disconnected' | 'error'
-  error?: string
-  tools: McpToolDefinition[]
+  name: string;
+  config: McpServerConfig;
+  status: "connecting" | "connected" | "disconnected" | "error";
+  error?: string;
+  tools: McpToolDefinition[];
 }
 
 /** Persisted session state */
 export interface McpSessionState {
-  servers: string[]
-  timestamp: number
+  servers: string[];
+  timestamp: number;
 }

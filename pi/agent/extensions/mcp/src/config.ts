@@ -2,12 +2,12 @@
  * Configuration loading for MCP extension
  */
 
-import type { McpConfig, McpServerConfig } from './types'
-import { existsSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
-import { homedir } from 'node:os'
-import { join } from 'node:path'
-import process from 'node:process'
+import type { McpConfig, McpServerConfig } from "./types";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import process from "node:process";
 
 /**
  * Expand environment variables in a string.
@@ -15,8 +15,8 @@ import process from 'node:process'
  */
 function expandEnv(value: string): string {
   return value.replace(/\$\{([^}]+)\}/g, (_, name) => {
-    return process.env[name] ?? ''
-  })
+    return process.env[name] ?? "";
+  });
 }
 
 /**
@@ -27,59 +27,59 @@ function expandConfigEnv(config: McpServerConfig): McpServerConfig {
     command: expandEnv(config.command),
     args: config.args?.map(expandEnv),
     disabled: config.disabled,
-  }
+  };
 
   if (config.env) {
-    expanded.env = {}
+    expanded.env = {};
     for (const [key, value] of Object.entries(config.env)) {
-      expanded.env[key] = expandEnv(value)
+      expanded.env[key] = expandEnv(value);
     }
   }
 
-  return expanded
+  return expanded;
 }
 
 /**
  * Load and merge configurations from global and project locations.
  */
 export async function loadMcpConfig(projectDir?: string): Promise<McpConfig> {
-  const configs: McpConfig[] = []
+  const configs: McpConfig[] = [];
 
   // Global config: ~/.agents/mcp.json
-  const globalPath = join(homedir(), '.agents', 'mcp.json')
+  const globalPath = join(homedir(), ".agents", "mcp.json");
   if (existsSync(globalPath)) {
     try {
-      const content = await readFile(globalPath, 'utf-8')
-      configs.push(JSON.parse(content))
-    }
-    catch (error) {
-      console.error(`Failed to load global MCP config: ${error}`)
+      const content = await readFile(globalPath, "utf-8");
+      configs.push(JSON.parse(content));
+    } catch (error) {
+      console.error(`Failed to load global MCP config: ${error}`);
     }
   }
 
   // Project config: <project>/.agents/mcp.json
   if (projectDir) {
-    const projectPath = join(projectDir, '.agents', 'mcp.json')
+    const projectPath = join(projectDir, ".agents", "mcp.json");
     if (existsSync(projectPath)) {
       try {
-        const content = await readFile(projectPath, 'utf-8')
-        configs.push(JSON.parse(content))
-      }
-      catch (error) {
-        console.error(`Failed to load project MCP config: ${error}`)
+        const content = await readFile(projectPath, "utf-8");
+        configs.push(JSON.parse(content));
+      } catch (error) {
+        console.error(`Failed to load project MCP config: ${error}`);
       }
     }
   }
 
   // Merge configs (project overrides global for same server names)
-  const merged: McpConfig = { mcpServers: {} }
+  const merged: McpConfig = { mcpServers: {} };
   for (const config of configs) {
-    for (const [name, serverConfig] of Object.entries(config.mcpServers ?? {})) {
-      merged.mcpServers[name] = expandConfigEnv(serverConfig)
+    for (const [name, serverConfig] of Object.entries(
+      config.mcpServers ?? {},
+    )) {
+      merged.mcpServers[name] = expandConfigEnv(serverConfig);
     }
   }
 
-  return merged
+  return merged;
 }
 
 /**
@@ -89,14 +89,14 @@ export async function loadMcpConfig(projectDir?: string): Promise<McpConfig> {
 export function validateServerConfig(
   config: McpServerConfig,
 ): string | undefined {
-  if (!config.command || typeof config.command !== 'string') {
-    return 'Missing or invalid \'command\' field'
+  if (!config.command || typeof config.command !== "string") {
+    return "Missing or invalid 'command' field";
   }
   if (config.args !== undefined && !Array.isArray(config.args)) {
-    return '\'args\' must be an array'
+    return "'args' must be an array";
   }
-  if (config.env !== undefined && typeof config.env !== 'object') {
-    return '\'env\' must be an object'
+  if (config.env !== undefined && typeof config.env !== "object") {
+    return "'env' must be an object";
   }
-  return undefined
+  return undefined;
 }

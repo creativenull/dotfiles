@@ -78,10 +78,17 @@ const DESTRUCTIVE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
  */
 const PACKAGE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   // npm install/uninstall globally (including i/r aliases)
-  { pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b[^\n]*\s(?:-g|--global)(?:\s|$)/, label: "npm install/uninstall -g" },
+  {
+    pattern:
+      /\bnpm\s+(i|install|r|uninstall|add|remove)\b[^\n]*\s(?:-g|--global)(?:\s|$)/,
+    label: "npm install/uninstall -g",
+  },
 
   // npm install / uninstall (including i/r aliases)
-  { pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b/, label: "npm install/uninstall" },
+  {
+    pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b/,
+    label: "npm install/uninstall",
+  },
 
   // npm run scripts
   { pattern: /\bnpm\s+run\b/, label: "npm run" },
@@ -90,7 +97,10 @@ const PACKAGE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   { pattern: /\bcomposer\s+global\b/, label: "composer global" },
 
   // composer require / remove
-  { pattern: /\bcomposer\s+(require|remove)\b/, label: "composer require/remove" },
+  {
+    pattern: /\bcomposer\s+(require|remove)\b/,
+    label: "composer require/remove",
+  },
 
   // npm start / test scripts
   { pattern: /\bnpm\s+(start|test)\b/, label: "npm start/test" },
@@ -102,7 +112,10 @@ const PACKAGE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   { pattern: /\bnpm\s+(un)?publish\b/, label: "npm publish/unpublish" },
 
   // npm registry config change (supply-chain risk)
-  { pattern: /\bnpm\s+config\s+set\s+registry\b/, label: "npm config set registry" },
+  {
+    pattern: /\bnpm\s+config\s+set\s+registry\b/,
+    label: "npm config set registry",
+  },
 
   // php artisan migrations
   { pattern: /\bphp\s+artisan\s+migrate\b/, label: "php artisan migrate" },

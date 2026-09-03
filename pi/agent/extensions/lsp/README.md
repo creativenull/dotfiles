@@ -28,10 +28,10 @@ The extension reads `lspServers` from a dedicated `lsp.json` config file.
 
 ### Configuration Locations
 
-| Location | Purpose |
-|----------|---------|
+| Location             | Purpose                                        |
+| -------------------- | ---------------------------------------------- |
 | `~/.agents/lsp.json` | Global configuration (applies to all projects) |
-| `.agents/lsp.json` | Project-local configuration (overrides global) |
+| `.agents/lsp.json`   | Project-local configuration (overrides global) |
 
 ### Configuration Schema
 
@@ -44,9 +44,9 @@ The extension reads `lspServers` from a dedicated `lsp.json` config file.
       "extensions": ["ts", "js"], // Required: file extensions this server handles
       "env": {}, // Optional: environment variables
       "initializationOptions": {}, // Optional: passed to LSP initialize
-      "disabled": false // Optional: set true to skip this server
-    }
-  }
+      "disabled": false, // Optional: set true to skip this server
+    },
+  },
 }
 ```
 
@@ -59,24 +59,24 @@ The extension reads `lspServers` from a dedicated `lsp.json` config file.
     "typescript": {
       "command": "typescript-language-server",
       "args": ["--stdio"],
-      "extensions": ["ts", "tsx", "js", "jsx", "mjs", "cjs"]
+      "extensions": ["ts", "tsx", "js", "jsx", "mjs", "cjs"],
     },
     "python": {
       "command": "pyright-langserver",
       "args": ["--stdio"],
-      "extensions": ["py", "pyi"]
+      "extensions": ["py", "pyi"],
     },
     "lua": {
       "command": "lua-language-server",
       "args": [],
-      "extensions": ["lua"]
+      "extensions": ["lua"],
     },
     "rust": {
       "command": "rust-analyzer",
       "args": [],
-      "extensions": ["rs"]
-    }
-  }
+      "extensions": ["rs"],
+    },
+  },
 }
 ```
 
@@ -111,6 +111,7 @@ lsp_diagnostics({ filePath: "src/app.ts" })
 ### Output Format
 
 **With diagnostics:**
+
 ```
 Diagnostics for app.ts (typescript):
 
@@ -122,6 +123,7 @@ Diagnostics for app.ts (typescript):
 ```
 
 **Without diagnostics:**
+
 ```
 No diagnostics for app.ts (typescript)
 ```
@@ -138,51 +140,51 @@ LLM: "Fixed 2 type errors. LSP shows no remaining diagnostics."
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/lsp` | List all LSP servers and their status |
+| Command       | Description                                  |
+| ------------- | -------------------------------------------- |
+| `/lsp`        | List all LSP servers and their status        |
 | `/lsp-reload` | Reload configuration and restart all servers |
 
 ## Supported Languages
 
 The extension automatically maps file extensions to LSP language IDs. Common mappings include:
 
-| Extension | Language ID |
-|-----------|-------------|
-| `ts`, `tsx` | typescript, typescriptreact |
+| Extension                 | Language ID                 |
+| ------------------------- | --------------------------- |
+| `ts`, `tsx`               | typescript, typescriptreact |
 | `js`, `jsx`, `mjs`, `cjs` | javascript, javascriptreact |
-| `py`, `pyi` | python |
-| `rs` | rust |
-| `go` | go |
-| `lua` | lua |
-| `java` | java |
-| `kt`, `kts` | kotlin |
-| `c`, `h` | c |
-| `cpp`, `hpp`, `cc` | cpp |
-| `cs` | csharp |
-| `rb` | ruby |
-| `php` | php |
-| `swift` | swift |
-| `dart` | dart |
-| `vue` | vue |
-| `svelte` | svelte |
-| `html`, `css`, `scss` | html, css, scss |
+| `py`, `pyi`               | python                      |
+| `rs`                      | rust                        |
+| `go`                      | go                          |
+| `lua`                     | lua                         |
+| `java`                    | java                        |
+| `kt`, `kts`               | kotlin                      |
+| `c`, `h`                  | c                           |
+| `cpp`, `hpp`, `cc`        | cpp                         |
+| `cs`                      | csharp                      |
+| `rb`                      | ruby                        |
+| `php`                     | php                         |
+| `swift`                   | swift                       |
+| `dart`                    | dart                        |
+| `vue`                     | vue                         |
+| `svelte`                  | svelte                      |
+| `html`, `css`, `scss`     | html, css, scss             |
 
 ## Popular LSP Servers
 
-| Language | Server | Install |
-|----------|--------|---------|
-| TypeScript/JavaScript | `typescript-language-server` | `npm i -g typescript-language-server` |
-| Python | `pyright-langserver` | `npm i -g pyright` |
-| Python | `pylsp` | `pip install python-lsp-server` |
-| Rust | `rust-analyzer` | Built into rustup |
-| Go | `gopls` | `go install golang.org/x/tools/gopls@latest` |
-| Lua | `lua-language-server` | See [LuaLS](https://luals.github.io/) |
-| C/C++ | `clangd` | `brew install clangd` or system package |
-| Ruby | `solargraph` | `gem install solargraph` |
-| PHP | `intelephense` | `npm i -g intelephense` |
-| Vue | `vue-language-server` | `npm i -g @vue/language-server` |
-| Svelte | `svelteserver` | `npm i -g svelte-language-server` |
+| Language              | Server                       | Install                                      |
+| --------------------- | ---------------------------- | -------------------------------------------- |
+| TypeScript/JavaScript | `typescript-language-server` | `npm i -g typescript-language-server`        |
+| Python                | `pyright-langserver`         | `npm i -g pyright`                           |
+| Python                | `pylsp`                      | `pip install python-lsp-server`              |
+| Rust                  | `rust-analyzer`              | Built into rustup                            |
+| Go                    | `gopls`                      | `go install golang.org/x/tools/gopls@latest` |
+| Lua                   | `lua-language-server`        | See [LuaLS](https://luals.github.io/)        |
+| C/C++                 | `clangd`                     | `brew install clangd` or system package      |
+| Ruby                  | `solargraph`                 | `gem install solargraph`                     |
+| PHP                   | `intelephense`               | `npm i -g intelephense`                      |
+| Vue                   | `vue-language-server`        | `npm i -g @vue/language-server`              |
+| Svelte                | `svelteserver`               | `npm i -g svelte-language-server`            |
 
 ## How It Works
 
@@ -217,6 +219,7 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 ```
 
 This shows all servers and their status:
+
 - ✓ Ready
 - … Starting
 - ✗ Error (with error message)

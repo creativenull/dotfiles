@@ -20,10 +20,10 @@ The extension uses a Claude-compatible schema with `mcpServers` as the top-level
 
 ### Configuration Locations
 
-| Location | Purpose |
-|----------|---------|
+| Location             | Purpose                                        |
+| -------------------- | ---------------------------------------------- |
 | `~/.agents/mcp.json` | Global configuration (applies to all projects) |
-| `.agents/mcp.json` | Project-local configuration (overrides global) |
+| `.agents/mcp.json`   | Project-local configuration (overrides global) |
 
 ### Configuration Schema
 
@@ -31,12 +31,12 @@ The extension uses a Claude-compatible schema with `mcpServers` as the top-level
 interface McpConfig {
   mcpServers: {
     [name: string]: {
-      command: string // Executable to run
-      args?: string[] // Arguments to pass
-      env?: Record<string, string> // Environment variables
-      disabled?: boolean // Set to true to disable
-    }
-  }
+      command: string; // Executable to run
+      args?: string[]; // Arguments to pass
+      env?: Record<string, string>; // Environment variables
+      disabled?: boolean; // Set to true to disable
+    };
+  };
 }
 ```
 
@@ -49,7 +49,11 @@ interface McpConfig {
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/user/projects"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/user/projects"
+      ]
     }
   }
 }
@@ -75,7 +79,11 @@ interface McpConfig {
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${HOME}/projects"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${HOME}/projects"
+      ]
     },
     "github": {
       "command": "npx",
@@ -110,12 +118,12 @@ Configuration values support `${VAR_NAME}` syntax for environment variable expan
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/mcp` | List all configured servers and their connection status |
-| `/mcp-connect <name>` | Connect to a specific MCP server |
-| `/mcp-disconnect <name>` | Disconnect from a specific MCP server |
-| `/mcp-reload` | Reload configuration and reconnect all servers |
+| Command                  | Description                                             |
+| ------------------------ | ------------------------------------------------------- |
+| `/mcp`                   | List all configured servers and their connection status |
+| `/mcp-connect <name>`    | Connect to a specific MCP server                        |
+| `/mcp-disconnect <name>` | Disconnect from a specific MCP server                   |
+| `/mcp-reload`            | Reload configuration and reconnect all servers          |
 
 ## Tool Namespacing
 
@@ -137,15 +145,15 @@ The LLM can call these tools directly just like built-in Pi tools.
 
 ### Official MCP Servers
 
-| Server | Package | Description |
-|--------|---------|-------------|
-| Filesystem | `@modelcontextprotocol/server-filesystem` | File system operations |
-| GitHub | `@modelcontextprotocol/server-github` | GitHub API operations |
-| Git | `@modelcontextprotocol/server-git` | Git operations |
-| PostgreSQL | `@modelcontextprotocol/server-postgres` | PostgreSQL database |
-| SQLite | `@modelcontextprotocol/server-sqlite` | SQLite database |
-| Brave Search | `@modelcontextprotocol/server-brave-search` | Web search via Brave |
-| Puppeteer | `@modelcontextprotocol/server-puppeteer` | Browser automation |
+| Server       | Package                                     | Description            |
+| ------------ | ------------------------------------------- | ---------------------- |
+| Filesystem   | `@modelcontextprotocol/server-filesystem`   | File system operations |
+| GitHub       | `@modelcontextprotocol/server-github`       | GitHub API operations  |
+| Git          | `@modelcontextprotocol/server-git`          | Git operations         |
+| PostgreSQL   | `@modelcontextprotocol/server-postgres`     | PostgreSQL database    |
+| SQLite       | `@modelcontextprotocol/server-sqlite`       | SQLite database        |
+| Brave Search | `@modelcontextprotocol/server-brave-search` | Web search via Brave   |
+| Puppeteer    | `@modelcontextprotocol/server-puppeteer`    | Browser automation     |
 
 ### Community Servers
 
@@ -182,6 +190,7 @@ npm run typecheck
 ```
 
 This shows all servers and their status:
+
 - ✓ Connected
 - … Connecting
 - ✗ Error (with error message)

@@ -2,18 +2,18 @@
  * Tool discovery and registration for MCP tools
  */
 
-import type { ExtensionAPI } from '@earendil-works/pi-coding-agent'
-import type { TSchema } from 'typebox'
-import type { McpClient, McpClientManager } from './client'
-import type { McpToolDefinition } from './types'
-import { Type } from 'typebox'
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { TSchema } from "typebox";
+import type { McpClient, McpClientManager } from "./client";
+import type { McpToolDefinition } from "./types";
+import { Type } from "typebox";
 
 /**
  * Generate a Pi-compatible tool name from MCP server and tool names.
  * Format: mcp:<server>:<tool>
  */
 export function makePiToolName(serverName: string, toolName: string): string {
-  return `mcp:${serverName}:${toolName}`
+  return `mcp:${serverName}:${toolName}`;
 }
 
 /**
@@ -21,57 +21,57 @@ export function makePiToolName(serverName: string, toolName: string): string {
  */
 export function parsePiToolName(
   piToolName: string,
-): { server: string, tool: string } | null {
-  const parts = piToolName.split(':')
-  if (parts.length !== 3 || parts[0] !== 'mcp') {
-    return null
+): { server: string; tool: string } | null {
+  const parts = piToolName.split(":");
+  if (parts.length !== 3 || parts[0] !== "mcp") {
+    return null;
   }
-  return { server: parts[1], tool: parts[2] }
+  return { server: parts[1], tool: parts[2] };
 }
 
 /**
  * Convert MCP JSON Schema property to TypeBox schema.
  */
 function jsonSchemaToTypeBox(schema: unknown): TSchema {
-  if (!schema || typeof schema !== 'object') {
-    return Type.Unknown()
+  if (!schema || typeof schema !== "object") {
+    return Type.Unknown();
   }
 
-  const s = schema as Record<string, unknown>
-  const type = s.type as string | undefined
+  const s = schema as Record<string, unknown>;
+  const type = s.type as string | undefined;
 
   // Handle description
-  const description = s.description as string | undefined
+  const description = s.description as string | undefined;
 
   switch (type) {
-    case 'string':
-      return Type.String({ description })
-    case 'number':
-    case 'integer':
-      return Type.Number({ description })
-    case 'boolean':
-      return Type.Boolean({ description })
-    case 'array':
+    case "string":
+      return Type.String({ description });
+    case "number":
+    case "integer":
+      return Type.Number({ description });
+    case "boolean":
+      return Type.Boolean({ description });
+    case "array":
       if (s.items) {
-        return Type.Array(jsonSchemaToTypeBox(s.items), { description })
+        return Type.Array(jsonSchemaToTypeBox(s.items), { description });
       }
-      return Type.Array(Type.Unknown(), { description })
-    case 'object': {
-      const properties: Record<string, TSchema> = {}
-      const props = s.properties as Record<string, unknown> | undefined
+      return Type.Array(Type.Unknown(), { description });
+    case "object": {
+      const properties: Record<string, TSchema> = {};
+      const props = s.properties as Record<string, unknown> | undefined;
       if (props) {
         for (const [key, value] of Object.entries(props)) {
-          properties[key] = jsonSchemaToTypeBox(value)
+          properties[key] = jsonSchemaToTypeBox(value);
         }
       }
-      const required = s.required as string[] | undefined
+      const required = s.required as string[] | undefined;
       return Type.Object(properties, {
         description,
         required: required ?? Object.keys(properties),
-      })
+      });
     }
     default:
-      return Type.Unknown({ description })
+      return Type.Unknown({ description });
   }
 }
 
@@ -79,22 +79,22 @@ function jsonSchemaToTypeBox(schema: unknown): TSchema {
  * Convert MCP tool input schema to TypeBox schema for Pi.
  */
 function convertInputSchema(
-  inputSchema: McpToolDefinition['inputSchema'],
+  inputSchema: McpToolDefinition["inputSchema"],
 ): TSchema {
-  const properties: Record<string, TSchema> = {}
-  const required: string[] = []
+  const properties: Record<string, TSchema> = {};
+  const required: string[] = [];
 
   if (inputSchema.properties) {
     for (const [name, schema] of Object.entries(inputSchema.properties)) {
-      properties[name] = jsonSchemaToTypeBox(schema)
+      properties[name] = jsonSchemaToTypeBox(schema);
     }
   }
 
   if (inputSchema.required) {
-    required.push(...inputSchema.required)
+    required.push(...inputSchema.required);
   }
 
-  return Type.Object(properties, { required })
+  return Type.Object(properties, { required });
 }
 
 /**
@@ -105,8 +105,8 @@ export function registerMcpTool(
   client: McpClient,
   tool: McpToolDefinition,
 ): void {
-  const piToolName = makePiToolName(client.name, tool.name)
-  const parameters = convertInputSchema(tool.inputSchema)
+  const piToolName = makePiToolName(client.name, tool.name);
+  const parameters = convertInputSchema(tool.inputSchema);
 
   pi.registerTool({
     name: piToolName,
@@ -115,37 +115,39 @@ export function registerMcpTool(
     parameters,
     async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
       try {
-        const result = await client.callTool(tool.name, params as Record<string, unknown>)
+        const result = await client.callTool(
+          tool.name,
+          params as Record<string, unknown>,
+        );
 
         // Convert MCP result to Pi result format
         const textContent = result.content
-          .filter((c): c is { type: 'text', text: string } => c.type === 'text')
-          .map(c => c.text)
-          .join('\n')
+          .filter((c): c is { type: "text"; text: string } => c.type === "text")
+          .map((c) => c.text)
+          .join("\n");
 
         return {
           content: [
-            { type: 'text', text: textContent || 'Tool executed successfully' },
+            { type: "text", text: textContent || "Tool executed successfully" },
           ],
           details: {},
           isError: result.isError,
-        }
-      }
-      catch (error) {
-        const message = error instanceof Error ? error.message : String(error)
+        };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
         return {
           content: [
             {
-              type: 'text',
+              type: "text",
               text: `MCP Error (${client.name}/${tool.name}): ${message}`,
             },
           ],
           details: {},
           isError: true,
-        }
+        };
       }
     },
-  })
+  });
 }
 
 /**
@@ -155,13 +157,13 @@ export async function registerMcpTools(
   pi: ExtensionAPI,
   client: McpClient,
 ): Promise<number> {
-  const tools = await client.listTools()
+  const tools = await client.listTools();
 
   for (const tool of tools) {
-    registerMcpTool(pi, client, tool)
+    registerMcpTool(pi, client, tool);
   }
 
-  return tools.length
+  return tools.length;
 }
 
 /**
@@ -171,14 +173,14 @@ export async function registerAllMcpTools(
   pi: ExtensionAPI,
   manager: McpClientManager,
 ): Promise<Map<string, number>> {
-  const counts = new Map<string, number>()
+  const counts = new Map<string, number>();
 
   for (const client of manager.getAll()) {
-    if (client.status === 'connected') {
-      const count = await registerMcpTools(pi, client)
-      counts.set(client.name, count)
+    if (client.status === "connected") {
+      const count = await registerMcpTools(pi, client);
+      counts.set(client.name, count);
     }
   }
 
-  return counts
+  return counts;
 }
