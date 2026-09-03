@@ -73,6 +73,45 @@ const DESTRUCTIVE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
 ];
 
 /**
+ * Package/scaffolding command patterns that require permission.
+ * Each pattern is tested against the bash command.
+ */
+const PACKAGE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
+  // npm install/uninstall globally (including i/r aliases)
+  { pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b[^\n]*\s(?:-g|--global)(?:\s|$)/, label: "npm install/uninstall -g" },
+
+  // npm install / uninstall (including i/r aliases)
+  { pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b/, label: "npm install/uninstall" },
+
+  // npm run scripts
+  { pattern: /\bnpm\s+run\b/, label: "npm run" },
+
+  // composer global commands
+  { pattern: /\bcomposer\s+global\b/, label: "composer global" },
+
+  // composer require / remove
+  { pattern: /\bcomposer\s+(require|remove)\b/, label: "composer require/remove" },
+
+  // npm start / test scripts
+  { pattern: /\bnpm\s+(start|test)\b/, label: "npm start/test" },
+
+  // npx (arbitrary package execution)
+  { pattern: /\bnpx\b/, label: "npx" },
+
+  // npm publish / unpublish (supply-chain risk)
+  { pattern: /\bnpm\s+(un)?publish\b/, label: "npm publish/unpublish" },
+
+  // npm registry config change (supply-chain risk)
+  { pattern: /\bnpm\s+config\s+set\s+registry\b/, label: "npm config set registry" },
+
+  // php artisan migrations
+  { pattern: /\bphp\s+artisan\s+migrate\b/, label: "php artisan migrate" },
+
+  // php artisan scaffolding
+  { pattern: /\bphp\s+artisan\s+make\b/, label: "php artisan make" },
+];
+
+/**
  * Show a styled permission dialog with three choices.
  *
  * Choices:
@@ -239,7 +278,10 @@ export default function (pi: ExtensionAPI) {
     if (isToolCallEventType("bash", event)) {
       const command = event.input.command?.toLowerCase() ?? "";
 
-      for (const { pattern, label } of DESTRUCTIVE_PATTERNS) {
+      for (const { pattern, label } of [
+        ...DESTRUCTIVE_PATTERNS,
+        ...PACKAGE_PATTERNS,
+      ]) {
         if (pattern.test(command)) {
           const result = await showPermissionDialog(
             ctx,
