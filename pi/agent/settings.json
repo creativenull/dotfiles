@@ -17,7 +17,7 @@
   ],
   "theme": "light",
   "hideThinkingBlock": false,
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.85.0",
   "enabledModels": [
     "openrouter/google/gemini-3.6-flash",
     "openrouter/google/gemini-3.7-flash",
