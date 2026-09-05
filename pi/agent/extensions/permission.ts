@@ -219,8 +219,6 @@ async function showPermissionDialog(
   title: string,
   description: string,
 ): Promise<PermissionResult> {
-  notify(`Permission required: ${title}`, description);
-
   const items: SelectItem[] = [
     {
       value: "allow",
@@ -388,6 +386,8 @@ async function gate(
       reason: `Blocked: ${tool} requires permission but no UI is available for confirmation`,
     };
   }
+
+  notify(`Permission required: ${tool}`, "");
 
   const result = await showPermissionDialog(ctx, title, description);
 
