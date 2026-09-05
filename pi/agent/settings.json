@@ -15,7 +15,7 @@
     "--",
     "npm"
   ],
-  "theme": "light",
+  "theme": "light/dark",
   "hideThinkingBlock": false,
   "lastChangelogVersion": "0.85.1",
   "enabledModels": [
