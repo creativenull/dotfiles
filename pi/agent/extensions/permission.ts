@@ -1,17 +1,18 @@
 /**
  * Permission Extension
  *
- * Blocks destructive bash commands and asks for user confirmation.
- * Also prompts when creating new files via the write tool.
+ * Gates bash commands and file tools (write, edit) behind a confirmation
+ * dialog driven by a single declarative policy table (RULES). Each rule
+ * declares a regex to match and a scope: "always", or "outside-cwd" to
+ * only apply when the command touches paths outside pi's launch directory.
  *
- * Features:
- * - Detects dangerous commands (rm, dd, mkfs, git push --force, etc.)
- * - Shows a styled TUI dialog with three choices: Allow, Deny, or Provide Feedback
- * - Feedback lets the user type instructions to redirect the agent
- * - Blocks command if user denies, feeds back to agent
- * - Prompts when creating new files via write tool
+ * File ops (mkdir, touch, mv, cp, write, edit) are free within the launch
+ * directory. An "Always Allow" choice remembers approvals for the rest of
+ * the session. Without a UI (-p / JSON mode), gated actions block by default.
  *
- * No npm dependencies required - uses only Pi's built-in types and TUI components.
+ * Path detection is a best-effort heuristic, not a sandbox: it catches
+ * absolute paths, ~ expansion, ../ traversal, and redirection targets, but
+ * not env-var indirection, subshell output, or symlink escapes.
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -28,113 +29,191 @@ import {
   Input,
   Spacer,
 } from "@earendil-works/pi-tui";
-import { existsSync } from "node:fs";
+import { homedir } from "node:os";
+import { isAbsolute, resolve, sep } from "node:path";
 
-/** Result of the permission dialog */
 type PermissionResult =
   | { action: "allow" }
+  | { action: "allow-always" }
   | { action: "deny" }
   | { action: "feedback"; message: string };
 
-/**
- * Destructive command patterns to block.
- * Each pattern is tested against the bash command.
- */
-const DESTRUCTIVE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
-  // File deletion
-  { pattern: /\brm\s+/, label: "rm" },
-  { pattern: /\brmdir\s+/, label: "rmdir" },
-  { pattern: /\bunlink\s+/, label: "unlink" },
+type Rule = {
+  label: string;
+  pattern: RegExp;
+  scope: "always" | "outside-cwd";
+};
 
-  // File creation
-  { pattern: /\btouch\s+/, label: "touch" },
-
-  // Disk operations
-  { pattern: /\bmkfs\s+/, label: "mkfs" },
-  { pattern: /\bfdisk\s+/, label: "fdisk" },
-  { pattern: /\bparted\s+/, label: "parted" },
-  { pattern: /\bdd\s+if=/, label: "dd (disk copy)" },
-
-  // Process/system
-  { pattern: /\bkill\s+-9\s+1\b/, label: "kill -9 1 (kill init)" },
-  { pattern: /\bkillall\s+/, label: "killall" },
-  { pattern: /\bpkill\s+/, label: "pkill" },
-
-  // Git force operations
-  { pattern: /\bgit\s+push\s+--force\b/, label: "git push --force" },
-  { pattern: /\bgit\s+reset\s+--hard\b/, label: "git reset --hard" },
-  { pattern: /\bgit\s+clean\s+-fd?\b/, label: "git clean -fd" },
-
-  // System overwrites
-  { pattern: />\s*\/dev\/(sda|hda|nvme)/, label: "write to disk device" },
-
-  // Insecure permissions on root
-  { pattern: /\bchmod\s+-R\s+777\s+\//, label: "chmod 777 /" },
-];
-
-/**
- * Package/scaffolding command patterns that require permission.
- * Each pattern is tested against the bash command.
- */
-const PACKAGE_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
-  // npm install/uninstall globally (including i/r aliases)
+const RULES: Rule[] = [
+  { label: "rm", pattern: /\brm\s+/, scope: "always" },
+  { label: "rmdir", pattern: /\brmdir\s+/, scope: "always" },
+  { label: "unlink", pattern: /\bunlink\s+/, scope: "always" },
+  { label: "mkfs", pattern: /\bmkfs\s+/, scope: "always" },
+  { label: "fdisk", pattern: /\bfdisk\s+/, scope: "always" },
+  { label: "parted", pattern: /\bparted\s+/, scope: "always" },
+  { label: "dd (disk copy)", pattern: /\bdd\s+if=/, scope: "always" },
   {
+    label: "kill -9 1 (kill init)",
+    pattern: /\bkill\s+-9\s+1\b/,
+    scope: "always",
+  },
+  { label: "killall", pattern: /\bkillall\s+/, scope: "always" },
+  { label: "pkill", pattern: /\bpkill\s+/, scope: "always" },
+  {
+    label: "git push --force",
+    pattern: /\bgit\s+push\s+--force\b/,
+    scope: "always",
+  },
+  {
+    label: "git reset --hard",
+    pattern: /\bgit\s+reset\s+--hard\b/,
+    scope: "always",
+  },
+  {
+    label: "git clean -fd",
+    pattern: /\bgit\s+clean\s+-fd?\b/,
+    scope: "always",
+  },
+  {
+    label: "write to disk device",
+    pattern: />\s*\/dev\/(sda|hda|nvme)/,
+    scope: "always",
+  },
+  { label: "chmod 777 /", pattern: /\bchmod\s+-R\s+777\s+\//, scope: "always" },
+  {
+    label: "npm install/uninstall -g",
     pattern:
       /\bnpm\s+(i|install|r|uninstall|add|remove)\b[^\n]*\s(?:-g|--global)(?:\s|$)/,
-    label: "npm install/uninstall -g",
+    scope: "always",
   },
-
-  // npm install / uninstall (including i/r aliases)
   {
-    pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b/,
     label: "npm install/uninstall",
+    pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b/,
+    scope: "always",
   },
-
-  // npm run scripts
-  { pattern: /\bnpm\s+run\b/, label: "npm run" },
-
-  // composer global commands
-  { pattern: /\bcomposer\s+global\b/, label: "composer global" },
-
-  // composer require / remove
+  { label: "npm run", pattern: /\bnpm\s+run\b/, scope: "always" },
   {
-    pattern: /\bcomposer\s+(require|remove)\b/,
+    label: "composer global",
+    pattern: /\bcomposer\s+global\b/,
+    scope: "always",
+  },
+  {
     label: "composer require/remove",
+    pattern: /\bcomposer\s+(require|remove)\b/,
+    scope: "always",
   },
-
-  // npm start / test scripts
-  { pattern: /\bnpm\s+(start|test)\b/, label: "npm start/test" },
-
-  // npx (arbitrary package execution)
-  { pattern: /\bnpx\b/, label: "npx" },
-
-  // npm publish / unpublish (supply-chain risk)
-  { pattern: /\bnpm\s+(un)?publish\b/, label: "npm publish/unpublish" },
-
-  // npm registry config change (supply-chain risk)
   {
-    pattern: /\bnpm\s+config\s+set\s+registry\b/,
-    label: "npm config set registry",
+    label: "npm start/test",
+    pattern: /\bnpm\s+(start|test)\b/,
+    scope: "always",
   },
-
-  // php artisan migrations
-  { pattern: /\bphp\s+artisan\s+migrate\b/, label: "php artisan migrate" },
-
-  // php artisan scaffolding
-  { pattern: /\bphp\s+artisan\s+make\b/, label: "php artisan make" },
+  { label: "npx", pattern: /\bnpx\b/, scope: "always" },
+  {
+    label: "npm publish/unpublish",
+    pattern: /\bnpm\s+(un)?publish\b/,
+    scope: "always",
+  },
+  {
+    label: "npm config set registry",
+    pattern: /\bnpm\s+config\s+set\s+registry\b/,
+    scope: "always",
+  },
+  {
+    label: "php artisan migrate",
+    pattern: /\bphp\s+artisan\s+migrate\b/,
+    scope: "always",
+  },
+  {
+    label: "php artisan make",
+    pattern: /\bphp\s+artisan\s+make\b/,
+    scope: "always",
+  },
+  { label: "mv", pattern: /\bmv\s+/, scope: "outside-cwd" },
+  { label: "cp", pattern: /\bcp\s+/, scope: "outside-cwd" },
+  { label: "mkdir", pattern: /\bmkdir\s+/, scope: "outside-cwd" },
+  { label: "touch", pattern: /\btouch\s+/, scope: "outside-cwd" },
+  { label: "chmod", pattern: /\bchmod\s+/, scope: "outside-cwd" },
+  { label: "chown", pattern: /\bchown\s+/, scope: "outside-cwd" },
+  { label: "chgrp", pattern: /\bchgrp\s+/, scope: "outside-cwd" },
+  { label: "ln", pattern: /\bln\s+/, scope: "outside-cwd" },
+  { label: "tee", pattern: /\btee\s+/, scope: "outside-cwd" },
+  { label: "dd", pattern: /\bdd\b/, scope: "outside-cwd" },
+  { label: "truncate", pattern: /\btruncate\s+/, scope: "outside-cwd" },
+  { label: "shred", pattern: /\bshred\s+/, scope: "outside-cwd" },
+  {
+    label: "sed -i",
+    pattern: /\bsed\s+(-[a-zA-Z]*i[a-zA-Z]*\s|--in-place\b)/,
+    scope: "outside-cwd",
+  },
+  {
+    label: "output redirection (>)",
+    pattern: /(^|\s)>\s*\S/,
+    scope: "outside-cwd",
+  },
+  {
+    label: "append redirection (>>)",
+    pattern: /(^|\s)>>/,
+    scope: "outside-cwd",
+  },
 ];
 
-/**
- * Show a styled permission dialog with three choices.
- *
- * Choices:
- * - Allow: proceed with the action
- * - Deny: block the action
- * - Provide Feedback: type a message to redirect the agent
- *
- * Uses a two-phase UI: first a SelectList for the choice,
- * then an Input field if the user picks "Provide Feedback".
- */
+const SAFE_DEV_PATHS = new Set([
+  "/dev/null",
+  "/dev/stdin",
+  "/dev/stdout",
+  "/dev/stderr",
+  "/dev/tty",
+]);
+
+const sessionAllowlist = new Set<string>();
+
+function isPathOutsideCwd(path: string, cwd: string): boolean {
+  if (!path || path === ".") return false;
+
+  let abs: string;
+  if (path.startsWith("~")) {
+    abs = resolve(homedir(), path.slice(1));
+  } else if (isAbsolute(path)) {
+    abs = resolve(path);
+  } else {
+    if (!/(^|\/)\.\.(\/|$)/.test(path)) return false;
+    abs = resolve(cwd, path);
+  }
+
+  const root = resolve(cwd);
+  return abs !== root && !abs.startsWith(root + sep);
+}
+
+function hasPathOutsideCwd(command: string, cwd: string): boolean {
+  const tokens = command.match(/[^\s;|&()]+/g) ?? [];
+
+  for (const raw of tokens) {
+    let token = raw.replace(/^[0-9]*[<>]+/, "").replace(/^["']+|["']+$/g, "");
+    if (!token) continue;
+
+    if (token.startsWith("-")) {
+      const eq = token.indexOf("=");
+      if (eq === -1) continue;
+      token = token.slice(eq + 1);
+    }
+
+    if (SAFE_DEV_PATHS.has(token)) continue;
+    if (isPathOutsideCwd(token, cwd)) return true;
+  }
+
+  return false;
+}
+
+function findMatchingRule(
+  command: string,
+  outsideCwd: boolean,
+): Rule | undefined {
+  return RULES.find(
+    ({ pattern, scope }) =>
+      (scope === "always" || outsideCwd) && pattern.test(command),
+  );
+}
+
 async function showPermissionDialog(
   ctx: { ui: any },
   title: string,
@@ -148,6 +227,11 @@ async function showPermissionDialog(
       label: "✓ Allow",
       description: "Proceed with the action",
     },
+    {
+      value: "allow-always",
+      label: "✓✓ Always Allow (this session)",
+      description: "Skip future prompts for this command type",
+    },
     { value: "deny", label: "✗ Deny", description: "Block this action" },
     {
       value: "feedback",
@@ -156,27 +240,21 @@ async function showPermissionDialog(
     },
   ];
 
-  // Phase 1: Select an action
   const choice = await ctx.ui.custom<string | null>((tui, theme, _kb, done) => {
     const container = new Container();
     container.addChild(
       new DynamicBorder((s: string) => theme.fg("warning", s)),
     );
-
-    // Title
     container.addChild(
       new Text(theme.fg("warning", theme.bold(`⚠ ${title}`)), 1, 0),
     );
     container.addChild(new Spacer());
 
-    // Description (the command or file path)
-    const descLines = description.split("\n");
-    for (const line of descLines) {
+    for (const line of description.split("\n")) {
       container.addChild(new Text(theme.fg("text", line), 1, 0));
     }
     container.addChild(new Spacer());
 
-    // SelectList with themed styling
     const selectList = new SelectList(items, items.length, {
       selectedPrefix: (text: string) => theme.fg("accent", text),
       selectedText: (text: string) => theme.fg("accent", text),
@@ -188,8 +266,6 @@ async function showPermissionDialog(
     selectList.onSelect = (item) => done(item.value);
     selectList.onCancel = () => done(null);
     container.addChild(selectList);
-
-    // Footer hint
     container.addChild(
       new Text(
         theme.fg("dim", "↑↓ navigate • enter select • esc cancel"),
@@ -197,7 +273,6 @@ async function showPermissionDialog(
         0,
       ),
     );
-
     container.addChild(
       new DynamicBorder((s: string) => theme.fg("warning", s)),
     );
@@ -216,7 +291,6 @@ async function showPermissionDialog(
     };
   });
 
-  // Handle escape / cancel
   if (choice === null || choice === "deny") {
     return { action: "deny" };
   }
@@ -225,14 +299,16 @@ async function showPermissionDialog(
     return { action: "allow" };
   }
 
-  // Phase 2: Collect feedback input
+  if (choice === "allow-always") {
+    return { action: "allow-always" };
+  }
+
   const feedback = await ctx.ui.custom<string | null>(
     (tui, theme, _kb, done) => {
       const container = new Container();
       container.addChild(
         new DynamicBorder((s: string) => theme.fg("accent", s)),
       );
-
       container.addChild(
         new Text(theme.fg("accent", theme.bold("✏ Provide Feedback")), 1, 0),
       );
@@ -242,20 +318,16 @@ async function showPermissionDialog(
       );
       container.addChild(new Spacer());
 
-      // Description reminder
-      const descLines = description.split("\n");
-      for (const line of descLines) {
+      for (const line of description.split("\n")) {
         container.addChild(new Text(theme.fg("dim", line), 1, 0));
       }
       container.addChild(new Spacer());
 
-      // Input field
       const input = new Input();
       input.onSubmit = (value: string) => done(value || null);
       input.onEscape = () => done(null);
       container.addChild(input);
       container.addChild(new Spacer());
-
       container.addChild(
         new Text(theme.fg("dim", "enter submit • esc cancel"), 1, 0),
       );
@@ -285,64 +357,95 @@ async function showPermissionDialog(
   return { action: "feedback", message: feedback.trim() };
 }
 
+function handlePermissionResult(
+  result: PermissionResult,
+  tool: "bash" | "write" | "edit",
+): { block: true; reason: string } | undefined {
+  if (result.action === "deny") {
+    return { block: true, reason: `Blocked by user: ${tool}` };
+  }
+
+  if (result.action === "feedback") {
+    return {
+      block: true,
+      reason: `Blocked by user: ${tool} — ${result.message}`,
+    };
+  }
+
+  return undefined;
+}
+
+async function gate(
+  ctx: { ui: any; hasUI: boolean },
+  tool: "bash" | "write" | "edit",
+  title: string,
+  description: string,
+  allowlistKey: string,
+): Promise<{ block: true; reason: string } | undefined> {
+  if (!ctx.hasUI) {
+    return {
+      block: true,
+      reason: `Blocked: ${tool} requires permission but no UI is available for confirmation`,
+    };
+  }
+
+  const result = await showPermissionDialog(ctx, title, description);
+
+  if (result.action === "allow-always") {
+    sessionAllowlist.add(allowlistKey);
+  }
+
+  return handlePermissionResult(result, tool);
+}
+
 export default function (pi: ExtensionAPI) {
-  // Intercept bash tool calls for destructive commands
   pi.on("tool_call", async (event, ctx) => {
+    const cwd = ctx.cwd;
+
     if (isToolCallEventType("bash", event)) {
-      const command = event.input.command?.toLowerCase() ?? "";
+      const command = event.input.command ?? "";
+      const lower = command.toLowerCase();
+      const outside = hasPathOutsideCwd(lower, cwd);
 
-      for (const { pattern, label } of [
-        ...DESTRUCTIVE_PATTERNS,
-        ...PACKAGE_PATTERNS,
-      ]) {
-        if (pattern.test(command)) {
-          const result = await showPermissionDialog(
-            ctx,
-            `Command requires permission: ${label}`,
-            event.input.command,
-          );
+      const rule = findMatchingRule(lower, outside);
+      if (!rule || sessionAllowlist.has(rule.label)) return undefined;
 
-          if (result.action === "deny") {
-            return { block: true, reason: "Blocked by user: bash" };
-          }
+      const title = outside
+        ? `Outside working directory: ${rule.label}`
+        : `Command requires permission: ${rule.label}`;
 
-          if (result.action === "feedback") {
-            return {
-              block: true,
-              reason: `Blocked by user: bash — ${result.message}`,
-            };
-          }
-
-          // action === 'allow' → proceed
-          break;
-        }
-      }
+      return gate(
+        ctx,
+        "bash",
+        title,
+        `${command}\n(working directory: ${cwd})`,
+        rule.label,
+      );
     }
 
-    // Intercept write tool for new files
-    if (isToolCallEventType("write", event)) {
-      const filePath = event.input.path;
+    if (
+      isToolCallEventType("write", event) ||
+      isToolCallEventType("edit", event)
+    ) {
+      const filePath = event.input.path ?? "";
 
-      if (!existsSync(filePath)) {
-        const result = await showPermissionDialog(
-          ctx,
-          "Create new file",
-          filePath,
-        );
+      if (!isPathOutsideCwd(filePath, cwd)) return undefined;
 
-        if (result.action === "deny") {
-          return { block: true, reason: "Blocked by user: write" };
-        }
+      const absPath = isAbsolute(filePath)
+        ? resolve(filePath)
+        : resolve(cwd, filePath);
+      const key = `${event.toolName}-outside-cwd`;
+      if (sessionAllowlist.has(key)) return undefined;
 
-        if (result.action === "feedback") {
-          return {
-            block: true,
-            reason: `Blocked by user: write — ${result.message}`,
-          };
-        }
-
-        // action === 'allow' → proceed
-      }
+      return gate(
+        ctx,
+        event.toolName as "write" | "edit",
+        `${event.toolName} file outside working directory`,
+        `${absPath}\n(working directory: ${cwd})`,
+        key,
+      );
     }
+
+    return undefined;
   });
 }
