@@ -1,20 +1,13 @@
 /**
- * Pi Notify Extension
- *
- * Sends a terminal notification when the Pi agent finishes responding,
- * with a preview of the first sentence of the answer.
- *
- * Supports:
- * - OSC 777: Ghostty, iTerm2, WezTerm, rxvt-unicode
- * - OSC 99: Kitty (with stacking via incrementing IDs)
- *
- * Configuration: ~/.pi/agent/notify.json (optional)
+ * Terminal notification on agent completion (OSC 777 / OSC 99 for Kitty).
+ * Config: ~/.pi/agent/notify.json
  */
 
 import type {
   AgentEndEvent,
   ExtensionAPI,
 } from "@earendil-works/pi-coding-agent";
+import type { AssistantMessage } from "@earendil-works/pi-ai";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -40,7 +33,7 @@ function loadConfig(): Config {
       return { ...defaultConfig, ...userConfig };
     }
   } catch {
-    // Silently ignore config errors, use defaults
+    // Use defaults
   }
 
   return defaultConfig;
@@ -53,9 +46,7 @@ function notifyOSC777(title: string, body: string): void {
 }
 
 /**
- * Send a notification via Kitty's OSC 99 sequence.
- * Uses incrementing IDs and d=1 (done) so notifications stack instead of replacing.
- * Two-part sequence: title with d=0 (in-progress), body with d=1 (done, triggers display).
+ * Kitty OSC 99: two-part sequence so notifications stack, not replace.
  */
 function notifyOSC99(title: string, body: string): void {
   notificationId++;
@@ -72,9 +63,7 @@ export function notify(title: string, body: string): void {
   }
 }
 
-/**
- * Strip inline markdown formatting from a string.
- */
+/** Strip inline markdown. */
 function stripMarkdown(text: string): string {
   return text
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
@@ -88,7 +77,21 @@ function stripMarkdown(text: string): string {
 }
 
 /**
- * Extract the first sentence of the assistant's answer for the notification preview.
+ * HTTP status code from a pi-ai provider error message, e.g. "429:",
+ * "Provider (429):", "HTTP 429", "403 status code".
+ */
+function extractStatusCode(errorMessage?: string): number | undefined {
+  if (!errorMessage) return undefined;
+  const match = errorMessage.match(
+    /\((\d{3})\)|\b(\d{3}):|HTTP\s*(\d{3})|\b(\d{3}) status code/i,
+  );
+  return match
+    ? Number(match[1] ?? match[2] ?? match[3] ?? match[4])
+    : undefined;
+}
+
+/**
+ * First sentence of the answer, for the notification preview.
  */
 function extractPreview(text: string, maxLength: number): string {
   if (!text || text.trim().length === 0) {
@@ -162,22 +165,44 @@ export default function notifyExtension(pi: ExtensionAPI) {
 
   pi.on("agent_end", async (event: AgentEndEvent) => {
     const { messages } = event;
-    let lastAssistantText = "";
+    let lastAssistant: AssistantMessage | undefined;
 
     for (let i = messages.length - 1; i >= 0; i--) {
       const msg = messages[i];
 
       if (msg.role === "assistant") {
-        const textParts: string[] = [];
-        for (const block of msg.content) {
-          if (block.type === "text") {
-            textParts.push(block.text);
-          }
-        }
-        lastAssistantText = textParts.join("\n");
+        lastAssistant = msg as AssistantMessage;
         break;
       }
     }
+
+    // No response yet
+    if (!lastAssistant) {
+      return;
+    }
+
+    // User abort: stay silent
+    if (lastAssistant.stopReason === "aborted") {
+      return;
+    }
+
+    // API error: code only, details are in the agent UI
+    if (lastAssistant.stopReason === "error") {
+      const status = extractStatusCode(lastAssistant.errorMessage);
+      notify(
+        config.title,
+        status ? `Provider error (${status})` : "Provider error",
+      );
+      return;
+    }
+
+    const textParts: string[] = [];
+    for (const block of lastAssistant.content) {
+      if (block.type === "text") {
+        textParts.push(block.text);
+      }
+    }
+    const lastAssistantText = textParts.join("\n");
 
     const preview = extractPreview(lastAssistantText, config.maxPreviewLength);
     notify(config.title, preview);
