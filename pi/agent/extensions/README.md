@@ -1,6 +1,6 @@
 # Extensions
 
-Three standalone extensions for [pi coding agent](https://github.com/earendil-works/pi-coding-agent).
+Four standalone extensions for [pi coding agent](https://github.com/earendil-works/pi-coding-agent).
 Each is a self-contained TypeScript module exporting a default extension entry
 point.
 
@@ -24,6 +24,15 @@ gate sends a brief notification naming just the tool (`Permission required:
 bash`). The dialog offers Allow, Always Allow (per session), Deny, or
 Provide Feedback; without a UI, gated actions block by default. Path
 detection is a best-effort heuristic, not a sandbox.
+
+## inspire.ts — Inspiring Working Messages
+
+Replaces pi's default "Working..." streaming message with a randomly picked
+inspiring quote, formatted the same way `php artisan inspire` prints to
+stdout (bold `“ quote ”` plus a dim `— author` line). A fresh quote is drawn
+on session start and on every agent run, and rotates to a new random quote
+every 10 seconds while the agent is working. Shamelessly copied from:
+<https://github.com/laravel/framework/blob/11.x/src/Illuminate/Foundation/Inspiring.php>
 
 ## web-fetch.ts — Web Fetch Tool
 
