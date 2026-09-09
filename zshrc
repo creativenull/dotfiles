@@ -54,6 +54,7 @@ alias gt="git tag"
 # Personal aliases
 alias cddot="cd ~/dotfiles"
 alias cdnvim="cd ~/dotfiles/config/nvim"
+alias cdpi="cd ~/dotfiles/pi/agent"
 alias cdp="cd ~/projects/github.com/creativenull"
 alias cdd="cd ~/projects/demos"
 
