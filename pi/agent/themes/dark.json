@@ -34,7 +34,7 @@
     "text": "fg",
     "thinkingText": "brightBlack",
 
-    "selectedBg": "brightBlack",
+    "selectedBg": "#3a3a3a",
     "userMessageBg": "black",
     "userMessageText": "white",
     "customMessageBg": "",
