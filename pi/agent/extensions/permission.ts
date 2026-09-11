@@ -11,8 +11,9 @@
  * the session. Without a UI (-p / JSON mode), gated actions block by default.
  *
  * Path detection is a best-effort heuristic, not a sandbox: it catches
- * absolute paths, ~ expansion, ../ traversal, and redirection targets, but
- * not env-var indirection, subshell output, or symlink escapes.
+ * absolute paths, ~ expansion, $VAR/${VAR} expansion (e.g. $HOME), ../
+ * traversal, and redirection targets, but not subshell output, command
+ * substitution, or symlink escapes.
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -171,8 +172,17 @@ function isPathOutsideCwd(path: string, cwd: string): boolean {
   if (!path || path === ".") return false;
 
   let abs: string;
+  const envMatch = path.match(/^\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?/);
   if (path.startsWith("~")) {
     abs = resolve(homedir(), path.slice(1));
+  } else if (envMatch) {
+    // $VAR/... or ${VAR}/... — resolve against the environment. If the
+    // variable is unset or empty we can't know where it points, so be
+    // conservative and treat the token as outside the cwd.
+    const value = process.env[envMatch[1]] ?? "";
+    if (!value) return true;
+    const rest = path.slice(envMatch[0].length);
+    abs = resolve(cwd, value + rest);
   } else if (isAbsolute(path)) {
     abs = resolve(path);
   } else {
