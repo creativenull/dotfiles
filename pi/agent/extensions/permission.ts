@@ -1,164 +1,123 @@
 /**
  * Permission Extension
  *
- * Gates bash commands and file tools (write, edit) behind a confirmation
- * dialog driven by a single declarative policy table (RULES). Each rule
- * declares a regex to match and a scope: "always", or "outside-cwd" to
- * only apply when the command touches paths outside pi's launch directory.
+ * Single rule: tool calls must stay inside the current working directory.
+ * Anything inside the cwd runs freely. Anything touching a path outside
+ * the cwd prompts with four choices: allow once, allow for the rest of
+ * the session, deny, or deny with feedback for the agent. Without a UI
+ * (-p / JSON mode), calls that reach outside the cwd are blocked.
  *
- * File ops (mkdir, touch, mv, cp, write, edit) are free within the launch
- * directory. An "Always Allow" choice remembers approvals for the rest of
- * the session. Without a UI (-p / JSON mode), gated actions block by default.
+ * Layers:
+ * - bash: quote-aware token scan for absolute paths, ~, $VAR, ../ and
+ *   redirection targets, resolved lexically AND through symlinks.
+ * - bash: constructs that can't be checked statically (command
+ *   substitution, eval, source, shell -c, find -exec, xargs, sudo)
+ *   always prompt — fail-closed instead of silently missing them.
+ * - read/write/edit: direct path check.
+ * - any other tool (MCP, custom): string inputs that look like paths
+ *   are checked too.
  *
- * Path detection is a best-effort heuristic, not a sandbox: it catches
- * absolute paths, ~ expansion, $VAR/${VAR} expansion (e.g. $HOME), ../
- * traversal, and redirection targets, but not subshell output, command
- * substitution, or symlink escapes.
+ * This is a heuristic guardrail, not a security boundary: paths computed
+ * at runtime by earlier statements in a script can't be seen statically.
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import {
-  DynamicBorder,
-  isToolCallEventType,
-} from "@earendil-works/pi-coding-agent";
-import { notify } from "./notify.ts";
-import {
-  Container,
-  type SelectItem,
-  SelectList,
-  Text,
-  Input,
-  Spacer,
-} from "@earendil-works/pi-tui";
+import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
+import { realpathSync } from "node:fs";
 import { homedir } from "node:os";
-import { isAbsolute, resolve, sep } from "node:path";
+import { dirname, isAbsolute, resolve, sep } from "node:path";
+import { notify } from "./notify.ts";
 
-type PermissionResult =
-  | { action: "allow" }
-  | { action: "allow-always" }
-  | { action: "deny" }
-  | { action: "feedback"; message: string };
+const sessionAllow = new Set<string>();
 
-type Rule = {
-  label: string;
-  pattern: RegExp;
-  scope: "always" | "outside-cwd";
-};
+// ---------------------------------------------------------------------------
+// Path resolution
+// ---------------------------------------------------------------------------
 
-const RULES: Rule[] = [
-  { label: "rm", pattern: /\brm\s+/, scope: "always" },
-  { label: "rmdir", pattern: /\brmdir\s+/, scope: "always" },
-  { label: "unlink", pattern: /\bunlink\s+/, scope: "always" },
-  { label: "mkfs", pattern: /\bmkfs\s+/, scope: "always" },
-  { label: "fdisk", pattern: /\bfdisk\s+/, scope: "always" },
-  { label: "parted", pattern: /\bparted\s+/, scope: "always" },
-  { label: "dd (disk copy)", pattern: /\bdd\s+if=/, scope: "always" },
+/** Lexically resolve a path token against cwd. "unknown" if unresolvable. */
+function resolvePath(path: string, cwd: string): string | "unknown" {
+  if (path.startsWith("~")) return resolve(homedir(), path.slice(1));
+  const env = path.match(/^\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?/);
+  if (env) {
+    const value = process.env[env[1]] ?? "";
+    if (!value) return "unknown";
+    return resolve(cwd, value + path.slice(env[0].length));
+  }
+  return isAbsolute(path) ? resolve(path) : resolve(cwd, path);
+}
+
+/** realpath of the nearest existing ancestor, rejoined with the rest. */
+function resolveReal(path: string): string {
+  let current = path;
+  for (;;) {
+    try {
+      return realpathSync(current) + path.slice(current.length);
+    } catch {
+      const parent = dirname(current);
+      if (parent === current) return path;
+      current = parent;
+    }
+  }
+}
+
+function insideRoots(abs: string, roots: string[]): boolean {
+  return roots.some((r) => abs === r || abs.startsWith(r + sep));
+}
+
+function isOutside(path: string, cwd: string, roots: string[]): boolean {
+  if (!path) return false;
+  const abs = resolvePath(path, cwd);
+  if (abs === "unknown") return true; // can't resolve → confirm
+  // Both the lexical path and its real (symlink-resolved) location must
+  // be inside the cwd.
+  return !insideRoots(abs, roots) || !insideRoots(resolveReal(abs), roots);
+}
+
+// ---------------------------------------------------------------------------
+// Bash analysis
+// ---------------------------------------------------------------------------
+
+/** Constructs we can't reason about statically → always confirm. */
+const DYNAMIC: Array<{ label: string; pattern: RegExp }> = [
+  { label: "command substitution $(…) or `…`", pattern: /\$\(|`/ },
+  { label: "eval", pattern: /(^|[\s;|&])eval\s/ },
+  { label: "source / dot-command", pattern: /(^|[\s;|&])(source|\.)\s/ },
   {
-    label: "kill -9 1 (kill init)",
-    pattern: /\bkill\s+-9\s+1\b/,
-    scope: "always",
+    label: "shell invocation (sh -c …)",
+    pattern: /\b(?:bash|sh|zsh|dash|fish)\s+[^\n]*\s-c\s/,
   },
-  { label: "killall", pattern: /\bkillall\s+/, scope: "always" },
-  { label: "pkill", pattern: /\bpkill\s+/, scope: "always" },
-  {
-    label: "git push --force",
-    pattern: /\bgit\s+push\s+--force\b/,
-    scope: "always",
-  },
-  {
-    label: "git reset --hard",
-    pattern: /\bgit\s+reset\s+--hard\b/,
-    scope: "always",
-  },
-  {
-    label: "git clean -fd",
-    pattern: /\bgit\s+clean\s+-fd?\b/,
-    scope: "always",
-  },
-  {
-    label: "write to disk device",
-    pattern: />\s*\/dev\/(sda|hda|nvme)/,
-    scope: "always",
-  },
-  { label: "chmod 777 /", pattern: /\bchmod\s+-R\s+777\s+\//, scope: "always" },
-  {
-    label: "npm install/uninstall -g",
-    pattern:
-      /\bnpm\s+(i|install|r|uninstall|add|remove)\b[^\n]*\s(?:-g|--global)(?:\s|$)/,
-    scope: "always",
-  },
-  {
-    label: "npm install/uninstall",
-    pattern: /\bnpm\s+(i|install|r|uninstall|add|remove)\b/,
-    scope: "always",
-  },
-  { label: "npm run", pattern: /\bnpm\s+run\b/, scope: "always" },
-  {
-    label: "composer global",
-    pattern: /\bcomposer\s+global\b/,
-    scope: "always",
-  },
-  {
-    label: "composer require/remove",
-    pattern: /\bcomposer\s+(require|remove)\b/,
-    scope: "always",
-  },
-  {
-    label: "npm start/test",
-    pattern: /\bnpm\s+(start|test)\b/,
-    scope: "always",
-  },
-  { label: "npx", pattern: /\bnpx\b/, scope: "always" },
-  {
-    label: "npm publish/unpublish",
-    pattern: /\bnpm\s+(un)?publish\b/,
-    scope: "always",
-  },
-  {
-    label: "npm config set registry",
-    pattern: /\bnpm\s+config\s+set\s+registry\b/,
-    scope: "always",
-  },
-  {
-    label: "php artisan migrate",
-    pattern: /\bphp\s+artisan\s+migrate\b/,
-    scope: "always",
-  },
-  {
-    label: "php artisan make",
-    pattern: /\bphp\s+artisan\s+make\b/,
-    scope: "always",
-  },
-  { label: "mv", pattern: /\bmv\s+/, scope: "outside-cwd" },
-  { label: "cp", pattern: /\bcp\s+/, scope: "outside-cwd" },
-  { label: "mkdir", pattern: /\bmkdir\s+/, scope: "outside-cwd" },
-  { label: "touch", pattern: /\btouch\s+/, scope: "outside-cwd" },
-  { label: "chmod", pattern: /\bchmod\s+/, scope: "outside-cwd" },
-  { label: "chown", pattern: /\bchown\s+/, scope: "outside-cwd" },
-  { label: "chgrp", pattern: /\bchgrp\s+/, scope: "outside-cwd" },
-  { label: "ln", pattern: /\bln\s+/, scope: "outside-cwd" },
-  { label: "tee", pattern: /\btee\s+/, scope: "outside-cwd" },
-  { label: "dd", pattern: /\bdd\b/, scope: "outside-cwd" },
-  { label: "truncate", pattern: /\btruncate\s+/, scope: "outside-cwd" },
-  { label: "shred", pattern: /\bshred\s+/, scope: "outside-cwd" },
-  {
-    label: "sed -i",
-    pattern: /\bsed\s+(-[a-zA-Z]*i[a-zA-Z]*\s|--in-place\b)/,
-    scope: "outside-cwd",
-  },
-  {
-    label: "output redirection (>)",
-    pattern: /(^|\s)>\s*\S/,
-    scope: "outside-cwd",
-  },
-  {
-    label: "append redirection (>>)",
-    pattern: /(^|\s)>>/,
-    scope: "outside-cwd",
-  },
+  { label: "find -exec", pattern: /\bfind\b[^|;&]*\s-exec/ },
+  { label: "xargs", pattern: /(^|[\s;|&])xargs(\s|$)/ },
+  { label: "sudo", pattern: /(^|[\s;|&])sudo(\s|$)/ },
 ];
 
-const SAFE_DEV_PATHS = new Set([
+/** Quote-aware tokenizer: splits on whitespace and shell operators. */
+function* tokens(command: string): Generator<string> {
+  let cur = "";
+  let quote: string | null = null;
+  let active = false;
+  for (const ch of command) {
+    if (quote) {
+      if (ch === quote) quote = null;
+      else cur += ch;
+    } else if (ch === "'" || ch === '"') {
+      quote = ch;
+      active = true;
+    } else if (/[\s;|&()]/.test(ch)) {
+      if (active) {
+        yield cur;
+        cur = "";
+        active = false;
+      }
+    } else {
+      cur += ch;
+      active = true;
+    }
+  }
+  if (active) yield cur;
+}
+
+const SAFE_PATHS = new Set([
   "/dev/null",
   "/dev/stdin",
   "/dev/stdout",
@@ -166,294 +125,139 @@ const SAFE_DEV_PATHS = new Set([
   "/dev/tty",
 ]);
 
-const sessionAllowlist = new Set<string>();
+/** Returns a description of the risk, or undefined if the command is fine. */
+function checkCommand(
+  command: string,
+  cwd: string,
+  roots: string[],
+): string | undefined {
+  const dynamic = DYNAMIC.find((d) => d.pattern.test(command));
+  if (dynamic) return `uses ${dynamic.label}, which can't be checked statically`;
 
-function isPathOutsideCwd(path: string, cwd: string): boolean {
-  if (!path || path === ".") return false;
-
-  let abs: string;
-  const envMatch = path.match(/^\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?/);
-  if (path.startsWith("~")) {
-    abs = resolve(homedir(), path.slice(1));
-  } else if (envMatch) {
-    // $VAR/... or ${VAR}/... — resolve against the environment. If the
-    // variable is unset or empty we can't know where it points, so be
-    // conservative and treat the token as outside the cwd.
-    const value = process.env[envMatch[1]] ?? "";
-    if (!value) return true;
-    const rest = path.slice(envMatch[0].length);
-    abs = resolve(cwd, value + rest);
-  } else if (isAbsolute(path)) {
-    abs = resolve(path);
-  } else {
-    if (!/(^|\/)\.\.(\/|$)/.test(path)) return false;
-    abs = resolve(cwd, path);
-  }
-
-  const root = resolve(cwd);
-  return abs !== root && !abs.startsWith(root + sep);
-}
-
-function hasPathOutsideCwd(command: string, cwd: string): boolean {
-  const tokens = command.match(/[^\s;|&()]+/g) ?? [];
-
-  for (const raw of tokens) {
-    let token = raw.replace(/^[0-9]*[<>]+/, "").replace(/^["']+|["']+$/g, "");
+  for (const raw of tokens(command)) {
+    let token = raw.replace(/^[0-9]*[<>]+/, "");
     if (!token) continue;
-
     if (token.startsWith("-")) {
       const eq = token.indexOf("=");
       if (eq === -1) continue;
       token = token.slice(eq + 1);
     }
-
-    if (SAFE_DEV_PATHS.has(token)) continue;
-    if (isPathOutsideCwd(token, cwd)) return true;
+    if (SAFE_PATHS.has(token)) continue;
+    if (isOutside(token, cwd, roots)) return `references ${token}`;
   }
-
-  return false;
-}
-
-function findMatchingRule(
-  command: string,
-  outsideCwd: boolean,
-): Rule | undefined {
-  return RULES.find(
-    ({ pattern, scope }) =>
-      (scope === "always" || outsideCwd) && pattern.test(command),
-  );
-}
-
-async function showPermissionDialog(
-  ctx: { ui: any },
-  title: string,
-  description: string,
-): Promise<PermissionResult> {
-  const items: SelectItem[] = [
-    {
-      value: "allow",
-      label: "✓ Allow",
-      description: "Proceed with the action",
-    },
-    {
-      value: "allow-always",
-      label: "✓✓ Always Allow (this session)",
-      description: "Skip future prompts for this command type",
-    },
-    { value: "deny", label: "✗ Deny", description: "Block this action" },
-    {
-      value: "feedback",
-      label: "✏ Provide Feedback",
-      description: "Type instructions to redirect the agent",
-    },
-  ];
-
-  const choice = await ctx.ui.custom<string | null>((tui, theme, _kb, done) => {
-    const container = new Container();
-    container.addChild(
-      new DynamicBorder((s: string) => theme.fg("warning", s)),
-    );
-    container.addChild(
-      new Text(theme.fg("warning", theme.bold(`⚠ ${title}`)), 1, 0),
-    );
-    container.addChild(new Spacer());
-
-    for (const line of description.split("\n")) {
-      container.addChild(new Text(theme.fg("text", line), 1, 0));
-    }
-    container.addChild(new Spacer());
-
-    const selectList = new SelectList(items, items.length, {
-      selectedPrefix: (text: string) => theme.fg("accent", text),
-      selectedText: (text: string) => theme.fg("accent", text),
-      description: (text: string) => theme.fg("muted", text),
-      scrollInfo: (text: string) => theme.fg("dim", text),
-      noMatch: (text: string) => theme.fg("warning", text),
-    });
-
-    selectList.onSelect = (item) => done(item.value);
-    selectList.onCancel = () => done(null);
-    container.addChild(selectList);
-    container.addChild(
-      new Text(
-        theme.fg("dim", "↑↓ navigate • enter select • esc cancel"),
-        1,
-        0,
-      ),
-    );
-    container.addChild(
-      new DynamicBorder((s: string) => theme.fg("warning", s)),
-    );
-
-    return {
-      render(width: number) {
-        return container.render(width);
-      },
-      invalidate() {
-        container.invalidate();
-      },
-      handleInput(data: string) {
-        selectList.handleInput(data);
-        tui.requestRender();
-      },
-    };
-  });
-
-  if (choice === null || choice === "deny") {
-    return { action: "deny" };
-  }
-
-  if (choice === "allow") {
-    return { action: "allow" };
-  }
-
-  if (choice === "allow-always") {
-    return { action: "allow-always" };
-  }
-
-  const feedback = await ctx.ui.custom<string | null>(
-    (tui, theme, _kb, done) => {
-      const container = new Container();
-      container.addChild(
-        new DynamicBorder((s: string) => theme.fg("accent", s)),
-      );
-      container.addChild(
-        new Text(theme.fg("accent", theme.bold("✏ Provide Feedback")), 1, 0),
-      );
-      container.addChild(new Spacer());
-      container.addChild(
-        new Text(theme.fg("muted", "Type instructions for the agent:"), 1, 0),
-      );
-      container.addChild(new Spacer());
-
-      for (const line of description.split("\n")) {
-        container.addChild(new Text(theme.fg("dim", line), 1, 0));
-      }
-      container.addChild(new Spacer());
-
-      const input = new Input();
-      input.onSubmit = (value: string) => done(value || null);
-      input.onEscape = () => done(null);
-      container.addChild(input);
-      container.addChild(new Spacer());
-      container.addChild(
-        new Text(theme.fg("dim", "enter submit • esc cancel"), 1, 0),
-      );
-      container.addChild(
-        new DynamicBorder((s: string) => theme.fg("accent", s)),
-      );
-
-      return {
-        render(width: number) {
-          return container.render(width);
-        },
-        invalidate() {
-          container.invalidate();
-        },
-        handleInput(data: string) {
-          input.handleInput(data);
-          tui.requestRender();
-        },
-      };
-    },
-  );
-
-  if (feedback === null || feedback.trim() === "") {
-    return { action: "deny" };
-  }
-
-  return { action: "feedback", message: feedback.trim() };
-}
-
-function handlePermissionResult(
-  result: PermissionResult,
-  tool: "bash" | "write" | "edit",
-): { block: true; reason: string } | undefined {
-  if (result.action === "deny") {
-    return { block: true, reason: `Blocked by user: ${tool}` };
-  }
-
-  if (result.action === "feedback") {
-    return {
-      block: true,
-      reason: `Blocked by user: ${tool} — ${result.message}`,
-    };
-  }
-
   return undefined;
 }
 
-async function gate(
-  ctx: { ui: any; hasUI: boolean },
-  tool: "bash" | "write" | "edit",
+// ---------------------------------------------------------------------------
+// Confirmation
+// ---------------------------------------------------------------------------
+
+const CHOICES = [
+  "Allow once",
+  "Allow for this session",
+  "Deny",
+  "Deny with feedback",
+] as const;
+
+async function confirmOutsideCwd(
+  ctx: { hasUI: boolean; ui: any },
+  key: string,
   title: string,
-  description: string,
-  allowlistKey: string,
+  detail: string,
 ): Promise<{ block: true; reason: string } | undefined> {
+  if (sessionAllow.has(key)) return undefined;
+
   if (!ctx.hasUI) {
     return {
       block: true,
-      reason: `Blocked: ${tool} requires permission but no UI is available for confirmation`,
+      reason: `Blocked: ${title} (outside working directory, no UI to confirm)`,
     };
   }
 
-  notify(`Permission required: ${tool}`, "");
+  notify(`Permission required: ${key}`, "");
 
-  const result = await showPermissionDialog(ctx, title, description);
+  const choice = await ctx.ui.select(
+    `Outside working directory: ${title}\n\n${detail}`,
+    [...CHOICES],
+  );
 
-  if (result.action === "allow-always") {
-    sessionAllowlist.add(allowlistKey);
+  if (choice === "Allow once") return undefined;
+
+  if (choice === "Allow for this session") {
+    sessionAllow.add(key);
+    return undefined;
   }
 
-  return handlePermissionResult(result, tool);
+  if (choice === "Deny with feedback") {
+    const feedback = await ctx.ui.input(
+      "Feedback for the agent:",
+      "e.g. use a path inside the project",
+    );
+    if (feedback?.trim()) {
+      return {
+        block: true,
+        reason: `Blocked by user: ${title} — ${feedback.trim()}`,
+      };
+    }
+  }
+
+  // "Deny", empty feedback, or Esc.
+  return { block: true, reason: `Blocked by user: ${title}` };
 }
+
+// ---------------------------------------------------------------------------
+// Extension
+// ---------------------------------------------------------------------------
+
+const KNOWN_TOOLS = new Set(["bash", "read", "write", "edit"]);
 
 export default function (pi: ExtensionAPI) {
   pi.on("tool_call", async (event, ctx) => {
     const cwd = ctx.cwd;
+    // Follow symlinks in the cwd itself (e.g. macOS /tmp → /private/tmp).
+    const roots = [...new Set([resolve(cwd), resolveReal(resolve(cwd))])];
 
     if (isToolCallEventType("bash", event)) {
       const command = event.input.command ?? "";
-      const lower = command.toLowerCase();
-      const outside = hasPathOutsideCwd(lower, cwd);
-
-      const rule = findMatchingRule(lower, outside);
-      if (!rule || sessionAllowlist.has(rule.label)) return undefined;
-
-      const title = outside
-        ? `Outside working directory: ${rule.label}`
-        : `Command requires permission: ${rule.label}`;
-
-      return gate(
+      const risk = checkCommand(command, cwd, roots);
+      if (!risk) return undefined;
+      return confirmOutsideCwd(
         ctx,
         "bash",
-        title,
-        `${command}\n(working directory: ${cwd})`,
-        rule.label,
+        `bash command ${risk}`,
+        `${command}\n(cwd: ${cwd})`,
       );
     }
 
     if (
+      isToolCallEventType("read", event) ||
       isToolCallEventType("write", event) ||
       isToolCallEventType("edit", event)
     ) {
-      const filePath = event.input.path ?? "";
-
-      if (!isPathOutsideCwd(filePath, cwd)) return undefined;
-
-      const absPath = isAbsolute(filePath)
-        ? resolve(filePath)
-        : resolve(cwd, filePath);
-      const key = `${event.toolName}-outside-cwd`;
-      if (sessionAllowlist.has(key)) return undefined;
-
-      return gate(
+      const path = event.input.path ?? "";
+      if (!isOutside(path, cwd, roots)) return undefined;
+      return confirmOutsideCwd(
         ctx,
-        event.toolName as "write" | "edit",
-        `${event.toolName} file outside working directory`,
-        `${absPath}\n(working directory: ${cwd})`,
-        key,
+        event.toolName,
+        `${event.toolName} touches a file outside the working directory`,
+        `${resolvePath(path, cwd)}\n(cwd: ${cwd})`,
       );
+    }
+
+    // Any other tool (MCP, custom): scan string inputs for outside paths.
+    if (!KNOWN_TOOLS.has(event.toolName)) {
+      for (const value of Object.values(event.input ?? {})) {
+        if (typeof value !== "string") continue;
+        if (!/^([/~$]|\.\.?\/)/.test(value) && !value.includes("/../"))
+          continue;
+        if (!isOutside(value, cwd, roots)) continue;
+        return confirmOutsideCwd(
+          ctx,
+          event.toolName,
+          `${event.toolName} received a path outside the working directory`,
+          `${value}\n(cwd: ${cwd})`,
+        );
+      }
     }
 
     return undefined;
