@@ -13,17 +13,15 @@ of the assistant's answer; on provider error it shows just the status code,
 and it stays silent on user abort. Optional config lives at
 `~/.pi/agent/notify.json` (`title`, `maxPreviewLength`).
 
-## permission.ts — Confirmation Gates
+## permission.ts — Working Directory Boundary
 
-Gates `bash`, `write`, and `edit` tool calls behind a confirmation dialog
-driven by a single declarative policy table (`RULES`), where each rule is a
-regex with a scope: `"always"` prompt (e.g. `rm`, `git push --force`,
-`npm install`) or `"outside-cwd"` prompt only when the action touches paths
-outside pi's launch directory (e.g. `mv`, `cp`, redirection). Triggering a
-gate sends a brief notification naming just the tool (`Permission required:
-bash`). The dialog offers Allow, Always Allow (per session), Deny, or
-Provide Feedback; without a UI, gated actions block by default. Path
-detection is a best-effort heuristic, not a sandbox.
+Blocks tool calls from touching anything outside the current working
+directory: inside is free, outside prompts with Allow once, Allow for
+this session, Deny, or Deny with feedback. Covers `bash` (including
+fail-closed prompts for `$(…)`, `eval`, `sudo`, etc.),
+`read`/`write`/`edit`, and path-like inputs to any other tool, sends a
+notification via `notify.ts` when a prompt triggers, and blocks by
+default without a UI. Best-effort heuristic, not a sandbox.
 
 ## inspire.ts — Inspiring Working Messages
 

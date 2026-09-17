@@ -1,24 +1,8 @@
 /**
  * Permission Extension
  *
- * Single rule: tool calls must stay inside the current working directory.
- * Anything inside the cwd runs freely. Anything touching a path outside
- * the cwd prompts with four choices: allow once, allow for the rest of
- * the session, deny, or deny with feedback for the agent. Without a UI
- * (-p / JSON mode), calls that reach outside the cwd are blocked.
- *
- * Layers:
- * - bash: quote-aware token scan for absolute paths, ~, $VAR, ../ and
- *   redirection targets, resolved lexically AND through symlinks.
- * - bash: constructs that can't be checked statically (command
- *   substitution, eval, source, shell -c, find -exec, xargs, sudo)
- *   always prompt — fail-closed instead of silently missing them.
- * - read/write/edit: direct path check.
- * - any other tool (MCP, custom): string inputs that look like paths
- *   are checked too.
- *
- * This is a heuristic guardrail, not a security boundary: paths computed
- * at runtime by earlier statements in a script can't be seen statically.
+ * Tool calls must stay inside the current working directory; anything
+ * reaching outside prompts for confirmation. See README.md for details.
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
