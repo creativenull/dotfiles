@@ -1,8 +1,17 @@
 # Extensions
 
-Four standalone extensions for [pi coding agent](https://github.com/earendil-works/pi-coding-agent).
+Five standalone extensions for [pi coding agent](https://github.com/earendil-works/pi-coding-agent).
 Each is a self-contained TypeScript module exporting a default extension entry
 point.
+
+## title.ts - Spinner in Tab Title
+
+Cycles a spinner frame in the terminal tab title while the agent is working,
+such as: spinner frame, then the pi symbol, the session name, and the working
+directory name, updating every 120ms. When the agent settles, the spinner
+stops and the original title (pi symbol, session name, working directory) is
+restored, matching pi's own session-start format. The pi symbol is hardcoded
+since pi's app title constant is not part of its public API.
 
 ## notify.ts — Terminal Notifications
 
