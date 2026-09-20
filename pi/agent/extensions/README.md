@@ -4,14 +4,14 @@ Five standalone extensions for [pi coding agent](https://github.com/earendil-wor
 Each is a self-contained TypeScript module exporting a default extension entry
 point.
 
-## title.ts - Spinner in Tab Title
+## inspire.ts — Inspiring Working Messages
 
-Cycles a spinner frame in the terminal tab title while the agent is working,
-such as: spinner frame, then the pi symbol, the session name, and the working
-directory name, updating every 120ms. When the agent settles, the spinner
-stops and the original title (pi symbol, session name, working directory) is
-restored, matching pi's own session-start format. The pi symbol is hardcoded
-since pi's app title constant is not part of its public API.
+Replaces pi's default "Working..." streaming message with a randomly picked
+inspiring quote, formatted the same way `php artisan inspire` prints to
+stdout (bold `“ quote ”` plus a dim `— author` line). A fresh quote is drawn
+on session start and on every agent run, and rotates to a new random quote
+every 10 seconds while the agent is working. Shamelessly copied from:
+<https://github.com/laravel/framework/blob/11.x/src/Illuminate/Foundation/Inspiring.php>
 
 ## notify.ts — Terminal Notifications
 
@@ -32,14 +32,14 @@ fail-closed prompts for `$(…)`, `eval`, `sudo`, etc.),
 notification via `notify.ts` when a prompt triggers, and blocks by
 default without a UI. Best-effort heuristic, not a sandbox.
 
-## inspire.ts — Inspiring Working Messages
+## title.ts - Spinner in Tab Title
 
-Replaces pi's default "Working..." streaming message with a randomly picked
-inspiring quote, formatted the same way `php artisan inspire` prints to
-stdout (bold `“ quote ”` plus a dim `— author` line). A fresh quote is drawn
-on session start and on every agent run, and rotates to a new random quote
-every 10 seconds while the agent is working. Shamelessly copied from:
-<https://github.com/laravel/framework/blob/11.x/src/Illuminate/Foundation/Inspiring.php>
+Cycles a spinner frame in the terminal tab title while the agent is working,
+such as: spinner frame, then the pi symbol, the session name, and the working
+directory name, updating every 120ms. When the agent settles, the spinner
+stops and the original title (pi symbol, session name, working directory) is
+restored, matching pi's own session-start format. The pi symbol is hardcoded
+since pi's app title constant is not part of its public API.
 
 ## web-fetch.ts — Web Fetch Tool
 
