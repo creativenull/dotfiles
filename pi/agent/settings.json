@@ -25,5 +25,6 @@
     "openrouter/z-ai/glm-5.2",
     "openrouter/z-ai/glm-5.3",
     "openrouter/z-ai/glm-5.3-flash"
-  ]
+  ],
+  "tuiMode": "fullscreen"
 }
