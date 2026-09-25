@@ -469,7 +469,7 @@ Plug("hrsh7th/cmp-nvim-lsp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-cmdline")
--- Plug("hrsh7th/cmp-nvim-lsp-signature-help")
+Plug("creativenull/cmp-nvim-lsp-signature-help")
 Plug("creativenull/cmp-ultisnips")
 
 -- Snippet Engine + Presets
