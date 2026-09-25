@@ -58,6 +58,9 @@ function M.setup()
     sources = {
       { name = "buffer" },
     },
+    performance = {
+      max_view_entries = 10,
+    },
   })
 
   cmp.setup.cmdline(":", {
@@ -72,6 +75,9 @@ function M.setup()
         },
       },
     }),
+    performance = {
+      max_view_entries = 10,
+    },
   })
 end
 
