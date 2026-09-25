@@ -480,7 +480,6 @@ Plug("SirVer/ultisnips")
 -- ---
 Plug("junegunn/fzf")
 Plug("junegunn/fzf.vim")
-Plug("dominickng/fzf-session.vim")
 Plug("linrongbin16/fzfx.vim", { commit = "9bd93e78f22c734751688cefd3ee2c475cd85ccd" })
 
 -- Git
@@ -535,18 +534,6 @@ vim.g.UltiSnipsListSnippets = ""
 -- denops.vim Config
 -- ---
 vim.g.denops_server_addr = "127.0.0.1:32123"
-
--- fzf-session.vim Config
--- ---
-local fzf_session = string.format("%s/sessions", vim.fn.stdpath("cache"))
-if vim.fn.isdirectory(fzf_session) == 0 then
-  vim.fn.mkdir(fzf_session)
-end
-
-vim.g.fzf_session_path = fzf_session
-
-vim.keymap.set("n", "<Leader>ss", "<Cmd>Sessions<CR>")
-vim.keymap.set("n", "<Leader>sc", ":Session ")
 
 --- nvim-treesitter Config
 -- ---
