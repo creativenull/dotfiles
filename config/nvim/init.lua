@@ -468,6 +468,7 @@ Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-nvim-lsp")
 Plug("hrsh7th/cmp-buffer")
 Plug("hrsh7th/cmp-path")
+Plug("hrsh7th/cmp-cmdline")
 -- Plug("hrsh7th/cmp-nvim-lsp-signature-help")
 Plug("creativenull/cmp-ultisnips")
 
@@ -481,13 +482,6 @@ Plug("junegunn/fzf")
 Plug("junegunn/fzf.vim")
 Plug("dominickng/fzf-session.vim")
 Plug("linrongbin16/fzfx.vim", { commit = "9bd93e78f22c734751688cefd3ee2c475cd85ccd" })
-Plug("gelguy/wilder.nvim", {
-  commit = "679f348dc90d80ff9ba0e7c470c40a4d038dcecf",
-  ["do"] = function()
-    vim.cmd("let &rtp=&rtp")
-    vim.cmd("UpdateRemotePlugins")
-  end,
-})
 
 -- Git
 -- ---
@@ -537,9 +531,6 @@ require("mini.splitjoin").setup()
 -- ---
 vim.g.UltiSnipsExpandTrigger = "<C-x><C-u>"
 vim.g.UltiSnipsListSnippets = ""
-
--- ---
-require("user.wilder").setup()
 
 -- denops.vim Config
 -- ---
