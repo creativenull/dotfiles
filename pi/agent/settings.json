@@ -16,7 +16,7 @@
     "npm"
   ],
   "theme": "light/dark",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "lastChangelogVersion": "0.87.1",
   "enabledModels": [
     "openrouter/deepseek/deepseek-v4.1-flash",
