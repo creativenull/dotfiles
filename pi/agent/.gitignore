@@ -4,3 +4,5 @@ bin/
 git/
 trust.json
 models-store.json
+mcp-auth.json
+crashes.json
