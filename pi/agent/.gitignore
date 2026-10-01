@@ -1,8 +1,9 @@
 auth.json
-sessions/
+crashes.json
+mcp-auth.json
+models-store.json
+trust.json
+
 bin/
 git/
-trust.json
-models-store.json
-mcp-auth.json
-crashes.json
+sessions/
