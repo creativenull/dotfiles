@@ -25,7 +25,8 @@
     "openrouter/openrouter/free",
     "openrouter/z-ai/glm-5.2",
     "openrouter/z-ai/glm-5.3",
-    "openrouter/z-ai/glm-5.3-flash"
+    "openrouter/z-ai/glm-5.3-flash",
+    "openrouter/google/gemini-3.8-flash"
   ],
   "tuiMode": "fullscreen"
 }
