@@ -17,7 +17,7 @@
   ],
   "theme": "light/dark",
   "hideThinkingBlock": true,
-  "lastChangelogVersion": "0.99.2",
+  "lastChangelogVersion": "1.0.0",
   "enabledModels": [
     "openrouter/deepseek/deepseek-v4.1-flash",
     "openrouter/moonshotai/kimi-k3",
