@@ -11,6 +11,6 @@ neovim
 prettier
 svelte-language-server
 taze
-typescript
+typescript@^6
 typescript-language-server
 vscode-langservers-extracted
