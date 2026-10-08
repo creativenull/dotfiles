@@ -5,7 +5,7 @@
 # https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
 
 if [ "$SELECTED" = "true" ]; then
-  sketchybar --set "$NAME" background.drawing=on icon.highlight=on
+    sketchybar --animate sin 15 --set "$NAME" background.color=0xffffffff icon.highlight=on
 else
-  sketchybar --set "$NAME" background.drawing=off icon.highlight=off
+    sketchybar --animate sin 15 --set "$NAME" background.color=0x88262626 icon.highlight=off
 fi

@@ -1,236 +1,153 @@
-# This is a demo config to showcase some of the most important commands.
-# It is meant to be changed and configured, as it is intentionally kept sparse.
-# For a (much) more advanced configuration example see my dotfiles:
-# https://github.com/FelixKratz/dotfiles
-
+## Plugins
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
-##### Bar Appearance #####
-# Configuring the general appearance of the bar.
-# These are only some of the options available. For all options see:
-# https://felixkratz.github.io/SketchyBar/config/bar
-# If you are looking for other colors, see the color picker:
-# https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
+## Theme variables
+light_text_color=0xfffafafa
+light_bg_color=0x55262626
 
+dark_text_color=0xfffafafa
+dark_bg_color=0x33e5e5e5
+
+theme_height=30
+
+## Bar Properties
 sketchybar --bar position=top height=40 y_offset=1 color=0x00000000 padding_left=10 padding_right=10
-sketchybar --add event bluetooth_change "com.apple.bluetooth.status"
-sketchybar --add event theme_change AppleInterfaceThemeChangedNotification
 
-##### Changing Defaults #####
-# We now change some default values, which are applied to all further items.
-# For a full list of all available item properties see:
-# https://felixkratz.github.io/SketchyBar/config/items
+sketchybar --default \
+	icon.font="SF Pro:Semibold:13.0" \
+	label.font="SF Pro:Semibold:13.0"
 
-# Source colors first
-source "$CONFIG_DIR/colors.sh"
-
-# Detect current macOS theme (defaults to Light if not set)
-theme=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
-
-if [ "$theme" = "Dark" ]; then
-    theme_background_color=$DARK_BG_COLOR
-    theme_text_color=$DARK_TEXT_COLOR
-    theme_highlight_color=$DARK_HIGHLIGHT_COLOR
-    theme_border_color=$DARK_BORDER_COLOR
-    theme_border_width=$DARK_BORDER_WIDTH
-    theme_spaces_text_color=$DARK_SPACE_TEXT_COLOR
-    theme_spaces_background_color=$DARK_SPACE_BG_COLOR
-    theme_spaces_text_highlight_color=$DARK_SPACE_TEXT_HIGHLIGHT_COLOR
-    theme_spaces_background_highlight_color=$DARK_SPACE_BG_HIGHLIGHT_COLOR
-    theme_clock_bg_color=$DARK_CLOCK_BG_COLOR
-    theme_clock_text_color=$DARK_CLOCK_TEXT_COLOR
-	theme_clock_border_color=$DARK_CLOCK_BORDER_COLOR
-	theme_clock_border_width=$DARK_CLOCK_BORDER_WIDTH
-    theme_height=$DARK_THEME_HEIGHT
-else
-    theme_background_color=$LIGHT_BG_COLOR
-    theme_text_color=$LIGHT_TEXT_COLOR
-    theme_highlight_color=$LIGHT_HIGHLIGHT_COLOR
-    theme_border_color=$LIGHT_BORDER_COLOR
-    theme_border_width=$LIGHT_BORDER_WIDTH
-    theme_spaces_text_color=$LIGHT_SPACE_TEXT_COLOR
-    theme_spaces_background_color=$LIGHT_SPACE_BG_COLOR
-    theme_spaces_text_highlight_color=$LIGHT_SPACE_TEXT_HIGHLIGHT_COLOR
-    theme_spaces_background_highlight_color=$LIGHT_SPACE_BG_HIGHLIGHT_COLOR
-    theme_clock_bg_color=$LIGHT_CLOCK_BG_COLOR
-    theme_clock_text_color=$LIGHT_CLOCK_TEXT_COLOR
-    theme_clock_border_color=$LIGHT_CLOCK_BORDER_COLOR
-    theme_clock_border_width=$LIGHT_CLOCK_BORDER_WIDTH
-    theme_height=$LIGHT_THEME_HEIGHT
-fi
-
-default=(
-	icon.font="JetBrainsMono Nerd Font:Bold:17.0"
-	label.font="JetBrainsMono Nerd Font:Bold:15.0"
-	icon.color="$theme_text_color"
-	label.color="$theme_text_color"
-	icon.padding_left=5
-	icon.padding_right=5
-	label.padding_left=5
-	label.padding_right=5
-)
-sketchybar --default "${default[@]}"
-
-#### THEME CHANGE ####
-# Add a hidden item that triggers reload when theme changes
-sketchybar --add item theme_switcher left \
-	--set theme_switcher drawing=off script="$PLUGIN_DIR/theme_switcher.sh" \
-	--subscribe theme_switcher system_woke theme_change
-
-##### Adding Mission Control Space Indicators #####
-# Let's add some mission control spaces:
-# https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
-# to indicate active and available mission control spaces.
-
-SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
+## Left
+## ---
+SPACE_ICONS=("1" "2" "3" "4")
 for i in "${!SPACE_ICONS[@]}"
 do
-	sid="$(($i+1))"
-	space=(
-		space="$sid"
-		icon="${SPACE_ICONS[i]}"
-		icon.padding_left=15
-		icon.padding_right=15
-		icon.color="$theme_spaces_text_color"
-		icon.highlight_color="$theme_spaces_text_highlight_color"
-		background.color="$theme_spaces_background_highlight_color"
-		background.corner_radius=8
-		background.height=${theme_height}
-		label.drawing=off
-		script="$PLUGIN_DIR/space.sh"
-	)
-	sketchybar --add space space."$sid" left --set space."$sid" "${space[@]}"
+  sid="$(($i+1))"
+  space=(
+	space="$sid"
+	icon="${SPACE_ICONS[i]}"
+	icon.padding_left=10
+	icon.padding_right=10
+	icon.highlight_color=0xff000000
+	background.color=${light_bg_color}
+	background.corner_radius=8
+	background.height=${theme_height}
+	label.drawing=off
+	script="$PLUGIN_DIR/space.sh"
+  )
+  sketchybar --add space space."$sid" left
+  sketchybar --set space."$sid" "${space[@]}"
+  sketchybar --add item space.gap left
+  sketchybar --set space.gap label.drawing=off icon.padding_left=1 icon.padding_right=1
 done
 
-spaces_bracket=(
-	background.color="$theme_spaces_background_color"
-	background.corner_radius=8
-	background.height=${theme_height}
-	background.border_color="$theme_border_color"
-	background.border_width="$theme_border_width"
-)
-sketchybar --add bracket spaces '/space\..*/' \
-	--set spaces "${spaces_bracket[@]}"
+sketchybar --add item lgap1 left
+sketchybar --set lgap1 label.drawing=off icon.padding_left=5
 
-##### Adding Left Items #####
-# We add some regular items to the left side of the bar, where
-# only the properties deviating from the current defaults need to be set
-
-separator_item=(
-	padding_left=5
-	padding_right=5
-	label.drawing=off
-	icon.drawing=off
-)
-sketchybar --add item separator1 left \
-    --set separator1 "${separator_item[@]}"
-
-front_app_item=(
+sketchybar --add item front_app left
+sketchybar --subscribe front_app front_app_switched
+sketchybar --set front_app \
+	icon.drawing=off \
+	label.padding_left=10 \
+	label.padding_right=10 \
+	label.color=${light_text_color} \
+	background.color=${light_bg_color} \
+	background.corner_radius=8 \
+	background.height=${theme_height} \
+	background.blur_radius=10 \
 	script="$PLUGIN_DIR/front_app.sh"
-	icon.drawing=off
-	label.padding_left=15
-	label.padding_right=15
-	label.color="$theme_text_color"
-	background.color="$theme_background_color"
-	background.corner_radius=8
-	background.height=${theme_height}
-)
-sketchybar --add item front_app left \
-	--set front_app "${front_app_item[@]}" \
-	--subscribe front_app front_app_switched
 
-##### Adding Right Items #####
-# In the same way as the left items we can add items to the right side.
-# Additional position (e.g. center) are available, see:
-# https://felixkratz.github.io/SketchyBar/config/items#adding-items-to-sketchybar
-
-# Some items refresh on a fixed cycle, e.g. the clock runs its script once
-# every 10s. Other items respond to events they subscribe to, e.g. the
-# volume.sh script is only executed once an actual change in system audio
-# volume is registered. More info about the event system can be found here:
-# https://felixkratz.github.io/SketchyBar/config/events
-clock_item=(
-    update_freq=1
-	script="$PLUGIN_DIR/clock.sh"
-	icon.drawing=off
-	label.color="$theme_clock_text_color"
-	label.padding_left=15
-	label.padding_right=15
-	background.color="$theme_clock_bg_color"
-	background.corner_radius=8
-	background.height=${theme_height}
-	background.border_color="$theme_clock_border_color"
-	background.border_width="$theme_clock_border_width"
-)
-sketchybar --add item clock right \
-	--set clock "${clock_item[@]}"
-
-sketchybar --add item separator2 right \
-    --set separator2 "${separator_item[@]}" \
-
-battery_item=(
-    update_freq=60
+## Right
+## ---
+sketchybar --add item battery right
+sketchybar --subscribe battery system_woke power_source_change
+sketchybar --set battery \
+	icon.padding_left=10 \
+	icon.padding_right=2 \
+	label.padding_left=2 \
+	label.padding_right=10 \
+	background.color=${light_bg_color} \
+	background.corner_radius=8 \
+    background.height=${theme_height} \
+	background.blur_radius=10 \
+	update_freq=10 \
 	script="$PLUGIN_DIR/battery.sh"
-	icon.padding_left=15
-	icon.padding_right=2
-	label.padding_left=2
-	label.padding_right=15
-	background.color="$theme_background_color"
-	background.corner_radius=8
-    background.height=${theme_height}
-)
-sketchybar --add item battery right \
-	--set battery "${battery_item[@]}" \
-	--subscribe battery system_woke power_source_change \
 
-sketchybar --add item separator3 right \
-    --set separator3 "${separator_item[@]}" \
+sketchybar --add item rgap1 right
+sketchybar --set rgap1 label.drawing=off icon.padding_right=5
 
-volume_item=(
-    script="$PLUGIN_DIR/volume.sh"
-	icon.padding_left=15
-	icon.padding_right=2
-	label.padding_left=2
-	label.padding_right=15
-	background.color="$theme_background_color"
-	background.corner_radius=8
-    background.height=${theme_height}
-)
-sketchybar --add item volume right \
-	--set volume "${volume_item[@]}" \
-	--subscribe volume volume_change
+sketchybar --add item clock right
+sketchybar --set clock \
+	label.padding_left=10 \
+	label.padding_right=10 \
+	label.color=${light_text_color} \
+	background.color=${light_bg_color} \
+	background.corner_radius=8 \
+	background.height=${theme_height} \
+	background.blur_radius=10 \
+	update_freq=1 \
+	script="$PLUGIN_DIR/clock.sh"
 
-sketchybar --add item separator4 right \
-    --set separator4 "${separator_item[@]}" \
+sketchybar --add item rgap2 right
+sketchybar --set rgap2 label.drawing=off icon.padding_right=5
 
-wifi_item=(
-    script="$PLUGIN_DIR/wifi.sh"
-	label.drawing=off
-	icon.padding_left=15
-	icon.padding_right=15
-	background.color="$theme_background_color"
-	background.corner_radius=8
-    background.height=${theme_height}
-)
-sketchybar --add item wifi right \
-    --set wifi "${wifi_item[@]}" \
-	--subscribe wifi wifi_change
+sketchybar --add item date right
+sketchybar --set date \
+	label.padding_left=10 \
+	label.padding_right=10 \
+	label.color=${light_text_color} \
+	background.color=${light_bg_color} \
+	background.corner_radius=8 \
+	background.height=${theme_height} \
+	background.blur_radius=10 \
+	update_freq=10 \
+	script="$PLUGIN_DIR/date.sh"
 
-sketchybar --add item separator5 right \
-    --set separator5 "${separator_item[@]}" \
+sketchybar --add item rgap3 right
+sketchybar --set rgap3 label.drawing=off icon.padding_right=5
 
-bluetooth_headset_item=(
-    script="$PLUGIN_DIR/bluetooth_headset.sh"
-	label.drawing=off
-	icon.padding_left=15
-	icon.padding_right=15
-	background.color="$theme_background_color"
-	background.corner_radius=8
-    background.height=${theme_height}
-)
-sketchybar --add item bluetooth_headset right \
-    --set bluetooth_headset "${bluetooth_headset_item[@]}" \
-	--subscribe bluetooth_headset system_woke bluetooth_change
+sketchybar --add item volume right
+sketchybar --subscribe volume volume_change
+sketchybar --set volume \
+	icon.padding_left=10 \
+	icon.padding_right=2 \
+	label.padding_left=2 \
+	label.padding_right=10 \
+	background.color=${light_bg_color} \
+	background.corner_radius=8 \
+    background.height=${theme_height} \
+	background.blur_radius=10 \
+	script="$PLUGIN_DIR/volume.sh"
+
+sketchybar --add item rgap4 right
+sketchybar --set rgap4 label.drawing=off icon.padding_right=5
+
+sketchybar --add item wifi right
+sketchybar --subscribe wifi wifi_change
+sketchybar --set wifi \
+	icon.padding_left=10 \
+	icon.padding_right=2 \
+	label.padding_left=2 \
+	label.padding_right=10 \
+	background.color=${light_bg_color} \
+	background.corner_radius=8 \
+    background.height=${theme_height} \
+	background.blur_radius=10 \
+	script="$PLUGIN_DIR/wifi.sh"
+
+# sketchybar --add item rgap5 right
+# sketchybar --set rgap5 label.drawing=off icon.padding_right=5
+
+# sketchybar --add alias "Hot,Item-0(7)" right
+# sketchybar --set "Hot,Item-0(7)" \
+# 	icon.padding_left=10 \
+# 	icon.padding_right=2 \
+# 	label.padding_left=2 \
+# 	label.padding_right=10 \
+# 	background.color=${light_bg_color} \
+# 	background.corner_radius=8 \
+#     background.height=${theme_height} \
+# 	background.blur_radius=10
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update

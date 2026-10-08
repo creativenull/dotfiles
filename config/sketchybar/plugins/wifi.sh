@@ -7,9 +7,9 @@ if [ "$SENDER" = "wifi_change" ]; then
 	CONNECTED="$(ifconfig en0 | awk '/status:/{print $2}')"
 
 	if [ "$CONNECTED" = "active" ]; then
-		ICON="󰖩"
+		ICON="􀙇"
 	else
-		ICON="󰖪"
+		ICON="􀙈"
 	fi
 
 	sketchybar --set "$NAME" icon="$ICON"
