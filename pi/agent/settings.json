@@ -19,14 +19,14 @@
   "hideThinkingBlock": true,
   "lastChangelogVersion": "1.1.0",
   "enabledModels": [
+    "openrouter/anthropic/claude-haiku-5.5",
     "openrouter/deepseek/deepseek-v4.1-flash",
+    "openrouter/google/gemini-3.8-flash",
     "openrouter/moonshotai/kimi-k3",
     "openrouter/openai/gpt-5.6-luna",
     "openrouter/openrouter/free",
     "openrouter/z-ai/glm-5.3",
-    "openrouter/z-ai/glm-5.3-flash",
-    "openrouter/google/gemini-3.8-flash",
-    "openrouter/anthropic/claude-haiku-5.5"
+    "openrouter/z-ai/glm-5.3-flash"
   ],
   "tuiMode": "fullscreen"
 }
