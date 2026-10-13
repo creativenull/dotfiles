@@ -21,6 +21,11 @@ alias cp="cp -v"
 alias open-ports="sudo ss -ltnp"
 alias grep="grep --color=auto"
 
+# Unified update command to run to update the system
+if [ "$(uname)" = "Darwin" ]; then
+	alias update="$HOME/dotfiles/scripts/macos/update.sh"
+fi
+
 # Neovim
 export PYTHON3_HOST_PROG=$(which python3)
 
@@ -64,10 +69,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-if [ -d "$HOME/.deno/bin" ] ; then
-    PATH="$HOME/.deno/bin:$PATH"
-fi
-
 # Tab and Shift Tab to auto complete
 bindkey '^I' expand-or-complete
 bindkey '^[[Z' reverse-menu-complete
@@ -89,10 +90,6 @@ SAVEHIST=10000
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 
-# Deno plugin
-# ---
-source ~/.config/zsh-plugins/zsh-deno/deno.plugin.zsh
-
 # Autosuggestions plugin
 # ---
 source ~/.config/zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
@@ -113,10 +110,6 @@ else
 	bindkey '^[[A' history-substring-search-up
 	bindkey '^[[B' history-substring-search-down
 fi
-
-# Laravel artisan plugin
-# ---
-source ~/.config/zsh-plugins/zsh-artisan/artisan.plugin.zsh
 
 # Custom completions location
 fpath=($HOME/.zsh/completions $fpath)
