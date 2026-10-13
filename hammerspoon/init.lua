@@ -5,7 +5,7 @@ PaperWM.window_filter:rejectApp("Picture in Picture")
 PaperWM.window_filter:rejectApp("qemu-system-aarch64")
 PaperWM.window_filter:setScreens({ "Built%-in Retina Display" })
 
-PaperWM.window_gap = 10
+PaperWM.window_gap = 15
 PaperWM.window_ratios = { 5/6 }
 
 PaperWM:bindHotkeys(PaperWM.default_hotkeys)
