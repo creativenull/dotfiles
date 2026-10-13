@@ -287,7 +287,9 @@ themes {
 	}
 }
 
-theme "moonfly"
+// theme "tokyonight_day"
+theme_light "tokyonight_day"
+theme_dark "moonfly"
 
 // Choose the base input mode of zellij.
 // Default: normal
