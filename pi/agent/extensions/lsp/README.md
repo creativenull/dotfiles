@@ -1,14 +1,14 @@
 # Pi LSP Diagnostics Extension
 
-Connect to LSP (Language Server Protocol) servers and expose real compiler/linter diagnostics as a tool the LLM can call. This gives Pi deeper context about your code — type errors, lint warnings, and more — straight from the same language servers your editor uses.
+Connect to LSP (Language Server Protocol) servers and expose real compiler/linter diagnostics as a tool the LLM can call. This gives Pi deeper context about your code - type errors, lint warnings, and more - straight from the same language servers your editor uses.
 
 ## Features
 
-- **Real diagnostics** — Get actual compiler errors, type errors, and lint warnings from LSP servers
-- **Multi-language** — Run multiple LSP servers simultaneously (TypeScript, Python, Rust, Lua, etc.)
-- **Standard protocol** — Uses `vscode-languageserver-protocol` for LSP communication
-- **Separate config** — Uses its own `~/.agents/lsp.json` config file
-- **Automatic routing** — Files are automatically routed to the correct LSP server by extension
+- **Real diagnostics** - Get actual compiler errors, type errors, and lint warnings from LSP servers
+- **Multi-language** - Run multiple LSP servers simultaneously (TypeScript, Python, Rust, Lua, etc.)
+- **Standard protocol** - Uses `vscode-languageserver-protocol` for LSP communication
+- **Separate config** - Uses its own `~/.agents/lsp.json` config file
+- **Automatic routing** - Files are automatically routed to the correct LSP server by extension
 
 ## Installation
 
@@ -44,9 +44,9 @@ The extension reads `lspServers` from a dedicated `lsp.json` config file.
       "extensions": ["ts", "js"], // Required: file extensions this server handles
       "env": {}, // Optional: environment variables
       "initializationOptions": {}, // Optional: passed to LSP initialize
-      "disabled": false, // Optional: set true to skip this server
-    },
-  },
+      "disabled": false // Optional: set true to skip this server
+    }
+  }
 }
 ```
 
@@ -59,24 +59,24 @@ The extension reads `lspServers` from a dedicated `lsp.json` config file.
     "typescript": {
       "command": "typescript-language-server",
       "args": ["--stdio"],
-      "extensions": ["ts", "tsx", "js", "jsx", "mjs", "cjs"],
+      "extensions": ["ts", "tsx", "js", "jsx", "mjs", "cjs"]
     },
     "python": {
       "command": "pyright-langserver",
       "args": ["--stdio"],
-      "extensions": ["py", "pyi"],
+      "extensions": ["py", "pyi"]
     },
     "lua": {
       "command": "lua-language-server",
       "args": [],
-      "extensions": ["lua"],
+      "extensions": ["lua"]
     },
     "rust": {
       "command": "rust-analyzer",
       "args": [],
-      "extensions": ["rs"],
-    },
-  },
+      "extensions": ["rs"]
+    }
+  }
 }
 ```
 
@@ -210,7 +210,7 @@ The extension automatically maps file extensions to LSP language IDs. Common map
 
 1. Run `/lsp` to check server status
 2. Ensure the file extension is in the server's `extensions` list in `~/.agents/lsp.json`
-3. Some servers need time to index the workspace — try again after a few seconds
+3. Some servers need time to index the workspace - try again after a few seconds
 
 ### View server status
 

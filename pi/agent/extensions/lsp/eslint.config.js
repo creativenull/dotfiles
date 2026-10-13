@@ -1,7 +1,8 @@
-import antfu from "@antfu/eslint-config";
+import antfu from '@antfu/eslint-config'
 
 export default antfu({
-  type: "lib",
+  type: 'lib',
   typescript: true,
-  ignores: ["node_modules/**", "dist/**"],
-});
+  ignores: ['node_modules/**', 'dist/**'],
+  antislop: true,
+})
