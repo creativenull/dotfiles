@@ -62,6 +62,11 @@ alias cdnvim="cd ~/dotfiles/config/nvim"
 alias cdpi="cd ~/dotfiles/pi/agent"
 alias cdp="cd ~/projects/github.com/creativenull"
 
+# Work
+if [[ -f ~/.workprofile ]]; then
+	source ~/.workprofile
+fi
+
 # zsh settings
 # ---
 if [ -d "$HOME/.local/bin" ] ; then
