@@ -23,9 +23,8 @@
 
 - [codex](https://github.com/openai/codex) - [Source](./codex)
 - [pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) - [Source](./pi)
+  - inspire - [Source](./pi/agent/extensions/inspire.ts)
   - lsp - [Source](./pi/agent/extensions/lsp)
-  - mcp - [Source](./pi/agent/extensions/mcp)
   - notify - [Source](./pi/agent/extensions/notify.ts)
-  - permission - [Source](./pi/agent/extensions/permission.ts)
-  - theme-switcher - [Source](./pi/agent/extensions/theme-switcher.ts)
+  - title - [Source](./pi/agent/extensions/title.ts)
   - web-fetch - [Source](./pi/agent/extensions/web-fetch.ts)
