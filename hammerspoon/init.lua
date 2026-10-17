@@ -1,6 +1,7 @@
 PaperWM = hs.loadSpoon("PaperWM")
 
 PaperWM.window_filter:rejectApp("Finder")
+PaperWM.window_filter:rejectApp("System Settings")
 PaperWM.window_filter:rejectApp("Picture in Picture")
 PaperWM.window_filter:rejectApp("qemu-system-aarch64")
 PaperWM.window_filter:setScreens({ "Built%-in Retina Display" })
