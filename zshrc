@@ -82,7 +82,7 @@ bindkey '^P' reverse-menu-complete
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
 
-autoload -Uz compinit; compinit
+autoload -Uz compinit; compinit -i
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
@@ -117,7 +117,7 @@ fi
 
 # Custom completions location
 fpath=($HOME/.zsh/completions $fpath)
-autoload -U compinit; compinit
+autoload -Uz compinit; compinit -i
 
 # Fzf bindings
 export FZF_DEFAULT_OPTS="
