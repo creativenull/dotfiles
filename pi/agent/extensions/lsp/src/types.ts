@@ -1,4 +1,4 @@
-import type { Diagnostic } from 'vscode-languageserver-protocol'
+import type { Diagnostic } from 'vscode-languageserver-protocol';
 
 export interface LspServerConfig {
   command: string

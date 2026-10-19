@@ -23,6 +23,7 @@ export default [
     },
     rules: {
       'no-undef': 'off',
+      'no-unused-vars': 'off',
       semi: ['error', 'always'],
       'max-len': ['error', { code: 120 }],
     },

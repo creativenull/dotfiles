@@ -2,11 +2,11 @@ import type {
   DiagnosticsError,
   DiagnosticsResult,
   LspServerConfig,
-} from './types.js'
-import { readFile } from 'node:fs/promises'
-import { extname } from 'node:path'
-import { pathToFileURL } from 'node:url'
-import { LspClient } from './lsp-client.js'
+} from './types.js';
+import { readFile } from 'node:fs/promises';
+import { extname } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { LspClient } from './lsp-client.js';
 
 const EXTENSION_TO_LANGUAGE: Record<string, string> = {
   ts: 'typescript',
@@ -66,118 +66,118 @@ const EXTENSION_TO_LANGUAGE: Record<string, string> = {
   cljs: 'clojure',
   zig: 'zig',
   nim: 'nim',
-}
+};
 
 export class LspManager {
-  private servers = new Map<string, LspClient>()
-  private extensionMap = new Map<string, string>()
+  private servers = new Map<string, LspClient>();
+  private extensionMap = new Map<string, string>();
 
   async startAll(
     configs: Record<string, LspServerConfig>,
     rootPath: string,
   ): Promise<{ started: string[], failed: string[] }> {
-    const started: string[] = []
-    const failed: string[] = []
+    const started: string[] = [];
+    const failed: string[] = [];
 
     for (const [name, config] of Object.entries(configs)) {
       if (config.disabled)
-        continue
+        continue;
 
       try {
-        const client = new LspClient(name, config)
-        await client.initialize(rootPath)
-        this.servers.set(name, client)
+        const client = new LspClient(name, config);
+        await client.initialize(rootPath);
+        this.servers.set(name, client);
 
         for (const ext of config.extensions) {
-          const normalized = ext.startsWith('.') ? ext.slice(1) : ext
-          this.extensionMap.set(normalized, name)
+          const normalized = ext.startsWith('.') ? ext.slice(1) : ext;
+          this.extensionMap.set(normalized, name);
         }
 
-        started.push(name)
+        started.push(name);
       }
       catch (err) {
-        failed.push(name)
-        console.error(`Failed to start LSP server '${name}':`, err)
+        failed.push(name);
+        console.error(`Failed to start LSP server '${name}':`, err);
       }
     }
 
-    return { started, failed }
+    return { started, failed };
   }
 
   async stopAll(): Promise<void> {
     const promises = Array.from(this.servers.values()).map(server =>
       server.shutdown().catch(() => {}),
-    )
-    await Promise.all(promises)
-    this.servers.clear()
-    this.extensionMap.clear()
+    );
+    await Promise.all(promises);
+    this.servers.clear();
+    this.extensionMap.clear();
   }
 
   findServerForFile(filePath: string): LspClient | undefined {
-    const ext = extname(filePath).slice(1)
-    const serverName = this.extensionMap.get(ext)
+    const ext = extname(filePath).slice(1);
+    const serverName = this.extensionMap.get(ext);
     if (!serverName)
-      return undefined
-    return this.servers.get(serverName)
+      return undefined;
+    return this.servers.get(serverName);
   }
 
   async getDiagnosticsForFile(
     filePath: string,
   ): Promise<DiagnosticsResult | DiagnosticsError> {
-    const server = this.findServerForFile(filePath)
+    const server = this.findServerForFile(filePath);
     if (!server) {
-      const ext = extname(filePath).slice(1)
+      const ext = extname(filePath).slice(1);
       return {
         error: ext
           ? `No LSP server configured for '.${ext}' files`
           : `No LSP server configured for this file type`,
-      }
+      };
     }
 
     if (server.status !== 'ready') {
       return {
         error: `LSP server '${server.name}' is not ready (${server.status}${server.error ? `: ${server.error}` : ''})`,
-      }
+      };
     }
 
     try {
-      const text = await readFile(filePath, 'utf-8')
-      const uri = pathToFileURL(filePath).href
-      const ext = extname(filePath).slice(1)
-      const languageId = EXTENSION_TO_LANGUAGE[ext] ?? 'plaintext'
+      const text = await readFile(filePath, 'utf-8');
+      const uri = pathToFileURL(filePath).href;
+      const ext = extname(filePath).slice(1);
+      const languageId = EXTENSION_TO_LANGUAGE[ext] ?? 'plaintext';
 
       if (!server.isFileOpen(uri)) {
-        const diagPromise = server.waitForDiagnostics(uri)
-        await server.openDocument(uri, languageId, text)
-        const diagnostics = await diagPromise
-        return { server: server.name, filePath, diagnostics }
+        const diagPromise = server.waitForDiagnostics(uri);
+        await server.openDocument(uri, languageId, text);
+        const diagnostics = await diagPromise;
+        return { server: server.name, filePath, diagnostics };
       }
 
-      const lastContent = server.getLastContent(uri)
+      const lastContent = server.getLastContent(uri);
       if (lastContent !== text) {
-        const diagPromise = server.waitForDiagnostics(uri)
-        await server.changeDocument(uri, text)
-        const diagnostics = await diagPromise
-        return { server: server.name, filePath, diagnostics }
+        const diagPromise = server.waitForDiagnostics(uri);
+        await server.changeDocument(uri, text);
+        const diagnostics = await diagPromise;
+        return { server: server.name, filePath, diagnostics };
       }
 
       return {
         server: server.name,
         filePath,
         diagnostics: server.getDiagnostics(uri),
-      }
+      };
     }
     catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      return { error: `Failed to get diagnostics: ${message}` }
+      const message = err instanceof Error ? err.message : String(err);
+      return { error: `Failed to get diagnostics: ${message}` };
     }
   }
 
   getAll(): LspClient[] {
-    return Array.from(this.servers.values())
+    return Array.from(this.servers.values());
   }
 
   get(name: string): LspClient | undefined {
-    return this.servers.get(name)
+    return this.servers.get(name);
   }
 }
