@@ -5,9 +5,9 @@
   "private": true,
   "description": "LSP diagnostics integration for Pi coding agent",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "eslint . --fix",
+    "lint": "tsc && eslint .",
+    "lint:fix": "tsc && eslint . --fix",
+    "format": "tsc && eslint . --fix",
     "typecheck": "tsc --noEmit"
   },
   "pi": {
@@ -19,12 +19,14 @@
     "vscode-languageserver-protocol": "^3.18.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.5.1",
     "@earendil-works/pi-coding-agent": "^1.2.0",
+    "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.5",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
     "eslint": "^10.12.0",
     "eslint-plugin-slop": "^0.1.3",
     "eslint-plugin-sonarjs": "^4.2.2",
+    "globals": "^17.13.0",
     "typescript": "^6.0.3"
   }
 }

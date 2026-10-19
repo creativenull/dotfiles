@@ -1,8 +1,30 @@
-import antfu from '@antfu/eslint-config'
+import js from '@eslint/js'
+import globals from 'globals'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsparser from '@typescript-eslint/parser'
 
-export default antfu({
-  type: 'lib',
-  typescript: true,
-  ignores: ['node_modules/**', 'dist/**'],
-  antislop: true,
-})
+export default [
+  js.configs.recommended,
+
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+      globals: {
+        ...globals.node,
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      'no-undef': 'off',
+      semi: ['error', 'always'],
+      'max-len': ['error', { code: 120 }],
+    },
+  },
+]
