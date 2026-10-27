@@ -16,7 +16,7 @@
     "npm"
   ],
   "theme": "light/dark",
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "lastChangelogVersion": "1.4.0",
   "enabledModels": [
     "openrouter/anthropic/claude-haiku-5.5",
