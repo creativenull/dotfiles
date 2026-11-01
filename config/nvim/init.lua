@@ -494,6 +494,7 @@ Plug("creativenull/feline.nvim")
 Plug("creativenull/feline-provider-ale.nvim")
 Plug("f-person/auto-dark-mode.nvim")
 Plug("lukas-reineke/virt-column.nvim")
+Plug("brenoprata10/nvim-highlight-colors")
 
 -- TreeSitter
 -- ---
@@ -584,35 +585,41 @@ require("indentmini").setup({ minlevel = 2 })
 -- ---
 require("virt-column").setup()
 
+-- nvim-highlight-colors Config
+-- ---
+require("nvim-highlight-colors").setup({
+  render = "virtual",
+})
+
 -- =============================================================================
 -- = Colorscheme =
 -- =============================================================================
 
 local function light_colorscheme()
   vim.api.nvim_set_option_value("background", "light", {})
-  pcall(vim.cmd, "colorscheme github-monochrome-light")
+  -- pcall(vim.cmd, "colorscheme github-monochrome-light")
+  pcall(vim.cmd, "colorscheme flume-opal")
 end
 
 local function set_custom_light_colorscheme()
   -- Fzf default options
   vim.env.FZF_DEFAULT_OPTS = table.concat({
     "--reverse",
-    "--color=bg+:#b7c1e3",
-    "--color=bg:-1",
-    "--color=border:#4094a3",
-    "--color=fg:#3760bf",
-    "--color=gutter:#d0d5e3",
-    "--color=header:#b15c00",
-    "--color=hl+:#188092",
-    "--color=hl:#188092",
-    "--color=info:#8990b3",
-    "--color=marker:#d20065",
-    "--color=pointer:#d20065",
-    "--color=prompt:#188092",
-    "--color=query:#3760bf:regular",
-    "--color=scrollbar:#4094a3",
-    "--color=separator:#b15c00",
-    "--color=spinner:#d20065",
+    "--color=fg:#554e5d",
+    "--color=bg:#f2eff7",
+    "--color=hl:#7e5500",
+    "--color=fg+:#413b49",
+    "--color=bg+:#f3e9fb",
+    "--color=hl+:#7e5500",
+    "--color=info:#615a68",
+    "--color=prompt:#00667e",
+    "--color=pointer:#9d395e",
+    "--color=marker:#246b23",
+    "--color=spinner:#70558a",
+    "--color=header:#615a68",
+    "--color=border:#8b8491",
+    "--color=gutter:#f2eff7",
+    "--color=query:#413b49",
   }, " ")
 
   -- Float border transparent
@@ -684,6 +691,25 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
   desc = "Custom user highlights",
 })
+
+-- flume.nvim Config
+-- ---
+pcall(function()
+  require("flume").setup({
+    schema = "opal",
+    styles = {
+      comments = { italic = true },
+    },
+    highlights = {
+      IndentLine = { fg = "#bbbbbb" },
+      IndentLineCurrent = { fg = "#006b85" },
+      LineNr = { fg = "#333333" },
+      Comment = { fg = "#888888", italic = true },
+      Visual = { bg = "#aaaaaa" },
+      FernIndentMarkers = { fg = "#006b85" },
+    },
+  })
+end)
 
 -- moonfly Config
 -- ---
