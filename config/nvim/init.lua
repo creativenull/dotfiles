@@ -506,6 +506,7 @@ Plug("bluz71/vim-moonfly-colors")
 Plug("folke/tokyonight.nvim")
 Plug("catppuccin/nvim", { as = "catppuccin" })
 Plug("idr4n/github-monochrome.nvim")
+Plug("mitander/flume.nvim")
 
 -- Misc
 -- ---
@@ -589,8 +590,39 @@ require("virt-column").setup()
 
 local function light_colorscheme()
   vim.api.nvim_set_option_value("background", "light", {})
-  -- pcall(vim.cmd, "colorscheme tokyonight-day")
   pcall(vim.cmd, "colorscheme github-monochrome-light")
+end
+
+local function set_custom_light_colorscheme()
+  -- Fzf default options
+  vim.env.FZF_DEFAULT_OPTS = table.concat({
+    "--reverse",
+    "--color=bg+:#b7c1e3",
+    "--color=bg:-1",
+    "--color=border:#4094a3",
+    "--color=fg:#3760bf",
+    "--color=gutter:#d0d5e3",
+    "--color=header:#b15c00",
+    "--color=hl+:#188092",
+    "--color=hl:#188092",
+    "--color=info:#8990b3",
+    "--color=marker:#d20065",
+    "--color=pointer:#d20065",
+    "--color=prompt:#188092",
+    "--color=query:#3760bf:regular",
+    "--color=scrollbar:#4094a3",
+    "--color=separator:#b15c00",
+    "--color=spinner:#d20065",
+  }, " ")
+
+  -- Float border transparent
+  -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+  -- vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE" })
+
+  -- Transparent background
+  -- vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+  -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+  -- vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
 end
 
 local function dark_colorscheme()
@@ -639,38 +671,6 @@ local function set_custom_dark_colorscheme()
   -- indentmini Highlights
   vim.api.nvim_set_hl(0, "IndentLine", { bg = "NONE", fg = "#111111" })
   vim.api.nvim_set_hl(0, "IndentLineCurrent", { bg = "NONE", fg = "#aaaaaa" })
-end
-
-local function set_custom_light_colorscheme()
-  -- Fzf default options
-  vim.env.FZF_DEFAULT_OPTS = table.concat({
-    "--reverse",
-    "--color=bg+:#b7c1e3",
-    "--color=bg:-1",
-    "--color=border:#4094a3",
-    "--color=fg:#3760bf",
-    "--color=gutter:#d0d5e3",
-    "--color=header:#b15c00",
-    "--color=hl+:#188092",
-    "--color=hl:#188092",
-    "--color=info:#8990b3",
-    "--color=marker:#d20065",
-    "--color=pointer:#d20065",
-    "--color=prompt:#188092",
-    "--color=query:#3760bf:regular",
-    "--color=scrollbar:#4094a3",
-    "--color=separator:#b15c00",
-    "--color=spinner:#d20065",
-  }, " ")
-
-  -- Float border transparent
-  -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
-  -- vim.api.nvim_set_hl(0, "FloatBorder", { bg = "NONE" })
-
-  -- Transparent background
-  -- vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
-  -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
-  -- vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
