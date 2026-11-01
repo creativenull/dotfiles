@@ -128,6 +128,9 @@ function M.setup()
     },
   })
 
+  -- textDocument/documentColor config
+  vim.lsp.document_color.enable(false)
+
   -- projectlocal-vim Config
   -- ---
   local projectlocal = require("projectlocal.lsp")
