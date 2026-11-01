@@ -630,6 +630,13 @@ local function set_custom_light_colorscheme()
   -- vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
   -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
   -- vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
+
+  vim.api.nvim_set_hl(0, "IndentLine", { fg = "#bbbbbb" })
+  vim.api.nvim_set_hl(0, "IndentLineCurrent", { fg = "#006b85" })
+  vim.api.nvim_set_hl(0, "LineNr", { fg = "#333333" })
+  vim.api.nvim_set_hl(0, "Comment", { fg = "#888888", italic = true })
+  vim.api.nvim_set_hl(0, "Visual", { bg = "#aaaaaa" })
+  vim.api.nvim_set_hl(0, "FernIndentMarkers", { fg = "#006b85" })
 end
 
 local function dark_colorscheme()
@@ -691,25 +698,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
   desc = "Custom user highlights",
 })
-
--- flume.nvim Config
--- ---
-pcall(function()
-  require("flume").setup({
-    schema = "opal",
-    styles = {
-      comments = { italic = true },
-    },
-    highlights = {
-      IndentLine = { fg = "#bbbbbb" },
-      IndentLineCurrent = { fg = "#006b85" },
-      LineNr = { fg = "#333333" },
-      Comment = { fg = "#888888", italic = true },
-      Visual = { bg = "#aaaaaa" },
-      FernIndentMarkers = { fg = "#006b85" },
-    },
-  })
-end)
 
 -- moonfly Config
 -- ---
