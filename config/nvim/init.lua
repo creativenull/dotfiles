@@ -549,10 +549,6 @@ require("user.lsp").setup()
 -- ---
 require("user.fzf").setup()
 
--- fall.vim Config
--- ---
--- vim.keymap.set('n', '<C-p>', '<Cmd>Fall file<CR>')
-
 -- ddc.vim Config
 -- ---
 -- require("user.ddc").setup()
