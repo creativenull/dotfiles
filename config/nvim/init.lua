@@ -430,7 +430,6 @@ Plug("tpope/vim-surround")
 
 -- AI
 -- ---
-Plug("Exafunction/windsurf.nvim")
 
 -- File Explorer + Addons
 -- ---
@@ -518,10 +517,6 @@ vim.call("plug#end")
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
-
--- codeium.vim Config
--- ---
-require("user.codeium").setup()
 
 -- mini.nvim Config
 -- ---
