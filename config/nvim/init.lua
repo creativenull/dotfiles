@@ -430,6 +430,7 @@ Plug("tpope/vim-surround")
 
 -- AI
 -- ---
+Plug("milanglacier/minuet-ai.nvim")
 
 -- File Explorer + Addons
 -- ---
@@ -517,6 +518,10 @@ vim.call("plug#end")
 -- =============================================================================
 -- = Plugin Post-Config - after loading plugins (POST) =
 -- =============================================================================
+
+-- minuet-ai.nvim Config
+-- ---
+require("user.minuet").setup()
 
 -- mini.nvim Config
 -- ---
