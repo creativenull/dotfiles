@@ -22,9 +22,10 @@
     "openrouter/anthropic/claude-haiku-5.5",
     "openrouter/deepseek/deepseek-v4.1-flash",
     "openrouter/google/gemini-3.8-flash",
+    "openrouter/moonshotai/kimi-k3.1-pro",
     "openrouter/openrouter/free",
-    "openrouter/z-ai/glm-5.3-flash",
-    "openrouter/z-ai/glm-5.2"
+    "openrouter/z-ai/glm-5.3",
+    "openrouter/z-ai/glm-5.3-flash"
   ],
   "tuiMode": "fullscreen"
 }
