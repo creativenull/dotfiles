@@ -19,7 +19,9 @@ function M.setup()
         dismiss = "<A-e>",
       },
     },
-    provider = "openai_compatible",
+    provider = "openai_fim_compatible",
+    n_completions = 1, -- recommend for local model for resource saving
+    context_window = 512,
     request_timeout = 5,
     throttle = 1500, -- Increase to reduce costs and avoid rate limits
     debounce = 600, -- Increase to reduce costs and avoid rate limits
@@ -30,7 +32,17 @@ function M.setup()
         model = "qwen/qwen3-coder-30b-a3b-instruct",
         name = "Openrouter",
         optional = {
-          max_tokens = 256,
+          max_tokens = 56,
+          top_p = 0.9,
+        },
+      },
+      openai_fim_compatible = {
+        api_key = "TERM",
+        name = "Ollama",
+        end_point = "http://127.0.0.1:11434/v1/completions",
+        model = "qwen2.5-coder:3b",
+        optional = {
+          max_tokens = 56,
           top_p = 0.9,
         },
       },
