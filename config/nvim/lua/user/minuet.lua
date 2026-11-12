@@ -21,7 +21,7 @@ function M.setup()
     },
     provider = "openai_fim_compatible",
     n_completions = 1, -- recommend for local model for resource saving
-    context_window = 512,
+    context_window = 1024,
     request_timeout = 5,
     throttle = 1500, -- Increase to reduce costs and avoid rate limits
     debounce = 600, -- Increase to reduce costs and avoid rate limits
@@ -40,9 +40,9 @@ function M.setup()
         api_key = "TERM",
         name = "Ollama",
         end_point = "http://127.0.0.1:11434/v1/completions",
-        model = "qwen2.5-coder:3b",
+        model = "codegemma:2b",
         optional = {
-          max_tokens = 56,
+          max_tokens = 256,
           top_p = 0.9,
         },
       },
