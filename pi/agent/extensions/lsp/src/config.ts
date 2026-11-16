@@ -37,8 +37,13 @@ function expandConfigEnv(config: LspServerConfig): LspServerConfig {
 export async function loadLspConfig(projectDir?: string): Promise<LspConfig> {
   const configs: LspConfig[] = [];
 
-  const globalPath = join(homedir(), '.agents', 'lsp.json');
-  if (existsSync(globalPath)) {
+  // Global config: prefer ~/.pi, fall back to ~/.agents
+  const globalDirs = [join(homedir(), '.pi'), join(homedir(), '.agents')];
+  for (const dir of globalDirs) {
+    const globalPath = join(dir, 'lsp.json');
+    if (!existsSync(globalPath)) {
+      continue;
+    }
     try {
       const content = await readFile(globalPath, 'utf-8');
       configs.push(JSON.parse(content));
@@ -46,11 +51,17 @@ export async function loadLspConfig(projectDir?: string): Promise<LspConfig> {
     catch (error) {
       console.error(`Failed to load global LSP config: ${error}`);
     }
+    break;
   }
 
+  // Project config: prefer .pi, fall back to .agents in the project dir
   if (projectDir) {
-    const projectPath = join(projectDir, '.agents', 'lsp.json');
-    if (existsSync(projectPath)) {
+    const projectDirs = ['.pi', '.agents'];
+    for (const dir of projectDirs) {
+      const projectPath = join(projectDir, dir, 'lsp.json');
+      if (!existsSync(projectPath)) {
+        continue;
+      }
       try {
         const content = await readFile(projectPath, 'utf-8');
         configs.push(JSON.parse(content));
@@ -58,6 +69,7 @@ export async function loadLspConfig(projectDir?: string): Promise<LspConfig> {
       catch (error) {
         console.error(`Failed to load project LSP config: ${error}`);
       }
+      break;
     }
   }
 
