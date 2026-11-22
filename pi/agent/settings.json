@@ -20,7 +20,7 @@
   "lastChangelogVersion": "1.6.0",
   "enabledModels": [
     "openrouter/anthropic/claude-haiku-5.5",
-    "openrouter/deepseek/deepseek-v4.1-flash",
+    "openrouter/deepseek/deepseek-v4.1-flash-1017",
     "openrouter/google/gemini-3.8-flash",
     "openrouter/moonshotai/kimi-k3.1-pro",
     "openrouter/openrouter/free",
