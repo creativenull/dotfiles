@@ -19,10 +19,11 @@ function M.setup()
         dismiss = "<A-e>",
       },
     },
-    provider = "openai_fim_compatible",
+    -- provider = "openai_fim_compatible",
+    provider = "openai_compatible",
     n_completions = 1, -- recommend for local model for resource saving
-    context_window = 1024,
-    request_timeout = 5,
+    context_window = 8000,
+    request_timeout = 10,
     throttle = 1500, -- Increase to reduce costs and avoid rate limits
     debounce = 600, -- Increase to reduce costs and avoid rate limits
     provider_options = {
@@ -34,6 +35,7 @@ function M.setup()
         optional = {
           max_tokens = 56,
           top_p = 0.9,
+          reasoning_effort = "none",
         },
       },
       openai_fim_compatible = {
@@ -42,8 +44,19 @@ function M.setup()
         end_point = "http://127.0.0.1:11434/v1/completions",
         model = "codegemma:2b",
         optional = {
-          max_tokens = 256,
+          max_tokens = 128,
           top_p = 0.9,
+          stop = { "<|file_separator|>", "<|fim_middle|>", "\n\n" },
+        },
+        template = {
+          prompt = function(context_before_cursor, context_after_cursor, _)
+            return "<|fim_prefix|>"
+              .. context_before_cursor
+              .. "<|fim_suffix|>"
+              .. context_after_cursor
+              .. "<|fim_middle|>"
+          end,
+          suffix = false,
         },
       },
     },
