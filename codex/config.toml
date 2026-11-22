@@ -1,4 +1,4 @@
-model = "gpt-6-astra"
+model = "gpt-6-luna"
 model_reasoning_effort = "medium"
 
 file_opener = "none"
@@ -14,10 +14,12 @@ smart_approvals = true
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-remaining"]
+screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 3
+"gpt-6.1-sol" = 4
 
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"
